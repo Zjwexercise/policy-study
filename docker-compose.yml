@@ -1,0 +1,15 @@
+version: '3.8'
+
+services:
+  policy-app:
+    build: .
+    container_name: policy_master
+    restart: always
+    ports:
+      - "8000:8000"
+    volumes:
+      # 持久化数据库和上传文件，容器重建/重启数据不丢失
+      - ./backend/policy_study.db:/app/backend/policy_study.db
+      - ./backend/uploads:/app/backend/uploads
+    environment:
+      - TZ=Asia/Shanghai

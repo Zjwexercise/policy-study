@@ -1,0 +1,11 @@
+pdf/
+frontend/node_modules/
+backend/temp_*.png
+backend/temp_*.txt
+backend/*.log
+backend/m1_raw_ocr.txt
+backend/uploads/
+__pycache__/
+*.pyc
+.git
+.gitignore
