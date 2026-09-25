@@ -15,11 +15,13 @@ async function fetchStatic(path) {
   // 适配 Vite base './' 路径
   const base = import.meta.env.BASE_URL || './';
   const cleanBase = base.endsWith('/') ? base : base + '/';
-  const url = `${cleanBase}data/${path}`;
-  const res = await fetch(url);
+  // 增加时间戳与 no-cache，确保用户在手机/电脑刷新后立即获取校准后的最新题目
+  const url = `${cleanBase}data/${path}?v=${Date.now()}`;
+  const res = await fetch(url, { cache: 'no-cache' });
   if (!res.ok) throw new Error(`加载离线数据失败: ${path}`);
   return res.json();
 }
+
 
 export const localStore = {
   // 获取练习册列表
