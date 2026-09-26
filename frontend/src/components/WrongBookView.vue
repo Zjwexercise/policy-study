@@ -31,7 +31,7 @@ const includeMastered = ref(false);
 const activeNoteQuestion = ref(null);
 const showNoteModal = ref(false);
 
-const categories = ['全部', '马原', '毛中特', '史纲', '思修', '时政'];
+const categories = ['全部', '马原', '毛中特', '习思想', '史纲', '思修', '时政'];
 
 const loadWrongQuestions = async () => {
   loading.value = true;

@@ -14,6 +14,8 @@ backend/temp_*.txt
 backend/m1_raw_ocr.txt
 backend/pipeline.log
 backend/uploads/
+backend/ytk_txt/
+backend/st_p*.txt
 
 # Node.js
 frontend/node_modules/

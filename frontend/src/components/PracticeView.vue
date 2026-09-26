@@ -62,7 +62,7 @@ const selectedCategory = ref('全部');
 const selectedType = ref('全部');
 const selectedStatus = ref('all'); // all, unattempted, wrong, starred
 
-const categories = ['全部', '马原', '毛中特', '史纲', '思修', '时政'];
+const categories = ['全部', '马原', '毛中特', '习思想', '史纲', '思修', '时政'];
 const types = [
   { id: '全部', label: '全部题型' },
   { id: 'single', label: '单选题' },
