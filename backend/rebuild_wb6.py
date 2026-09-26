@@ -91,7 +91,19 @@ def clean_ocr_text(lines):
         l = re.sub(r'([\u4e00-\u9fa5])\s+([\u4e00-\u9fa5])', r'\1\2', l)
         l = re.sub(r'([\u4e00-\u9fa5])\s+([\u4e00-\u9fa5])', r'\1\2', l)
         cleaned.append(l)
-    return "\n".join(cleaned)
+
+    # 修复 OCR 题号与题干首句倒置：例如前一行是题干首句，当前行是题号 4 ．
+    fixed_lines = []
+    for l in cleaned:
+        if re.match(r'^\d{1,2}\s*[\.、．·:：]?$', l):
+            if fixed_lines and not re.match(r'^[A-Da-d①②③④80oO]\s*[\.、．·:：]', fixed_lines[-1]):
+                prev = fixed_lines.pop()
+                num_clean = re.sub(r'[\.、．·:：\s]+', '', l)
+                fixed_lines.append(f"{num_clean}. {prev}")
+                continue
+        fixed_lines.append(l)
+
+    return "\n".join(fixed_lines)
 
 def extract_questions_from_text(text):
     """
@@ -142,6 +154,12 @@ def extract_questions_from_text(text):
                 v = om.group(2).strip()
                 v = re.sub(r'^[A-Da-d①②③④\(\)]\s*[\.、．，,·:\s]\s*', '', v)
                 v = re.sub(r'\s*\d{1,2}\s*[\.、．·:：]\s*[\u4e00-\u9fa5“\"\'《].*$', '', v)
+                v = re.sub(r'扫描[右左]侧?二维码[\s\S]*$', '', v)
+                v = re.sub(r'涛涛提示[\s\S]*$', '', v)
+                v = re.sub(r'本套选择题随时随地[\s\S]*$', '', v)
+                v = re.sub(r'\s*第\s*[一二三四五]\s*部\s*分?$', '', v)
+                v = re.sub(r'\s*[单多]?项选择题$', '', v)
+                v = re.sub(r'[\s、,，\ufeff]+$', '', v).strip()
                 v = re.sub(r'[\s\n]+', ' ', v).strip()
                 if k in ['A', 'B', 'C', 'D'] and v:
                     opts[k] = v

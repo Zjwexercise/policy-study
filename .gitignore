@@ -16,6 +16,8 @@ backend/pipeline.log
 backend/uploads/
 backend/ytk_txt/
 backend/st_p*.txt
+backend/*_pages/
+backend/1000_*_pages/
 
 # Node.js
 frontend/node_modules/

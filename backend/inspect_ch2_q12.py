@@ -1,0 +1,7 @@
+import sys
+sys.stdout.reconfigure(encoding='utf-8')
+
+from test_ch2_stitch import lines
+
+for i, l in enumerate(lines[90:140]):
+    print(f"{i+91:3d}: {repr(l)}")
