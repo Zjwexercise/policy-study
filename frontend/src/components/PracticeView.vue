@@ -16,7 +16,8 @@ import {
   Eye,
   Send,
   Sparkles,
-  BookOpen
+  BookOpen,
+  Swords
 } from 'lucide-vue-next';
 import AnswerSheetModal from './AnswerSheetModal.vue';
 import NoteModal from './NoteModal.vue';
@@ -40,6 +41,17 @@ const currentIndex = ref(0);
 const selectedOptions = ref([]); // For multiple choice
 const showAnswerSheet = ref(false);
 const showNoteModal = ref(false);
+const hideKilled = ref(true); // 隐藏已斩熟题（熟题不再重复刷）
+const toastMsg = ref('');
+
+const showToast = (msg) => {
+  toastMsg.value = msg;
+  setTimeout(() => {
+    if (toastMsg.value === msg) {
+      toastMsg.value = '';
+    }
+  }, 2200);
+};
 
 // 模式：study (即时解析背题), exam (模考模式，做完全部才看解析)
 const practiceMode = ref('study'); 
@@ -78,6 +90,7 @@ const loadQuestions = async () => {
     if (selectedCategory.value !== '全部') params.category = selectedCategory.value;
     if (selectedType.value !== '全部') params.question_type = selectedType.value;
     if (selectedStatus.value !== 'all') params.status = selectedStatus.value;
+    params.hide_killed = hideKilled.value;
 
     let data = await api.getQuestions(props.workbookId, params);
     if (isRandomOrder.value) {
@@ -110,7 +123,7 @@ watch(() => props.workbookId, () => {
   loadQuestions();
 });
 
-watch([selectedCategory, selectedType, selectedStatus, isRandomOrder], () => {
+watch([selectedCategory, selectedType, selectedStatus, isRandomOrder, hideKilled], () => {
   loadQuestions();
 });
 
@@ -195,6 +208,25 @@ const toggleStar = async () => {
     currentQuestion.value.is_starred = nextVal;
   } catch (err) {
     console.error('收藏失败', err);
+  }
+};
+
+// 斩杀/复活熟题切换
+const toggleKill = async () => {
+  if (!currentQuestion.value) return;
+  const nextVal = !currentQuestion.value.is_killed;
+  try {
+    const targetWbId = currentQuestion.value.workbook_id || props.workbookId;
+    await api.toggleKillQuestion(targetWbId, currentQuestion.value.id, nextVal);
+    currentQuestion.value.is_killed = nextVal ? 1 : 0;
+    if (nextVal) {
+      showToast('⚔️ 熟题已斩杀！后续刷题将自动跳过此题');
+    } else {
+      showToast('🛡️ 题目已复活，已重新加入练习题库');
+    }
+  } catch (err) {
+    console.error('斩题操作失败', err);
+    showToast('操作失败，请重试');
   }
 };
 
@@ -292,6 +324,21 @@ onUnmounted(() => {
             <span class="hidden sm:inline">乱序</span>
           </button>
 
+          <!-- 隐藏已斩熟题开关 -->
+          <button
+            @click="hideKilled = !hideKilled"
+            class="px-2.5 py-1.5 rounded-lg border text-xs font-medium flex items-center gap-1 transition cursor-pointer select-none"
+            :class="[
+              hideKilled 
+                ? 'bg-rose-50 border-rose-200 text-rose-700 font-semibold' 
+                : 'bg-slate-50 border-slate-200 text-slate-600 hover:bg-slate-100'
+            ]"
+            :title="hideKilled ? '已开启熟题过滤：斩杀的熟题不会再出现' : '已关闭熟题过滤：所有题目均会出现'"
+          >
+            <Swords class="w-3.5 h-3.5" :class="{ 'text-rose-600': hideKilled }" />
+            <span>{{ hideKilled ? '已隐藏熟题' : '显示熟题' }}</span>
+          </button>
+
           <!-- 答题卡抽屉触发 -->
           <button
             @click="showAnswerSheet = true"
@@ -355,6 +402,21 @@ onUnmounted(() => {
 
           <!-- Question Actions -->
           <div class="flex items-center gap-1.5">
+            <!-- 斩杀熟题按钮 -->
+            <button
+              @click="toggleKill"
+              class="px-2 sm:px-2.5 py-1.5 rounded-lg border text-xs font-medium flex items-center gap-1 transition cursor-pointer"
+              :class="[
+                currentQuestion.is_killed 
+                  ? 'bg-rose-900 border-rose-900 text-rose-100 shadow-2xs font-semibold' 
+                  : 'border-slate-200 text-slate-500 hover:text-rose-700 hover:bg-rose-50 hover:border-rose-200'
+              ]"
+              :title="currentQuestion.is_killed ? '已斩杀！点击可复活' : '已熟练掌握？点击斩杀，后续刷题不再出现'"
+            >
+              <Swords class="w-3.5 h-3.5" :class="currentQuestion.is_killed ? 'text-rose-200' : 'text-slate-400'" />
+              <span class="hidden sm:inline">{{ currentQuestion.is_killed ? '已斩熟题' : '斩熟题' }}</span>
+            </button>
+
             <button
               @click="toggleStar"
               class="p-1.5 rounded-lg border transition cursor-pointer"
@@ -502,14 +564,31 @@ onUnmounted(() => {
             </div>
           </div>
 
-          <button
-            @click="redoCurrentQuestion"
-            class="px-2.5 py-1 text-xs font-medium rounded-lg bg-white/80 hover:bg-white text-slate-700 border border-slate-200 transition cursor-pointer flex items-center gap-1 shrink-0"
-            title="清空当前作答重新做一次"
-          >
-            <RotateCcw class="w-3.5 h-3.5" />
-            <span>重做本题</span>
-          </button>
+          <div class="flex items-center gap-1.5 shrink-0">
+            <!-- 斩杀熟题快捷按钮 -->
+            <button
+              @click="toggleKill"
+              class="px-2.5 py-1 text-xs font-medium rounded-lg transition cursor-pointer flex items-center gap-1 border shadow-2xs"
+              :class="[
+                currentQuestion.is_killed
+                  ? 'bg-rose-900 text-white border-rose-900 font-semibold'
+                  : 'bg-white/90 hover:bg-white text-slate-700 border-slate-200 hover:text-rose-700 hover:border-rose-200'
+              ]"
+              :title="currentQuestion.is_killed ? '已斩杀，点击可复活' : '完全熟练？一键斩杀不再重复刷此题'"
+            >
+              <Swords class="w-3.5 h-3.5" :class="currentQuestion.is_killed ? 'text-rose-200' : 'text-rose-600'" />
+              <span>{{ currentQuestion.is_killed ? '已斩熟题' : '斩掉此题' }}</span>
+            </button>
+
+            <button
+              @click="redoCurrentQuestion"
+              class="px-2.5 py-1 text-xs font-medium rounded-lg bg-white/80 hover:bg-white text-slate-700 border border-slate-200 transition cursor-pointer flex items-center gap-1"
+              title="清空当前作答重新做一次"
+            >
+              <RotateCcw class="w-3.5 h-3.5" />
+              <span>重做本题</span>
+            </button>
+          </div>
         </div>
 
         <!-- 详细考点解析 -->
@@ -582,5 +661,22 @@ onUnmounted(() => {
       @close="showNoteModal = false"
       @saved="currentQuestion.note_content = $event.content; currentQuestion.has_note = true;"
     />
+
+    <!-- Floating Toast Notification -->
+    <transition
+      enter-active-class="transition duration-200 ease-out"
+      enter-from-class="transform -translate-y-2 opacity-0"
+      enter-to-class="transform translate-y-0 opacity-100"
+      leave-active-class="transition duration-150 ease-in"
+      leave-from-class="transform translate-y-0 opacity-100"
+      leave-to-class="transform -translate-y-2 opacity-0"
+    >
+      <div 
+        v-if="toastMsg"
+        class="fixed top-18 left-1/2 -translate-x-1/2 z-50 bg-slate-900/95 backdrop-blur-md text-white text-xs sm:text-sm font-semibold px-4 py-2.5 rounded-xl shadow-xl border border-slate-700/80 flex items-center gap-2 pointer-events-none"
+      >
+        <span>{{ toastMsg }}</span>
+      </div>
+    </transition>
   </div>
 </template>

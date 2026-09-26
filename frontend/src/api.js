@@ -134,6 +134,51 @@ export const api = {
     }
   },
 
+  // 斩杀熟题
+  async toggleKillQuestion(workbookId, questionId, isKilled) {
+    if (await detectMode()) return localStore.toggleKillQuestion(workbookId, questionId, isKilled);
+    try {
+      const res = await fetch(`${API_BASE}/practice/kill`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          workbook_id: workbookId,
+          question_id: questionId,
+          is_killed: isKilled
+        })
+      });
+      if (!res.ok) throw new Error();
+      return await res.json();
+    } catch {
+      return localStore.toggleKillQuestion(workbookId, questionId, isKilled);
+    }
+  },
+
+  async getKilledQuestions(params = {}) {
+    if (await detectMode()) return localStore.getKilledQuestions(params);
+    try {
+      const query = new URLSearchParams(params).toString();
+      const res = await fetch(`${API_BASE}/practice/killed-questions?${query}`);
+      if (!res.ok) throw new Error();
+      return await res.json();
+    } catch {
+      return localStore.getKilledQuestions(params);
+    }
+  },
+
+  async clearKilledQuestions(workbookId) {
+    if (await detectMode()) return localStore.clearKilledQuestions(workbookId);
+    try {
+      const url = workbookId ? `${API_BASE}/practice/killed-questions/clear?workbook_id=${workbookId}` : `${API_BASE}/practice/killed-questions/clear`;
+      const res = await fetch(url, { method: 'DELETE' });
+      if (!res.ok) throw new Error();
+      return await res.json();
+    } catch {
+      return localStore.clearKilledQuestions(workbookId);
+    }
+  },
+
+
   async updateQuestion(questionId, data) {
     if (await detectMode()) {
       return { success: true, message: '题目已保存在本地' };

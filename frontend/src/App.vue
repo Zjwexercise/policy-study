@@ -4,12 +4,13 @@ import { api } from './api';
 import HeaderNav from './components/HeaderNav.vue';
 import PracticeView from './components/PracticeView.vue';
 import WrongBookView from './components/WrongBookView.vue';
+import KilledQuestionsView from './components/KilledQuestionsView.vue';
 import NotesView from './components/NotesView.vue';
 import WorkbooksView from './components/WorkbooksView.vue';
 import StatsView from './components/StatsView.vue';
 import MobileQrModal from './components/MobileQrModal.vue';
 
-const currentTab = ref('practice'); // practice, wrong, notes, workbooks, stats
+const currentTab = ref('practice'); // practice, wrong, killed, notes, workbooks, stats
 const workbooks = ref([]);
 const activeWorkbookId = ref('all'); // 'all' 代表全部综合练习，数字代表单册独立练习
 const showMobileQr = ref(false);
@@ -62,6 +63,12 @@ onMounted(() => {
 
       <WrongBookView 
         v-else-if="currentTab === 'wrong'"
+        :workbook-id="activeWorkbookId"
+        @start-practice="currentTab = 'practice'"
+      />
+
+      <KilledQuestionsView 
+        v-else-if="currentTab === 'killed'"
         :workbook-id="activeWorkbookId"
         @start-practice="currentTab = 'practice'"
       />

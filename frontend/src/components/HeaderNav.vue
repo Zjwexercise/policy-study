@@ -9,7 +9,8 @@ import {
   Smartphone, 
   ChevronDown,
   Layers,
-  Sparkles
+  Sparkles,
+  Swords
 } from 'lucide-vue-next';
 
 const props = defineProps({
@@ -40,6 +41,7 @@ const totalQuestionsAll = computed(() => {
 const tabs = [
   { id: 'practice', label: '刷题练习', icon: BookOpen },
   { id: 'wrong', label: '错题本', icon: AlertCircle },
+  { id: 'killed', label: '斩题本', icon: Swords },
   { id: 'notes', label: '考点笔记', icon: FileText },
   { id: 'workbooks', label: '练习册中心', icon: Library },
   { id: 'stats', label: '学习统计', icon: BarChart3 },
@@ -128,18 +130,18 @@ const handleSelectChange = (val) => {
     </div>
 
     <!-- Mobile Bottom Navigation Bar -->
-    <div class="lg:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-slate-200 z-40 px-2 py-1 flex justify-around items-center shadow-lg">
+    <div class="lg:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-slate-200 z-40 px-1 py-1 flex justify-around items-center shadow-lg">
       <button
         v-for="tab in tabs"
         :key="tab.id"
         @click="emit('update:currentTab', tab.id)"
-        class="flex flex-col items-center justify-center py-1 px-2 rounded-lg transition text-slate-500 flex-1 cursor-pointer"
+        class="flex flex-col items-center justify-center py-1 px-1 rounded-lg transition text-slate-500 flex-1 cursor-pointer min-w-0"
         :class="[
-          currentTab === tab.id ? 'text-rose-600 font-medium' : 'hover:text-slate-800'
+          currentTab === tab.id ? 'text-rose-600 font-semibold' : 'hover:text-slate-800'
         ]"
       >
-        <component :is="tab.icon" class="w-5 h-5 mb-0.5" />
-        <span class="text-[11px]">{{ tab.label }}</span>
+        <component :is="tab.icon" class="w-4 h-4 sm:w-5 sm:h-5 mb-0.5" />
+        <span class="text-[10px] sm:text-[11px] truncate tracking-tight">{{ tab.label }}</span>
       </button>
     </div>
   </header>

@@ -1,5 +1,5 @@
 <script setup>
-import { X, Check, AlertCircle, Star, FileText } from 'lucide-vue-next';
+import { X, Check, AlertCircle, Star, FileText, Swords } from 'lucide-vue-next';
 
 defineProps({
   show: Boolean,
@@ -52,6 +52,10 @@ const emit = defineEmits(['close', 'jump']);
           <span>收藏</span>
         </div>
         <div class="flex items-center gap-1.5">
+          <Swords class="w-3.5 h-3.5 text-rose-800" />
+          <span>已斩</span>
+        </div>
+        <div class="flex items-center gap-1.5">
           <FileText class="w-3.5 h-3.5 text-blue-500" />
           <span>有笔记</span>
         </div>
@@ -75,6 +79,12 @@ const emit = defineEmits(['close', 'jump']);
             ]"
           >
             <span>{{ q.question_num }}</span>
+
+            <!-- Swords icon badge -->
+            <Swords 
+              v-if="q.is_killed" 
+              class="w-2.5 h-2.5 text-rose-800 absolute top-1 left-1" 
+            />
 
             <!-- Star icon badge -->
             <Star 

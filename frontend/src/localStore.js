@@ -100,6 +100,8 @@ export const localStore = {
       const isStarred = localStorage.getItem(`policy_star_${qid}`) === '1';
       const wrongCnt = Number(localStorage.getItem(`policy_wrong_cnt_${wId}_${qid}`) || 0);
       const isMastered = localStorage.getItem(`policy_wrong_master_${qid}`) === '1';
+      const isKilled = localStorage.getItem(`policy_killed_${qid}`) === '1';
+      const killedAt = localStorage.getItem(`policy_killed_at_${qid}`) || null;
       const noteContent = localStorage.getItem(`policy_note_${qid}`) || '';
 
       return {
@@ -107,11 +109,18 @@ export const localStore = {
         user_answer: userAns !== null ? userAns : null,
         is_correct: isCorrect !== null ? (isCorrect === '1' ? 1 : 0) : null,
         is_starred: isStarred ? 1 : 0,
+        is_killed: isKilled ? 1 : 0,
+        killed_at: killedAt,
         wrong_count: wrongCnt,
         is_mastered: isMastered ? 1 : 0,
         note_content: noteContent
       };
     });
+
+    // 斩杀过滤：如果开启了 hide_killed，则排除已斩杀题目
+    if (params.hide_killed) {
+      result = result.filter(q => q.is_killed !== 1);
+    }
 
     // 筛选
     if (params.category && params.category !== '全部') {
@@ -129,6 +138,8 @@ export const localStore = {
         result = result.filter(q => q.is_correct === 1);
       } else if (params.status === 'starred') {
         result = result.filter(q => q.is_starred === 1);
+      } else if (params.status === 'killed') {
+        result = result.filter(q => q.is_killed === 1);
       }
     }
 
@@ -275,6 +286,69 @@ export const localStore = {
     return { success: true, message: '练习进度已重置' };
   },
 
+  // 斩杀/撤销斩杀熟题
+  async toggleKillQuestion(workbookId, questionId, isKilled) {
+    if (isKilled) {
+      localStorage.setItem(`policy_killed_${questionId}`, '1');
+      localStorage.setItem(`policy_killed_at_${questionId}`, new Date().toISOString());
+      // 熟练斩杀同时在错题本中标记为已掌握
+      localStorage.setItem(`policy_wrong_master_${questionId}`, '1');
+    } else {
+      localStorage.removeItem(`policy_killed_${questionId}`);
+      localStorage.removeItem(`policy_killed_at_${questionId}`);
+    }
+    return { success: true, is_killed: isKilled };
+  },
+
+  // 获取已斩杀题目列表
+  async getKilledQuestions(params = {}) {
+    const all = await this.getQuestions('all');
+    let killedList = all.filter(q => q.is_killed === 1);
+
+    if (params.workbook_id && params.workbook_id !== 'all') {
+      killedList = killedList.filter(q => String(q.workbook_id) === String(params.workbook_id));
+    }
+    if (params.category && params.category !== '全部') {
+      killedList = killedList.filter(q => q.category === params.category);
+    }
+    if (params.keyword && params.keyword.trim()) {
+      const kw = params.keyword.trim().toLowerCase();
+      killedList = killedList.filter(q => (q.stem && q.stem.toLowerCase().includes(kw)) || (q.explanation && q.explanation.toLowerCase().includes(kw)));
+    }
+
+    // 默认按斩杀时间倒序排列
+    killedList.sort((a, b) => {
+      const ta = a.killed_at ? new Date(a.killed_at).getTime() : 0;
+      const tb = b.killed_at ? new Date(b.killed_at).getTime() : 0;
+      return tb - ta;
+    });
+
+    return killedList;
+  },
+
+  // 清空斩题本（一键全部复活题目）
+  async clearKilledQuestions(workbookId) {
+    const keysToRemove = [];
+    for (let i = 0; i < localStorage.length; i++) {
+      const key = localStorage.key(i);
+      if (key && key.startsWith('policy_killed_')) {
+        const qid = key.replace('policy_killed_at_', '').replace('policy_killed_', '');
+        if (workbookId && workbookId !== 'all') {
+          if (cache.allQuestions) {
+            const q = cache.allQuestions.find(item => String(item.id) === String(qid));
+            if (q && String(q.workbook_id) === String(workbookId)) {
+              keysToRemove.push(key);
+            }
+          }
+        } else {
+          keysToRemove.push(key);
+        }
+      }
+    }
+    keysToRemove.forEach(k => localStorage.removeItem(k));
+    return { success: true };
+  },
+
   // 统计面板
   async getStats() {
     const all = await this.getQuestions('all');
@@ -283,23 +357,57 @@ export const localStore = {
     let correct = 0;
     let wrong = 0;
     let starred = 0;
+    let killed = 0;
+    let notesCount = 0;
+
+    const catStats = {};
 
     all.forEach(q => {
       if (q.user_answer !== null) answered++;
       if (q.is_correct === 1) correct++;
       if (q.wrong_count > 0 && q.is_mastered === 0) wrong++;
       if (q.is_starred === 1) starred++;
+      if (q.is_killed === 1) killed++;
+      if (q.note_content && q.note_content.trim().length > 0) notesCount++;
+
+      const c = q.category || '综合';
+      if (!catStats[c]) {
+        catStats[c] = { total: 0, answered: 0, correct: 0 };
+      }
+      catStats[c].total++;
+      if (q.user_answer !== null) catStats[c].answered++;
+      if (q.is_correct === 1) catStats[c].correct++;
     });
 
     const accuracy = answered > 0 ? Math.round((correct / answered) * 1000) / 10 : 0;
+    const catList = Object.keys(catStats).map(c => {
+      const item = catStats[c];
+      const catAcc = item.answered > 0 ? Math.round((item.correct / item.answered) * 100) : 0;
+      return {
+        category: c,
+        total: item.total,
+        answered: item.answered,
+        correct: item.correct,
+        accuracy: catAcc
+      };
+    });
+
+    const overview = {
+      total_questions: total,
+      total_answered: answered,
+      total_correct: correct,
+      total_wrong: wrong,
+      total_starred: starred,
+      total_killed: killed,
+      total_notes: notesCount,
+      accuracy
+    };
 
     return {
-      total_questions: total,
-      answered_count: answered,
-      correct_count: correct,
-      wrong_count: wrong,
-      starred_count: starred,
-      accuracy
+      ...overview,
+      overview,
+      categories: catList
     };
   }
 };
+

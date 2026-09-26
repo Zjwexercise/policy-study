@@ -9,7 +9,8 @@ import {
   FileText, 
   TrendingUp, 
   Award,
-  Lightbulb
+  Lightbulb,
+  Swords
 } from 'lucide-vue-next';
 
 const stats = ref(null);
@@ -53,8 +54,8 @@ onMounted(() => {
     </div>
 
     <div v-else-if="stats" class="space-y-4">
-      <!-- 4 Summary Cards -->
-      <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4">
+      <!-- 5 Summary Cards -->
+      <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 sm:gap-4">
         <!-- Card 1: Total Completed -->
         <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-2xs">
           <div class="flex items-center justify-between text-slate-400 mb-2">
@@ -81,18 +82,31 @@ onMounted(() => {
         <!-- Card 3: Wrong Questions -->
         <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-2xs">
           <div class="flex items-center justify-between text-slate-400 mb-2">
-            <span class="text-xs font-medium">当前待攻克错题</span>
+            <span class="text-xs font-medium">待攻克错题</span>
             <AlertCircle class="w-4 h-4 text-rose-500" />
           </div>
           <div class="text-2xl font-bold text-rose-600">
             {{ stats.overview.total_wrong || 0 }}
+            <span class="text-xs font-normal text-slate-400">题</span>
           </div>
         </div>
 
-        <!-- Card 4: Notes & Stars -->
+        <!-- Card 4: Killed Questions -->
         <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-2xs">
           <div class="flex items-center justify-between text-slate-400 mb-2">
-            <span class="text-xs font-medium">专属笔记与收藏</span>
+            <span class="text-xs font-medium">已斩熟题</span>
+            <Swords class="w-4 h-4 text-rose-700" />
+          </div>
+          <div class="text-2xl font-bold text-rose-700">
+            {{ stats.overview.total_killed || 0 }}
+            <span class="text-xs font-normal text-slate-400">题</span>
+          </div>
+        </div>
+
+        <!-- Card 5: Notes & Stars -->
+        <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-2xs col-span-2 sm:col-span-1">
+          <div class="flex items-center justify-between text-slate-400 mb-2">
+            <span class="text-xs font-medium">专属考点笔记</span>
             <FileText class="w-4 h-4 text-amber-500" />
           </div>
           <div class="text-2xl font-bold text-amber-600">
@@ -142,6 +156,7 @@ onMounted(() => {
         <ul class="list-disc list-inside space-y-1.5 text-xs text-amber-900/90">
           <li><strong>“得选择题者得天下”：</strong>考研政治选择题总分 50 分（单选 16 分，多选 34 分）。目标 70+ 分的同学，选择题至少要拿到 40 分以上！</li>
           <li><strong>多选题是核心拉分项：</strong>多选题多选、少选、错选均不得分。练习时注意排除“表述本身错误”和“表述正确但与题干无关”的干扰项。</li>
+          <li><strong>善用【斩题】提高效率：</strong>滚瓜烂熟的常识题或简单题，果断点击【斩题】，系统自动跳过不再重复刷，把宝贵备考精力 100% 留给高频错题和真题难点！随时可在【斩题本】复活题目。</li>
           <li><strong>二刷、三刷非常关键：</strong>第一遍刷题重在扫清盲区，第二遍通过重置进度重刷巩固，重点利用【错题本】消灭顽固错题。</li>
           <li><strong>考前反复翻看【考点笔记】：</strong>把做题时易混淆的关键词、帽子题（如“根本保证”、“根本动力”、“核心”）记录并反复回看。</li>
         </ul>
