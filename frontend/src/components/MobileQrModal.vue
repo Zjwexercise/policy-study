@@ -1,33 +1,53 @@
 <script setup>
 import { ref, onMounted } from 'vue';
 import { api } from '../api';
-import { X, Smartphone, Wifi, Copy, Check } from 'lucide-vue-next';
+import QRCode from 'qrcode';
+import { X, Smartphone, Wifi, Copy, Check, RefreshCw } from 'lucide-vue-next';
 
 defineProps({
   show: Boolean
 });
 
-const emit = defineEmits(['close']);
+const emit = defineEmits(['close', 'open-sync']);
 
 const loading = ref(true);
-const networkInfo = ref(null);
+const targetUrl = ref('');
+const qrDataUrl = ref('');
 const copied = ref(false);
 
 const loadInfo = async () => {
   loading.value = true;
   try {
-    const data = await api.getNetworkInfo();
-    networkInfo.value = data;
+    let url = window.location.href;
+    try {
+      const net = await api.getNetworkInfo();
+      if (net && net.mobile_url && !net.is_cloud) {
+        url = net.mobile_url;
+      }
+    } catch {
+      // 降级使用当前浏览器地址
+    }
+    targetUrl.value = url;
+
+    // 纯前端离线生成清晰二维码
+    qrDataUrl.value = await QRCode.toDataURL(url, {
+      width: 260,
+      margin: 2,
+      color: {
+        dark: '#1e293b',
+        light: '#ffffff'
+      }
+    });
   } catch (err) {
-    console.error('加载网络信息失败', err);
+    console.error('加载二维码失败', err);
   } finally {
     loading.value = false;
   }
 };
 
 const copyUrl = () => {
-  if (!networkInfo.value?.mobile_url) return;
-  navigator.clipboard.writeText(networkInfo.value.mobile_url);
+  if (!targetUrl.value) return;
+  navigator.clipboard.writeText(targetUrl.value);
   copied.value = true;
   setTimeout(() => {
     copied.value = false;
@@ -50,45 +70,45 @@ onMounted(() => {
         <X class="w-5 h-5" />
       </button>
 
-      <div class="text-center mb-4">
+      <div class="text-center mb-3">
         <div class="inline-flex p-3 bg-rose-50 text-rose-600 rounded-2xl mb-2">
           <Smartphone class="w-6 h-6" />
         </div>
         <h3 class="text-lg font-bold text-slate-900">手机扫码刷题</h3>
-        <p class="text-xs text-slate-500 mt-1">在床上、自习室随时用手机复习考研政治</p>
+        <p class="text-xs text-slate-500 mt-0.5">自习室、地铁、床上随时手机复习考研政治</p>
       </div>
 
       <!-- QR Code Container -->
-      <div class="flex flex-col items-center justify-center bg-slate-50 border border-slate-200 rounded-xl p-4 my-3">
+      <div class="flex flex-col items-center justify-center bg-slate-50 border border-slate-200 rounded-xl p-4 my-2.5">
         <div v-if="loading" class="py-12 text-sm text-slate-400 animate-pulse">
-          正在检测局域网并生成二维码...
+          正在生成手机访问二维码...
         </div>
-        <template v-else-if="networkInfo?.qr_code">
+        <template v-else-if="qrDataUrl">
           <img 
-            :src="networkInfo.qr_code" 
+            :src="qrDataUrl" 
             alt="手机扫码二维码"
             class="w-48 h-48 rounded-lg shadow-xs bg-white p-1"
           />
-          <div class="mt-3 text-center">
-            <span class="inline-flex items-center gap-1 text-[11px] text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full font-medium">
-              <Wifi class="w-3 h-3" /> 手机和电脑连同一 Wi-Fi 或手机热点即可
+          <div class="mt-2.5 text-center">
+            <span class="inline-flex items-center gap-1 text-[11px] text-emerald-700 bg-emerald-50 px-2.5 py-0.5 rounded-full font-medium">
+              <Wifi class="w-3 h-3" /> 微信、浏览器扫一扫即可直接打开
             </span>
           </div>
         </template>
         <div v-else class="text-xs text-rose-500 py-6">
-          无法获取网络信息，请确保服务已启动
+          二维码生成失败，请直接复制下方网址
         </div>
       </div>
 
       <!-- URL Copy -->
-      <div v-if="networkInfo" class="mt-4">
-        <label class="block text-xs font-medium text-slate-600 mb-1">手机浏览器直接输入网址：</label>
+      <div v-if="targetUrl" class="mt-3">
+        <label class="block text-xs font-medium text-slate-600 mb-1">手机浏览器直接打开：</label>
         <div class="flex items-center gap-1.5 bg-slate-100 rounded-lg p-1.5 border border-slate-200">
           <input 
             type="text" 
             readonly 
-            :value="networkInfo.mobile_url"
-            class="text-xs text-slate-700 font-mono px-2 py-1 bg-transparent w-full focus:outline-hidden"
+            :value="targetUrl"
+            class="text-xs text-slate-700 font-mono px-2 py-1 bg-transparent w-full focus:outline-hidden select-all"
           />
           <button 
             @click="copyUrl"
@@ -100,7 +120,26 @@ onMounted(() => {
         </div>
       </div>
 
-      <div class="mt-5 text-center">
+      <!-- Cross-Device Sync Guidance Hint -->
+      <div class="mt-3 p-2.5 bg-indigo-50/70 border border-indigo-150 rounded-xl text-left">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center gap-1.5 text-indigo-900 font-medium text-xs">
+            <RefreshCw class="w-3.5 h-3.5 text-indigo-600 shrink-0" />
+            <span>想同步电脑和手机的做题记录？</span>
+          </div>
+          <button 
+            @click="emit('open-sync'); emit('close');"
+            class="text-[11px] text-indigo-600 hover:text-indigo-800 font-semibold underline underline-offset-2 cursor-pointer"
+          >
+            打开同步
+          </button>
+        </div>
+        <p class="text-[11px] text-indigo-700/80 mt-1">
+          使用【跨端同步】一键复制口令，微信发到手机即可合并两端题目！
+        </p>
+      </div>
+
+      <div class="mt-4 text-center">
         <button 
           @click="emit('close')"
           class="w-full py-2 bg-slate-800 hover:bg-slate-900 text-white rounded-xl text-sm font-medium transition cursor-pointer"

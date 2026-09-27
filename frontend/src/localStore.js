@@ -408,6 +408,260 @@ export const localStore = {
       overview,
       categories: catList
     };
+  },
+
+  // 跨端数据同步：导出所有刷题进度数据
+  exportData() {
+    const data = {
+      version: 1,
+      exported_at: new Date().toISOString(),
+      platform: 'policy-study',
+      stats: {},
+      records: {}
+    };
+
+    let answered = 0;
+    let correct = 0;
+    let wrong = 0;
+    let killed = 0;
+    let notes = 0;
+    let starred = 0;
+
+    for (let i = 0; i < localStorage.length; i++) {
+      const key = localStorage.key(i);
+      if (key && key.startsWith('policy_')) {
+        const val = localStorage.getItem(key);
+        data.records[key] = val;
+
+        if (key.startsWith('policy_ans_')) answered++;
+        if (key.startsWith('policy_cor_') && val === '1') correct++;
+        if (key.startsWith('policy_wrong_cnt_')) wrong++;
+        if (key.startsWith('policy_killed_') && !key.startsWith('policy_killed_at_') && val === '1') killed++;
+        if (key.startsWith('policy_note_') && val && val.trim().length > 0) notes++;
+        if (key.startsWith('policy_star_') && val === '1') starred++;
+      }
+    }
+
+    data.stats = {
+      answered,
+      correct,
+      wrong,
+      killed,
+      notes,
+      starred,
+      accuracy: answered > 0 ? Math.round((correct / answered) * 1000) / 10 : 0,
+      total_keys: Object.keys(data.records).length
+    };
+
+    return data;
+  },
+
+  // 跨端数据同步：导出为压缩同步口令文本
+  exportDataAsCode() {
+    const data = this.exportData();
+    const jsonStr = JSON.stringify(data);
+    const b64 = btoa(encodeURIComponent(jsonStr).replace(/%([0-9A-F]{2})/g, (match, p1) => {
+      return String.fromCharCode('0x' + p1);
+    }));
+    return `POLICY_SYNC#${b64}#END`;
+  },
+
+  // 解析同步输入（支持口令文本、JSON字符串、对象）
+  parseSyncInput(input) {
+    if (!input) throw new Error('同步内容为空，请粘贴口令或选择备份文件');
+
+    let raw = input;
+    if (typeof input === 'object' && input !== null) {
+      if (input.records && typeof input.records === 'object') return input;
+      throw new Error('无效的备份数据格式');
+    }
+
+    raw = String(raw).trim();
+    if (!raw) throw new Error('同步内容为空');
+
+    // 尝试作为普通 JSON 解析
+    if (raw.startsWith('{') && raw.endsWith('}')) {
+      try {
+        const parsed = JSON.parse(raw);
+        if (parsed.records) return parsed;
+        if (Object.keys(parsed).some(k => k.startsWith('policy_'))) {
+          return { records: parsed, stats: {} };
+        }
+      } catch (e) {
+        // 继续尝试 base64
+      }
+    }
+
+    // 尝试去除口令前缀后缀
+    let cleanB64 = raw;
+    if (cleanB64.includes('POLICY_SYNC#')) {
+      const parts = cleanB64.split('POLICY_SYNC#');
+      cleanB64 = parts[1].split('#END')[0].trim();
+    } else if (cleanB64.startsWith('POLICY_SYNC_V1#')) {
+      const parts = cleanB64.split('POLICY_SYNC_V1#');
+      cleanB64 = parts[1].split('#END')[0].trim();
+    }
+
+    try {
+      const decodedJson = decodeURIComponent(Array.prototype.map.call(atob(cleanB64), (c) => {
+        return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+      }).join(''));
+      const parsed = JSON.parse(decodedJson);
+      if (parsed.records) return parsed;
+      if (Object.keys(parsed).some(k => k.startsWith('policy_'))) {
+        return { records: parsed, stats: {} };
+      }
+    } catch (e) {
+      throw new Error('同步口令格式错误或已损坏，请重新在另一端复制完整口令');
+    }
+
+    throw new Error('未能识别出有效的刷题数据');
+  },
+
+  // 跨端数据同步：导入数据（支持智能合并或完全覆盖）
+  importData(input, mode = 'merge') {
+    const data = this.parseSyncInput(input);
+    const records = data.records || {};
+    const keys = Object.keys(records);
+
+    if (keys.length === 0) {
+      throw new Error('备份数据中没有包含任何刷题记录');
+    }
+
+    let mergedCount = 0;
+    let answerMerged = 0;
+    let wrongMerged = 0;
+    let killedMerged = 0;
+    let notesMerged = 0;
+    let starsMerged = 0;
+
+    if (mode === 'overwrite') {
+      // 覆盖模式：清空现有全部 policy_ 数据
+      const keysToRemove = [];
+      for (let i = 0; i < localStorage.length; i++) {
+        const k = localStorage.key(i);
+        if (k && k.startsWith('policy_')) {
+          keysToRemove.push(k);
+        }
+      }
+      keysToRemove.forEach(k => localStorage.removeItem(k));
+
+      // 写入全部导入数据
+      for (const [key, val] of Object.entries(records)) {
+        if (key.startsWith('policy_')) {
+          localStorage.setItem(key, String(val));
+          mergedCount++;
+          if (key.startsWith('policy_ans_')) answerMerged++;
+          if (key.startsWith('policy_wrong_cnt_')) wrongMerged++;
+          if (key.startsWith('policy_killed_') && !key.startsWith('policy_killed_at_') && val === '1') killedMerged++;
+          if (key.startsWith('policy_note_')) notesMerged++;
+          if (key.startsWith('policy_star_') && val === '1') starsMerged++;
+        }
+      }
+    } else {
+      // 智能合并模式（默认且推荐）：保留两端刷题成果，绝不丢失任何一边的记录！
+      for (const [key, incomingVal] of Object.entries(records)) {
+        if (!key.startsWith('policy_')) continue;
+        const localVal = localStorage.getItem(key);
+
+        if (key.startsWith('policy_ans_')) {
+          if (localVal === null) {
+            // 本地未做该题，采纳导入答案
+            localStorage.setItem(key, String(incomingVal));
+            answerMerged++;
+          } else {
+            // 两端都做过：若导入的答案已答对，而本地是错的，升级为正确答案
+            const qid = key.split('_')[3];
+            const localCor = localStorage.getItem(`policy_cor_${qid}`);
+            const incomingCor = records[`policy_cor_${qid}`];
+            if (incomingCor === '1' && localCor !== '1') {
+              localStorage.setItem(key, String(incomingVal));
+              localStorage.setItem(`policy_cor_${qid}`, '1');
+              answerMerged++;
+            }
+          }
+        } else if (key.startsWith('policy_cor_')) {
+          if (localVal === null || (incomingVal === '1' && localVal !== '1')) {
+            localStorage.setItem(key, String(incomingVal));
+          }
+        } else if (key.startsWith('policy_wrong_cnt_')) {
+          const lNum = Number(localVal || 0);
+          const inNum = Number(incomingVal || 0);
+          const maxCnt = Math.max(lNum, inNum);
+          if (maxCnt > 0) {
+            localStorage.setItem(key, String(maxCnt));
+            if (lNum === 0 && inNum > 0) wrongMerged++;
+          }
+        } else if (key.startsWith('policy_wrong_master_')) {
+          if (localVal === null || incomingVal === '1') {
+            localStorage.setItem(key, String(incomingVal));
+          }
+        } else if (key.startsWith('policy_killed_') && !key.startsWith('policy_killed_at_')) {
+          if (localVal === null || incomingVal === '1') {
+            localStorage.setItem(key, String(incomingVal));
+            if (localVal !== '1' && incomingVal === '1') killedMerged++;
+          }
+        } else if (key.startsWith('policy_killed_at_')) {
+          if (localVal === null) {
+            localStorage.setItem(key, String(incomingVal));
+          } else if (incomingVal) {
+            const tLocal = new Date(localVal).getTime();
+            const tIn = new Date(incomingVal).getTime();
+            if (tIn > tLocal) localStorage.setItem(key, String(incomingVal));
+          }
+        } else if (key.startsWith('policy_note_')) {
+          if (!localVal || !localVal.trim()) {
+            if (incomingVal && incomingVal.trim()) {
+              localStorage.setItem(key, String(incomingVal));
+              notesMerged++;
+            }
+          } else if (incomingVal && incomingVal.trim() && localVal.trim() !== incomingVal.trim()) {
+            if (incomingVal.includes(localVal)) {
+              localStorage.setItem(key, String(incomingVal));
+            } else if (!localVal.includes(incomingVal)) {
+              localStorage.setItem(key, `${localVal}\n\n[同步合并笔记]:\n${incomingVal}`);
+            }
+            notesMerged++;
+          }
+        } else if (key.startsWith('policy_star_')) {
+          if (localVal === null || incomingVal === '1') {
+            localStorage.setItem(key, String(incomingVal));
+            if (localVal !== '1' && incomingVal === '1') starsMerged++;
+          }
+        } else {
+          if (localVal === null) {
+            localStorage.setItem(key, String(incomingVal));
+          }
+        }
+        mergedCount++;
+      }
+    }
+
+    return {
+      success: true,
+      mode,
+      stats: {
+        merged_total_keys: mergedCount,
+        answer_count: answerMerged,
+        wrong_count: wrongMerged,
+        killed_count: killedMerged,
+        notes_count: notesMerged,
+        stars_count: starsMerged
+      }
+    };
+  },
+
+  // 清空当前设备所有刷题数据
+  clearAllUserData() {
+    const keysToRemove = [];
+    for (let i = 0; i < localStorage.length; i++) {
+      const k = localStorage.key(i);
+      if (k && k.startsWith('policy_')) {
+        keysToRemove.push(k);
+      }
+    }
+    keysToRemove.forEach(k => localStorage.removeItem(k));
+    return { success: true, cleared_count: keysToRemove.length };
   }
 };
 

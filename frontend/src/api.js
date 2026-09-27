@@ -283,5 +283,26 @@ export const api = {
     } catch {
       return { local_ip: '127.0.0.1', is_cloud: true };
     }
+  },
+
+  // 跨端数据同步与备份
+  exportData() {
+    return localStore.exportData();
+  },
+
+  exportDataAsCode() {
+    return localStore.exportDataAsCode();
+  },
+
+  parseSyncInput(input) {
+    return localStore.parseSyncInput(input);
+  },
+
+  importData(input, mode = 'merge') {
+    return localStore.importData(input, mode);
+  },
+
+  clearAllUserData() {
+    return localStore.clearAllUserData();
   }
 };

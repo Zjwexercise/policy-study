@@ -10,8 +10,11 @@ import {
   TrendingUp, 
   Award,
   Lightbulb,
-  Swords
+  Swords,
+  RefreshCw
 } from 'lucide-vue-next';
+
+const emit = defineEmits(['open-sync']);
 
 const stats = ref(null);
 const loading = ref(true);
@@ -36,7 +39,7 @@ onMounted(() => {
 <template>
   <div class="max-w-4xl mx-auto px-3 sm:px-6 py-4 pb-24 lg:pb-12">
     <!-- Header -->
-    <div class="bg-white rounded-2xl p-4 sm:p-5 border border-slate-200 shadow-2xs mb-4">
+    <div class="bg-white rounded-2xl p-4 sm:p-5 border border-slate-200 shadow-2xs mb-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
       <div class="flex items-center gap-2.5">
         <div class="p-2.5 bg-indigo-50 text-indigo-600 rounded-xl">
           <BarChart3 class="w-5 h-5" />
@@ -46,6 +49,13 @@ onMounted(() => {
           <p class="text-xs text-slate-500">实时追踪考研政治刷题进度与各学科掌握程度</p>
         </div>
       </div>
+      <button
+        @click="emit('open-sync')"
+        class="self-start sm:self-center px-3 py-1.5 bg-indigo-50 hover:bg-indigo-100 text-indigo-700 border border-indigo-200 rounded-xl text-xs font-semibold flex items-center gap-1.5 transition cursor-pointer shadow-2xs"
+      >
+        <RefreshCw class="w-3.5 h-3.5" />
+        <span>跨端同步与备份</span>
+      </button>
     </div>
 
     <div v-if="loading" class="bg-white rounded-2xl p-12 text-center border border-slate-200 shadow-2xs">
@@ -113,6 +123,35 @@ onMounted(() => {
             {{ stats.overview.total_notes || 0 }}
             <span class="text-xs font-normal text-slate-400">篇</span>
           </div>
+        </div>
+      </div>
+
+      <!-- Cross-Device Sync & Data Backup Card -->
+      <div class="bg-linear-to-r from-indigo-50/70 via-white to-sky-50/70 rounded-2xl p-4 sm:p-5 border border-indigo-150 shadow-2xs flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+        <div class="flex items-start gap-3">
+          <div class="p-2.5 bg-indigo-600 text-white rounded-xl shrink-0 mt-0.5 shadow-xs">
+            <RefreshCw class="w-5 h-5" />
+          </div>
+          <div>
+            <div class="flex items-center gap-2">
+              <h3 class="font-bold text-slate-800 text-sm sm:text-base">跨设备数据同步与备份</h3>
+              <span class="px-2 py-0.5 text-[10px] font-semibold bg-emerald-100 text-emerald-800 rounded-full">
+                免登录 · 智能合并
+              </span>
+            </div>
+            <p class="text-xs text-slate-500 mt-1 leading-relaxed">
+              电脑和手机的刷题记录不一样？使用免登录【同步口令】或【备份文件】，一键将两端已做题目、错题与斩题智能合并，绝不丢失任何一边的刷题心血！
+            </p>
+          </div>
+        </div>
+        <div class="shrink-0 sm:self-center">
+          <button
+            @click="emit('open-sync')"
+            class="w-full sm:w-auto px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-xs sm:text-sm font-semibold transition cursor-pointer shadow-xs flex items-center justify-center gap-1.5"
+          >
+            <RefreshCw class="w-4 h-4" />
+            <span>进入同步中心</span>
+          </button>
         </div>
       </div>
 

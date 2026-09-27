@@ -10,7 +10,8 @@ import {
   ChevronDown,
   Layers,
   Sparkles,
-  Swords
+  Swords,
+  RefreshCw
 } from 'lucide-vue-next';
 
 const props = defineProps({
@@ -31,7 +32,8 @@ const props = defineProps({
 const emit = defineEmits([
   'update:currentTab', 
   'select-workbook', 
-  'open-mobile-qr'
+  'open-mobile-qr',
+  'open-sync'
 ]);
 
 const totalQuestionsAll = computed(() => {
@@ -114,16 +116,26 @@ const handleSelectChange = (val) => {
           </button>
         </nav>
 
-        <!-- Right Tools: Mobile QR -->
-        <div class="flex items-center space-x-1.5">
+        <!-- Right Tools: Mobile QR & Sync -->
+        <div class="flex items-center space-x-1 sm:space-x-1.5 shrink-0">
+          <button
+            @click="emit('open-sync')"
+            class="flex items-center space-x-1 px-2 sm:px-2.5 py-1.5 bg-indigo-50 hover:bg-indigo-100 text-indigo-700 border border-indigo-200 text-xs sm:text-sm font-semibold rounded-lg transition cursor-pointer shadow-2xs"
+            title="跨端同步电脑与手机的做题记录"
+          >
+            <RefreshCw class="w-3.5 h-3.5 sm:w-4 sm:h-4 text-indigo-600" />
+            <span class="hidden sm:inline">跨端同步</span>
+            <span class="sm:hidden font-medium">同步</span>
+          </button>
+
           <button
             @click="emit('open-mobile-qr')"
-            class="flex items-center space-x-1 px-2.5 py-1.5 bg-emerald-50 hover:bg-emerald-100 text-emerald-700 border border-emerald-200 text-xs sm:text-sm font-medium rounded-lg transition cursor-pointer"
+            class="flex items-center space-x-1 px-2 sm:px-2.5 py-1.5 bg-emerald-50 hover:bg-emerald-100 text-emerald-700 border border-emerald-200 text-xs sm:text-sm font-medium rounded-lg transition cursor-pointer"
             title="手机扫码直接在床上或自习室刷题"
           >
             <Smartphone class="w-3.5 h-3.5 sm:w-4 sm:h-4 text-emerald-600" />
             <span class="hidden sm:inline">手机扫码刷题</span>
-            <span class="sm:hidden">手机端</span>
+            <span class="sm:hidden">扫码</span>
           </button>
         </div>
       </div>

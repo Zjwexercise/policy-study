@@ -9,11 +9,13 @@ import NotesView from './components/NotesView.vue';
 import WorkbooksView from './components/WorkbooksView.vue';
 import StatsView from './components/StatsView.vue';
 import MobileQrModal from './components/MobileQrModal.vue';
+import SyncModal from './components/SyncModal.vue';
 
 const currentTab = ref('practice'); // practice, wrong, killed, notes, workbooks, stats
 const workbooks = ref([]);
 const activeWorkbookId = ref('all'); // 'all' 代表全部综合练习，数字代表单册独立练习
 const showMobileQr = ref(false);
+const showSyncModal = ref(false);
 
 const loadWorkbooks = async () => {
   try {
@@ -50,6 +52,7 @@ onMounted(() => {
       @update:current-tab="currentTab = $event"
       @select-workbook="selectWorkbook"
       @open-mobile-qr="showMobileQr = true"
+      @open-sync="showSyncModal = true"
     />
 
     <!-- Main Content Area -->
@@ -89,6 +92,7 @@ onMounted(() => {
 
       <StatsView 
         v-else-if="currentTab === 'stats'"
+        @open-sync="showSyncModal = true"
       />
     </main>
 
@@ -96,6 +100,14 @@ onMounted(() => {
     <MobileQrModal 
       :show="showMobileQr"
       @close="showMobileQr = false"
+      @open-sync="showSyncModal = true"
+    />
+
+    <!-- Cross-Device Data Sync Modal -->
+    <SyncModal 
+      :show="showSyncModal"
+      @close="showSyncModal = false"
+      @synced="loadWorkbooks"
     />
   </div>
 </template>
