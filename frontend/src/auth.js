@@ -23,14 +23,93 @@ try {
   currentUser.value = null;
 }
 
-// 纯浏览器 Web Crypto SHA-256 哈希计算
+// 全平台 100% 兼容的纯 JavaScript SHA-256 实现
+// 解决在普通 HTTP 环境 (如直接使用 IP 访问 http://47.93.172.13:8000、手机浏览器或局域网访问) 下
+// window.crypto.subtle 为 undefined 导致 "Cannot read properties of undefined (reading 'digest')" 的致命报错
+function pureJsSha256(ascii) {
+  function rightRotate(value, amount) {
+    return (value >>> amount) | (value << (32 - amount));
+  }
+  var mathPow = Math.pow;
+  var maxWord = mathPow(2, 32);
+  var lengthProperty = 'length';
+  var i, j;
+  var result = '';
+
+  var words = [];
+  var hash = [];
+  var k = [];
+  var primeCounter = 0;
+
+  var isComposite = {};
+  for (var candidate = 2; primeCounter < 64; candidate++) {
+    if (!isComposite[candidate]) {
+      for (i = candidate * candidate; i < 312; i += candidate) {
+        isComposite[i] = true;
+      }
+      hash[primeCounter] = (mathPow(candidate, 0.5) * maxWord) | 0;
+      k[primeCounter++] = (mathPow(candidate, 1 / 3) * maxWord) | 0;
+    }
+  }
+
+  ascii = unescape(encodeURIComponent(ascii || ''));
+  var asciiBitLength = ascii[lengthProperty] * 8;
+  ascii += '\x80';
+  while (ascii[lengthProperty] % 64 - 56) ascii += '\x00';
+  for (i = 0; i < ascii[lengthProperty]; i++) {
+    j = ascii.charCodeAt(i);
+    words[i >> 2] |= j << ((3 - i) % 4) * 8;
+  }
+  words[words[lengthProperty]] = (asciiBitLength / maxWord) | 0;
+  words[words[lengthProperty]] = asciiBitLength;
+
+  for (j = 0; j < words[lengthProperty];) {
+    var w = words.slice(j, j += 16);
+    var oldHash = hash;
+    hash = hash.slice(0, 8);
+
+    for (i = 0; i < 64; i++) {
+      var w15 = w[i - 15], w2 = w[i - 2];
+      var s0 = rightRotate(w15, 7) ^ rightRotate(w15, 18) ^ (w15 >>> 3);
+      var s1 = rightRotate(w2, 17) ^ rightRotate(w2, 19) ^ (w2 >>> 10);
+      var ch = (hash[4] & hash[5]) ^ (~hash[4] & hash[6]);
+      var maj = (hash[0] & hash[1]) ^ (hash[0] & hash[2]) ^ (hash[1] & hash[2]);
+      var temp1 = hash[7] + (rightRotate(hash[4], 6) ^ rightRotate(hash[4], 11) ^ rightRotate(hash[4], 25)) + ch + k[i] + (w[i] = (i < 16) ? w[i] : (w[i - 16] + s0 + w[i - 7] + s1) | 0);
+      var temp2 = (rightRotate(hash[0], 2) ^ rightRotate(hash[0], 13) ^ rightRotate(hash[0], 22)) + maj;
+
+      hash = [(temp1 + temp2) | 0].concat(hash);
+      hash[4] = (hash[4] + temp1) | 0;
+    }
+
+    for (i = 0; i < 8; i++) {
+      hash[i] = (hash[i] + oldHash[i]) | 0;
+    }
+  }
+
+  for (i = 0; i < 8; i++) {
+    for (j = 3; j >= 0; j--) {
+      var b = (hash[i] >> (8 * j)) & 255;
+      result += (b < 16 ? '0' : '') + b.toString(16);
+    }
+  }
+  return result;
+}
+
+// 统一对外异步/同步兼容接口（优先 Web Crypto，非安全 HTTP 下自动无缝降级为 pureJsSha256）
 async function sha256Hex(str) {
-  const enc = new TextEncoder();
-  const data = enc.encode(str);
-  const hashBuf = await crypto.subtle.digest('SHA-256', data);
-  return Array.from(new Uint8Array(hashBuf))
-    .map(b => b.toString(16).padStart(2, '0'))
-    .join('');
+  try {
+    if (typeof crypto !== 'undefined' && crypto && crypto.subtle && typeof crypto.subtle.digest === 'function') {
+      const enc = new TextEncoder();
+      const data = enc.encode(str);
+      const hashBuf = await crypto.subtle.digest('SHA-256', data);
+      return Array.from(new Uint8Array(hashBuf))
+        .map(b => b.toString(16).padStart(2, '0'))
+        .join('');
+    }
+  } catch (e) {
+    // 降级使用纯 JS 实现
+  }
+  return pureJsSha256(str);
 }
 
 // 用户账号云端存储 Key 生成（哈希转义，防止特殊字符）
@@ -38,6 +117,19 @@ async function getUserCloudKey(username) {
   const clean = username.trim().toLowerCase();
   const hex = await sha256Hex(clean);
   return `pm_u_${hex.slice(0, 24)}`;
+}
+
+// 获取当前后端服务器地址
+function getBackendBaseUrl() {
+  if (customServerUrl.value) {
+    return customServerUrl.value.replace(/\/+$/, '');
+  }
+  if (typeof window !== 'undefined' && window.location && window.location.origin) {
+    if (window.location.origin.startsWith('http')) {
+      return window.location.origin;
+    }
+  }
+  return '';
 }
 
 // 智能无损双向合并算法
@@ -134,7 +226,7 @@ export const auth = {
   lastSyncTime,
   syncError,
 
-  // 设置云端独立服务器地址（选填，留空即默认使用内置24小时免开机云端）
+  // 设置云端独立服务器地址（选填，留空即默认使用当前服务器或内置云端）
   setCustomServerUrl(url) {
     const clean = (url || '').trim();
     customServerUrl.value = clean;
@@ -157,8 +249,47 @@ export const auth = {
     syncError.value = '';
     const userKey = await getUserCloudKey(cleanUser);
     const cloudUrl = `${CLOUD_BASE_URL}/${userKey}`;
+    const salt = Math.random().toString(36).slice(2) + Date.now().toString(36);
+    const pwdHash = await sha256Hex(cleanPwd + ':' + salt);
 
-    // 1. 检查用户名在云端是否已存在
+    const localExport = localStore.exportData();
+    const studyLogs = JSON.parse(localStorage.getItem('policy_study_logs') || '{}');
+
+    // 1. 如果有后端服务器（如当前访问云服务器），优先向后端注册
+    let backendSuccess = false;
+    const backendBase = getBackendBaseUrl();
+    if (backendBase) {
+      try {
+        const bRes = await fetch(`${backendBase}/api/auth/register`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            username: cleanUser,
+            password: cleanPwd,
+            nickname: cleanNick
+          })
+        });
+        if (bRes.ok) {
+          const bData = await bRes.json();
+          if (bData.token) {
+            authToken.value = bData.token;
+            localStorage.setItem('policy_auth_token', bData.token);
+            backendSuccess = true;
+          }
+        } else {
+          const errData = await bRes.json().catch(() => ({}));
+          if (errData.detail && (errData.detail.includes('已被注册') || errData.detail.includes('已存在'))) {
+            throw new Error(errData.detail);
+          }
+        }
+      } catch (e) {
+        if (e.message && (e.message.includes('已被注册') || e.message.includes('已存在'))) {
+          throw e;
+        }
+      }
+    }
+
+    // 2. 检查 KVDB 公网云端是否已存在
     try {
       const checkRes = await fetch(cloudUrl, { method: 'GET', cache: 'no-cache' });
       if (checkRes.ok) {
@@ -166,17 +297,9 @@ export const auth = {
       }
     } catch (e) {
       if (e.message.includes('已被注册')) throw e;
-      // 404 或网络通过，继续注册
     }
 
-    // 2. 加盐哈希密码
-    const salt = Math.random().toString(36).slice(2) + Date.now().toString(36);
-    const pwdHash = await sha256Hex(cleanPwd + ':' + salt);
-
-    // 3. 提取本地当前已做的题，作为初始云端数据
-    const localExport = localStore.exportData();
-    const studyLogs = JSON.parse(localStorage.getItem('policy_study_logs') || '{}');
-
+    // 3. 写入 KVDB (全天候免开机公网同步备份)
     const userData = {
       username: cleanUser,
       nickname: cleanNick,
@@ -188,18 +311,20 @@ export const auth = {
       stats: studyLogs || {}
     };
 
-    // 4. 写入 24 小时公网云数据库 (免开机)
-    const putRes = await fetch(cloudUrl, {
-      method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(userData)
-    });
-
-    if (!putRes.ok) {
-      throw new Error(`连接云端失败 (HTTP ${putRes.status})，请检查手机网络`);
+    try {
+      await fetch(cloudUrl, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(userData)
+      });
+    } catch (e) {
+      console.warn('KVDB 云备份暂缓:', e);
+      if (!backendSuccess) {
+        throw new Error('连接云端失败，请检查网络连接');
+      }
     }
 
-    // 5. 保存本地登录会话
+    // 4. 保存本地会话
     this.saveSession(userData, pwdHash, salt);
     return currentUser.value;
   },
@@ -216,21 +341,63 @@ export const auth = {
     const userKey = await getUserCloudKey(cleanUser);
     const cloudUrl = `${CLOUD_BASE_URL}/${userKey}?t=${Date.now()}`;
 
-    // 1. 从公网云端获取用户信息
-    const res = await fetch(cloudUrl, { method: 'GET', cache: 'no-cache' });
-    if (res.status === 404) {
-      throw new Error('账号不存在，请先切换到「注册新账号」进行创建');
-    }
-    if (!res.ok) {
-      throw new Error(`连接云端失败 (HTTP ${res.status})，请检查网络`);
+    let loggedIn = false;
+    let userData = null;
+
+    // 1. 优先尝试本地/云服务器后端登录
+    const backendBase = getBackendBaseUrl();
+    if (backendBase) {
+      try {
+        const bRes = await fetch(`${backendBase}/api/auth/login`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            username: cleanUser,
+            password: cleanPwd
+          })
+        });
+        if (bRes.ok) {
+          const bData = await bRes.json();
+          if (bData.token && bData.user) {
+            authToken.value = bData.token;
+            localStorage.setItem('policy_auth_token', bData.token);
+            userData = {
+              username: bData.user.username,
+              nickname: bData.user.nickname || bData.user.username,
+              records: (bData.cloud_data && bData.cloud_data.records) || {},
+              stats: (bData.cloud_data && bData.cloud_data.stats) || {}
+            };
+            loggedIn = true;
+          }
+        } else {
+          const errData = await bRes.json().catch(() => ({}));
+          if (errData.detail && (errData.detail.includes('密码') || errData.detail.includes('不正确'))) {
+            throw new Error(errData.detail);
+          }
+        }
+      } catch (e) {
+        if (e.message && (e.message.includes('密码') || e.message.includes('不正确'))) {
+          throw e;
+        }
+      }
     }
 
-    const userData = await res.json();
+    // 2. 如果后端未登录成功（或纯静态页无后端），从公网 KVDB 获取验证
+    if (!loggedIn) {
+      const res = await fetch(cloudUrl, { method: 'GET', cache: 'no-cache' });
+      if (res.status === 404) {
+        throw new Error('账号不存在，请先切换到「注册新账号」进行创建');
+      }
+      if (!res.ok) {
+        throw new Error(`连接云端失败 (HTTP ${res.status})，请检查网络`);
+      }
 
-    // 2. 校验加盐哈希密码
-    const calcHash = await sha256Hex(cleanPwd + ':' + (userData.salt || ''));
-    if (calcHash !== userData.pwdHash) {
-      throw new Error('密码错误，请重新输入');
+      userData = await res.json();
+      const calcHash = await sha256Hex(cleanPwd + ':' + (userData.salt || ''));
+      if (calcHash !== userData.pwdHash) {
+        throw new Error('用户名或密码不正确，请重新输入');
+      }
+      loggedIn = true;
     }
 
     // 3. 登录成功：智能无损合并云端历史记录到本地
@@ -246,10 +413,14 @@ export const auth = {
     }
 
     // 4. 保存本地会话
-    this.saveSession(userData, userData.pwdHash, userData.salt);
+    this.saveSession(userData, userData.pwdHash || '', userData.salt || '');
 
-    // 5. 双向对齐：立即把两端合并后的最全数据推回云端
-    await this.syncNow();
+    // 5. 双向对齐：静默把两端合并后的最全数据推回云端与服务器
+    try {
+      await this.syncNow();
+    } catch (e) {
+      console.warn('同步对齐暂缓:', e);
+    }
     return currentUser.value;
   },
 
@@ -258,10 +429,14 @@ export const auth = {
       username: userData.username,
       nickname: userData.nickname || userData.username
     };
-    authToken.value = pwdHash;
+    if (pwdHash) {
+      authToken.value = pwdHash;
+      localStorage.setItem('policy_auth_pwd', pwdHash);
+    }
+    if (salt) {
+      localStorage.setItem('policy_auth_salt', salt);
+    }
     localStorage.setItem('policy_auth_user', JSON.stringify(currentUser.value));
-    localStorage.setItem('policy_auth_pwd', pwdHash);
-    localStorage.setItem('policy_auth_salt', salt);
     syncStatus.value = 'synced';
     const timeStr = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
     lastSyncTime.value = timeStr;
@@ -275,6 +450,7 @@ export const auth = {
     syncStatus.value = 'idle';
     syncError.value = '';
     localStorage.removeItem('policy_auth_user');
+    localStorage.removeItem('policy_auth_token');
     localStorage.removeItem('policy_auth_pwd');
     localStorage.removeItem('policy_auth_salt');
   },
@@ -290,47 +466,77 @@ export const auth = {
       const userKey = await getUserCloudKey(currentUser.value.username);
       const cloudUrl = `${CLOUD_BASE_URL}/${userKey}`;
 
-      // 1. 获取云端当前存档
-      const res = await fetch(`${cloudUrl}?t=${Date.now()}`, { method: 'GET', cache: 'no-cache' });
-      if (!res.ok) {
-        throw new Error(`连接云端失败 (HTTP ${res.status})`);
-      }
-      const cloudData = await res.json();
-
-      // 2. 提取本地最新做题记录与学习时长
       const localExport = localStore.exportData();
       const localLogs = JSON.parse(localStorage.getItem('policy_study_logs') || '{}');
 
-      // 3. 智能双向无损合并
-      const mergedRecords = smartMergeRecords(cloudData.records || {}, localExport.records || {});
-      const mergedStats = smartMergeStats(cloudData.stats || {}, localLogs || {});
-
-      cloudData.records = mergedRecords;
-      cloudData.stats = mergedStats;
-      cloudData.last_sync = new Date().toISOString();
-
-      // 4. 推送合并结果回云端
-      const putRes = await fetch(cloudUrl, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(cloudData)
-      });
-
-      if (!putRes.ok) {
-        throw new Error(`同步更新失败 (HTTP ${putRes.status})`);
+      // 1. 如果有后端 Token，同步到后端服务器 SQLite
+      const backendBase = getBackendBaseUrl();
+      if (backendBase && authToken.value) {
+        try {
+          const sRes = await fetch(`${backendBase}/api/auth/sync`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${authToken.value}`
+            },
+            body: JSON.stringify({
+              client_records: localExport.records || {},
+              client_stats: localLogs || {}
+            })
+          });
+          if (sRes.ok) {
+            const sData = await sRes.json();
+            if (sData.server_records) {
+              localStore.importData({
+                records: sData.server_records,
+                stats: sData.server_stats || {}
+              }, 'merge');
+            }
+          }
+        } catch (e) {
+          console.warn('服务器后端同步暂缓:', e);
+        }
       }
 
-      // 5. 更新本地存储，确保本地包含云端的最新刷题记录
-      localStore.importData({
-        records: mergedRecords,
-        stats: mergedStats
-      }, 'merge');
+      // 2. 同时双向同步到 KVDB (确保 GitHub Pages / 手机数据无缝互通)
+      try {
+        const res = await fetch(`${cloudUrl}?t=${Date.now()}`, { method: 'GET', cache: 'no-cache' });
+        let cloudData = {};
+        if (res.ok) {
+          cloudData = await res.json();
+        }
+
+        const currentLocal = localStore.exportData();
+        const currentLogs = JSON.parse(localStorage.getItem('policy_study_logs') || '{}');
+
+        const mergedRecords = smartMergeRecords(cloudData.records || {}, currentLocal.records || {});
+        const mergedStats = smartMergeStats(cloudData.stats || {}, currentLogs || {});
+
+        cloudData.username = currentUser.value.username;
+        cloudData.nickname = currentUser.value.nickname || currentUser.value.username;
+        cloudData.records = mergedRecords;
+        cloudData.stats = mergedStats;
+        cloudData.last_sync = new Date().toISOString();
+
+        await fetch(cloudUrl, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(cloudData)
+        });
+
+        localStore.importData({
+          records: mergedRecords,
+          stats: mergedStats
+        }, 'merge');
+      } catch (e) {
+        console.warn('KVDB 同步暂缓:', e);
+      }
 
       syncStatus.value = 'synced';
       const timeStr = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
       lastSyncTime.value = timeStr;
       localStorage.setItem('policy_last_sync_time', timeStr);
-      return cloudData;
+      return true;
     } catch (e) {
       syncStatus.value = 'error';
       syncError.value = e.message || '网络连接超时';
