@@ -61,7 +61,7 @@ After=network.target
 Type=simple
 User=root
 WorkingDirectory=/var/www/policy-study/backend
-ExecStart=/var/www/policy-study/venv/bin/uvicorn main:app --host 0.0.0.0 --port 80
+ExecStart=/var/www/policy-study/venv/bin/uvicorn main:app --host 0.0.0.0 --port 8000
 Restart=always
 RestartSec=3
 Environment=PYTHONUNBUFFERED=1
@@ -74,13 +74,14 @@ systemctl daemon-reload
 systemctl enable policy-study.service
 systemctl restart policy-study.service
 
-# 开放系统防火墙 80 端口（如启用了 ufw）
+# 开放系统内部防火墙（如启用了 ufw）
 if command -v ufw >/dev/null 2>&1; then
     ufw allow 80/tcp || true
+    ufw allow 8000/tcp || true
 fi
 
 echo "=========================================================="
 echo " 🎉 恭喜！考研政治刷题掌上宝 已成功部署并启动！"
 echo " 🌐 访问地址 (手机/电脑均可直接打开)："
-echo "    http://47.93.172.13"
+echo "    http://47.93.172.13:8000"
 echo "=========================================================="
