@@ -38,11 +38,12 @@ else
 fi
 
 # 3. 创建 Python 虚拟环境并安装依赖
-echo "[3/4] 构建 Python 运行环境与依赖..."
+echo "[3/5] 构建 Python 运行环境与依赖..."
 rm -rf venv
 python3 -m venv venv
 ./venv/bin/pip install --upgrade pip -i https://mirrors.aliyun.com/pypi/simple/ --trusted-host mirrors.aliyun.com || true
-./venv/bin/pip install -r backend/requirements.txt -i https://mirrors.aliyun.com/pypi/simple/ --trusted-host mirrors.aliyun.com
+./venv/bin/pip install fastapi uvicorn pydantic python-multipart aiofiles -i https://mirrors.aliyun.com/pypi/simple/ --trusted-host mirrors.aliyun.com
+./venv/bin/pip install -r backend/requirements.txt -i https://mirrors.aliyun.com/pypi/simple/ --trusted-host mirrors.aliyun.com || true
 
 # 4. 初始化云端数据库
 echo "[4/4] 校验并初始化数据库..."
@@ -50,8 +51,15 @@ cd /var/www/policy-study/backend
 ../venv/bin/python database.py
 cd /var/www/policy-study
 
-# 5. 配置 systemd 后台常驻守护进程
-echo "配置系统级 24 小时开机自启守护服务..."
+# 5. 清理历史遗留进程并配置 systemd 后台常驻守护进程
+echo "[5/5] 清理 8000 端口历史进程并配置 24 小时开机自启守护服务..."
+# 杀死可能占用 8000 端口的旧进程（如之前的旧脚本）
+fuser -k 8000/tcp 2>/dev/null || true
+PID_8000=$(ss -lptn 'sport = :8000' 2>/dev/null | grep -o 'pid=[0-9]*' | cut -d= -f2)
+if [ -n "$PID_8000" ]; then
+    kill -9 $PID_8000 2>/dev/null || true
+fi
+
 cat << 'EOF' > /etc/systemd/system/policy-study.service
 [Unit]
 Description=Policy Study Web Application

@@ -1,7 +1,11 @@
 import socket
 import io
 import base64
-import qrcode
+try:
+    import qrcode
+except ImportError:
+    qrcode = None
+
 from fastapi import APIRouter
 
 router = APIRouter(prefix="/api/system", tags=["system"])
@@ -36,19 +40,23 @@ def get_network_info(port: int = 8000):
     local_url = f"http://localhost:{port}"
     mobile_url = f"http://{lan_ip}:{port}"
 
-    # 生成二维码
-    qr = qrcode.QRCode(
-        version=1,
-        box_size=8,
-        border=2,
-    )
-    qr.add_data(mobile_url)
-    qr.make(fit=True)
-    img = qr.make_image(fill_color="black", back_color="white")
-    
-    buffered = io.BytesIO()
-    img.save(buffered, format="PNG")
-    qr_base64 = "data:image/png;base64," + base64.b64encode(buffered.getvalue()).decode()
+    # 生成二维码（若环境缺少 pillow 则安全降级，前端会自行用 JS 渲染）
+    qr_base64 = ""
+    if qrcode is not None:
+        try:
+            qr = qrcode.QRCode(
+                version=1,
+                box_size=8,
+                border=2,
+            )
+            qr.add_data(mobile_url)
+            qr.make(fit=True)
+            img = qr.make_image(fill_color="black", back_color="white")
+            buffered = io.BytesIO()
+            img.save(buffered, format="PNG")
+            qr_base64 = "data:image/png;base64," + base64.b64encode(buffered.getvalue()).decode()
+        except Exception:
+            qr_base64 = ""
 
     return {
         "lan_ip": lan_ip,
