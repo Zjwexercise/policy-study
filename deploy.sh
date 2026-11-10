@@ -25,14 +25,15 @@ mkdir -p /var/www
 cd /var/www
 
 if [ -d "policy-study" ]; then
-    echo "发现已有目录，正在更新为最新代码..."
+    echo "发现已有目录，正在更新为最新代码与全量题库数据..."
     cd policy-study
-    git fetch --all || true
+    git remote set-url origin https://ghfast.top/https://github.com/Zjwexercise/policy-study.git 2>/dev/null || true
+    git fetch origin main || git fetch --all || true
     git reset --hard origin/main || true
 else
-    if ! git clone https://github.com/Zjwexercise/policy-study.git; then
-        echo "直连较慢，使用高速镜像加速克隆..."
-        git clone https://ghfast.top/https://github.com/Zjwexercise/policy-study.git policy-study
+    if ! git clone https://ghfast.top/https://github.com/Zjwexercise/policy-study.git policy-study; then
+        echo "镜像拉取失败，尝试直连拉取..."
+        git clone https://github.com/Zjwexercise/policy-study.git policy-study
     fi
     cd policy-study
 fi
