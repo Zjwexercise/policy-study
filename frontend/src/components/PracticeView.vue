@@ -17,7 +17,8 @@ import {
   Send,
   Sparkles,
   BookOpen,
-  Swords
+  Swords,
+  CheckSquare
 } from 'lucide-vue-next';
 import AnswerSheetModal from './AnswerSheetModal.vue';
 import NoteModal from './NoteModal.vue';
@@ -59,6 +60,14 @@ const showToast = (msg) => {
       toastMsg.value = '';
     }
   }, 2200);
+};
+
+// 单选题作答模式：false 为按 Enter/确认作答提交 (防手抖误触，支持改选)；true 为即选即判
+const singleAutoSubmit = ref(localStorage.getItem('policy_single_auto_submit') === 'true');
+const toggleSingleAutoSubmit = () => {
+  singleAutoSubmit.value = !singleAutoSubmit.value;
+  localStorage.setItem('policy_single_auto_submit', String(singleAutoSubmit.value));
+  showToast(singleAutoSubmit.value ? '已切换为：单选题点击立即判题' : '已切换为：单选题按Enter确认提交');
 };
 
 // 模式：study (即时解析背题), exam (模考模式，做完全部才看解析)
@@ -167,9 +176,14 @@ const handleOptionClick = (key) => {
   const isMulti = currentQuestion.value.question_type === 'multiple';
 
   if (!isMulti) {
-    // 单选：直接选定并提交
-    selectedOptions.value = [key];
-    doSubmit(key);
+    if (singleAutoSubmit.value) {
+      // 即选即判模式：点击选项直接出解析
+      selectedOptions.value = [key];
+      doSubmit(key);
+    } else {
+      // 确认提交模式：选中高亮该项，支持随意切换，按 Enter 或点击确认作答才真正提交
+      selectedOptions.value = [key];
+    }
   } else {
     // 多选：勾选或取消
     const idx = selectedOptions.value.indexOf(key);
@@ -182,14 +196,20 @@ const handleOptionClick = (key) => {
   }
 };
 
-// 提交多选题答案
-const submitMultiple = () => {
+// 手动提交答案（单选或多选通用）
+const submitAnswerManual = () => {
+  if (!currentQuestion.value) return;
   if (selectedOptions.value.length === 0) {
-    alert('请至少选择一个选项');
+    showToast('请先选择答案后再确认作答');
     return;
   }
   const ans = selectedOptions.value.join('');
   doSubmit(ans);
+};
+
+// 提交多选题答案（向后兼容）
+const submitMultiple = () => {
+  submitAnswerManual();
 };
 
 // 提交核心逻辑
@@ -286,12 +306,18 @@ const toggleKill = async () => {
 
 // 切换上/下一题
 const prevQuestion = () => {
+  if (document.activeElement && typeof document.activeElement.blur === 'function') {
+    document.activeElement.blur();
+  }
   if (currentIndex.value > 0) {
     currentIndex.value--;
   }
 };
 
 const nextQuestion = () => {
+  if (document.activeElement && typeof document.activeElement.blur === 'function') {
+    document.activeElement.blur();
+  }
   if (currentIndex.value < questions.value.length - 1) {
     currentIndex.value++;
   }
@@ -306,17 +332,40 @@ const handleKeyDown = (e) => {
 
   const key = e.key.toUpperCase();
   if (['A', 'B', 'C', 'D'].includes(key)) {
+    e.preventDefault();
     handleOptionClick(key);
   } else if (['1', '2', '3', '4'].includes(e.key)) {
+    e.preventDefault();
     const map = { '1': 'A', '2': 'B', '3': 'C', '4': 'D' };
     handleOptionClick(map[e.key]);
   } else if (e.key === 'Enter') {
-    if (currentQuestion.value?.question_type === 'multiple' && !hasAnsweredCurrent.value) {
-      submitMultiple();
+    // 阻止浏览器把 Enter 转发给焦点按钮（防止误触发下一题跳题）
+    e.preventDefault();
+    e.stopPropagation();
+    if (document.activeElement && typeof document.activeElement.blur === 'function') {
+      document.activeElement.blur();
+    }
+
+    if (!hasAnsweredCurrent.value) {
+      // 1. 本题未作答：执行提交（停留在本题，显示判题结果与考点精析，绝不跳题）
+      if (selectedOptions.value.length > 0) {
+        submitAnswerManual();
+      } else {
+        showToast('请先选择答案后再按 Enter 提交');
+      }
+    } else {
+      // 2. 本题已作答且已显示解析：再次按 Enter 顺畅进入下一题
+      if (currentIndex.value < questions.value.length - 1) {
+        nextQuestion();
+      } else {
+        showToast('已经是最后一题了');
+      }
     }
   } else if (e.key === 'ArrowLeft' || e.key === 'j') {
+    e.preventDefault();
     prevQuestion();
   } else if (e.key === 'ArrowRight' || e.key === 'k') {
+    e.preventDefault();
     nextQuestion();
   }
 };
@@ -403,6 +452,22 @@ onUnmounted(() => {
           >
             <Swords class="w-3.5 h-3.5" :class="{ 'text-rose-600': hideKilled }" />
             <span>{{ hideKilled ? '已隐藏熟题' : '显示熟题' }}</span>
+          </button>
+
+          <!-- 单选作答模式切换 (Enter确认提交 vs 即选即判) -->
+          <button
+            @click="toggleSingleAutoSubmit"
+            class="px-2.5 py-1.5 rounded-lg border text-xs font-medium flex items-center gap-1 transition cursor-pointer select-none"
+            :class="[
+              singleAutoSubmit 
+                ? 'bg-slate-50 border-slate-200 text-slate-600 hover:bg-slate-100' 
+                : 'bg-emerald-50 border-emerald-200 text-emerald-700 font-semibold'
+            ]"
+            :title="singleAutoSubmit ? '当前模式：单选点击选项立即判题（点击可切换为Enter确认提交）' : '当前模式：单选按Enter确认提交（支持选定、改选，按Enter才提交，点击可切换为即选即判）'"
+          >
+            <CheckSquare class="w-3.5 h-3.5" :class="{ 'text-emerald-600': !singleAutoSubmit }" />
+            <span class="hidden sm:inline">{{ singleAutoSubmit ? '单选即选即答' : '单选Enter提交' }}</span>
+            <span class="sm:hidden">{{ singleAutoSubmit ? '即答' : 'Enter' }}</span>
           </button>
 
           <!-- 答题卡抽屉触发 -->
@@ -605,18 +670,19 @@ onUnmounted(() => {
           </div>
         </div>
 
-        <!-- Multiple Choice Submit Button (多选题提交按钮) -->
+        <!-- Submit Button (提交作答按钮：多选题 或 单选确认模式) -->
         <div 
-          v-if="currentQuestion.question_type === 'multiple' && !hasAnsweredCurrent"
+          v-if="!hasAnsweredCurrent && (currentQuestion.question_type === 'multiple' || !singleAutoSubmit)"
           class="mt-6 pt-4 border-t border-slate-100 flex items-center justify-between gap-3"
         >
           <div class="text-xs text-slate-500">
-            已选：<span class="font-bold text-rose-600 font-mono">{{ selectedOptions.join('') || '未选' }}</span>
-            <span class="hidden sm:inline text-slate-400 ml-2">（多选题支持按回车快捷提交）</span>
+            已选：<span class="font-bold text-rose-600 font-mono text-sm">{{ selectedOptions.join('') || '未选' }}</span>
+            <span class="hidden sm:inline text-slate-400 ml-2">（支持按 Enter 回车键快捷提交作答）</span>
           </div>
           <button
-            @click="submitMultiple"
-            class="px-5 py-2.5 bg-rose-600 hover:bg-rose-700 active:bg-rose-800 text-white font-semibold text-sm rounded-xl shadow-xs flex items-center gap-1.5 transition cursor-pointer"
+            @click="(e) => { e.currentTarget.blur(); submitAnswerManual(); }"
+            :disabled="selectedOptions.length === 0"
+            class="px-5 py-2.5 bg-rose-600 hover:bg-rose-700 active:bg-rose-800 disabled:opacity-40 disabled:pointer-events-none text-white font-semibold text-sm rounded-xl shadow-xs flex items-center gap-1.5 transition cursor-pointer"
           >
             <Send class="w-4 h-4" />
             <span>确认作答</span>
@@ -627,7 +693,7 @@ onUnmounted(() => {
       <!-- Navigation Bar (Previous / Next Buttons - 位于解析上方，答完可直接无须滚动切题) -->
       <div class="flex items-center justify-between gap-3 pt-1">
         <button
-          @click="prevQuestion"
+          @click="(e) => { e.currentTarget.blur(); prevQuestion(); }"
           :disabled="currentIndex === 0"
           class="flex-1 sm:flex-none px-5 py-2.5 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 disabled:opacity-40 disabled:pointer-events-none text-slate-700 text-sm font-medium flex items-center justify-center gap-1.5 shadow-2xs transition cursor-pointer"
         >
@@ -637,11 +703,11 @@ onUnmounted(() => {
 
         <!-- 中间进度指示与快捷键 -->
         <div class="hidden sm:flex items-center gap-2 text-xs text-slate-500">
-          <span>键盘快捷键：A/B/C/D 选答案 · Enter 提交 · ←/→ 翻题</span>
+          <span>键盘快捷键：A/B/C/D 选答案 · Enter 提交/下一题 · ←/→ 翻题</span>
         </div>
 
         <button
-          @click="nextQuestion"
+          @click="(e) => { e.currentTarget.blur(); nextQuestion(); }"
           :disabled="currentIndex >= questions.length - 1"
           class="flex-1 sm:flex-none px-5 py-2.5 rounded-xl text-white text-sm font-semibold flex items-center justify-center gap-1.5 shadow-2xs transition cursor-pointer disabled:opacity-40 disabled:pointer-events-none"
           :class="[
@@ -715,7 +781,7 @@ onUnmounted(() => {
 
             <!-- 答案栏内直达下一题按钮 -->
             <button
-              @click="nextQuestion"
+              @click="(e) => { e.currentTarget.blur(); nextQuestion(); }"
               :disabled="currentIndex >= questions.length - 1"
               class="px-3 py-1 text-xs font-semibold rounded-lg bg-slate-900 hover:bg-slate-800 text-white shadow-2xs transition cursor-pointer flex items-center gap-1 disabled:opacity-40"
               title="直接进入下一题"
@@ -756,7 +822,7 @@ onUnmounted(() => {
         <!-- 底部快捷跳转（阅读完长解析后直接前往下一题，避免向上滚动） -->
         <div class="pt-3 mt-4 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500">
           <button
-            @click="prevQuestion"
+            @click="(e) => { e.currentTarget.blur(); prevQuestion(); }"
             :disabled="currentIndex === 0"
             class="px-3 py-1.5 rounded-lg border border-slate-200 bg-white hover:bg-slate-50 disabled:opacity-40 text-slate-600 flex items-center gap-1 cursor-pointer"
           >
@@ -764,7 +830,7 @@ onUnmounted(() => {
             <span>上一题</span>
           </button>
           <button
-            @click="nextQuestion"
+            @click="(e) => { e.currentTarget.blur(); nextQuestion(); }"
             :disabled="currentIndex >= questions.length - 1"
             class="px-4 py-1.5 rounded-lg bg-slate-900 hover:bg-slate-800 active:bg-slate-950 disabled:opacity-40 text-white font-medium flex items-center gap-1 shadow-2xs cursor-pointer"
           >
