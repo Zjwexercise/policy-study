@@ -30,6 +30,14 @@ const props = defineProps({
   workbooks: {
     type: Array,
     default: () => []
+  },
+  initialStatus: {
+    type: String,
+    default: 'all'
+  },
+  initialRedo: {
+    type: Boolean,
+    default: false
   }
 });
 
@@ -60,7 +68,16 @@ const isRandomOrder = ref(false);
 // 筛选条件
 const selectedCategory = ref('全部');
 const selectedType = ref('全部');
-const selectedStatus = ref('all'); // all, unattempted, wrong, starred
+const selectedStatus = ref(props.initialStatus || 'all'); // all, unattempted, wrong, starred
+const redoWrongMode = ref(props.initialRedo || false);
+
+watch(() => props.initialStatus, (newVal) => {
+  if (newVal) selectedStatus.value = newVal;
+});
+
+watch(() => props.initialRedo, (newVal) => {
+  redoWrongMode.value = !!newVal;
+});
 
 const categories = ['全部', '马原', '毛中特', '习思想', '史纲', '思修', '时政'];
 const types = [
@@ -90,9 +107,20 @@ const loadQuestions = async () => {
     if (selectedCategory.value !== '全部') params.category = selectedCategory.value;
     if (selectedType.value !== '全部') params.question_type = selectedType.value;
     if (selectedStatus.value !== 'all') params.status = selectedStatus.value;
+    if (selectedStatus.value === 'wrong' || redoWrongMode.value) {
+      params.redo = true;
+    }
     params.hide_killed = hideKilled.value;
 
     let data = await api.getQuestions(props.workbookId, params);
+    // 如果处于错题重练模式，清空前端回填的选项，确保全新自测
+    if (selectedStatus.value === 'wrong' || redoWrongMode.value) {
+      data = data.map(q => ({
+        ...q,
+        user_answer: null,
+        is_correct: null
+      }));
+    }
     if (isRandomOrder.value) {
       data = [...data].sort(() => Math.random() - 0.5);
     }
@@ -190,12 +218,38 @@ const doSubmit = async (answer) => {
   }
 };
 
-// 重做当前题目
-const redoCurrentQuestion = () => {
+// 重做当前题目（清空历史作答与选项）
+const redoCurrentQuestion = async () => {
   if (!currentQuestion.value) return;
+  const targetWbId = currentQuestion.value.workbook_id || props.workbookId;
+  const targetQid = currentQuestion.value.id;
   currentQuestion.value.user_answer = null;
   currentQuestion.value.is_correct = null;
   selectedOptions.value = [];
+  try {
+    await api.resetQuestionAnswer(targetWbId, targetQid);
+  } catch (e) {
+    // ignore
+  }
+  showToast('本题历史选项已清空，请重新作答！');
+};
+
+// 错题专攻：清空当前练习列表中的所有错题作答记录
+const handleResetWrongPractice = async () => {
+  if (!confirm('确定清空所有错题的历史作答记录吗？\n题目将全部重置为未作答状态，方便你从头全新挑战！')) return;
+  try {
+    await api.resetWrongAnswers(props.workbookId);
+    redoWrongMode.value = true;
+    for (const q of questions.value) {
+      q.user_answer = null;
+      q.is_correct = null;
+    }
+    currentIndex.value = 0;
+    resetSelection();
+    showToast('✨ 错题选项已全部清空，全新重做开始！');
+  } catch (err) {
+    alert('清空失败: ' + err.message);
+  }
 };
 
 // 收藏切换
@@ -301,6 +355,18 @@ onUnmounted(() => {
 
         <!-- 模式与辅助按钮 -->
         <div class="flex items-center gap-2">
+          <!-- 刷题范围：全部、错题、未做、收藏 -->
+          <select 
+            v-model="selectedStatus"
+            class="text-xs bg-slate-50 border border-slate-200 rounded-lg px-2 py-1 text-slate-700 cursor-pointer font-medium"
+            :class="selectedStatus === 'wrong' ? 'border-rose-400 bg-rose-50 text-rose-700 font-bold' : ''"
+          >
+            <option value="all">全部题目</option>
+            <option value="wrong">🎯 错题专攻</option>
+            <option value="unattempted">未答题目</option>
+            <option value="starred">⭐ 我的收藏</option>
+          </select>
+
           <!-- 题型筛选 -->
           <select 
             v-model="selectedType"
@@ -349,6 +415,33 @@ onUnmounted(() => {
           </button>
         </div>
       </div>
+    </div>
+
+    <!-- 错题专项重做横幅提示 -->
+    <div 
+      v-if="selectedStatus === 'wrong' && questions.length > 0"
+      class="bg-gradient-to-r from-rose-50 via-rose-50/80 to-amber-50/40 border border-rose-200 rounded-2xl p-3 sm:p-4 mb-4 flex items-center justify-between gap-3 shadow-2xs"
+    >
+      <div class="flex items-center gap-2.5 text-rose-950 text-xs sm:text-sm">
+        <span class="text-lg">🎯</span>
+        <div>
+          <div class="font-bold flex items-center gap-2">
+            <span>错题专项重练模式</span>
+            <span class="px-2 py-0.5 rounded-full text-xs bg-rose-100 text-rose-700 font-bold">
+              共 {{ questions.length }} 题
+            </span>
+          </div>
+          <p class="text-xs text-rose-700 mt-0.5">历史选项已自动为你清空，请全新作答测试！</p>
+        </div>
+      </div>
+      <button
+        @click="handleResetWrongPractice"
+        class="px-3 py-1.5 bg-white hover:bg-rose-50 border border-rose-300 text-rose-700 text-xs font-semibold rounded-xl transition cursor-pointer flex items-center gap-1 shrink-0 shadow-2xs active:scale-95"
+        title="清空当前所有错题的历史作答状态"
+      >
+        <RotateCcw class="w-3.5 h-3.5" />
+        <span>清空重做错题</span>
+      </button>
     </div>
 
     <!-- Main Question Box -->
@@ -531,6 +624,37 @@ onUnmounted(() => {
         </div>
       </div>
 
+      <!-- Navigation Bar (Previous / Next Buttons - 位于解析上方，答完可直接无须滚动切题) -->
+      <div class="flex items-center justify-between gap-3 pt-1">
+        <button
+          @click="prevQuestion"
+          :disabled="currentIndex === 0"
+          class="flex-1 sm:flex-none px-5 py-2.5 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 disabled:opacity-40 disabled:pointer-events-none text-slate-700 text-sm font-medium flex items-center justify-center gap-1.5 shadow-2xs transition cursor-pointer"
+        >
+          <ChevronLeft class="w-4 h-4" />
+          <span>上一题</span>
+        </button>
+
+        <!-- 中间进度指示与快捷键 -->
+        <div class="hidden sm:flex items-center gap-2 text-xs text-slate-500">
+          <span>键盘快捷键：A/B/C/D 选答案 · Enter 提交 · ←/→ 翻题</span>
+        </div>
+
+        <button
+          @click="nextQuestion"
+          :disabled="currentIndex >= questions.length - 1"
+          class="flex-1 sm:flex-none px-5 py-2.5 rounded-xl text-white text-sm font-semibold flex items-center justify-center gap-1.5 shadow-2xs transition cursor-pointer disabled:opacity-40 disabled:pointer-events-none"
+          :class="[
+            hasAnsweredCurrent 
+              ? 'bg-rose-600 hover:bg-rose-700 active:bg-rose-800 shadow-rose-200 ring-2 ring-rose-200' 
+              : 'bg-slate-900 hover:bg-slate-800 active:bg-slate-950'
+          ]"
+        >
+          <span>下一题</span>
+          <ChevronRight class="w-4 h-4" />
+        </button>
+      </div>
+
       <!-- Result & Explanation Box (即时解析区域) -->
       <div 
         v-if="hasAnsweredCurrent"
@@ -564,7 +688,7 @@ onUnmounted(() => {
             </div>
           </div>
 
-          <div class="flex items-center gap-1.5 shrink-0">
+          <div class="flex items-center gap-1.5 shrink-0 flex-wrap justify-end">
             <!-- 斩杀熟题快捷按钮 -->
             <button
               @click="toggleKill"
@@ -587,6 +711,17 @@ onUnmounted(() => {
             >
               <RotateCcw class="w-3.5 h-3.5" />
               <span>重做本题</span>
+            </button>
+
+            <!-- 答案栏内直达下一题按钮 -->
+            <button
+              @click="nextQuestion"
+              :disabled="currentIndex >= questions.length - 1"
+              class="px-3 py-1 text-xs font-semibold rounded-lg bg-slate-900 hover:bg-slate-800 text-white shadow-2xs transition cursor-pointer flex items-center gap-1 disabled:opacity-40"
+              title="直接进入下一题"
+            >
+              <span>下一题</span>
+              <ChevronRight class="w-3.5 h-3.5" />
             </button>
           </div>
         </div>
@@ -617,32 +752,26 @@ onUnmounted(() => {
           </div>
           <p class="whitespace-pre-line">{{ currentQuestion.note_content }}</p>
         </div>
-      </div>
 
-      <!-- Navigation Bar (Previous / Next Buttons) -->
-      <div class="flex items-center justify-between gap-3 pt-2">
-        <button
-          @click="prevQuestion"
-          :disabled="currentIndex === 0"
-          class="flex-1 sm:flex-none px-5 py-2.5 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 disabled:opacity-40 disabled:pointer-events-none text-slate-700 text-sm font-medium flex items-center justify-center gap-1.5 shadow-2xs transition cursor-pointer"
-        >
-          <ChevronLeft class="w-4 h-4" />
-          <span>上一题</span>
-        </button>
-
-        <!-- 中间进度指示 -->
-        <div class="hidden sm:flex items-center gap-2 text-xs text-slate-500">
-          <span>键盘快捷键：A/B/C/D 选答案 · Enter 提交 · ←/→ 翻题</span>
+        <!-- 底部快捷跳转（阅读完长解析后直接前往下一题，避免向上滚动） -->
+        <div class="pt-3 mt-4 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500">
+          <button
+            @click="prevQuestion"
+            :disabled="currentIndex === 0"
+            class="px-3 py-1.5 rounded-lg border border-slate-200 bg-white hover:bg-slate-50 disabled:opacity-40 text-slate-600 flex items-center gap-1 cursor-pointer"
+          >
+            <ChevronLeft class="w-3.5 h-3.5" />
+            <span>上一题</span>
+          </button>
+          <button
+            @click="nextQuestion"
+            :disabled="currentIndex >= questions.length - 1"
+            class="px-4 py-1.5 rounded-lg bg-slate-900 hover:bg-slate-800 active:bg-slate-950 disabled:opacity-40 text-white font-medium flex items-center gap-1 shadow-2xs cursor-pointer"
+          >
+            <span>下一题</span>
+            <ChevronRight class="w-3.5 h-3.5" />
+          </button>
         </div>
-
-        <button
-          @click="nextQuestion"
-          :disabled="currentIndex >= questions.length - 1"
-          class="flex-1 sm:flex-none px-5 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 active:bg-slate-950 disabled:opacity-40 disabled:pointer-events-none text-white text-sm font-semibold flex items-center justify-center gap-1.5 shadow-2xs transition cursor-pointer"
-        >
-          <span>下一题</span>
-          <ChevronRight class="w-4 h-4" />
-        </button>
       </div>
     </div>
 

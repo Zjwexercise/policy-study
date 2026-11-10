@@ -60,10 +60,22 @@ def init_db():
         user_answer TEXT,
         is_correct INTEGER DEFAULT 0, -- 1 for correct, 0 for incorrect
         is_starred INTEGER DEFAULT 0, -- 1 for starred, 0 for not
+        is_killed INTEGER DEFAULT 0,  -- 1 for killed (熟题斩杀)
         answered_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         UNIQUE(workbook_id, question_id),
         FOREIGN KEY (workbook_id) REFERENCES workbooks(id) ON DELETE CASCADE,
         FOREIGN KEY (question_id) REFERENCES questions(id) ON DELETE CASCADE
+    )
+    """)
+
+    # 学习时长与每日刷题统计表
+    cursor.execute("""
+    CREATE TABLE IF NOT EXISTS study_logs (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        study_date TEXT NOT NULL UNIQUE, -- 'YYYY-MM-DD'
+        duration_seconds INTEGER DEFAULT 0,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
     )
     """)
 
@@ -94,6 +106,12 @@ def init_db():
         FOREIGN KEY (question_id) REFERENCES questions(id) ON DELETE CASCADE
     )
     """)
+
+    # 检查并补充字段
+    cursor.execute("PRAGMA table_info(user_progress)")
+    up_cols = [c[1] for c in cursor.fetchall()]
+    if "is_killed" not in up_cols:
+        cursor.execute("ALTER TABLE user_progress ADD COLUMN is_killed INTEGER DEFAULT 0")
 
     conn.commit()
     conn.close()

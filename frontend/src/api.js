@@ -220,6 +220,34 @@ export const api = {
     }
   },
 
+  async resetWrongAnswers(workbookId) {
+    if (await detectMode()) return localStore.resetWrongAnswers(workbookId);
+    try {
+      const res = await fetch(`${API_BASE}/wrong-book/reset-answers`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ workbook_id: (workbookId && workbookId !== 'all') ? Number(workbookId) : null })
+      });
+      if (!res.ok) throw new Error();
+      return await res.json();
+    } catch {
+      return localStore.resetWrongAnswers(workbookId);
+    }
+  },
+
+  async resetQuestionAnswer(workbookId, questionId) {
+    if (await detectMode()) return localStore.resetQuestionAnswer(workbookId, questionId);
+    try {
+      const res = await fetch(`${API_BASE}/wrong-book/${questionId}/reset-answer`, {
+        method: 'POST'
+      });
+      if (!res.ok) throw new Error();
+      return await res.json();
+    } catch {
+      return localStore.resetQuestionAnswer(workbookId, questionId);
+    }
+  },
+
   async clearWrongBook(workbookId) {
     if (await detectMode()) return localStore.clearWrongBook(workbookId);
     try {
@@ -261,6 +289,21 @@ export const api = {
   },
 
   // 统计与系统
+  async reportStudyTime(seconds) {
+    if (await detectMode()) return localStore.reportStudyTime(seconds);
+    try {
+      const res = await fetch(`${API_BASE}/practice/study-time`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ seconds })
+      });
+      if (!res.ok) throw new Error();
+      return await res.json();
+    } catch {
+      return localStore.reportStudyTime(seconds);
+    }
+  },
+
   async getStats() {
     if (await detectMode()) return localStore.getStats();
     try {

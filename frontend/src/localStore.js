@@ -106,8 +106,8 @@ export const localStore = {
 
       return {
         ...q,
-        user_answer: userAns !== null ? userAns : null,
-        is_correct: isCorrect !== null ? (isCorrect === '1' ? 1 : 0) : null,
+        user_answer: params.redo ? null : (userAns !== null ? userAns : null),
+        is_correct: params.redo ? null : (isCorrect !== null ? (isCorrect === '1' ? 1 : 0) : null),
         is_starred: isStarred ? 1 : 0,
         is_killed: isKilled ? 1 : 0,
         killed_at: killedAt,
@@ -133,7 +133,7 @@ export const localStore = {
       if (params.status === 'unattempted') {
         result = result.filter(q => q.user_answer === null);
       } else if (params.status === 'wrong') {
-        result = result.filter(q => q.is_correct === 0);
+        result = result.filter(q => (q.wrong_count > 0 && q.is_mastered !== 1) || q.is_correct === 0);
       } else if (params.status === 'correct') {
         result = result.filter(q => q.is_correct === 1);
       } else if (params.status === 'starred') {
@@ -219,6 +219,31 @@ export const localStore = {
   async toggleMasterWrong(questionId, isMastered) {
     localStorage.setItem(`policy_wrong_master_${questionId}`, isMastered ? '1' : '0');
     return { success: true, is_mastered: isMastered };
+  },
+
+  // 清空错题作答记录（清空之前选的选项，供用户全新重做）
+  async resetWrongAnswers(workbookId) {
+    const wrongList = await this.getWrongQuestions({ workbook_id: workbookId, is_mastered: 0 });
+    for (const q of wrongList) {
+      const qid = q.id || q.question_id;
+      const wId = q.workbook_id;
+      localStorage.removeItem(`policy_ans_${wId}_${qid}`);
+      localStorage.removeItem(`policy_ans_all_${qid}`);
+      localStorage.removeItem(`policy_cor_${qid}`);
+      localStorage.removeItem(`policy_wrong_ans_${qid}`);
+    }
+    return { success: true, message: '错题历史选项已清空' };
+  },
+
+  // 清空单题历史作答记录
+  async resetQuestionAnswer(workbookId, questionId) {
+    if (workbookId) {
+      localStorage.removeItem(`policy_ans_${workbookId}_${questionId}`);
+    }
+    localStorage.removeItem(`policy_ans_all_${questionId}`);
+    localStorage.removeItem(`policy_cor_${questionId}`);
+    localStorage.removeItem(`policy_wrong_ans_${questionId}`);
+    return { success: true };
   },
 
   // 清空错题记录
@@ -349,6 +374,15 @@ export const localStore = {
     return { success: true };
   },
 
+  // 记录学习时长
+  reportStudyTime(seconds) {
+    const today = new Date().toISOString().slice(0, 10);
+    const stored = JSON.parse(localStorage.getItem('policy_study_logs') || '{}');
+    stored[today] = (stored[today] || 0) + seconds;
+    localStorage.setItem('policy_study_logs', JSON.stringify(stored));
+    return { success: true, date: today, seconds };
+  },
+
   // 统计面板
   async getStats() {
     const all = await this.getQuestions('all');
@@ -392,6 +426,52 @@ export const localStore = {
       };
     });
 
+    const studyLogs = JSON.parse(localStorage.getItem('policy_study_logs') || '{}');
+    const todayStr = new Date().toISOString().slice(0, 10);
+    let totalStudySec = 0;
+    Object.values(studyLogs).forEach(s => totalStudySec += s);
+    const todayStudySec = studyLogs[todayStr] || 0;
+
+    // 生成近30天趋势
+    const weekdayNames = ['周日', '周一', '周二', '周三', '周四', '周五', '周六'];
+    const dailyTrends = [];
+    const now = new Date();
+
+    for (let i = 29; i >= 0; i--) {
+      const d = new Date(now);
+      d.setDate(d.getDate() - i);
+      const dStr = d.toISOString().slice(0, 10);
+      const displayDate = dStr.slice(5);
+      const dayName = weekdayNames[d.getDay()];
+      const sSec = studyLogs[dStr] || 0;
+
+      // 统计当天的做题数（从 localStorage 记录中抓取当天 answered_at）
+      let dayAnswered = 0;
+      let dayCorrect = 0;
+      let dayWrong = 0;
+
+      all.forEach(q => {
+        if (q.answered_at && q.answered_at.startsWith(dStr)) {
+          dayAnswered++;
+          if (q.is_correct === 1) dayCorrect++;
+          else dayWrong++;
+        }
+      });
+
+      const dayAcc = dayAnswered > 0 ? Math.round((dayCorrect / dayAnswered) * 100) : 0;
+      dailyTrends.push({
+        date: dStr,
+        display_date: displayDate,
+        day_name: dayName,
+        answered: dayAnswered,
+        correct: dayCorrect,
+        wrong: dayWrong,
+        accuracy: dayAcc,
+        study_seconds: sSec,
+        study_minutes: Math.round(sSec / 60 * 10) / 10
+      });
+    }
+
     const overview = {
       total_questions: total,
       total_answered: answered,
@@ -400,13 +480,17 @@ export const localStore = {
       total_starred: starred,
       total_killed: killed,
       total_notes: notesCount,
+      total_study_seconds: totalStudySec,
+      today_study_seconds: todayStudySec,
+      today_answered: dailyTrends[dailyTrends.length - 1]?.answered || 0,
       accuracy
     };
 
     return {
       ...overview,
       overview,
-      categories: catList
+      categories: catList,
+      daily_trends: dailyTrends
     };
   },
 

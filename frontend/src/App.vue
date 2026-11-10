@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, onUnmounted } from 'vue';
 import { api } from './api';
 import HeaderNav from './components/HeaderNav.vue';
 import PracticeView from './components/PracticeView.vue';
@@ -16,6 +16,8 @@ const workbooks = ref([]);
 const activeWorkbookId = ref('all'); // 'all' 代表全部综合练习，数字代表单册独立练习
 const showMobileQr = ref(false);
 const showSyncModal = ref(false);
+const practiceInitialStatus = ref('all');
+const practiceInitialRedo = ref(false);
 
 const loadWorkbooks = async () => {
   try {
@@ -33,12 +35,75 @@ const selectWorkbook = (id) => {
   activeWorkbookId.value = id;
 };
 
-const startPractice = () => {
+const startPractice = (options = {}) => {
+  if (options && options.status) {
+    practiceInitialStatus.value = options.status;
+    practiceInitialRedo.value = !!options.redo;
+  } else {
+    practiceInitialStatus.value = 'all';
+    practiceInitialRedo.value = false;
+  }
   currentTab.value = 'practice';
+};
+
+// ==========================================
+// 实时学习专注时长追踪逻辑 (防息屏/防挂机)
+// ==========================================
+let accumulatedSeconds = 0;
+let lastActiveTime = Date.now();
+let timerInterval = null;
+
+const recordActivity = () => {
+  lastActiveTime = Date.now();
+};
+
+const flushStudyTime = async () => {
+  if (accumulatedSeconds >= 5) {
+    const toReport = accumulatedSeconds;
+    accumulatedSeconds = 0;
+    try {
+      await api.reportStudyTime(toReport);
+    } catch (e) {
+      accumulatedSeconds += toReport;
+    }
+  }
 };
 
 onMounted(() => {
   loadWorkbooks();
+
+  // 监听用户活跃交互
+  ['mousemove', 'keydown', 'touchstart', 'scroll', 'click'].forEach(evt => {
+    window.addEventListener(evt, recordActivity, { passive: true });
+  });
+
+  // 每秒检测活跃状态并计时
+  timerInterval = setInterval(() => {
+    const isVisible = document.visibilityState === 'visible';
+    const isRecentlyActive = (Date.now() - lastActiveTime) < 90 * 1000; // 90秒内有操作视为活跃
+    if (isVisible && isRecentlyActive) {
+      accumulatedSeconds++;
+    }
+    // 每 25 秒自动向后端/本地归档一次
+    if (accumulatedSeconds >= 25) {
+      flushStudyTime();
+    }
+  }, 1000);
+
+  // 页面切出或关闭时自动提交当前累计
+  window.addEventListener('beforeunload', flushStudyTime);
+  document.addEventListener('visibilitychange', () => {
+    if (document.visibilityState === 'hidden') {
+      flushStudyTime();
+    } else {
+      recordActivity();
+    }
+  });
+});
+
+onUnmounted(() => {
+  if (timerInterval) clearInterval(timerInterval);
+  flushStudyTime();
 });
 </script>
 
@@ -61,13 +126,15 @@ onMounted(() => {
         v-if="currentTab === 'practice'"
         :workbook-id="activeWorkbookId"
         :workbooks="workbooks"
+        :initial-status="practiceInitialStatus"
+        :initial-redo="practiceInitialRedo"
         @switch-tab="currentTab = $event"
       />
 
       <WrongBookView 
         v-else-if="currentTab === 'wrong'"
         :workbook-id="activeWorkbookId"
-        @start-practice="currentTab = 'practice'"
+        @start-practice="startPractice"
       />
 
       <KilledQuestionsView 

@@ -21,6 +21,7 @@ def get_workbook_questions(
     category: Optional[str] = None,
     question_type: Optional[str] = None,
     status: Optional[str] = "all", # all, unattempted, wrong, correct, starred
+    redo: Optional[bool] = False,
     conn: sqlite3.Connection = Depends(get_db)
 ):
     cursor = conn.cursor()
@@ -92,8 +93,8 @@ def get_workbook_questions(
             "answer": r["answer"],
             "explanation": r["explanation"],
             "order_num": r["order_num"],
-            "user_answer": r["user_answer"],
-            "is_correct": bool(r["is_correct"]) if r["is_correct"] is not None else None,
+            "user_answer": None if redo else r["user_answer"],
+            "is_correct": None if redo else (bool(r["is_correct"]) if r["is_correct"] is not None else None),
             "is_starred": bool(r["is_starred"]) if r["is_starred"] is not None else False,
             "wrong_count": r["wrong_count"] or 0,
             "is_mastered": bool(r["is_mastered"]) if r["is_mastered"] is not None else False,
