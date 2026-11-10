@@ -1,41 +1,79 @@
 #!/bin/bash
-# =========================================================
-# 考研政治刷题掌上宝 (PolicyMaster) - 云服务器一键部署脚本
-# 适用系统：Ubuntu / Debian / CentOS / Alibaba Cloud Linux / TencentOS
-# =========================================================
+set -e
 
-echo "========================================================="
-echo " 🎓 正在为考研政治刷题掌上宝配置云端运行环境..."
-echo "========================================================="
+echo "=========================================================="
+echo " 🚀 开始自动部署：考研政治刷题掌上宝 (PolicyMaster)"
+echo " 目标服务器：阿里云 ECS (Ubuntu 24.04)"
+echo "=========================================================="
 
-# 1. 检查或安装 Docker 与 Docker Compose
-if ! command -v docker &> /dev/null; then
-    echo "[1/3] 检测到未安装 Docker，正在自动安装 Docker..."
-    curl -fsSL https://get.docker.com | bash -s docker --mirror Aliyun
-    systemctl enable --now docker
+# 1. 禁用交互提示，快速更新与安装系统依赖
+export DEBIAN_FRONTEND=noninteractive
+echo "[1/5] 安装 Python3、Git 及必要工具..."
+apt-get update -y
+apt-get install -y python3 python3-pip python3-venv git curl
+
+# 2. 准备代码目录
+echo "[2/5] 获取最新刷题系统与全量真题库代码..."
+mkdir -p /var/www
+cd /var/www
+
+if [ -d "policy-study" ]; then
+    echo "发现已有目录，正在拉取最新代码..."
+    cd policy-study
+    git fetch --all
+    git reset --hard origin/main
 else
-    echo "[1/3] Docker 环境正常！"
+    # 优先直连 GitHub，若失败则通过加速代理克隆
+    if ! git clone https://github.com/Zjwexercise/policy-study.git; then
+        echo "直连较慢，使用高速镜像加速克隆..."
+        git clone https://ghfast.top/https://github.com/Zjwexercise/policy-study.git policy-study
+    fi
+    cd policy-study
 fi
 
-if ! command -v docker compose &> /dev/null; then
-    echo "[2/3] 安装 Docker Compose 插件..."
-    apt-get update && apt-get install -y docker-compose-plugin 2>/dev/null || yum install -y docker-compose-plugin 2>/dev/null
+# 3. 创建 Python 虚拟环境并安装后端运行库
+echo "[3/5] 构建 Python 运行环境与依赖..."
+python3 -m venv venv
+./venv/bin/pip install --upgrade pip -i https://pypi.tuna.tsinghua.edu.cn/simple
+./venv/bin/pip install -r backend/requirements.txt -i https://pypi.tuna.tsinghua.edu.cn/simple
+
+# 4. 初始化云端数据库
+echo "[4/5] 校验并初始化数据库..."
+cd backend
+../venv/bin/python database.py
+cd ..
+
+# 5. 配置 systemd 后台常驻守护进程（开机自启、崩溃自愈、24小时长盛不衰）
+echo "[5/5] 配置系统级 24 小时开机自启守护服务..."
+cat << 'EOF' > /etc/systemd/system/policy-study.service
+[Unit]
+Description=Policy Study Web Application
+After=network.target
+
+[Service]
+Type=simple
+User=root
+WorkingDirectory=/var/www/policy-study/backend
+ExecStart=/var/www/policy-study/venv/bin/uvicorn main:app --host 0.0.0.0 --port 80
+Restart=always
+RestartSec=3
+Environment=PYTHONUNBUFFERED=1
+
+[Install]
+WantedBy=multi-user.target
+EOF
+
+systemctl daemon-reload
+systemctl enable policy-study.service
+systemctl restart policy-study.service
+
+# 开放系统防火墙 80 端口（如启用了 ufw）
+if command -v ufw >/dev/null 2>&1; then
+    ufw allow 80/tcp || true
 fi
 
-# 2. 构建并启动容器
-echo "[3/3] 正在启动考研政治题库云端容器..."
-docker compose down 2>/dev/null
-docker compose up -d --build
-
-SERVER_IP=$(curl -s ip.sb || curl -s ifconfig.me)
-
-echo ""
-echo "========================================================="
-echo " 🎉 云端部署成功！服务已在后台 7x24 小时保持运行"
-echo "========================================================="
-echo " 📱 手机/电脑直接在任何地方访问："
-echo "     👉 http://${SERVER_IP}:8000"
-echo ""
-echo " 💡 温馨提醒："
-echo "    请确保在云服务器控制台（安全组/防火墙）中开放 8000 端口！"
-echo "========================================================="
+echo "=========================================================="
+echo " 🎉 恭喜！考研政治刷题掌上宝 已成功部署并启动！"
+echo " 🌐 访问地址 (手机/电脑均可直接打开)："
+echo "    http://47.93.172.13"
+echo "=========================================================="
