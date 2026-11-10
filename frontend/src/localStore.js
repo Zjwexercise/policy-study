@@ -79,16 +79,25 @@ export const localStore = {
     const isAll = String(workbookId).toLowerCase() === 'all' || workbookId === 0 || workbookId === -1;
     let questions = [];
 
+    if (!cache.allQuestions) {
+      cache.allQuestions = await fetchStatic('all_questions.json');
+    }
+
     if (isAll) {
-      if (!cache.allQuestions) {
-        cache.allQuestions = await fetchStatic('all_questions.json');
-      }
       questions = cache.allQuestions;
     } else {
-      if (!cache.questionsByWb[workbookId]) {
-        cache.questionsByWb[workbookId] = await fetchStatic(`questions_${workbookId}.json`);
+      // 优先直接从包含全题库的 allQuestions 中按 workbook_id 过滤
+      questions = cache.allQuestions.filter(q => String(q.workbook_id) === String(workbookId));
+      if (questions.length === 0) {
+        try {
+          if (!cache.questionsByWb[workbookId]) {
+            cache.questionsByWb[workbookId] = await fetchStatic(`questions_${workbookId}.json`);
+          }
+          questions = cache.questionsByWb[workbookId] || [];
+        } catch (e) {
+          console.warn(`加载单册 questions_${workbookId}.json 失败:`, e);
+        }
       }
-      questions = cache.questionsByWb[workbookId];
     }
 
     // 注入本地用户进度

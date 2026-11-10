@@ -40,6 +40,16 @@ const totalQuestionsAll = computed(() => {
   return props.workbooks.reduce((sum, w) => sum + (w.total_questions || 0), 0);
 });
 
+// 历年真题分类
+const zhentiWorkbooks = computed(() => {
+  return props.workbooks.filter(w => w.name && (w.name.includes('真题') || (w.id >= 27 && w.id <= 33)));
+});
+
+// 冲刺10套卷分类
+const taojuanWorkbooks = computed(() => {
+  return props.workbooks.filter(w => !w.name || (!w.name.includes('真题') && !(w.id >= 27 && w.id <= 33)));
+});
+
 const tabs = [
   { id: 'practice', label: '刷题练习', icon: BookOpen },
   { id: 'wrong', label: '错题本', icon: AlertCircle },
@@ -84,13 +94,20 @@ const handleSelectChange = (val) => {
             >
               <!-- 综合模式选项 -->
               <option value="all" class="font-bold text-rose-600">
-                🌟 全部练习册（全库综合跨本练 - {{ totalQuestionsAll }}题）
+                🌟 全部题库大综合 ({{ totalQuestionsAll }}题)
               </option>
               
-              <!-- 独立分册练习选项 -->
-              <optgroup label="── 分册单独练习 ──">
-                <option v-for="wb in workbooks" :key="wb.id" :value="wb.id">
-                  📖 {{ wb.name }} ({{ wb.total_questions }}题)
+              <!-- 历年真题专区 -->
+              <optgroup v-if="zhentiWorkbooks.length > 0" label="── 🏛️ 2019-2024 全国历年真题 ──">
+                <option v-for="wb in zhentiWorkbooks" :key="wb.id" :value="wb.id">
+                  {{ wb.name }}
+                </option>
+              </optgroup>
+
+              <!-- 冲刺10套卷专区 -->
+              <optgroup v-if="taojuanWorkbooks.length > 0" label="── 📚 考研政治冲刺10套卷 ──">
+                <option v-for="wb in taojuanWorkbooks" :key="wb.id" :value="wb.id">
+                  {{ wb.name }}
                 </option>
               </optgroup>
             </select>

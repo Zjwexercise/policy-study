@@ -230,7 +230,7 @@ const saveQuestionEdit = async (q) => {
               全部练习册合并综合练习
             </h3>
             <p class="text-xs sm:text-sm text-rose-50 leading-relaxed">
-              汇集已导入的全部 3 本真题与习题集（共 {{ workbooks.reduce((s, w) => s + (w.total_questions || 0), 0) }} 道考研政治选择题），支持跨册混合大乱练、全学科综合模拟测试！
+              汇集已导入的全部题库（包含 2019-2024历年真题 与 冲刺10套卷，共 {{ workbooks.reduce((s, w) => s + (w.total_questions || 0), 0) }} 道考研政治选择题），支持跨卷混合刷题、全学科综合模拟测试！
             </p>
           </div>
 
