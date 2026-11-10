@@ -174,22 +174,20 @@ const handleSelectChange = (val) => {
 
           <button
             @click="emit('open-sync')"
-            class="flex items-center space-x-1 px-2 sm:px-2.5 py-1.5 bg-indigo-50 hover:bg-indigo-100 text-indigo-700 border border-indigo-200 text-xs sm:text-sm font-semibold rounded-lg transition cursor-pointer shadow-2xs"
+            class="hidden md:flex items-center space-x-1 px-2 sm:px-2.5 py-1.5 bg-indigo-50 hover:bg-indigo-100 text-indigo-700 border border-indigo-200 text-xs sm:text-sm font-semibold rounded-lg transition cursor-pointer shadow-2xs"
             title="跨端同步电脑与手机的做题记录"
           >
             <RefreshCw class="w-3.5 h-3.5 sm:w-4 sm:h-4 text-indigo-600" />
             <span class="hidden sm:inline">口令同步</span>
-            <span class="sm:hidden font-medium">口令</span>
           </button>
 
           <button
             @click="emit('open-mobile-qr')"
-            class="flex items-center space-x-1 px-2 sm:px-2.5 py-1.5 bg-emerald-50 hover:bg-emerald-100 text-emerald-700 border border-emerald-200 text-xs sm:text-sm font-medium rounded-lg transition cursor-pointer"
+            class="hidden md:flex items-center space-x-1 px-2 sm:px-2.5 py-1.5 bg-emerald-50 hover:bg-emerald-100 text-emerald-700 border border-emerald-200 text-xs sm:text-sm font-medium rounded-lg transition cursor-pointer"
             title="手机扫码直接在床上或自习室刷题"
           >
             <Smartphone class="w-3.5 h-3.5 sm:w-4 sm:h-4 text-emerald-600" />
             <span class="hidden sm:inline">手机扫码刷题</span>
-            <span class="sm:hidden">扫码</span>
           </button>
         </div>
       </div>
@@ -208,6 +206,21 @@ const handleSelectChange = (val) => {
       >
         <component :is="tab.icon" class="w-4 h-4 sm:w-5 sm:h-5 mb-0.5" />
         <span class="text-[10px] sm:text-[11px] truncate tracking-tight">{{ tab.label }}</span>
+      </button>
+
+      <!-- 手机底栏特别增加：我的 / 账号登录 -->
+      <button
+        @click="emit('open-login')"
+        class="flex flex-col items-center justify-center py-1 px-1 rounded-lg transition flex-1 cursor-pointer min-w-0"
+        :class="currentUser ? 'text-rose-600 font-semibold' : 'text-slate-500 hover:text-slate-800'"
+      >
+        <div class="relative">
+          <User class="w-4 h-4 sm:w-5 sm:h-5 mb-0.5" />
+          <span v-if="currentUser" class="absolute -top-0.5 -right-0.5 w-2 h-2 bg-emerald-500 rounded-full border border-white"></span>
+        </div>
+        <span class="text-[10px] sm:text-[11px] truncate tracking-tight">
+          {{ currentUser ? (currentUser.nickname || currentUser.username) : '我的登录' }}
+        </span>
       </button>
     </div>
   </header>
