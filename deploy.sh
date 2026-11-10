@@ -34,8 +34,8 @@ fi
 # 3. 创建 Python 虚拟环境并安装后端运行库
 echo "[3/5] 构建 Python 运行环境与依赖..."
 python3 -m venv venv
-./venv/bin/pip install --upgrade pip -i https://pypi.tuna.tsinghua.edu.cn/simple
-./venv/bin/pip install -r backend/requirements.txt -i https://pypi.tuna.tsinghua.edu.cn/simple
+./venv/bin/pip install --upgrade pip -i https://mirrors.aliyun.com/pypi/simple/ --trusted-host mirrors.aliyun.com || true
+./venv/bin/pip install -r backend/requirements.txt -i https://mirrors.aliyun.com/pypi/simple/ --trusted-host mirrors.aliyun.com || ./venv/bin/pip install -r backend/requirements.txt
 
 # 4. 初始化云端数据库
 echo "[4/5] 校验并初始化数据库..."

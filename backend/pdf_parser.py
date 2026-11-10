@@ -1,5 +1,8 @@
 import re
-import fitz  # PyMuPDF
+try:
+    import fitz  # PyMuPDF
+except ImportError:
+    fitz = None
 from typing import List, Dict, Any, Optional
 
 def clean_text(text: str) -> str:
@@ -18,6 +21,8 @@ def extract_pdf_blocks(file_path: str) -> List[str]:
     自动识别页面分栏（如考研习题集常见的双栏排版），按栏目顺序和纵向坐标自然排序，
     避免跨栏左右错乱串行。
     """
+    if not fitz:
+        raise ImportError("未安装 PyMuPDF，如需解析上传新PDF请执行 pip install PyMuPDF")
     doc = fitz.open(file_path)
     page_texts = []
 
