@@ -31,14 +31,42 @@ async function detectMode() {
 export const api = {
   // 练习册列表
   async getWorkbooks() {
-    if (await detectMode()) return localStore.getWorkbooks();
+    let list = [];
+    if (await detectMode()) {
+      list = await localStore.getWorkbooks();
+    } else {
+      try {
+        const res = await fetch(`${API_BASE}/workbooks`);
+        if (!res.ok) throw new Error();
+        list = await res.json();
+      } catch {
+        isOfflineMode = true;
+        list = await localStore.getWorkbooks();
+      }
+    }
+
+    // 智能双向融合：无论在线或离线，取服务端与本地 localStorage 中最大的已答题数与错题数，绝不归零！
     try {
-      const res = await fetch(`${API_BASE}/workbooks`);
-      if (!res.ok) throw new Error();
-      return await res.json();
-    } catch {
-      isOfflineMode = true;
-      return localStore.getWorkbooks();
+      const localList = await localStore.getWorkbooks();
+      const localMap = {};
+      localList.forEach(w => { localMap[w.id] = w; });
+      return list.map(w => {
+        const lw = localMap[w.id];
+        if (!lw) return w;
+        const answered = Math.max(w.answered_count || 0, lw.answered_count || 0);
+        const correct = Math.max(w.correct_count || 0, lw.correct_count || 0);
+        const wrong = Math.max(w.wrong_count || 0, lw.wrong_count || 0);
+        const accuracy = answered > 0 ? Math.round((correct / answered) * 1000) / 10 : 0;
+        return {
+          ...w,
+          answered_count: answered,
+          correct_count: correct,
+          wrong_count: wrong,
+          accuracy
+        };
+      });
+    } catch (e) {
+      return list;
     }
   },
 
@@ -93,23 +121,69 @@ export const api = {
 
   // 题目与刷题
   async getQuestions(workbookId, params = {}) {
-    if (await detectMode()) return localStore.getQuestions(workbookId, params);
-    try {
-      const query = new URLSearchParams(params).toString();
-      const res = await fetch(`${API_BASE}/workbooks/${workbookId}/questions?${query}`);
-      if (!res.ok) throw new Error();
-      return await res.json();
-    } catch {
-      isOfflineMode = true;
-      return localStore.getQuestions(workbookId, params);
+    let questions = [];
+    if (await detectMode()) {
+      questions = await localStore.getQuestions(workbookId, params);
+    } else {
+      try {
+        const query = new URLSearchParams(params).toString();
+        const res = await fetch(`${API_BASE}/workbooks/${workbookId}/questions?${query}`);
+        if (res.ok) {
+          questions = await res.json();
+        } else {
+          questions = await localStore.getQuestions(workbookId, params);
+        }
+      } catch {
+        isOfflineMode = true;
+        questions = await localStore.getQuestions(workbookId, params);
+      }
     }
+
+    // 关键双向融合保障：将 localStorage 和服务端进行智能合并，绝不因为模式切换丢失任何一题的作答！
+    return questions.map(q => {
+      const qid = q.id;
+      const wId = q.workbook_id || workbookId;
+      const localAns = localStorage.getItem(`policy_ans_${wId}_${qid}`) || 
+                       localStorage.getItem(`policy_ans_all_${qid}`);
+      const localCor = localStorage.getItem(`policy_cor_${qid}`);
+      const localStar = localStorage.getItem(`policy_star_${qid}`);
+      const localKilled = localStorage.getItem(`policy_killed_${qid}`);
+      const localWrongCnt = localStorage.getItem(`policy_wrong_cnt_${wId}_${qid}`);
+      const localWrongMaster = localStorage.getItem(`policy_wrong_master_${qid}`);
+      const localNote = localStorage.getItem(`policy_note_${qid}`);
+
+      const user_answer = q.user_answer || localAns || null;
+      let is_correct = q.is_correct;
+      if (is_correct === null || is_correct === undefined) {
+        if (localCor === '1') is_correct = true;
+        else if (localCor === '0') is_correct = false;
+      }
+
+      return {
+        ...q,
+        user_answer,
+        is_correct,
+        is_starred: q.is_starred || localStar === '1',
+        is_killed: q.is_killed || localKilled === '1' ? 1 : 0,
+        wrong_count: Math.max(q.wrong_count || 0, Number(localWrongCnt || 0)),
+        is_mastered: q.is_mastered || localWrongMaster === '1',
+        has_note: q.has_note || !!localNote,
+        note_content: q.note_content || localNote || ''
+      };
+    });
   },
 
   async submitAnswer(workbookId, questionId, userAnswer) {
-    let result;
-    if (await detectMode()) {
-      result = await localStore.submitAnswer(workbookId, questionId, userAnswer);
-    } else {
+    // 无论在线还是离线，始终在本地 localStorage 存一份无缝底稿，绝对不丢题！
+    let localResult = null;
+    try {
+      localResult = await localStore.submitAnswer(workbookId, questionId, userAnswer);
+    } catch (e) {
+      // ignore
+    }
+
+    let result = localResult;
+    if (!await detectMode()) {
       try {
         const res = await fetch(`${API_BASE}/practice/submit`, {
           method: 'POST',
@@ -120,14 +194,15 @@ export const api = {
             user_answer: userAnswer
           })
         });
-        if (!res.ok) throw new Error();
-        result = await res.json();
-      } catch {
-        result = await localStore.submitAnswer(workbookId, questionId, userAnswer);
+        if (res.ok) {
+          result = await res.json();
+        }
+      } catch (e) {
+        // 后端失败时使用 localResult
       }
     }
     notifyUserAction();
-    return result;
+    return result || localResult;
   },
 
   async toggleStar(workbookId, questionId, isStarred) {

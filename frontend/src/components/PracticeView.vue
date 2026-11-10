@@ -134,7 +134,13 @@ const loadQuestions = async () => {
       data = [...data].sort(() => Math.random() - 0.5);
     }
     questions.value = data;
-    currentIndex.value = 0;
+    // 记忆题号位置：优先恢复上次停留在该练习册的具体题号，刷新不再被动重置到第1题
+    const savedIdx = Number(localStorage.getItem(`policy_cur_idx_${props.workbookId}`) || 0);
+    if (savedIdx >= 0 && savedIdx < data.length) {
+      currentIndex.value = savedIdx;
+    } else {
+      currentIndex.value = 0;
+    }
     resetSelection();
   } catch (err) {
     console.error('加载题目失败', err);
@@ -144,7 +150,8 @@ const loadQuestions = async () => {
 };
 
 // 监听题号切换
-watch(currentIndex, () => {
+watch(currentIndex, (newIdx) => {
+  localStorage.setItem(`policy_cur_idx_${props.workbookId}`, String(newIdx));
   resetSelection();
 });
 

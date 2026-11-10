@@ -15,7 +15,7 @@ import { auth } from './auth';
 
 const currentTab = ref('practice'); // practice, wrong, killed, notes, workbooks, stats
 const workbooks = ref([]);
-const activeWorkbookId = ref('all'); // 'all' 代表全部综合练习，数字代表单册独立练习
+const activeWorkbookId = ref(localStorage.getItem('policy_active_wb_id') || 'all'); // 记忆用户最后打开的练习册，刷新绝不重置丢失
 const showMobileQr = ref(false);
 const showSyncModal = ref(false);
 const showLoginModal = ref(false);
@@ -31,7 +31,7 @@ const loadWorkbooks = async () => {
     const list = await api.getWorkbooks();
     workbooks.value = list;
     if (!activeWorkbookId.value) {
-      activeWorkbookId.value = 'all';
+      activeWorkbookId.value = localStorage.getItem('policy_active_wb_id') || 'all';
     }
   } catch (err) {
     console.error('加载练习册列表失败', err);
@@ -40,6 +40,7 @@ const loadWorkbooks = async () => {
 
 const selectWorkbook = (id) => {
   activeWorkbookId.value = id;
+  localStorage.setItem('policy_active_wb_id', String(id));
 };
 
 const startPractice = (options = {}) => {
