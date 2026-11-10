@@ -54,7 +54,16 @@ const currentUser = computed(() => auth.currentUser.value);
 const syncStatus = computed(() => auth.syncStatus.value);
 const lastSyncTime = computed(() => auth.lastSyncTime.value);
 
+const isStaticHosting = computed(() => {
+  return window.location.hostname.includes('github.io') && !auth.customServerUrl.value;
+});
+
 const handleAuth = async () => {
+  if (isStaticHosting.value) {
+    errorMsg.value = '提示：当前为 GitHub Pages 免开机版，无云端数据库。您无需登录即可直接做题！若需账号登录，请连接同Wi-Fi电脑后台或在下方配置云端后台地址。';
+    return;
+  }
+
   if (!username.value.trim()) {
     errorMsg.value = '请输入用户名';
     return;
@@ -252,6 +261,19 @@ const testServerConnection = async () => {
 
         <!-- 状态B：未登录，显示登录/注册表单 -->
         <div v-else class="space-y-4">
+          <!-- GitHub Pages 静态免开机模式特别提示 -->
+          <div v-if="isStaticHosting" class="p-3.5 bg-amber-50/90 border border-amber-200 rounded-xl text-xs space-y-1.5 text-amber-900 leading-relaxed">
+            <div class="font-bold flex items-center gap-1.5 text-amber-800 text-sm">
+              <span>💡 手机免开机刷题无需登录！</span>
+            </div>
+            <p>
+              当前为 <strong>GitHub Pages 免开机版</strong>。你可以直接点击底部的【暂不登录 (访客模式)】，题目已全量离线内嵌，你做的每一题都会自动保存在手机中，电脑关机也不影响使用！
+            </p>
+            <p class="text-amber-700 text-[11px]">
+              ⚠️ 若要使用账号登录并在电脑与手机间实时同步，请将手机连接同一 Wi-Fi 打开电脑局域网版（<code>http://192.168.1.20:8000</code>），或在下方展开【云端服务器配置】填入在线后台网址。
+            </p>
+          </div>
+
           <!-- 切换 Tab -->
           <div class="flex border-b border-slate-200">
             <button 
