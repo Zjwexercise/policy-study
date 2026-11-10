@@ -11,8 +11,11 @@ import {
   Layers,
   Sparkles,
   Swords,
-  RefreshCw
+  RefreshCw,
+  User,
+  Cloud
 } from 'lucide-vue-next';
+import { auth } from '../auth';
 
 const props = defineProps({
   currentTab: {
@@ -33,8 +36,12 @@ const emit = defineEmits([
   'update:currentTab', 
   'select-workbook', 
   'open-mobile-qr',
-  'open-sync'
+  'open-sync',
+  'open-login'
 ]);
+
+const currentUser = computed(() => auth.currentUser.value);
+const syncStatus = computed(() => auth.syncStatus.value);
 
 const totalQuestionsAll = computed(() => {
   return props.workbooks.reduce((sum, w) => sum + (w.total_questions || 0), 0);
@@ -133,16 +140,46 @@ const handleSelectChange = (val) => {
           </button>
         </nav>
 
-        <!-- Right Tools: Mobile QR & Sync -->
+        <!-- Right Tools: User, Mobile QR & Sync -->
         <div class="flex items-center space-x-1 sm:space-x-1.5 shrink-0">
+          <!-- 用户账户与自动云同步状态 -->
+          <button
+            v-if="currentUser"
+            @click="emit('open-login')"
+            class="flex items-center space-x-1.5 px-2 sm:px-2.5 py-1.5 bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 text-xs sm:text-sm font-semibold rounded-lg transition cursor-pointer shadow-2xs"
+            :title="`当前账号：${currentUser.nickname || currentUser.username} (点击管理账号与云同步)`"
+          >
+            <div class="w-4 h-4 sm:w-5 sm:h-5 rounded-full bg-rose-600 text-white text-[10px] font-bold flex items-center justify-center">
+              {{ (currentUser.nickname || currentUser.username || '用').slice(0, 1) }}
+            </div>
+            <span class="max-w-[70px] sm:max-w-[100px] truncate hidden sm:inline">{{ currentUser.nickname || currentUser.username }}</span>
+            <span class="flex items-center gap-0.5 text-[10px] text-emerald-600 font-bold bg-white/80 px-1 py-0.5 rounded border border-emerald-200">
+              <RefreshCw v-if="syncStatus === 'syncing'" class="w-2.5 h-2.5 animate-spin text-amber-600" />
+              <Cloud v-else class="w-2.5 h-2.5 text-emerald-600" />
+              <span class="hidden md:inline">{{ syncStatus === 'syncing' ? '同步中' : '已同步' }}</span>
+            </span>
+          </button>
+
+          <!-- 未登录：登录/注册入口 -->
+          <button
+            v-else
+            @click="emit('open-login')"
+            class="flex items-center space-x-1 px-2 sm:px-2.5 py-1.5 bg-linear-to-r from-rose-500 to-red-500 hover:from-rose-600 hover:to-red-600 text-white text-xs sm:text-sm font-semibold rounded-lg transition cursor-pointer shadow-xs"
+            title="登录账号开启自动双向云同步，跨端刷题免手动复制"
+          >
+            <User class="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+            <span>登录</span>
+            <span class="hidden sm:inline">/注册</span>
+          </button>
+
           <button
             @click="emit('open-sync')"
             class="flex items-center space-x-1 px-2 sm:px-2.5 py-1.5 bg-indigo-50 hover:bg-indigo-100 text-indigo-700 border border-indigo-200 text-xs sm:text-sm font-semibold rounded-lg transition cursor-pointer shadow-2xs"
             title="跨端同步电脑与手机的做题记录"
           >
             <RefreshCw class="w-3.5 h-3.5 sm:w-4 sm:h-4 text-indigo-600" />
-            <span class="hidden sm:inline">跨端同步</span>
-            <span class="sm:hidden font-medium">同步</span>
+            <span class="hidden sm:inline">口令同步</span>
+            <span class="sm:hidden font-medium">口令</span>
           </button>
 
           <button

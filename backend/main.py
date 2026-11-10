@@ -13,6 +13,7 @@ from routers.practice import router as practice_router
 from routers.wrong_book import router as wrong_book_router
 from routers.notes import router as notes_router
 from routers.system import router as system_router
+from routers.auth import router as auth_router
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -44,6 +45,7 @@ app.include_router(practice_router)
 app.include_router(wrong_book_router)
 app.include_router(notes_router)
 app.include_router(system_router)
+app.include_router(auth_router)
 
 # 挂载上传文件目录
 if os.path.exists(UPLOAD_DIR):

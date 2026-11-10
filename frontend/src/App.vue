@@ -10,14 +10,21 @@ import WorkbooksView from './components/WorkbooksView.vue';
 import StatsView from './components/StatsView.vue';
 import MobileQrModal from './components/MobileQrModal.vue';
 import SyncModal from './components/SyncModal.vue';
+import LoginModal from './components/LoginModal.vue';
+import { auth } from './auth';
 
 const currentTab = ref('practice'); // practice, wrong, killed, notes, workbooks, stats
 const workbooks = ref([]);
 const activeWorkbookId = ref('all'); // 'all' 代表全部综合练习，数字代表单册独立练习
 const showMobileQr = ref(false);
 const showSyncModal = ref(false);
+const showLoginModal = ref(false);
 const practiceInitialStatus = ref('all');
 const practiceInitialRedo = ref(false);
+
+const handleLoginSuccess = () => {
+  loadWorkbooks();
+};
 
 const loadWorkbooks = async () => {
   try {
@@ -71,6 +78,9 @@ const flushStudyTime = async () => {
 
 onMounted(() => {
   loadWorkbooks();
+  auth.initAuth().then(() => {
+    loadWorkbooks();
+  });
 
   // 监听用户活跃交互
   ['mousemove', 'keydown', 'touchstart', 'scroll', 'click'].forEach(evt => {
@@ -118,6 +128,7 @@ onUnmounted(() => {
       @select-workbook="selectWorkbook"
       @open-mobile-qr="showMobileQr = true"
       @open-sync="showSyncModal = true"
+      @open-login="showLoginModal = true"
     />
 
     <!-- Main Content Area -->
@@ -175,6 +186,13 @@ onUnmounted(() => {
       :show="showSyncModal"
       @close="showSyncModal = false"
       @synced="loadWorkbooks"
+    />
+
+    <!-- User Login & Multi-Device Cloud Sync Modal -->
+    <LoginModal 
+      :show="showLoginModal"
+      @close="showLoginModal = false"
+      @login-success="handleLoginSuccess"
     />
   </div>
 </template>

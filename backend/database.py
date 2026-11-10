@@ -107,6 +107,41 @@ def init_db():
     )
     """)
 
+    # 用户账户表
+    cursor.execute("""
+    CREATE TABLE IF NOT EXISTS users (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        username TEXT UNIQUE NOT NULL,
+        password_hash TEXT NOT NULL,
+        salt TEXT NOT NULL,
+        nickname TEXT NOT NULL,
+        avatar TEXT DEFAULT '',
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        last_login TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    )
+    """)
+
+    # 用户鉴权 Token 表
+    cursor.execute("""
+    CREATE TABLE IF NOT EXISTS user_tokens (
+        token TEXT PRIMARY KEY,
+        user_id INTEGER NOT NULL,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+    )
+    """)
+
+    # 用户全量云端数据表（实现手机、电脑、多端静默自动无缝同步）
+    cursor.execute("""
+    CREATE TABLE IF NOT EXISTS user_cloud_data (
+        user_id INTEGER PRIMARY KEY,
+        records_json TEXT NOT NULL DEFAULT '{}',
+        stats_json TEXT NOT NULL DEFAULT '{}',
+        updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+    )
+    """)
+
     # 检查并补充字段
     cursor.execute("PRAGMA table_info(user_progress)")
     up_cols = [c[1] for c in cursor.fetchall()]

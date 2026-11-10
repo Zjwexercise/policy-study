@@ -1,9 +1,18 @@
 import { localStore } from './localStore';
+import { auth } from './auth';
 
 const API_BASE = '/api';
 
 // 状态：后端 API 是否可用
 let isOfflineMode = null;
+
+function notifyUserAction() {
+  try {
+    auth.triggerAutoSync(3000);
+  } catch (e) {
+    // 忽略静默同步调度错误
+  }
+}
 
 async function detectMode() {
   if (isOfflineMode !== null) return isOfflineMode;
@@ -97,61 +106,79 @@ export const api = {
   },
 
   async submitAnswer(workbookId, questionId, userAnswer) {
-    if (await detectMode()) return localStore.submitAnswer(workbookId, questionId, userAnswer);
-    try {
-      const res = await fetch(`${API_BASE}/practice/submit`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          workbook_id: workbookId,
-          question_id: questionId,
-          user_answer: userAnswer
-        })
-      });
-      if (!res.ok) throw new Error();
-      return await res.json();
-    } catch {
-      return localStore.submitAnswer(workbookId, questionId, userAnswer);
+    let result;
+    if (await detectMode()) {
+      result = await localStore.submitAnswer(workbookId, questionId, userAnswer);
+    } else {
+      try {
+        const res = await fetch(`${API_BASE}/practice/submit`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            workbook_id: workbookId,
+            question_id: questionId,
+            user_answer: userAnswer
+          })
+        });
+        if (!res.ok) throw new Error();
+        result = await res.json();
+      } catch {
+        result = await localStore.submitAnswer(workbookId, questionId, userAnswer);
+      }
     }
+    notifyUserAction();
+    return result;
   },
 
   async toggleStar(workbookId, questionId, isStarred) {
-    if (await detectMode()) return localStore.toggleStar(workbookId, questionId, isStarred);
-    try {
-      const res = await fetch(`${API_BASE}/practice/star`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          workbook_id: workbookId,
-          question_id: questionId,
-          is_starred: isStarred
-        })
-      });
-      if (!res.ok) throw new Error();
-      return await res.json();
-    } catch {
-      return localStore.toggleStar(workbookId, questionId, isStarred);
+    let result;
+    if (await detectMode()) {
+      result = await localStore.toggleStar(workbookId, questionId, isStarred);
+    } else {
+      try {
+        const res = await fetch(`${API_BASE}/practice/star`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            workbook_id: workbookId,
+            question_id: questionId,
+            is_starred: isStarred
+          })
+        });
+        if (!res.ok) throw new Error();
+        result = await res.json();
+      } catch {
+        result = await localStore.toggleStar(workbookId, questionId, isStarred);
+      }
     }
+    notifyUserAction();
+    return result;
   },
 
   // 斩杀熟题
   async toggleKillQuestion(workbookId, questionId, isKilled) {
-    if (await detectMode()) return localStore.toggleKillQuestion(workbookId, questionId, isKilled);
-    try {
-      const res = await fetch(`${API_BASE}/practice/kill`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          workbook_id: workbookId,
-          question_id: questionId,
-          is_killed: isKilled
-        })
-      });
-      if (!res.ok) throw new Error();
-      return await res.json();
-    } catch {
-      return localStore.toggleKillQuestion(workbookId, questionId, isKilled);
+    let result;
+    if (await detectMode()) {
+      result = await localStore.toggleKillQuestion(workbookId, questionId, isKilled);
+    } else {
+      try {
+        const res = await fetch(`${API_BASE}/practice/kill`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            workbook_id: workbookId,
+            question_id: questionId,
+            is_killed: isKilled
+          })
+        });
+        if (!res.ok) throw new Error();
+        result = await res.json();
+      } catch {
+        result = await localStore.toggleKillQuestion(workbookId, questionId, isKilled);
+      }
     }
+    notifyUserAction();
+    return result;
   },
 
   async getKilledQuestions(params = {}) {
@@ -167,17 +194,22 @@ export const api = {
   },
 
   async clearKilledQuestions(workbookId) {
-    if (await detectMode()) return localStore.clearKilledQuestions(workbookId);
-    try {
-      const url = workbookId ? `${API_BASE}/practice/killed-questions/clear?workbook_id=${workbookId}` : `${API_BASE}/practice/killed-questions/clear`;
-      const res = await fetch(url, { method: 'DELETE' });
-      if (!res.ok) throw new Error();
-      return await res.json();
-    } catch {
-      return localStore.clearKilledQuestions(workbookId);
+    let result;
+    if (await detectMode()) {
+      result = await localStore.clearKilledQuestions(workbookId);
+    } else {
+      try {
+        const url = workbookId ? `${API_BASE}/practice/killed-questions/clear?workbook_id=${workbookId}` : `${API_BASE}/practice/killed-questions/clear`;
+        const res = await fetch(url, { method: 'DELETE' });
+        if (!res.ok) throw new Error();
+        result = await res.json();
+      } catch {
+        result = await localStore.clearKilledQuestions(workbookId);
+      }
     }
+    notifyUserAction();
+    return result;
   },
-
 
   async updateQuestion(questionId, data) {
     if (await detectMode()) {
@@ -206,58 +238,82 @@ export const api = {
   },
 
   async toggleMasterWrong(questionId, isMastered) {
-    if (await detectMode()) return localStore.toggleMasterWrong(questionId, isMastered);
-    try {
-      const res = await fetch(`${API_BASE}/wrong-book/${questionId}/master`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ is_mastered: isMastered })
-      });
-      if (!res.ok) throw new Error();
-      return await res.json();
-    } catch {
-      return localStore.toggleMasterWrong(questionId, isMastered);
+    let result;
+    if (await detectMode()) {
+      result = await localStore.toggleMasterWrong(questionId, isMastered);
+    } else {
+      try {
+        const res = await fetch(`${API_BASE}/wrong-book/${questionId}/master`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ is_mastered: isMastered })
+        });
+        if (!res.ok) throw new Error();
+        result = await res.json();
+      } catch {
+        result = await localStore.toggleMasterWrong(questionId, isMastered);
+      }
     }
+    notifyUserAction();
+    return result;
   },
 
   async resetWrongAnswers(workbookId) {
-    if (await detectMode()) return localStore.resetWrongAnswers(workbookId);
-    try {
-      const res = await fetch(`${API_BASE}/wrong-book/reset-answers`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ workbook_id: (workbookId && workbookId !== 'all') ? Number(workbookId) : null })
-      });
-      if (!res.ok) throw new Error();
-      return await res.json();
-    } catch {
-      return localStore.resetWrongAnswers(workbookId);
+    let result;
+    if (await detectMode()) {
+      result = await localStore.resetWrongAnswers(workbookId);
+    } else {
+      try {
+        const res = await fetch(`${API_BASE}/wrong-book/reset-answers`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ workbook_id: (workbookId && workbookId !== 'all') ? Number(workbookId) : null })
+        });
+        if (!res.ok) throw new Error();
+        result = await res.json();
+      } catch {
+        result = await localStore.resetWrongAnswers(workbookId);
+      }
     }
+    notifyUserAction();
+    return result;
   },
 
   async resetQuestionAnswer(workbookId, questionId) {
-    if (await detectMode()) return localStore.resetQuestionAnswer(workbookId, questionId);
-    try {
-      const res = await fetch(`${API_BASE}/wrong-book/${questionId}/reset-answer`, {
-        method: 'POST'
-      });
-      if (!res.ok) throw new Error();
-      return await res.json();
-    } catch {
-      return localStore.resetQuestionAnswer(workbookId, questionId);
+    let result;
+    if (await detectMode()) {
+      result = await localStore.resetQuestionAnswer(workbookId, questionId);
+    } else {
+      try {
+        const res = await fetch(`${API_BASE}/wrong-book/${questionId}/reset-answer`, {
+          method: 'POST'
+        });
+        if (!res.ok) throw new Error();
+        result = await res.json();
+      } catch {
+        result = await localStore.resetQuestionAnswer(workbookId, questionId);
+      }
     }
+    notifyUserAction();
+    return result;
   },
 
   async clearWrongBook(workbookId) {
-    if (await detectMode()) return localStore.clearWrongBook(workbookId);
-    try {
-      const url = workbookId ? `${API_BASE}/wrong-book/clear?workbook_id=${workbookId}` : `${API_BASE}/wrong-book/clear`;
-      const res = await fetch(url, { method: 'DELETE' });
-      if (!res.ok) throw new Error();
-      return await res.json();
-    } catch {
-      return localStore.clearWrongBook(workbookId);
+    let result;
+    if (await detectMode()) {
+      result = await localStore.clearWrongBook(workbookId);
+    } else {
+      try {
+        const url = workbookId ? `${API_BASE}/wrong-book/clear?workbook_id=${workbookId}` : `${API_BASE}/wrong-book/clear`;
+        const res = await fetch(url, { method: 'DELETE' });
+        if (!res.ok) throw new Error();
+        result = await res.json();
+      } catch {
+        result = await localStore.clearWrongBook(workbookId);
+      }
     }
+    notifyUserAction();
+    return result;
   },
 
   // 考点笔记
@@ -274,34 +330,46 @@ export const api = {
   },
 
   async saveNote(questionId, content) {
-    if (await detectMode()) return localStore.saveNote(questionId, content);
-    try {
-      const res = await fetch(`${API_BASE}/notes/${questionId}`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ content })
-      });
-      if (!res.ok) throw new Error();
-      return await res.json();
-    } catch {
-      return localStore.saveNote(questionId, content);
+    let result;
+    if (await detectMode()) {
+      result = await localStore.saveNote(questionId, content);
+    } else {
+      try {
+        const res = await fetch(`${API_BASE}/notes/${questionId}`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ content })
+        });
+        if (!res.ok) throw new Error();
+        result = await res.json();
+      } catch {
+        result = await localStore.saveNote(questionId, content);
+      }
     }
+    notifyUserAction();
+    return result;
   },
 
   // 统计与系统
   async reportStudyTime(seconds) {
-    if (await detectMode()) return localStore.reportStudyTime(seconds);
-    try {
-      const res = await fetch(`${API_BASE}/practice/study-time`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ seconds })
-      });
-      if (!res.ok) throw new Error();
-      return await res.json();
-    } catch {
-      return localStore.reportStudyTime(seconds);
+    let result;
+    if (await detectMode()) {
+      result = await localStore.reportStudyTime(seconds);
+    } else {
+      try {
+        const res = await fetch(`${API_BASE}/practice/study-time`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ seconds })
+        });
+        if (!res.ok) throw new Error();
+        result = await res.json();
+      } catch {
+        result = await localStore.reportStudyTime(seconds);
+      }
     }
+    notifyUserAction();
+    return result;
   },
 
   async getStats() {
