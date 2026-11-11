@@ -18,7 +18,8 @@ import {
   Sparkles,
   BookOpen,
   Swords,
-  CheckSquare
+  CheckSquare,
+  CheckCircle2
 } from 'lucide-vue-next';
 import AnswerSheetModal from './AnswerSheetModal.vue';
 import NoteModal from './NoteModal.vue';
@@ -116,14 +117,14 @@ const loadQuestions = async () => {
     if (selectedCategory.value !== '全部') params.category = selectedCategory.value;
     if (selectedType.value !== '全部') params.question_type = selectedType.value;
     if (selectedStatus.value !== 'all') params.status = selectedStatus.value;
-    if (selectedStatus.value === 'wrong' || redoWrongMode.value) {
+    if (redoWrongMode.value) {
       params.redo = true;
     }
     params.hide_killed = hideKilled.value;
 
     let data = await api.getQuestions(props.workbookId, params);
-    // 如果处于错题重练模式，清空前端回填的选项，确保全新自测
-    if (selectedStatus.value === 'wrong' || redoWrongMode.value) {
+    // 仅当用户明确点击“清空重做”触发 redoWrongMode 时，才清空前端回填选项
+    if (redoWrongMode.value) {
       data = data.map(q => ({
         ...q,
         user_answer: null,
@@ -308,6 +309,19 @@ const toggleKill = async () => {
   } catch (err) {
     console.error('斩题操作失败', err);
     showToast('操作失败，请重试');
+  }
+};
+
+// 移出错题本 / 重新收录
+const toggleMasterFromPractice = async () => {
+  if (!currentQuestion.value) return;
+  const nextStatus = !currentQuestion.value.is_mastered;
+  try {
+    await api.toggleMasterWrong(currentQuestion.value.id, nextStatus);
+    currentQuestion.value.is_mastered = nextStatus;
+    showToast(nextStatus ? '🏆 已成功移出错题集！' : '已重新收录进错题集');
+  } catch (err) {
+    showToast('操作失败: ' + err.message);
   }
 };
 
@@ -567,6 +581,22 @@ onUnmounted(() => {
 
           <!-- Question Actions -->
           <div class="flex items-center gap-1.5">
+            <!-- 错题专攻/错题移除按钮 -->
+            <button
+              v-if="currentQuestion.wrong_count > 0 || selectedStatus === 'wrong' || currentQuestion.is_mastered"
+              @click="toggleMasterFromPractice"
+              class="px-2 sm:px-2.5 py-1.5 rounded-lg border text-xs font-medium flex items-center gap-1 transition cursor-pointer active:scale-95"
+              :class="[
+                currentQuestion.is_mastered 
+                  ? 'bg-emerald-50 border-emerald-300 text-emerald-700 font-semibold' 
+                  : 'border-slate-200 text-slate-600 hover:text-rose-700 hover:bg-rose-50 hover:border-rose-200'
+              ]"
+              :title="currentQuestion.is_mastered ? '已移出错题集，点击可重新收录' : '已攻克？点击直接移出错题集'"
+            >
+              <CheckCircle2 class="w-3.5 h-3.5" :class="currentQuestion.is_mastered ? 'text-emerald-600' : 'text-slate-400'" />
+              <span class="hidden sm:inline">{{ currentQuestion.is_mastered ? '已移出错题' : '移出错题' }}</span>
+            </button>
+
             <!-- 斩杀熟题按钮 -->
             <button
               @click="toggleKill"

@@ -28,12 +28,12 @@ def list_wrong_questions(
         q.question_num, q.question_type, q.category, q.stem, q.options_json, 
         q.answer, q.explanation,
         w.name as workbook_name,
-        up.is_starred,
+        up.user_answer, up.is_correct, up.is_starred,
         n.content as note_content
     FROM wrong_book wb
     JOIN questions q ON wb.question_id = q.id
     JOIN workbooks w ON wb.workbook_id = w.id
-    LEFT JOIN user_progress up ON q.id = up.question_id
+    LEFT JOIN user_progress up ON (wb.workbook_id = up.workbook_id AND wb.question_id = up.question_id)
     LEFT JOIN notes n ON q.id = n.question_id
     WHERE 1=1
     """
@@ -79,11 +79,21 @@ def list_wrong_questions(
             "options": options,
             "answer": r["answer"],
             "explanation": r["explanation"],
+            "user_answer": r["user_answer"] if "user_answer" in r.keys() else None,
+            "is_correct": bool(r["is_correct"]) if ("is_correct" in r.keys() and r["is_correct"] is not None) else None,
             "is_starred": bool(r["is_starred"]) if r["is_starred"] is not None else False,
             "note_content": r["note_content"] or ""
         })
 
     return results
+
+@router.delete("/{question_id}")
+def remove_wrong_question(question_id: int, conn: sqlite3.Connection = Depends(get_db)):
+    """彻底将题目从错题本中移除"""
+    cursor = conn.cursor()
+    cursor.execute("DELETE FROM wrong_book WHERE question_id = ?", (question_id,))
+    conn.commit()
+    return {"success": True, "message": "已从错题本中移除"}
 
 @router.post("/{question_id}/master")
 def toggle_master_status(question_id: int, payload: MasterWrongModel, conn: sqlite3.Connection = Depends(get_db)):

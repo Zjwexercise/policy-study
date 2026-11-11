@@ -301,15 +301,39 @@ export const api = {
 
   // 错题本
   async getWrongQuestions(params = {}) {
-    if (await detectMode()) return localStore.getWrongQuestions(params);
-    try {
-      const query = new URLSearchParams(params).toString();
-      const res = await fetch(`${API_BASE}/wrong-book?${query}`);
-      if (!res.ok) throw new Error();
-      return await res.json();
-    } catch {
-      return localStore.getWrongQuestions(params);
+    let list = [];
+    if (await detectMode()) {
+      list = await localStore.getWrongQuestions(params);
+    } else {
+      try {
+        const query = new URLSearchParams(params).toString();
+        const res = await fetch(`${API_BASE}/wrong-book?${query}`);
+        if (!res.ok) throw new Error();
+        list = await res.json();
+      } catch {
+        list = await localStore.getWrongQuestions(params);
+      }
     }
+
+    // 双轨数据合并：自动补充本地作答、已攻克状态
+    return list.map(q => {
+      const qid = q.question_id || q.id;
+      const wId = q.workbook_id;
+      const localAns = localStorage.getItem(`policy_ans_${wId}_${qid}`) || localStorage.getItem(`policy_ans_all_${qid}`);
+      const localCor = localStorage.getItem(`policy_cor_${qid}`);
+      const localMaster = localStorage.getItem(`policy_wrong_master_${qid}`);
+
+      let userAns = (q.user_answer !== undefined && q.user_answer !== null) ? q.user_answer : (localAns || null);
+      let isCor = (q.is_correct !== undefined && q.is_correct !== null) ? q.is_correct : (localCor !== null ? localCor === '1' : null);
+      let isMastered = (q.is_mastered !== undefined && q.is_mastered !== null) ? q.is_mastered : (localMaster === '1');
+
+      return {
+        ...q,
+        user_answer: userAns,
+        is_correct: isCor,
+        is_mastered: isMastered
+      };
+    });
   },
 
   async toggleMasterWrong(questionId, isMastered) {
@@ -329,6 +353,8 @@ export const api = {
         result = await localStore.toggleMasterWrong(questionId, isMastered);
       }
     }
+    // 同步写入本地持久化
+    localStorage.setItem(`policy_wrong_master_${questionId}`, isMastered ? '1' : '0');
     notifyUserAction();
     return result;
   },
