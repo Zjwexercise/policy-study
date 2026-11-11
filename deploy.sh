@@ -27,9 +27,17 @@ cd /var/www
 if [ -d "policy-study" ]; then
     echo "发现已有目录，正在更新为最新代码与全量题库数据..."
     cd policy-study
+    # 备份保护云端用户的最新做题进度与数据库，防止被覆盖
+    if [ -f "backend/policy_study.db" ]; then
+        cp -p backend/policy_study.db /var/www/policy_study.db.safe_backup 2>/dev/null || true
+    fi
     git remote set-url origin https://ghfast.top/https://github.com/Zjwexercise/policy-study.git 2>/dev/null || true
     git fetch origin main || git fetch --all || true
     git reset --hard origin/main || true
+    # 恢复云端实时题库与做题记录数据库
+    if [ -f "/var/www/policy_study.db.safe_backup" ]; then
+        cp -p /var/www/policy_study.db.safe_backup backend/policy_study.db 2>/dev/null || true
+    fi
 else
     if ! git clone https://ghfast.top/https://github.com/Zjwexercise/policy-study.git policy-study; then
         echo "镜像拉取失败，尝试直连拉取..."
