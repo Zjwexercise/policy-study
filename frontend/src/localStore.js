@@ -230,28 +230,19 @@ export const localStore = {
     return { success: true, is_mastered: isMastered };
   },
 
-  // 清空错题作答记录（清空之前选的选项，供用户全新重做）
+  // 重置错题本自测作答状态（安全防护：绝不删除正式题库中的 policy_ans 作答记录）
   async resetWrongAnswers(workbookId) {
     const wrongList = await this.getWrongQuestions({ workbook_id: workbookId, is_mastered: 0 });
     for (const q of wrongList) {
       const qid = q.id || q.question_id;
-      const wId = q.workbook_id;
-      localStorage.removeItem(`policy_ans_${wId}_${qid}`);
-      localStorage.removeItem(`policy_ans_all_${qid}`);
-      localStorage.removeItem(`policy_cor_${qid}`);
-      localStorage.removeItem(`policy_wrong_ans_${qid}`);
+      localStorage.removeItem(`policy_wb_redo_${qid}`);
     }
-    return { success: true, message: '错题历史选项已清空' };
+    return { success: true, message: '错题自测状态已重置，原试卷做题记录安全完好！' };
   },
 
-  // 清空单题历史作答记录
+  // 重置单题错题本自测记录（安全防护：绝不删除正式题库中的 policy_ans）
   async resetQuestionAnswer(workbookId, questionId) {
-    if (workbookId) {
-      localStorage.removeItem(`policy_ans_${workbookId}_${questionId}`);
-    }
-    localStorage.removeItem(`policy_ans_all_${questionId}`);
-    localStorage.removeItem(`policy_cor_${questionId}`);
-    localStorage.removeItem(`policy_wrong_ans_${questionId}`);
+    localStorage.removeItem(`policy_wb_redo_${questionId}`);
     return { success: true };
   },
 

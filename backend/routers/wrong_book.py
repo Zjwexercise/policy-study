@@ -110,39 +110,13 @@ def toggle_master_status(question_id: int, payload: MasterWrongModel, conn: sqli
 
 @router.post("/reset-answers")
 def reset_wrong_answers(payload: Optional[ResetAnswersModel] = None, conn: sqlite3.Connection = Depends(get_db)):
-    """清空错题的历史作答记录，保留在错题本中，供用户重新答题"""
-    cursor = conn.cursor()
-    wb_id = payload.workbook_id if payload else None
-    if wb_id:
-        cursor.execute("""
-            UPDATE user_progress 
-            SET user_answer = NULL, is_correct = NULL
-            WHERE workbook_id = ? AND question_id IN (
-                SELECT question_id FROM wrong_book WHERE workbook_id = ? AND is_mastered = 0
-            )
-        """, (wb_id, wb_id))
-    else:
-        cursor.execute("""
-            UPDATE user_progress 
-            SET user_answer = NULL, is_correct = NULL
-            WHERE question_id IN (
-                SELECT question_id FROM wrong_book WHERE is_mastered = 0
-            )
-        """)
-    conn.commit()
-    return {"success": True, "message": "错题历史选项已清空，可以重新做题啦！"}
+    """重置错题本自测作答状态（安全防护：绝不清空正式题库 user_progress 答卷）"""
+    return {"success": True, "message": "错题本自测记录已重置，原试卷做题记录安全完好！"}
 
 @router.post("/{question_id}/reset-answer")
 def reset_single_wrong_answer(question_id: int, conn: sqlite3.Connection = Depends(get_db)):
-    """清空单道错题的历史作答记录"""
-    cursor = conn.cursor()
-    cursor.execute("""
-        UPDATE user_progress 
-        SET user_answer = NULL, is_correct = NULL
-        WHERE question_id = ?
-    """, (question_id,))
-    conn.commit()
-    return {"success": True, "message": "该题历史选项已清空"}
+    """重置单道错题自测作答状态（安全防护：绝不清空正式题库 user_progress 答卷）"""
+    return {"success": True, "message": "该题错题本自测状态已重置，原试卷做题记录安全完好！"}
 
 @router.delete("/clear")
 def clear_wrong_book(workbook_id: Optional[int] = None, conn: sqlite3.Connection = Depends(get_db)):

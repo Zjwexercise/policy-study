@@ -197,8 +197,8 @@ const isQuestionTesting = (q) => {
   return viewMode.value === 'quiz';
 };
 
-// 重做单道题（无论当前在什么模式，清空选项并进入自测状态）
-const startRedoSingleQuestion = async (q) => {
+// 重做单道题（安全隔离：仅重置错题本自测状态，绝不清空原试卷做题记录）
+const startRedoSingleQuestion = (q) => {
   const qid = q.question_id || q.id;
   redoStates.value[qid] = {
     selected: [],
@@ -207,15 +207,7 @@ const startRedoSingleQuestion = async (q) => {
     userAns: ''
   };
   localStorage.removeItem(`policy_wb_redo_${qid}`);
-  q.user_answer = null;
-  q.is_correct = null;
-  q.last_wrong_answer = null;
-  try {
-    await api.resetQuestionAnswer(q.workbook_id, qid);
-  } catch (e) {
-    console.error('清空单题记录失败', e);
-  }
-  showToast(`第 ${q.question_num} 题已重置为未答，请重新作答！`);
+  showToast(`第 ${q.question_num} 题已重置自测状态，请重新作答！`);
 };
 
 // 点击选项
@@ -239,8 +231,8 @@ const handleOptionClick = (q, optKey) => {
   }
 };
 
-// 提交自测作答
-const submitRedo = async (q, overrideAns = null) => {
+// 提交自测作答（安全隔离：本地独立判题与持久化，绝不污染或篡改原试卷正式成绩）
+const submitRedo = (q, overrideAns = null) => {
   const qid = q.question_id || q.id;
   const state = getRedoState(qid);
   const finalAns = overrideAns || state.selected.join('');
@@ -249,47 +241,39 @@ const submitRedo = async (q, overrideAns = null) => {
     return;
   }
 
-  try {
-    const res = await api.submitAnswer(q.workbook_id, qid, finalAns);
-    state.isSubmitted = true;
-    state.userAns = finalAns;
-    state.isCorrect = !!res.is_correct;
-    q.user_answer = finalAns;
-    q.is_correct = !!res.is_correct;
+  // 独立精确判题：单选多选字母排序严格比对
+  const cleanUser = Array.from(finalAns.toUpperCase()).sort().join('');
+  const cleanStd = Array.from(q.answer.toUpperCase()).sort().join('');
+  const isCorrect = cleanUser === cleanStd;
 
-    // 持久化保存 redoState 到 localStorage，刷新绝不丢失
-    localStorage.setItem(`policy_wb_redo_${qid}`, JSON.stringify({
-      selected: state.selected,
-      isSubmitted: true,
-      isCorrect: state.isCorrect,
-      userAns: finalAns
-    }));
+  state.isSubmitted = true;
+  state.userAns = finalAns;
+  state.isCorrect = isCorrect;
 
-    // 同步到常规作答缓存，确保全局统计与进度完全一致
-    localStorage.setItem(`policy_ans_${q.workbook_id}_${qid}`, finalAns);
-    localStorage.setItem(`policy_ans_all_${qid}`, finalAns);
-    localStorage.setItem(`policy_cor_${qid}`, res.is_correct ? '1' : '0');
+  // 持久化保存 redoState 到 localStorage，页面刷新绝不丢失
+  localStorage.setItem(`policy_wb_redo_${qid}`, JSON.stringify({
+    selected: state.selected,
+    isSubmitted: true,
+    isCorrect: isCorrect,
+    userAns: finalAns,
+    updatedAt: new Date().toISOString()
+  }));
 
-    if (res.is_correct) {
-      confetti({
-        particleCount: 26,
-        spread: 45,
-        origin: { y: 0.7 }
-      });
-      showToast('🎉 重做正确！作答已记录，可随时点击【移出错题集】！');
-    } else {
-      q.wrong_count = (q.wrong_count || 1) + 1;
-      q.last_wrong_answer = finalAns;
-      showToast('❌ 回答仍有偏差，最新作答已实时记录！');
-    }
-  } catch (err) {
-    alert('提交答案失败: ' + err.message);
+  if (isCorrect) {
+    confetti({
+      particleCount: 26,
+      spread: 45,
+      origin: { y: 0.7 }
+    });
+    showToast('🎉 重做正确！自测已通过，可点击【移出错题集】！');
+  } else {
+    showToast('❌ 回答仍有偏差，建议对照考点解析重新强化记忆！');
   }
 };
 
-// 清空所有错题历史作答记录（清空旧选项，保留错题供重做）
+// 清空所有错题自测作答状态（安全防护：保留原试卷正式做题数据）
 const handleResetAllAnswers = async () => {
-  if (!confirm('确定要清空所有错题的历史选择吗？\n\n所有错题仍会保留在错题本中，但之前的选项与作答痕迹会被清空，让你能从头全新自测！')) {
+  if (!confirm('确定要重置所有错题的自测作答吗？\n\n所有错题仍会保留在错题本中，重做自测记录会被清空，让你能从头全新自测！\n（安全保障：原试卷正式做题进度绝不会受任何影响）')) {
     return;
   }
   try {
@@ -298,14 +282,11 @@ const handleResetAllAnswers = async () => {
     for (const q of wrongQuestions.value) {
       const qid = q.question_id || q.id;
       localStorage.removeItem(`policy_wb_redo_${qid}`);
-      q.user_answer = null;
-      q.is_correct = null;
-      q.last_wrong_answer = null;
     }
     viewMode.value = 'quiz';
-    showToast('✨ 所有错题作答记录已清空，现在可以全新重做！');
+    showToast('✨ 所有错题自测状态已重置，现在可以全新重做！');
   } catch (err) {
-    alert('清空选项记录失败: ' + err.message);
+    alert('重置失败: ' + err.message);
   }
 };
 
