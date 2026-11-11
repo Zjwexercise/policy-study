@@ -17,7 +17,8 @@ import {
   HelpCircle,
   Eye,
   BookOpen,
-  ArrowRight
+  ArrowRight,
+  Brain
 } from 'lucide-vue-next';
 import NoteModal from './NoteModal.vue';
 
@@ -40,6 +41,83 @@ const toastMsg = ref('');
 
 // 模式：'quiz' (自测重做模式，选项可点击，隐去答案), 'review' (解析背诵模式，直接显示答案与错选)
 const viewMode = ref('quiz');
+
+// 排序方式：'ebbinghaus' (艾宾浩斯记忆曲线·遗忘临界优先), 'wrong_count' (做错频次最高优先), 'recent' (最新做错优先)
+const sortMode = ref(localStorage.getItem('policy_wb_sort') || 'ebbinghaus');
+
+const setSortMode = (mode) => {
+  sortMode.value = mode;
+  localStorage.setItem('policy_wb_sort', mode);
+  showToast(
+    mode === 'ebbinghaus' ? '🧠 已按艾宾浩斯记忆曲线排序：遗忘临界/急需复习优先' :
+    mode === 'wrong_count' ? '🔥 已按做错次数排序：高频易错题优先' : '🕒 已按最新做错时间排序'
+  );
+};
+
+// 艾宾浩斯记忆遗忘曲线算法
+const getEbbinghausInfo = (q) => {
+  const timeStr = q.wrong_time || q.updated_at;
+  const lastTime = timeStr ? new Date(timeStr).getTime() : (Date.now() - 3600000 * 24 * 2);
+  const now = Date.now();
+  const elapsedHours = Math.max(0.1, (now - lastTime) / (1000 * 3600));
+  const elapsedDays = elapsedHours / 24;
+  const wrongCount = Math.max(1, q.wrong_count || 1);
+
+  // 艾宾浩斯理论遗忘率模型 R = e^(-t/S)
+  const strength = Math.max(0.4, 2.8 / Math.sqrt(wrongCount));
+  const retention = Math.max(5, Math.min(100, Math.round(Math.exp(-elapsedDays / strength) * 100)));
+
+  // 目标复习周期节点（天）：做错多次 0.5天，做错两次 1天，做错一次 2天
+  let targetIntervalDays = 1.0;
+  if (wrongCount >= 3) targetIntervalDays = 0.5;
+  else if (wrongCount === 2) targetIntervalDays = 1.0;
+  else targetIntervalDays = 2.0;
+
+  // 紧迫度综合评分：遗忘率越大 + 越超期未复习 + 做错次数越多 -> 紧迫度最高
+  let urgency = (100 - retention) * 1.6 + wrongCount * 14;
+  if (elapsedDays >= targetIntervalDays) {
+    urgency += 45 + Math.min(55, (elapsedDays - targetIntervalDays) * 12);
+  }
+
+  let badge = { text: '🌱 近期新错题', class: 'bg-emerald-50 text-emerald-700 border-emerald-200' };
+  if (elapsedDays >= targetIntervalDays || retention <= 35) {
+    badge = { text: '🔥 遗忘临界点(急需复习)', class: 'bg-rose-100 text-rose-800 border-rose-300 font-bold' };
+  } else if (retention <= 65) {
+    badge = { text: '⚡ 记忆衰减中(建议复盘)', class: 'bg-amber-100 text-amber-800 border-amber-300 font-medium' };
+  } else if (retention <= 85) {
+    badge = { text: '⏳ 巩固强化期', class: 'bg-blue-50 text-blue-700 border-blue-200' };
+  } else {
+    badge = { text: '✨ 记忆犹新', class: 'bg-slate-100 text-slate-700 border-slate-200' };
+  }
+
+  return {
+    retention,
+    urgency,
+    elapsedHours: elapsedHours.toFixed(0),
+    elapsedDays: elapsedDays.toFixed(1),
+    badge
+  };
+};
+
+const displayWrongQuestions = computed(() => {
+  const list = [...wrongQuestions.value];
+  if (sortMode.value === 'ebbinghaus') {
+    return list.sort((a, b) => {
+      const uA = getEbbinghausInfo(a).urgency;
+      const uB = getEbbinghausInfo(b).urgency;
+      return uB - uA;
+    });
+  } else if (sortMode.value === 'wrong_count') {
+    return list.sort((a, b) => (b.wrong_count || 1) - (a.wrong_count || 1));
+  } else if (sortMode.value === 'recent') {
+    return list.sort((a, b) => {
+      const tA = new Date(a.wrong_time || a.updated_at || 0).getTime();
+      const tB = new Date(b.wrong_time || b.updated_at || 0).getTime();
+      return tB - tA;
+    });
+  }
+  return list;
+});
 
 // 各题目独立的作答交互状态
 // 格式: { [qId]: { selected: ['A'], isSubmitted: bool, isCorrect: bool, userAns: '' } }
@@ -382,8 +460,37 @@ onMounted(() => {
           </button>
         </div>
 
-        <!-- 模式切换与已掌握勾选 -->
-        <div class="flex items-center gap-3 self-end sm:self-auto">
+        <!-- 排序方式、模式切换与已掌握勾选 -->
+        <div class="flex items-center gap-2.5 flex-wrap self-end sm:self-auto">
+          <!-- 艾宾浩斯智能排序选择器 -->
+          <div class="bg-slate-100 p-0.5 rounded-lg flex items-center text-xs">
+            <button
+              @click="setSortMode('ebbinghaus')"
+              class="px-2 py-1 rounded-md font-medium transition cursor-pointer flex items-center gap-1"
+              :class="sortMode === 'ebbinghaus' ? 'bg-white text-indigo-700 font-bold shadow-2xs' : 'text-slate-600 hover:text-slate-800'"
+              title="根据艾宾浩斯遗忘曲线，将最急需复习的临界点错题排在最前"
+            >
+              <Brain class="w-3.5 h-3.5 text-indigo-600" />
+              <span>🧠 艾宾浩斯</span>
+            </button>
+            <button
+              @click="setSortMode('wrong_count')"
+              class="px-2 py-1 rounded-md font-medium transition cursor-pointer flex items-center gap-1"
+              :class="sortMode === 'wrong_count' ? 'bg-white text-rose-700 font-bold shadow-2xs' : 'text-slate-600 hover:text-slate-800'"
+              title="做错次数最多的高频易错题排在前面"
+            >
+              <span>🔥 易错频次</span>
+            </button>
+            <button
+              @click="setSortMode('recent')"
+              class="px-2 py-1 rounded-md font-medium transition cursor-pointer flex items-center gap-1"
+              :class="sortMode === 'recent' ? 'bg-white text-slate-800 font-bold shadow-2xs' : 'text-slate-600 hover:text-slate-800'"
+              title="按最近做错时间排序"
+            >
+              <span>🕒 最近时间</span>
+            </button>
+          </div>
+
           <!-- 模式切换 Pills -->
           <div class="bg-slate-100 p-0.5 rounded-lg flex items-center text-xs">
             <button
@@ -421,7 +528,7 @@ onMounted(() => {
     </div>
 
     <!-- Empty State -->
-    <div v-else-if="wrongQuestions.length === 0" class="bg-white rounded-2xl p-12 text-center border border-slate-200 shadow-2xs">
+    <div v-else-if="displayWrongQuestions.length === 0" class="bg-white rounded-2xl p-12 text-center border border-slate-200 shadow-2xs">
       <div class="w-16 h-16 bg-emerald-50 text-emerald-500 rounded-full flex items-center justify-center mx-auto mb-3">
         <CheckCircle2 class="w-8 h-8" />
       </div>
@@ -439,7 +546,7 @@ onMounted(() => {
     <!-- Wrong Questions List -->
     <div v-else class="space-y-4">
       <div
-        v-for="(q, qIdx) in wrongQuestions"
+        v-for="(q, qIdx) in displayWrongQuestions"
         :key="q.wrong_id"
         class="bg-white rounded-2xl p-4 sm:p-6 border border-slate-200 shadow-2xs transition hover:border-slate-300"
         :class="{ 'opacity-65 bg-slate-50/70': q.is_mastered }"
@@ -462,6 +569,16 @@ onMounted(() => {
             </span>
             <span class="px-2 py-0.5 text-xs font-bold rounded-md bg-rose-50 text-rose-600 border border-rose-200">
               做错 {{ q.wrong_count }} 次
+            </span>
+
+            <!-- 艾宾浩斯记忆遗忘曲线状态徽章 -->
+            <span 
+              class="px-2 py-0.5 text-xs rounded-md border flex items-center gap-1"
+              :class="getEbbinghausInfo(q).badge.class"
+              :title="`艾宾浩斯分析：距上次复习已过 ${getEbbinghausInfo(q).elapsedDays} 天，预估当前记忆留存率 ${getEbbinghausInfo(q).retention}%`"
+            >
+              <span>{{ getEbbinghausInfo(q).badge.text }}</span>
+              <span class="text-[10px] opacity-75 font-mono">({{ getEbbinghausInfo(q).retention }}%)</span>
             </span>
           </div>
 

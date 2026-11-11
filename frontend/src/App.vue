@@ -141,6 +141,7 @@ onUnmounted(() => {
         :initial-status="practiceInitialStatus"
         :initial-redo="practiceInitialRedo"
         @switch-tab="currentTab = $event"
+        @switch-workbook="selectWorkbook"
       />
 
       <WrongBookView 

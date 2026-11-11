@@ -67,7 +67,7 @@ const tabs = [
 ];
 
 const handleSelectChange = (val) => {
-  emit('select-workbook', val === 'all' ? 'all' : Number(val));
+  emit('select-workbook', val === 'all' || val === 'random' ? val : Number(val));
 };
 </script>
 
@@ -102,6 +102,9 @@ const handleSelectChange = (val) => {
               <!-- 综合模式选项 -->
               <option value="all" class="font-bold text-rose-600">
                 🌟 全部题库大综合 ({{ totalQuestionsAll }}题)
+              </option>
+              <option value="random" class="font-bold text-indigo-600">
+                🎲 跨题库·盲盒随机抽题 ({{ totalQuestionsAll }}题无序)
               </option>
               
               <!-- 历年真题专区 -->

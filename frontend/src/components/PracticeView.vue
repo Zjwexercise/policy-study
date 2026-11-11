@@ -19,7 +19,9 @@ import {
   BookOpen,
   Swords,
   CheckSquare,
-  CheckCircle2
+  CheckCircle2,
+  Brain,
+  Dices
 } from 'lucide-vue-next';
 import AnswerSheetModal from './AnswerSheetModal.vue';
 import NoteModal from './NoteModal.vue';
@@ -43,7 +45,7 @@ const props = defineProps({
   }
 });
 
-const emit = defineEmits(['switch-tab']);
+const emit = defineEmits(['switch-tab', 'switch-workbook']);
 
 const questions = ref([]);
 const loading = ref(false);
@@ -71,9 +73,100 @@ const toggleSingleAutoSubmit = () => {
   showToast(singleAutoSubmit.value ? '已切换为：单选题点击立即判题' : '已切换为：单选题按Enter确认提交');
 };
 
-// 模式：study (即时解析背题), exam (模考模式，做完全部才看解析)
-const practiceMode = ref('study'); 
+// 模式：study (即时解析背题), recall (艾宾浩斯主动回忆模式), exam (模考模式)
+const practiceMode = ref(localStorage.getItem('policy_practice_mode') || 'study'); 
+const isRecallRevealed = ref(false); // 回忆模式下选项是否展开
+
+const setPracticeMode = (mode) => {
+  practiceMode.value = mode;
+  localStorage.setItem('policy_practice_mode', mode);
+  isRecallRevealed.value = false;
+  if (mode === 'recall') {
+    showToast('🧠 已开启【回忆模式】：先在心中主动回忆考点，再揭晓作答！');
+  } else if (mode === 'study') {
+    showToast('📝 已切换为【即时背题模式】：作答后立即展示考点精解');
+  }
+};
+
 const isRandomOrder = ref(false);
+
+// 每日推荐一题
+const dailyQuestion = ref(null);
+const showDailyBanner = ref(true);
+
+const initDailyQuestion = () => {
+  if (questions.value.length === 0) return;
+  try {
+    const today = new Date().toISOString().slice(0, 10);
+    const savedDate = localStorage.getItem('policy_daily_date');
+    const savedQid = localStorage.getItem('policy_daily_qid');
+
+    if (savedDate === today && savedQid) {
+      const found = questions.value.find(q => String(q.id) === String(savedQid));
+      if (found) {
+        dailyQuestion.value = found;
+        return;
+      }
+    }
+
+    // 智能选取今日一题：优先选急需复习的错题，其次选未答核心题
+    const wrongList = questions.value.filter(q => q.wrong_count > 0 && !q.is_mastered);
+    let picked = null;
+    if (wrongList.length > 0) {
+      picked = wrongList[Math.floor(Math.random() * wrongList.length)];
+    } else {
+      const unattempted = questions.value.filter(q => !q.user_answer);
+      if (unattempted.length > 0) {
+        picked = unattempted[Math.floor(Math.random() * unattempted.length)];
+      } else {
+        picked = questions.value[Math.floor(Math.random() * questions.value.length)];
+      }
+    }
+
+    if (picked) {
+      dailyQuestion.value = picked;
+      localStorage.setItem('policy_daily_date', today);
+      localStorage.setItem('policy_daily_qid', String(picked.id));
+    }
+  } catch (e) {
+    console.warn('初始化每日推荐失败', e);
+  }
+};
+
+const jumpToDailyQuestion = () => {
+  if (!dailyQuestion.value) return;
+  const idx = questions.value.findIndex(q => q.id === dailyQuestion.value.id);
+  if (idx !== -1) {
+    currentIndex.value = idx;
+    isRecallRevealed.value = false;
+    showToast(`🎯 已为你载入今日推荐题：第 ${dailyQuestion.value.question_num} 题！`);
+  }
+};
+
+const changeDailyQuestion = () => {
+  if (questions.value.length <= 1) return;
+  const pool = questions.value.filter(q => !dailyQuestion.value || q.id !== dailyQuestion.value.id);
+  const picked = pool[Math.floor(Math.random() * pool.length)];
+  if (picked) {
+    dailyQuestion.value = picked;
+    const today = new Date().toISOString().slice(0, 10);
+    localStorage.setItem('policy_daily_date', today);
+    localStorage.setItem('policy_daily_qid', String(picked.id));
+    showToast('🎲 已更换今日推荐题目！');
+  }
+};
+
+// 跨题库全局随机盲盒抽题
+const triggerGlobalRandomQuestion = async () => {
+  emit('switch-workbook', 'all');
+  isRandomOrder.value = true;
+  showToast('🎲 已开启跨题库全局随机盲盒抽题！涵盖 528 道肖10套卷与历年真题');
+  await loadQuestions();
+  if (questions.value.length > 0) {
+    currentIndex.value = Math.floor(Math.random() * questions.value.length);
+    isRecallRevealed.value = false;
+  }
+};
 
 // 筛选条件
 const selectedCategory = ref('全部');
@@ -113,6 +206,12 @@ const loadQuestions = async () => {
   if (!props.workbookId) return;
   loading.value = true;
   try {
+    const isRandomWb = props.workbookId === 'random';
+    const targetWbId = isRandomWb ? 'all' : props.workbookId;
+    if (isRandomWb) {
+      isRandomOrder.value = true;
+    }
+
     const params = {};
     if (selectedCategory.value !== '全部') params.category = selectedCategory.value;
     if (selectedType.value !== '全部') params.question_type = selectedType.value;
@@ -122,7 +221,7 @@ const loadQuestions = async () => {
     }
     params.hide_killed = hideKilled.value;
 
-    let data = await api.getQuestions(props.workbookId, params);
+    let data = await api.getQuestions(targetWbId, params);
     // 仅当用户明确点击“清空重做”触发 redoWrongMode 时，才清空前端回填选项
     if (redoWrongMode.value) {
       data = data.map(q => ({
@@ -135,6 +234,8 @@ const loadQuestions = async () => {
       data = [...data].sort(() => Math.random() - 0.5);
     }
     questions.value = data;
+    initDailyQuestion();
+
     // 记忆题号位置：优先恢复上次停留在该练习册的具体题号，刷新不再被动重置到第1题
     const savedIdx = Number(localStorage.getItem(`policy_cur_idx_${props.workbookId}`) || 0);
     if (savedIdx >= 0 && savedIdx < data.length) {
@@ -142,6 +243,7 @@ const loadQuestions = async () => {
     } else {
       currentIndex.value = 0;
     }
+    isRecallRevealed.value = false;
     resetSelection();
   } catch (err) {
     console.error('加载题目失败', err);
@@ -153,6 +255,7 @@ const loadQuestions = async () => {
 // 监听题号切换
 watch(currentIndex, (newIdx) => {
   localStorage.setItem(`policy_cur_idx_${props.workbookId}`, String(newIdx));
+  isRecallRevealed.value = false;
   resetSelection();
 });
 
@@ -351,6 +454,16 @@ const handleKeyDown = (e) => {
   // 排除输入框内的按键
   if (['INPUT', 'TEXTAREA'].includes(e.target.tagName)) return;
 
+  // 回忆模式下按空格键揭晓选项
+  if (practiceMode.value === 'recall' && !isRecallRevealed.value && !hasAnsweredCurrent.value) {
+    if (e.code === 'Space' || e.key === ' ') {
+      e.preventDefault();
+      isRecallRevealed.value = true;
+      showToast('✨ 选项已揭晓，请选择答案！');
+      return;
+    }
+  }
+
   const key = e.key.toUpperCase();
   if (['A', 'B', 'C', 'D'].includes(key)) {
     e.preventDefault();
@@ -403,6 +516,55 @@ onUnmounted(() => {
 
 <template>
   <div class="max-w-4xl mx-auto px-3 sm:px-6 py-4 pb-24 lg:pb-12">
+    <!-- 艾宾浩斯·每日精选一题横幅 -->
+    <div 
+      v-if="showDailyBanner && dailyQuestion"
+      class="bg-gradient-to-r from-amber-500/10 via-rose-500/10 to-indigo-500/10 border border-amber-200/90 rounded-2xl p-3 sm:p-4 mb-4 flex items-center justify-between gap-3 shadow-2xs backdrop-blur-xs animate-in fade-in duration-300"
+    >
+      <div class="flex items-center gap-2.5 min-w-0">
+        <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-amber-500 to-rose-500 text-white flex items-center justify-center shrink-0 shadow-xs font-bold text-sm">
+          🌟
+        </div>
+        <div class="min-w-0">
+          <div class="flex items-center gap-2 flex-wrap">
+            <span class="text-xs font-bold text-slate-800">艾宾浩斯 · 每日精选一题</span>
+            <span class="px-2 py-0.5 text-[10px] font-bold rounded-md bg-amber-100 text-amber-800 border border-amber-200">
+              {{ dailyQuestion.category }} · {{ dailyQuestion.question_type === 'multiple' ? '多选题' : '单选题' }}
+            </span>
+            <span v-if="dailyQuestion.user_answer" class="px-1.5 py-0.5 text-[10px] font-semibold rounded bg-emerald-100 text-emerald-700">
+              ✓ 今日已完成
+            </span>
+          </div>
+          <p class="text-xs text-slate-600 truncate mt-0.5 max-w-xl">
+            {{ dailyQuestion.stem }}
+          </p>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-2 shrink-0">
+        <button
+          @click="jumpToDailyQuestion"
+          class="px-3 py-1.5 bg-gradient-to-r from-rose-600 to-rose-700 hover:from-rose-700 hover:to-rose-800 text-white text-xs font-semibold rounded-xl shadow-xs transition cursor-pointer flex items-center gap-1 active:scale-95"
+        >
+          <span>{{ dailyQuestion.user_answer ? '查看回顾' : '立即挑战' }}</span>
+        </button>
+        <button
+          @click="changeDailyQuestion"
+          class="p-1.5 text-slate-400 hover:text-slate-600 hover:bg-slate-100 rounded-lg transition cursor-pointer"
+          title="换一题推荐"
+        >
+          <RotateCcw class="w-3.5 h-3.5" />
+        </button>
+        <button
+          @click="showDailyBanner = false"
+          class="p-1 text-slate-300 hover:text-slate-500 rounded transition cursor-pointer"
+          title="关闭"
+        >
+          <X class="w-3.5 h-3.5" />
+        </button>
+      </div>
+    </div>
+
     <!-- Filter and Toolbar Area -->
     <div class="bg-white rounded-2xl p-3 sm:p-4 border border-slate-200 shadow-2xs mb-4">
       <div class="flex flex-wrap items-center justify-between gap-3">
@@ -424,7 +586,38 @@ onUnmounted(() => {
         </div>
 
         <!-- 模式与辅助按钮 -->
-        <div class="flex items-center gap-2">
+        <div class="flex items-center gap-2 flex-wrap">
+          <!-- 模式切换：即时背题 vs 艾宾浩斯主动回忆 -->
+          <div class="bg-slate-100 p-0.5 rounded-lg flex items-center text-xs">
+            <button
+              @click="setPracticeMode('study')"
+              class="px-2 py-1 rounded-md transition cursor-pointer flex items-center gap-1 font-medium"
+              :class="practiceMode === 'study' ? 'bg-white text-slate-800 font-bold shadow-2xs' : 'text-slate-600 hover:text-slate-900'"
+              title="即时背题模式：选择选项后直接展示考点精解"
+            >
+              <span>📝 背题</span>
+            </button>
+            <button
+              @click="setPracticeMode('recall')"
+              class="px-2.5 py-1 rounded-md transition cursor-pointer flex items-center gap-1 font-medium"
+              :class="practiceMode === 'recall' ? 'bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-bold shadow-2xs' : 'text-slate-600 hover:text-indigo-600'"
+              title="艾宾浩斯主动回忆模式：选项默认遮蔽，先在心中主动回忆考点，再揭晓作答！"
+            >
+              <Brain class="w-3.5 h-3.5" />
+              <span>🧠 回忆模式</span>
+            </button>
+          </div>
+
+          <!-- 跨题库随机盲盒抽题 -->
+          <button
+            @click="triggerGlobalRandomQuestion"
+            class="px-2.5 py-1.5 rounded-lg border text-xs font-semibold flex items-center gap-1 transition cursor-pointer bg-gradient-to-r from-indigo-50 to-purple-50 hover:from-indigo-100 hover:to-purple-100 border-indigo-200 text-indigo-700 active:scale-95 shadow-2xs select-none"
+            title="打破题库限制，在全国真题与10套卷共528题大题库中随机盲盒抽题"
+          >
+            <Dices class="w-3.5 h-3.5 text-indigo-600" />
+            <span class="hidden sm:inline">跨库抽题</span>
+          </button>
+
           <!-- 刷题范围：全部、错题、未做、收藏 -->
           <select 
             v-model="selectedStatus"
@@ -645,8 +838,40 @@ onUnmounted(() => {
           <span>{{ currentQuestion.stem }}</span>
         </div>
 
+        <!-- 回忆模式：未展开时的遮罩挑战卡片 -->
+        <div 
+          v-if="practiceMode === 'recall' && !isRecallRevealed && !hasAnsweredCurrent"
+          class="mt-6 p-6 sm:p-7 bg-gradient-to-br from-indigo-50/90 via-purple-50/70 to-pink-50/50 border-2 border-indigo-200/90 rounded-2xl text-center shadow-xs animate-in fade-in zoom-in-95 duration-200"
+        >
+          <div class="w-12 h-12 bg-white text-indigo-600 rounded-2xl flex items-center justify-center mx-auto mb-3 shadow-2xs border border-indigo-100">
+            <Brain class="w-6 h-6 animate-pulse text-indigo-600" />
+          </div>
+          <h4 class="text-base font-bold text-slate-800 flex items-center justify-center gap-1.5">
+            <span>🧠 艾宾浩斯 · 主动回忆挑战</span>
+          </h4>
+          <p class="text-xs sm:text-sm text-slate-600 mt-2 max-w-lg mx-auto leading-relaxed">
+            <strong class="text-indigo-900">请先勿看选项！</strong> 尝试在脑海中回忆该考点的核心概念、关键词或直接推断正确选项。心理学证实：先闭眼回忆再对答案，记忆留存率提升 3 倍！
+          </p>
+
+          <div class="flex items-center justify-center gap-3 mt-5 flex-wrap">
+            <button
+              @click="isRecallRevealed = true"
+              class="px-5 py-2.5 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white font-bold text-xs sm:text-sm rounded-xl shadow-xs transition cursor-pointer flex items-center gap-2 active:scale-95"
+            >
+              <Sparkles class="w-4 h-4 text-amber-300" />
+              <span>想好了，揭晓选项作答 (按空格键)</span>
+            </button>
+            <button
+              @click="isRecallRevealed = true"
+              class="px-4 py-2.5 bg-white hover:bg-slate-100 border border-slate-200 text-slate-600 text-xs sm:text-sm font-medium rounded-xl transition cursor-pointer active:scale-95"
+            >
+              <span>毫无头绪，直接看选项</span>
+            </button>
+          </div>
+        </div>
+
         <!-- Options List -->
-        <div class="mt-6 space-y-3">
+        <div v-else class="mt-6 space-y-3 animate-in fade-in duration-200">
           <div
             v-for="opt in currentQuestion.options"
             :key="opt.key"
