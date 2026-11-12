@@ -1265,21 +1265,21 @@ onUnmounted(() => {
         <!-- Options List (多模式完全解耦：独立高亮与独立判定) -->
         <div v-else class="mt-6 space-y-3 animate-in fade-in duration-200">
           <div
-            v-for="opt in currentQuestion.options"
-            :key="opt.key"
-            @click="handleOptionClick(opt.key)"
+            v-for="(opt, oIdx) in currentQuestion.options"
+            :key="opt && typeof opt === 'object' ? opt.key : ('opt_' + oIdx)"
+            @click="handleOptionClick(opt && typeof opt === 'object' ? opt.key : String.fromCharCode(65 + oIdx))"
             class="group p-3.5 sm:p-4 rounded-xl border-2 transition-all flex items-start gap-3 cursor-pointer select-none"
             :class="[
-              getOptionStatus(opt.key).isResolved
+              getOptionStatus(opt && typeof opt === 'object' ? opt.key : String.fromCharCode(65 + oIdx)).isResolved
                 ? (
-                    getOptionStatus(opt.key).isCorrect
+                    getOptionStatus(opt && typeof opt === 'object' ? opt.key : String.fromCharCode(65 + oIdx)).isCorrect
                       ? 'border-emerald-500 bg-emerald-50/70 text-emerald-950 font-medium'
-                      : (getOptionStatus(opt.key).isWrong
+                      : (getOptionStatus(opt && typeof opt === 'object' ? opt.key : String.fromCharCode(65 + oIdx)).isWrong
                           ? 'border-rose-500 bg-rose-50/70 text-rose-950'
                           : 'border-slate-200/80 bg-slate-50/50 text-slate-400 opacity-60')
                   )
                 : (
-                    getOptionStatus(opt.key).isSelected
+                    getOptionStatus(opt && typeof opt === 'object' ? opt.key : String.fromCharCode(65 + oIdx)).isSelected
                       ? 'border-rose-500 bg-rose-50/40 text-slate-900 shadow-xs'
                       : 'border-slate-200 hover:border-slate-300 hover:bg-slate-50 text-slate-800'
                   )
@@ -1289,33 +1289,33 @@ onUnmounted(() => {
             <div
               class="w-7 h-7 rounded-lg flex items-center justify-center font-bold text-sm shrink-0 transition"
               :class="[
-                getOptionStatus(opt.key).isResolved
+                getOptionStatus(opt && typeof opt === 'object' ? opt.key : String.fromCharCode(65 + oIdx)).isResolved
                   ? (
-                      getOptionStatus(opt.key).isCorrect
+                      getOptionStatus(opt && typeof opt === 'object' ? opt.key : String.fromCharCode(65 + oIdx)).isCorrect
                         ? 'bg-emerald-600 text-white'
-                        : (getOptionStatus(opt.key).isWrong
+                        : (getOptionStatus(opt && typeof opt === 'object' ? opt.key : String.fromCharCode(65 + oIdx)).isWrong
                             ? 'bg-rose-600 text-white'
                             : 'bg-slate-200 text-slate-600')
                     )
                   : (
-                      getOptionStatus(opt.key).isSelected
+                      getOptionStatus(opt && typeof opt === 'object' ? opt.key : String.fromCharCode(65 + oIdx)).isSelected
                         ? 'bg-rose-600 text-white'
                         : 'bg-slate-100 group-hover:bg-slate-200 text-slate-700'
                     )
               ]"
             >
-              <span>{{ opt.key }}</span>
+              <span>{{ opt && typeof opt === 'object' ? opt.key : String.fromCharCode(65 + oIdx) }}</span>
             </div>
 
             <!-- Option Text -->
             <div class="text-sm sm:text-base leading-relaxed pt-0.5 flex-1">
-              {{ opt.value }}
+              {{ opt && typeof opt === 'object' ? opt.value : opt }}
             </div>
 
             <!-- Feedback Icon -->
-            <div v-if="getOptionStatus(opt.key).isResolved" class="shrink-0 pt-0.5">
-              <Check v-if="getOptionStatus(opt.key).isCorrect" class="w-5 h-5 text-emerald-600 font-bold" />
-              <X v-else-if="getOptionStatus(opt.key).isWrong" class="w-5 h-5 text-rose-600 font-bold" />
+            <div v-if="getOptionStatus(opt && typeof opt === 'object' ? opt.key : String.fromCharCode(65 + oIdx)).isResolved" class="shrink-0 pt-0.5">
+              <Check v-if="getOptionStatus(opt && typeof opt === 'object' ? opt.key : String.fromCharCode(65 + oIdx)).isCorrect" class="w-5 h-5 text-emerald-600 font-bold" />
+              <X v-else-if="getOptionStatus(opt && typeof opt === 'object' ? opt.key : String.fromCharCode(65 + oIdx)).isWrong" class="w-5 h-5 text-rose-600 font-bold" />
             </div>
           </div>
         </div>

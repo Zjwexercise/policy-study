@@ -47,6 +47,18 @@ export function normalizeQuestion(q) {
     opts = [];
   }
 
+  // 防御性转换：若 opts 是普通字符串数组（如 ["A. ...", "B. ..."] 或 ["选项1", ...]），转换为标准结构
+  if (Array.isArray(opts) && opts.length > 0 && typeof opts[0] === 'string') {
+    const keys = ['A', 'B', 'C', 'D', 'E', 'F'];
+    opts = opts.map((item, idx) => {
+      const m = String(item).match(/^([A-F])[.、\s]\s*(.*)$/);
+      if (m) {
+        return { key: m[1], value: m[2] };
+      }
+      return { key: keys[idx] || String(idx + 1), value: String(item) };
+    });
+  }
+
   let qType = q.question_type;
   if (qType === '单选题' || qType === '单选') qType = 'single';
   else if (qType === '多选题' || qType === '多选') qType = 'multiple';
