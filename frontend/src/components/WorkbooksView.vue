@@ -1,5 +1,5 @@
 <script setup>
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
 import { api } from '../api';
 import { 
   Upload, 
@@ -44,6 +44,20 @@ const inspectingWorkbook = ref(null);
 const questionsList = ref([]);
 const loadingQuestions = ref(false);
 const editingQuestion = ref(null);
+
+// 习题集分类筛选 Tab
+const activeTab = ref('all');
+
+const filteredWorkbooks = computed(() => {
+  if (activeTab.value === '1000') {
+    return props.workbooks.filter(w => w.name && (w.name.includes('1000题') || (w.id >= 34 && w.id <= 39)));
+  } else if (activeTab.value === 'zhenti') {
+    return props.workbooks.filter(w => w.name && !w.name.includes('1000题') && (w.name.includes('真题') || (w.id >= 27 && w.id <= 33)));
+  } else if (activeTab.value === 'taojuan') {
+    return props.workbooks.filter(w => !w.name || (!w.name.includes('真题') && !w.name.includes('1000题') && !(w.id >= 27 && w.id <= 39)));
+  }
+  return props.workbooks;
+});
 
 const handleFileSelect = (e) => {
   const file = e.target.files[0];
@@ -246,7 +260,7 @@ const saveQuestionEdit = async (q) => {
         </div>
       </div>
 
-      <div class="flex items-center justify-between mb-4">
+      <div class="flex items-center justify-between mb-3">
         <div>
           <h3 class="font-bold text-slate-800 text-base flex items-center gap-1.5">
             <Library class="w-4 h-4 text-rose-600" />
@@ -256,9 +270,54 @@ const saveQuestionEdit = async (q) => {
         </div>
       </div>
 
+      <!-- 分类过滤 Tab -->
+      <div class="flex items-center gap-2 mb-4 overflow-x-auto pb-1 text-xs">
+        <button
+          @click="activeTab = 'all'"
+          class="px-3.5 py-1.5 rounded-xl font-bold transition flex items-center gap-1.5 cursor-pointer shrink-0"
+          :class="activeTab === 'all' ? 'bg-slate-900 text-white shadow-2xs' : 'bg-white text-slate-600 hover:bg-slate-100 border border-slate-200'"
+        >
+          <span>全部习题集</span>
+          <span class="px-1.5 py-0.2 text-[10px] rounded-full" :class="activeTab === 'all' ? 'bg-white/20 text-white' : 'bg-slate-100 text-slate-500'">{{ workbooks.length }}</span>
+        </button>
+
+        <button
+          @click="activeTab = '1000'"
+          class="px-3.5 py-1.5 rounded-xl font-bold transition flex items-center gap-1.5 cursor-pointer shrink-0"
+          :class="activeTab === '1000' ? 'bg-rose-600 text-white shadow-2xs' : 'bg-white text-slate-600 hover:bg-rose-50 hover:text-rose-600 border border-slate-200'"
+        >
+          <span>🎯 2027精雕细刻1000题</span>
+          <span class="px-1.5 py-0.2 text-[10px] rounded-full" :class="activeTab === '1000' ? 'bg-white/20 text-white' : 'bg-slate-100 text-slate-500'">
+            {{ workbooks.filter(w => w.name && (w.name.includes('1000题') || (w.id >= 34 && w.id <= 39))).length }}
+          </span>
+        </button>
+
+        <button
+          @click="activeTab = 'zhenti'"
+          class="px-3.5 py-1.5 rounded-xl font-bold transition flex items-center gap-1.5 cursor-pointer shrink-0"
+          :class="activeTab === 'zhenti' ? 'bg-amber-600 text-white shadow-2xs' : 'bg-white text-slate-600 hover:bg-amber-50 hover:text-amber-600 border border-slate-200'"
+        >
+          <span>🏛️ 历年真题</span>
+          <span class="px-1.5 py-0.2 text-[10px] rounded-full" :class="activeTab === 'zhenti' ? 'bg-white/20 text-white' : 'bg-slate-100 text-slate-500'">
+            {{ workbooks.filter(w => w.name && !w.name.includes('1000题') && (w.name.includes('真题') || (w.id >= 27 && w.id <= 33))).length }}
+          </span>
+        </button>
+
+        <button
+          @click="activeTab = 'taojuan'"
+          class="px-3.5 py-1.5 rounded-xl font-bold transition flex items-center gap-1.5 cursor-pointer shrink-0"
+          :class="activeTab === 'taojuan' ? 'bg-indigo-600 text-white shadow-2xs' : 'bg-white text-slate-600 hover:bg-indigo-50 hover:text-indigo-600 border border-slate-200'"
+        >
+          <span>📚 冲刺10套卷</span>
+          <span class="px-1.5 py-0.2 text-[10px] rounded-full" :class="activeTab === 'taojuan' ? 'bg-white/20 text-white' : 'bg-slate-100 text-slate-500'">
+            {{ workbooks.filter(w => !w.name || (!w.name.includes('真题') && !w.name.includes('1000题') && !(w.id >= 27 && w.id <= 39))).length }}
+          </span>
+        </button>
+      </div>
+
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div
-          v-for="wb in workbooks"
+          v-for="wb in filteredWorkbooks"
           :key="wb.id"
           class="bg-white rounded-2xl p-5 border transition shadow-2xs hover:shadow-sm flex flex-col justify-between"
           :class="[

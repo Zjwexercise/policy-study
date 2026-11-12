@@ -26,3 +26,10 @@ frontend/.vite/
 # System
 .DS_Store
 Thumbs.db
+
+# Temp OCR & local artifacts
+rapid_*/
+temp_*/
+backend/1000_q_txt/
+backend/1000_exp_txt/
+policy.db
