@@ -7,25 +7,25 @@ echo "=========================================================="
 
 cd /var/www/policy-study
 
-# 1. 备份保护做题数据库
+# 1. 备份保护服务器当前数据库
 if [ -f "backend/policy_study.db" ]; then
     cp -p backend/policy_study.db /var/www/policy_study.db.safe_backup 2>/dev/null || true
 fi
 
-# 2. 从 GitHub 加速镜像拉取最新提交
+# 2. 从 GitHub 加速镜像拉取最新提交（含最新1000题题库与构建）
 git remote set-url origin https://ghfast.top/https://github.com/Zjwexercise/policy-study.git 2>/dev/null || true
 git fetch origin main || git fetch --all || true
 git reset --hard origin/main || true
 
-# 3. 恢复数据库，保证刷题记录完整不丢失
-if [ -f "/var/www/policy_study.db.safe_backup" ]; then
-    cp -p /var/www/policy_study.db.safe_backup backend/policy_study.db 2>/dev/null || true
+# 3. 智能双向融合：既保留服务器上的全部做题进度/错题本，又无缝注入1000题全套新题库
+if [ -f "merge_cloud_db.py" ]; then
+    python3 merge_cloud_db.py 2>/dev/null || python merge_cloud_db.py 2>/dev/null || true
 fi
 
 # 4. 重启守护服务
 systemctl restart policy-study
 
 echo "=========================================================="
-echo " 🎉 更新完成！最新前端与后端功能已上线！"
+echo " 🎉 更新完成！2027版1000题与最新功能已全部上线！"
 echo " 🌐 访问地址：http://47.93.172.13:8000"
 echo "=========================================================="

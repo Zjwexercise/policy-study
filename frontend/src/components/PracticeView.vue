@@ -73,6 +73,20 @@ const toggleSingleAutoSubmit = () => {
   showToast(singleAutoSubmit.value ? '已切换为：单选题点击立即判题' : '已切换为：单选题按Enter确认提交');
 };
 
+// 当前练习册名称与是否属于1000题
+const currentWorkbookName = computed(() => {
+  if (props.workbookId === 'all') return '🌟 全部题库大综合';
+  if (props.workbookId === 'random') return '🎲 跨题库·盲盒随机抽题';
+  const wb = props.workbooks.find(w => w.id === props.workbookId || String(w.id) === String(props.workbookId));
+  return wb ? wb.name : '练习题库';
+});
+
+const is1000Workbook = computed(() => {
+  if (props.workbookId === 'all') return false;
+  const name = currentWorkbookName.value;
+  return name.includes('1000题') || (typeof props.workbookId === 'number' && props.workbookId >= 34 && props.workbookId <= 39);
+});
+
 // 模式：study (即时解析背题), recall (艾宾浩斯主动回忆模式), exam (模考模式)
 const practiceMode = ref(localStorage.getItem('policy_practice_mode') || 'study'); 
 
@@ -882,6 +896,40 @@ onUnmounted(() => {
 
     <!-- Filter and Toolbar Area -->
     <div class="bg-white rounded-2xl p-3 sm:p-4 border border-slate-200 shadow-2xs mb-4">
+      <!-- 当前练习册与快捷切换 1000 题 -->
+      <div class="flex items-center justify-between pb-2.5 mb-2.5 border-b border-slate-100 flex-wrap gap-2">
+        <div class="flex items-center gap-1.5 min-w-0">
+          <BookOpen class="w-4 h-4 text-rose-600 shrink-0" />
+          <span class="text-xs font-semibold text-slate-500">正在练习：</span>
+          <span class="text-xs sm:text-sm font-bold text-slate-900 truncate">
+            {{ currentWorkbookName }}
+          </span>
+          <span class="px-1.5 py-0.2 text-[10px] rounded-md font-bold bg-slate-100 text-slate-600 shrink-0">
+            共 {{ questions.length }} 题
+          </span>
+        </div>
+
+        <div class="flex items-center gap-2">
+          <!-- 快捷一键切换至1000题 -->
+          <button
+            v-if="!is1000Workbook"
+            @click="emit('switch-workbook', 39)"
+            class="px-2.5 py-1 text-xs font-bold rounded-lg bg-rose-50 hover:bg-rose-100 active:bg-rose-200 text-rose-700 border border-rose-200 transition flex items-center gap-1 cursor-pointer shadow-2xs"
+            title="一键切换至2027精雕细刻1000题全科目精选合集"
+          >
+            <span>🎯 一键刷1000题</span>
+          </button>
+          <button
+            v-else
+            @click="emit('switch-tab', 'workbooks')"
+            class="px-2.5 py-1 text-xs font-bold rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 transition flex items-center gap-1 cursor-pointer"
+            title="前往练习册中心切换分科"
+          >
+            <span>📚 换其它科目</span>
+          </button>
+        </div>
+      </div>
+
       <div class="flex flex-wrap items-center justify-between gap-3">
         <!-- 学科分类过滤 -->
         <div class="flex items-center gap-1 overflow-x-auto py-0.5 no-scrollbar">

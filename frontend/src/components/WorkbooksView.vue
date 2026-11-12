@@ -233,8 +233,41 @@ const saveQuestionEdit = async (q) => {
 
     <!-- Section 2: Workbooks List -->
     <div>
+      <!-- 🎯 2027 精雕细刻1000题重磅专区卡片 -->
+      <div class="bg-linear-to-r from-red-600 via-rose-600 to-pink-600 rounded-3xl p-5 sm:p-6 text-white shadow-md mb-5 relative overflow-hidden">
+        <div class="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-4">
+          <div class="space-y-1.5 max-w-xl">
+            <div class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-white/20 text-white text-xs font-bold backdrop-blur-xs">
+              <span>🎯 2027 考研政治重磅新题库</span>
+            </div>
+            <h3 class="text-lg sm:text-xl font-extrabold tracking-wide">
+              精雕细刻1000题 · 五大科目全真精编
+            </h3>
+            <p class="text-xs sm:text-sm text-rose-50 leading-relaxed">
+              全书 404 页试题与解析全量对齐（马原 277题、毛中特 99题、习思想 199题、史纲 239题、思修 132题，共 946 题），配备100%官方详尽解析！
+            </p>
+          </div>
+
+          <div class="flex flex-wrap items-center gap-2 shrink-0">
+            <button
+              @click="emit('select-workbook', 39); emit('start-practice');"
+              class="px-4 py-2 bg-white hover:bg-rose-50 active:bg-rose-100 text-rose-700 font-bold text-xs sm:text-sm rounded-xl shadow-xs transition flex items-center justify-center gap-1.5 cursor-pointer"
+            >
+              <BookOpen class="w-4 h-4 text-rose-600" />
+              <span>开启1000题全科目精练</span>
+            </button>
+            <button
+              @click="activeTab = '1000'"
+              class="px-4 py-2 bg-white/20 hover:bg-white/30 active:bg-white/40 text-white font-bold text-xs sm:text-sm rounded-xl transition cursor-pointer"
+            >
+              按科目分卷查看 (6本)
+            </button>
+          </div>
+        </div>
+      </div>
+
       <!-- 🌟 全库跨本综合练习卡片（合并模式） -->
-      <div class="bg-linear-to-r from-rose-500 via-red-500 to-amber-500 rounded-3xl p-5 sm:p-6 text-white shadow-md mb-6 relative overflow-hidden">
+      <div class="bg-linear-to-r from-slate-800 via-slate-900 to-indigo-950 rounded-3xl p-5 sm:p-6 text-white shadow-md mb-6 relative overflow-hidden">
         <div class="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div class="space-y-1.5 max-w-xl">
             <div class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-white/20 text-white text-xs font-semibold backdrop-blur-xs">
@@ -243,17 +276,17 @@ const saveQuestionEdit = async (q) => {
             <h3 class="text-lg sm:text-xl font-extrabold tracking-wide">
               全部练习册合并综合练习
             </h3>
-            <p class="text-xs sm:text-sm text-rose-50 leading-relaxed">
-              汇集已导入的全部题库（包含 2019-2024历年真题 与 冲刺10套卷，共 {{ workbooks.reduce((s, w) => s + (w.total_questions || 0), 0) }} 道考研政治选择题），支持跨卷混合刷题、全学科综合模拟测试！
+            <p class="text-xs sm:text-sm text-slate-300 leading-relaxed">
+              汇集已导入的全部题库（包含 2027精雕细刻1000题、2019-2024历年真题 与 冲刺10套卷，共 {{ workbooks.reduce((s, w) => s + (w.total_questions || 0), 0) }} 道考研政治选择题），支持跨卷混合刷题、全学科综合模拟测试！
             </p>
           </div>
 
           <div class="flex items-center gap-2 shrink-0">
             <button
               @click="emit('select-workbook', 'all'); emit('start-practice');"
-              class="w-full sm:w-auto px-5 py-2.5 bg-white hover:bg-rose-50 active:bg-rose-100 text-rose-700 font-bold text-xs sm:text-sm rounded-xl shadow-xs transition flex items-center justify-center gap-1.5 cursor-pointer"
+              class="w-full sm:w-auto px-5 py-2.5 bg-rose-600 hover:bg-rose-700 active:bg-rose-800 text-white font-bold text-xs sm:text-sm rounded-xl shadow-xs transition flex items-center justify-center gap-1.5 cursor-pointer"
             >
-              <BookOpen class="w-4 h-4 text-rose-600" />
+              <BookOpen class="w-4 h-4 text-white" />
               <span>开启全库综合大乱练</span>
             </button>
           </div>
