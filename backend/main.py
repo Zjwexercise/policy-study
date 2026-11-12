@@ -7,6 +7,7 @@ from fastapi.responses import FileResponse
 
 from database import init_db, UPLOAD_DIR
 from seed_data import seed_default_workbook
+from seed_1000 import check_and_seed_1000
 from routers.workbooks import router as workbooks_router
 from routers.questions import router as questions_router
 from routers.practice import router as practice_router
@@ -20,6 +21,7 @@ async def lifespan(app: FastAPI):
     # 初始化数据库与示范数据
     init_db()
     seed_default_workbook()
+    check_and_seed_1000()
     yield
 
 app = FastAPI(

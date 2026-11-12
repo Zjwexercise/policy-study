@@ -34,9 +34,9 @@ if [ -d "policy-study" ]; then
     git remote set-url origin https://ghfast.top/https://github.com/Zjwexercise/policy-study.git 2>/dev/null || true
     git fetch origin main || git fetch --all || true
     git reset --hard origin/main || true
-    # 恢复云端实时题库与做题记录数据库（智能双向融合）
-    if [ -f "/var/www/policy_study.db.safe_backup" ] && [ -f "merge_cloud_db.py" ]; then
-        python3 merge_cloud_db.py 2>/dev/null || python merge_cloud_db.py 2>/dev/null || true
+    # 确保 1000 题全套题库注入且用户答题记录安全保留
+    if [ -f "backend/seed_1000.py" ]; then
+        python3 backend/seed_1000.py 2>/dev/null || python backend/seed_1000.py 2>/dev/null || true
     fi
 else
     if ! git clone https://ghfast.top/https://github.com/Zjwexercise/policy-study.git policy-study; then
