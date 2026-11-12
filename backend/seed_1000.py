@@ -156,21 +156,37 @@ def check_and_seed_1000(db_path=None):
             elif not q_type:
                 q_type = "multiple" if len(q.get("answer", "A")) > 1 else "single"
 
-            q_rows.append((
-                wb_id,
-                idx,
-                q_type,
-                q.get("category", "综合"),
-                q.get("stem", ""),
-                opts_json,
-                q.get("answer", "A"),
-                q.get("explanation", ""),
-                idx
-            ))
+            qid = q.get("id")
+            if isinstance(qid, int):
+                q_rows.append((
+                    qid,
+                    wb_id,
+                    idx,
+                    q_type,
+                    q.get("category", "综合"),
+                    q.get("stem", ""),
+                    opts_json,
+                    q.get("answer", "A"),
+                    q.get("explanation", ""),
+                    idx
+                ))
+            else:
+                q_rows.append((
+                    None,
+                    wb_id,
+                    idx,
+                    q_type,
+                    q.get("category", "综合"),
+                    q.get("stem", ""),
+                    opts_json,
+                    q.get("answer", "A"),
+                    q.get("explanation", ""),
+                    idx
+                ))
             
         c.executemany("""
-            INSERT INTO questions (workbook_id, question_num, question_type, category, stem, options_json, answer, explanation, order_num)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+            INSERT OR REPLACE INTO questions (id, workbook_id, question_num, question_type, category, stem, options_json, answer, explanation, order_num)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
         """, q_rows)
         print(f" [+] 成功注入: {meta['name']} -> {len(q_rows)} 题")
         

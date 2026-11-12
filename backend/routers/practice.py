@@ -1,25 +1,26 @@
 import sqlite3
+import re
 from datetime import datetime, timedelta
 from fastapi import APIRouter, HTTPException, Depends
 from pydantic import BaseModel
-from typing import Optional
+from typing import Optional, Union
 from database import get_db
 
 router = APIRouter(prefix="/api/practice", tags=["practice"])
 
 class SubmitAnswerModel(BaseModel):
-    workbook_id: int
-    question_id: int
+    workbook_id: Union[int, str]
+    question_id: Union[int, str]
     user_answer: str # e.g. "A" or "ABC"
 
 class StarModel(BaseModel):
-    workbook_id: int
-    question_id: int
+    workbook_id: Union[int, str]
+    question_id: Union[int, str]
     is_starred: bool
 
 class KillModel(BaseModel):
-    workbook_id: int
-    question_id: int
+    workbook_id: Union[int, str]
+    question_id: Union[int, str]
     is_killed: bool
 
 class StudyTimeModel(BaseModel):
@@ -33,17 +34,56 @@ def normalize_answer(ans: str) -> str:
     clean = "".join([c.upper() for c in ans if c.isalpha()])
     return "".join(sorted(clean))
 
+def resolve_question(cursor, workbook_id, question_id):
+    """多层容错查找真实题目对象与 ID"""
+    real_wb_id = None
+    try:
+        real_wb_id = int(workbook_id)
+    except:
+        pass
+
+    q = None
+    try:
+        qid_int = int(question_id)
+        if real_wb_id is not None:
+            cursor.execute("""
+                SELECT q.id, q.workbook_id, q.answer, q.explanation, q.question_type 
+                FROM questions q 
+                WHERE q.id = ? AND q.workbook_id = ?
+            """, (qid_int, real_wb_id))
+            q = cursor.fetchone()
+        if not q:
+            cursor.execute("""
+                SELECT q.id, q.workbook_id, q.answer, q.explanation, q.question_type 
+                FROM questions q 
+                WHERE q.id = ?
+            """, (qid_int,))
+            q = cursor.fetchone()
+    except (ValueError, TypeError):
+        pass
+
+    if not q:
+        m = re.search(r"(\d+)$", str(question_id))
+        if m:
+            qnum = int(m.group(1))
+            if real_wb_id is not None:
+                cursor.execute("""
+                    SELECT q.id, q.workbook_id, q.answer, q.explanation, q.question_type 
+                    FROM questions q 
+                    WHERE q.workbook_id = ? AND q.question_num = ?
+                """, (real_wb_id, qnum))
+                q = cursor.fetchone()
+    return q
+
 @router.post("/submit")
 def submit_answer(payload: SubmitAnswerModel, conn: sqlite3.Connection = Depends(get_db)):
     cursor = conn.cursor()
-    cursor.execute("""
-        SELECT q.id, q.workbook_id, q.answer, q.explanation, q.question_type 
-        FROM questions q 
-        WHERE q.id = ? AND q.workbook_id = ?
-    """, (payload.question_id, payload.workbook_id))
-    q = cursor.fetchone()
+    q = resolve_question(cursor, payload.workbook_id, payload.question_id)
     if not q:
         raise HTTPException(status_code=404, detail="题目不存在")
+
+    real_qid = q["id"]
+    real_wbid = q["workbook_id"]
 
     correct_answer = normalize_answer(q["answer"])
     user_ans_norm = normalize_answer(payload.user_answer)
@@ -57,7 +97,7 @@ def submit_answer(payload: SubmitAnswerModel, conn: sqlite3.Connection = Depends
             user_answer = excluded.user_answer,
             is_correct = excluded.is_correct,
             answered_at = CURRENT_TIMESTAMP
-    """, (payload.workbook_id, payload.question_id, user_ans_norm, is_correct))
+    """, (real_wbid, real_qid, user_ans_norm, is_correct))
 
     # 2. 如果答错，自动加入或更新错题本
     if not is_correct:
@@ -69,7 +109,7 @@ def submit_answer(payload: SubmitAnswerModel, conn: sqlite3.Connection = Depends
                 last_wrong_answer = excluded.last_wrong_answer,
                 is_mastered = 0,
                 updated_at = CURRENT_TIMESTAMP
-        """, (payload.workbook_id, payload.question_id, user_ans_norm))
+        """, (real_wbid, real_qid, user_ans_norm))
     else:
         # 如果答对了，且之前在错题本中，可以保持记录或便于在错题本中查看掌握情况
         pass
@@ -87,12 +127,19 @@ def submit_answer(payload: SubmitAnswerModel, conn: sqlite3.Connection = Depends
 @router.post("/star")
 def toggle_star(payload: StarModel, conn: sqlite3.Connection = Depends(get_db)):
     cursor = conn.cursor()
+    q = resolve_question(cursor, payload.workbook_id, payload.question_id)
+    if not q:
+        raise HTTPException(status_code=404, detail="题目不存在")
+
+    real_qid = q["id"]
+    real_wbid = q["workbook_id"]
+
     cursor.execute("""
         INSERT INTO user_progress (workbook_id, question_id, is_starred)
         VALUES (?, ?, ?)
         ON CONFLICT(workbook_id, question_id) DO UPDATE SET
             is_starred = excluded.is_starred
-    """, (payload.workbook_id, payload.question_id, 1 if payload.is_starred else 0))
+    """, (real_wbid, real_qid, 1 if payload.is_starred else 0))
     conn.commit()
 
     return {"success": True, "is_starred": payload.is_starred}
@@ -100,12 +147,19 @@ def toggle_star(payload: StarModel, conn: sqlite3.Connection = Depends(get_db)):
 @router.post("/kill")
 def toggle_kill(payload: KillModel, conn: sqlite3.Connection = Depends(get_db)):
     cursor = conn.cursor()
+    q = resolve_question(cursor, payload.workbook_id, payload.question_id)
+    if not q:
+        raise HTTPException(status_code=404, detail="题目不存在")
+
+    real_qid = q["id"]
+    real_wbid = q["workbook_id"]
+
     cursor.execute("""
         INSERT INTO user_progress (workbook_id, question_id, is_killed)
         VALUES (?, ?, ?)
         ON CONFLICT(workbook_id, question_id) DO UPDATE SET
             is_killed = excluded.is_killed
-    """, (payload.workbook_id, payload.question_id, 1 if payload.is_killed else 0))
+    """, (real_wbid, real_qid, 1 if payload.is_killed else 0))
     conn.commit()
     return {"success": True, "is_killed": payload.is_killed}
 

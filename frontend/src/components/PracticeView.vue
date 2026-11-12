@@ -263,8 +263,7 @@ const types = [
 
 const currentQuestion = computed(() => {
   if (questions.value.length === 0) return null;
-  const q = questions.value[currentIndex.value];
-  return normalizeQuestion(q);
+  return questions.value[currentIndex.value] || null;
 });
 
 const hasAnsweredCurrent = computed(() => {
@@ -306,7 +305,7 @@ const loadQuestions = async () => {
     if (isRandomOrder.value) {
       data = [...data].sort(() => Math.random() - 0.5);
     }
-    questions.value = data;
+    questions.value = (data || []).map(normalizeQuestion);
     initDailyQuestion();
 
     // 记忆题号位置：优先恢复上次停留在该练习册的具体题号，刷新不再被动重置到第1题
@@ -679,18 +678,24 @@ const syncDrillToOfficial = async () => {
 // 提交核心逻辑（正式题库刷题）
 const doSubmit = async (answer) => {
   if (!currentQuestion.value) return;
+  const curQ = questions.value[currentIndex.value] || currentQuestion.value;
   try {
-    const targetWbId = currentQuestion.value.workbook_id || props.workbookId;
+    const targetWbId = curQ.workbook_id || props.workbookId;
     const res = await api.submitAnswer(
       targetWbId, 
-      currentQuestion.value.id, 
+      curQ.id, 
       answer
     );
-    currentQuestion.value.user_answer = answer;
-    currentQuestion.value.is_correct = res.is_correct;
+    const isCorrect = (res && typeof res.is_correct === 'boolean')
+      ? res.is_correct
+      : (answer.toUpperCase().split('').sort().join('') === (curQ.answer || '').toUpperCase().split('').sort().join(''));
+
+    // 强响应式同步：直接更新数组中题目对象以及计算属性引用的属性
+    curQ.user_answer = answer;
+    curQ.is_correct = isCorrect;
     
     // 如果回答正确，触发小烟花
-    if (res.is_correct && practiceMode.value === 'study') {
+    if (isCorrect && practiceMode.value === 'study') {
       confetti({
         particleCount: 25,
         spread: 40,
@@ -698,7 +703,11 @@ const doSubmit = async (answer) => {
       });
     }
   } catch (err) {
-    alert('提交答案失败: ' + err.message);
+    console.error('提交答案错误:', err);
+    // 降级本地判定与回填，保障体验绝不卡死
+    const isCorrect = answer.toUpperCase().split('').sort().join('') === (curQ.answer || '').toUpperCase().split('').sort().join('');
+    curQ.user_answer = answer;
+    curQ.is_correct = isCorrect;
   }
 };
 

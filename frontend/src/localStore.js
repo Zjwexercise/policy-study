@@ -202,16 +202,30 @@ export const localStore = {
       targetQ = all.find(q => String(q.id) === String(questionId));
     }
 
-    if (!targetQ) throw new Error('题目不存在');
+    if (!targetQ && cache.allQuestions) {
+      const m = String(questionId).match(/(\d+)$/);
+      const qNum = m ? Number(m[1]) : null;
+      if (qNum) {
+        targetQ = cache.allQuestions.find(q => String(q.workbook_id) === String(workbookId) && q.question_num === qNum);
+      }
+    }
+
+    if (!targetQ) {
+      return { is_correct: false };
+    }
 
     // 判定正确与否（支持单选与多选，排序后严格比对）
     const cleanUser = Array.from(userAnswer.toUpperCase()).sort().join('');
-    const cleanStd = Array.from(targetQ.answer.toUpperCase()).sort().join('');
+    const cleanStd = Array.from((targetQ.answer || '').toUpperCase()).sort().join('');
     const isCorrect = cleanUser === cleanStd;
 
     // 写入 localStorage
     localStorage.setItem(`policy_ans_${workbookId}_${questionId}`, userAnswer);
     localStorage.setItem(`policy_cor_${questionId}`, isCorrect ? '1' : '0');
+    if (targetQ && String(targetQ.id) !== String(questionId)) {
+      localStorage.setItem(`policy_ans_${workbookId}_${targetQ.id}`, userAnswer);
+      localStorage.setItem(`policy_cor_${targetQ.id}`, isCorrect ? '1' : '0');
+    }
 
     if (!isCorrect) {
       const curWrong = Number(localStorage.getItem(`policy_wrong_cnt_${workbookId}_${questionId}`) || 0);

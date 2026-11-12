@@ -220,7 +220,7 @@ export const api = {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
-            workbook_id: workbookId,
+            workbook_id: Number(workbookId) || workbookId,
             question_id: questionId,
             user_answer: userAnswer
           })
@@ -233,7 +233,7 @@ export const api = {
       }
     }
     notifyUserAction();
-    return result || localResult;
+    return result || localResult || { is_correct: false };
   },
 
   async toggleStar(workbookId, questionId, isStarred) {

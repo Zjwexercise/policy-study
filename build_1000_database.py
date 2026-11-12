@@ -353,25 +353,11 @@ def main():
         
         # 插入 questions
         q_rows = []
-        static_q_list = []
         for idx, q in enumerate(questions, 1):
             opts_json = json.dumps(q["options"], ensure_ascii=False)
             q_rows.append((
                 wb_id, idx, q["type"], q["chapter"], q["stem"], opts_json, q["answer"], q["explanation"], idx
             ))
-            static_q_list.append({
-                "id": f"ti1000_{wb_id}_{idx}",
-                "workbook_id": wb_id,
-                "question_num": idx,
-                "question_type": q["type"],
-                "category": q["chapter"],
-                "stem": q["stem"],
-                "options": q["options"],
-                "options_json": opts_json,
-                "answer": q["answer"],
-                "explanation": q["explanation"],
-                "order_num": idx
-            })
             
             all_master_questions.append({
                 "source_mod": mod["name"],
@@ -388,6 +374,27 @@ def main():
             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
         """, q_rows)
         
+        # 从数据库查询刚插入的真实 ID，保证静态 JSON 和 SQLite 主键 100% 对应一致！
+        c.execute("""
+            SELECT id, workbook_id, question_num, question_type, category, stem, options_json, answer, explanation, order_num 
+            FROM questions WHERE workbook_id = ? ORDER BY question_num ASC
+        """, (wb_id,))
+        static_q_list = []
+        for r in c.fetchall():
+            static_q_list.append({
+                "id": r[0],
+                "workbook_id": r[1],
+                "question_num": r[2],
+                "question_type": r[3],
+                "category": r[4],
+                "stem": r[5],
+                "options": json.loads(r[6]),
+                "options_json": r[6],
+                "answer": r[7],
+                "explanation": r[8],
+                "order_num": r[9]
+            })
+
         # 导出静态 JSON 到 frontend/public/data/questions_{wb_id}.json 和 dist
         write_json_file(f"questions_{wb_id}.json", static_q_list, indent=2)
             
@@ -407,30 +414,37 @@ def main():
         master_id = c.lastrowid
         
     master_rows = []
-    static_master_list = []
     for idx, q in enumerate(all_master_questions, 1):
         opts_json = json.dumps(q["options"], ensure_ascii=False)
         master_rows.append((
             master_id, idx, q["type"], q["chapter"], q["stem"], opts_json, q["answer"], q["explanation"], idx
         ))
-        static_master_list.append({
-            "id": f"ti1000_{master_id}_{idx}",
-            "workbook_id": master_id,
-            "question_num": idx,
-            "question_type": q["type"],
-            "category": q["chapter"],
-            "stem": q["stem"],
-            "options": q["options"],
-            "options_json": opts_json,
-            "answer": q["answer"],
-            "explanation": q["explanation"],
-            "order_num": idx
-        })
+
     c.executemany("""
         INSERT INTO questions (workbook_id, question_num, question_type, category, stem, options_json, answer, explanation, order_num)
         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
     """, master_rows)
     
+    c.execute("""
+        SELECT id, workbook_id, question_num, question_type, category, stem, options_json, answer, explanation, order_num 
+        FROM questions WHERE workbook_id = ? ORDER BY question_num ASC
+    """, (master_id,))
+    static_master_list = []
+    for r in c.fetchall():
+        static_master_list.append({
+            "id": r[0],
+            "workbook_id": r[1],
+            "question_num": r[2],
+            "question_type": r[3],
+            "category": r[4],
+            "stem": r[5],
+            "options": json.loads(r[6]),
+            "options_json": r[6],
+            "answer": r[7],
+            "explanation": r[8],
+            "order_num": r[9]
+        })
+
     write_json_file(f"questions_{master_id}.json", static_master_list, indent=2)
         
     # 导出静态 workbooks.json
