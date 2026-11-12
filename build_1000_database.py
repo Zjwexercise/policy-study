@@ -7,7 +7,19 @@ import datetime
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 DB_PATH = os.path.join(BASE_DIR, "backend", "policy_study.db")
 STATIC_DATA_DIR = os.path.join(BASE_DIR, "frontend", "public", "data")
+DIST_DATA_DIR = os.path.join(BASE_DIR, "frontend", "dist", "data")
 os.makedirs(STATIC_DATA_DIR, exist_ok=True)
+if os.path.exists(DIST_DATA_DIR):
+    os.makedirs(DIST_DATA_DIR, exist_ok=True)
+
+def write_json_file(filename, data, indent=None):
+    p1 = os.path.join(STATIC_DATA_DIR, filename)
+    with open(p1, "w", encoding="utf-8") as f:
+        json.dump(data, f, ensure_ascii=False, indent=indent)
+    if os.path.exists(DIST_DATA_DIR):
+        p2 = os.path.join(DIST_DATA_DIR, filename)
+        with open(p2, "w", encoding="utf-8") as f:
+            json.dump(data, f, ensure_ascii=False, indent=indent)
 
 Q_DIR = os.path.join(BASE_DIR, "rapid_1000_q")
 EXP_DIR = os.path.join(BASE_DIR, "rapid_1000_exp")
@@ -173,6 +185,17 @@ def parse_questions(q_files, exps):
             for opt_key in ["A", "B", "C", "D"]:
                 if opt_key not in current_q["options"] or not current_q["options"][opt_key]:
                     current_q["options"][opt_key] = f"选项 {opt_key}"
+                    
+            # 转换为前端和系统统一标准的列表格式: [{"key": "A", "value": "..."}, ...]
+            opts_list = [{"key": k, "value": current_q["options"][k]} for k in ["A", "B", "C", "D"]]
+            current_q["options"] = opts_list
+
+            # 标准化题型: single / multiple
+            ans = current_q.get("answer", "A")
+            if current_q["type"] in ["多选题", "多选"] or len(ans) > 1:
+                current_q["type"] = "multiple"
+            else:
+                current_q["type"] = "single"
                     
             questions.append(current_q)
             current_q = None
@@ -365,10 +388,8 @@ def main():
             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
         """, q_rows)
         
-        # 导出静态 JSON 到 frontend/public/data/questions_{wb_id}.json
-        wb_json_path = os.path.join(STATIC_DATA_DIR, f"questions_{wb_id}.json")
-        with open(wb_json_path, "w", encoding="utf-8") as f:
-            json.dump(static_q_list, f, ensure_ascii=False, indent=2)
+        # 导出静态 JSON 到 frontend/public/data/questions_{wb_id}.json 和 dist
+        write_json_file(f"questions_{wb_id}.json", static_q_list, indent=2)
             
     # 构建全科目精选合集
     master_name = "【1000题】精雕细刻1000题全科目精选合集"
@@ -410,8 +431,7 @@ def main():
         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
     """, master_rows)
     
-    with open(os.path.join(STATIC_DATA_DIR, f"questions_{master_id}.json"), "w", encoding="utf-8") as f:
-        json.dump(static_master_list, f, ensure_ascii=False, indent=2)
+    write_json_file(f"questions_{master_id}.json", static_master_list, indent=2)
         
     # 导出静态 workbooks.json
     c.execute("SELECT id, name, filename, file_path, total_questions, description FROM workbooks ORDER BY id ASC")
@@ -426,8 +446,7 @@ def main():
             "total_questions": r[4],
             "description": r[5]
         })
-    with open(os.path.join(STATIC_DATA_DIR, "workbooks.json"), "w", encoding="utf-8") as f:
-        json.dump(wb_list, f, ensure_ascii=False, indent=2)
+    write_json_file("workbooks.json", wb_list, indent=2)
         
     # 更新 all_questions.json 静态全集
     c.execute("SELECT id, workbook_id, question_num, question_type, category, stem, options_json, answer, explanation, order_num FROM questions ORDER BY workbook_id, question_num")
@@ -437,7 +456,7 @@ def main():
         try:
             opts = json.loads(r[6])
         except:
-            opts = {}
+            opts = []
         export_all_q.append({
             "id": r[0],
             "workbook_id": r[1],
@@ -451,8 +470,7 @@ def main():
             "explanation": r[8],
             "order_num": r[9]
         })
-    with open(os.path.join(STATIC_DATA_DIR, "all_questions.json"), "w", encoding="utf-8") as f:
-        json.dump(export_all_q, f, ensure_ascii=False)
+    write_json_file("all_questions.json", export_all_q)
         
     conn.commit()
     conn.close()

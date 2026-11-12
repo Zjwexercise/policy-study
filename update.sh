@@ -12,9 +12,8 @@ if [ -f "backend/policy_study.db" ]; then
     cp -p backend/policy_study.db /var/www/policy_study.db.safe_backup 2>/dev/null || true
 fi
 
-# 2. 从 GitHub 加速镜像拉取最新提交（含最新1000题题库与构建）
-git remote set-url origin https://ghfast.top/https://github.com/Zjwexercise/policy-study.git 2>/dev/null || true
-git fetch origin main || git fetch --all || true
+# 2. 从 GitHub 拉取最新提交（含最新1000题题库与选项修复）
+git fetch origin main || git fetch --all || (git remote set-url origin https://ghfast.top/https://github.com/Zjwexercise/policy-study.git && git fetch origin main) || true
 git reset --hard origin/main || true
 
 # 3. 智能双向融合：既保留服务器上的全部做题进度/错题本，又无缝注入1000题全套新题库

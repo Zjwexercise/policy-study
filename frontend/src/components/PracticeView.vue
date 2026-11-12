@@ -1,6 +1,6 @@
 <script setup>
 import { ref, computed, watch, onMounted, onUnmounted } from 'vue';
-import { api } from '../api';
+import { api, normalizeQuestion } from '../api';
 import confetti from 'canvas-confetti';
 import { 
   Check, 
@@ -263,7 +263,8 @@ const types = [
 
 const currentQuestion = computed(() => {
   if (questions.value.length === 0) return null;
-  return questions.value[currentIndex.value] || null;
+  const q = questions.value[currentIndex.value];
+  return normalizeQuestion(q);
 });
 
 const hasAnsweredCurrent = computed(() => {

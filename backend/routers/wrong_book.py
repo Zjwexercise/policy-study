@@ -59,9 +59,21 @@ def list_wrong_questions(
     for r in rows:
         options = []
         try:
-            options = json.loads(r["options_json"])
+            raw_opts = json.loads(r["options_json"])
+            if isinstance(raw_opts, dict):
+                options = [{"key": k, "value": v} for k, v in raw_opts.items()]
+            elif isinstance(raw_opts, list):
+                options = raw_opts
         except Exception:
             options = []
+
+        q_type = r["question_type"]
+        if q_type in ["单选题", "单选"]:
+            q_type = "single"
+        elif q_type in ["多选题", "多选"]:
+            q_type = "multiple"
+        elif not q_type:
+            q_type = "multiple" if len(r["answer"] or "") > 1 else "single"
 
         results.append({
             "wrong_id": r["wrong_id"],
@@ -73,7 +85,7 @@ def list_wrong_questions(
             "is_mastered": bool(r["is_mastered"]),
             "wrong_time": r["wrong_time"],
             "question_num": r["question_num"],
-            "question_type": r["question_type"],
+            "question_type": q_type,
             "category": r["category"],
             "stem": r["stem"],
             "options": options,

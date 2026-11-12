@@ -22,6 +22,37 @@ async function fetchStatic(path) {
   return res.json();
 }
 
+function normalizeLocalQuestion(q) {
+  if (!q) return q;
+  let opts = q.options;
+  if (!Array.isArray(opts) && opts && typeof opts === 'object') {
+    opts = Object.entries(opts).map(([key, value]) => ({ key, value }));
+  } else if (typeof opts === 'string') {
+    try {
+      const parsed = JSON.parse(opts);
+      if (Array.isArray(parsed)) opts = parsed;
+      else if (parsed && typeof parsed === 'object') {
+        opts = Object.entries(parsed).map(([key, value]) => ({ key, value }));
+      }
+    } catch (e) {
+      opts = [];
+    }
+  } else if (!Array.isArray(opts)) {
+    opts = [];
+  }
+
+  let qType = q.question_type;
+  if (qType === '单选题' || qType === '单选') qType = 'single';
+  else if (qType === '多选题' || qType === '多选') qType = 'multiple';
+  else if (!qType) qType = (q.answer && q.answer.length > 1) ? 'multiple' : 'single';
+
+  return {
+    ...q,
+    options: opts,
+    question_type: qType
+  };
+}
+
 
 export const localStore = {
   // 获取练习册列表
@@ -113,7 +144,7 @@ export const localStore = {
       const killedAt = localStorage.getItem(`policy_killed_at_${qid}`) || null;
       const noteContent = localStorage.getItem(`policy_note_${qid}`) || '';
 
-      return {
+      return normalizeLocalQuestion({
         ...q,
         user_answer: params.redo ? null : (userAns !== null ? userAns : null),
         is_correct: params.redo ? null : (isCorrect !== null ? (isCorrect === '1' ? 1 : 0) : null),
@@ -123,7 +154,7 @@ export const localStore = {
         wrong_count: wrongCnt,
         is_mastered: isMastered ? 1 : 0,
         note_content: noteContent
-      };
+      });
     });
 
     // 斩杀过滤：如果开启了 hide_killed，则排除已斩杀题目

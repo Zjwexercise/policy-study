@@ -79,12 +79,14 @@ def check_and_seed_1000(db_path=None):
     conn = sqlite3.connect(db_path)
     c = conn.cursor()
     
-    # 检查 workbook 39 是否已完整就绪
+    # 检查 workbook 39 是否已完整就绪且选项格式为最新的标准列表
     try:
         c.execute("SELECT count(*) FROM questions WHERE workbook_id = 39")
         cnt = c.fetchone()[0]
-        if cnt >= 940:
-            # 已经有题库了，无需重复注入
+        c.execute("SELECT options_json, question_type FROM questions WHERE workbook_id = 39 LIMIT 1")
+        row = c.fetchone()
+        if cnt >= 940 and row and row[0] and row[0].strip().startswith("[") and row[1] in ["single", "multiple"]:
+            # 已经有符合标准的题库了，无需重复注入
             conn.close()
             return
     except Exception as e:
@@ -132,11 +134,32 @@ def check_and_seed_1000(db_path=None):
         
         q_rows = []
         for idx, q in enumerate(qs, 1):
-            opts_json = q.get("options_json") or json.dumps(q.get("options", {}), ensure_ascii=False)
+            opts = q.get("options", [])
+            if isinstance(opts, dict):
+                opts = [{"key": k, "value": v} for k, v in opts.items()]
+            elif isinstance(opts, str):
+                try:
+                    parsed = json.loads(opts)
+                    if isinstance(parsed, dict):
+                        opts = [{"key": k, "value": v} for k, v in parsed.items()]
+                    elif isinstance(parsed, list):
+                        opts = parsed
+                except:
+                    pass
+            opts_json = json.dumps(opts, ensure_ascii=False)
+
+            q_type = q.get("question_type", "single")
+            if q_type in ["单选题", "单选"]:
+                q_type = "single"
+            elif q_type in ["多选题", "多选"]:
+                q_type = "multiple"
+            elif not q_type:
+                q_type = "multiple" if len(q.get("answer", "A")) > 1 else "single"
+
             q_rows.append((
                 wb_id,
                 idx,
-                q.get("question_type", "single"),
+                q_type,
                 q.get("category", "综合"),
                 q.get("stem", ""),
                 opts_json,

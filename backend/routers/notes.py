@@ -35,9 +35,23 @@ def list_notes(workbook_id: Optional[int] = None, conn: sqlite3.Connection = Dep
     results = []
     for r in rows:
         try:
-            options = json.loads(r["options_json"])
+            raw_opts = json.loads(r["options_json"])
+            if isinstance(raw_opts, dict):
+                options = [{"key": k, "value": v} for k, v in raw_opts.items()]
+            elif isinstance(raw_opts, list):
+                options = raw_opts
+            else:
+                options = []
         except Exception:
             options = []
+
+        q_type = r["question_type"]
+        if q_type in ["单选题", "单选"]:
+            q_type = "single"
+        elif q_type in ["多选题", "多选"]:
+            q_type = "multiple"
+        elif not q_type:
+            q_type = "multiple" if len(r["answer"] or "") > 1 else "single"
 
         results.append({
             "note_id": r["note_id"],
@@ -47,7 +61,7 @@ def list_notes(workbook_id: Optional[int] = None, conn: sqlite3.Connection = Dep
             "workbook_id": r["workbook_id"],
             "workbook_name": r["workbook_name"],
             "question_num": r["question_num"],
-            "question_type": r["question_type"],
+            "question_type": q_type,
             "category": r["category"],
             "stem": r["stem"],
             "options": options,

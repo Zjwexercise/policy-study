@@ -28,6 +28,37 @@ async function detectMode() {
   return isOfflineMode;
 }
 
+export function normalizeQuestion(q) {
+  if (!q) return q;
+  let opts = q.options;
+  if (!Array.isArray(opts) && opts && typeof opts === 'object') {
+    opts = Object.entries(opts).map(([key, value]) => ({ key, value }));
+  } else if (typeof opts === 'string') {
+    try {
+      const parsed = JSON.parse(opts);
+      if (Array.isArray(parsed)) opts = parsed;
+      else if (parsed && typeof parsed === 'object') {
+        opts = Object.entries(parsed).map(([key, value]) => ({ key, value }));
+      }
+    } catch (e) {
+      opts = [];
+    }
+  } else if (!Array.isArray(opts)) {
+    opts = [];
+  }
+
+  let qType = q.question_type;
+  if (qType === '单选题' || qType === '单选') qType = 'single';
+  else if (qType === '多选题' || qType === '多选') qType = 'multiple';
+  else if (!qType) qType = (q.answer && q.answer.length > 1) ? 'multiple' : 'single';
+
+  return {
+    ...q,
+    options: opts,
+    question_type: qType
+  };
+}
+
 export const api = {
   // 练习册列表
   async getWorkbooks() {
@@ -159,7 +190,7 @@ export const api = {
         else if (localCor === '0') is_correct = false;
       }
 
-      return {
+      return normalizeQuestion({
         ...q,
         user_answer,
         is_correct,
@@ -169,7 +200,7 @@ export const api = {
         is_mastered: q.is_mastered || localWrongMaster === '1',
         has_note: q.has_note || !!localNote,
         note_content: q.note_content || localNote || ''
-      };
+      });
     });
   },
 

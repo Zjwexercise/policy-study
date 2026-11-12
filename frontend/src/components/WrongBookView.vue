@@ -1,6 +1,6 @@
 <script setup>
 import { ref, watch, onMounted, computed } from 'vue';
-import { api } from '../api';
+import { api, normalizeQuestion } from '../api';
 import confetti from 'canvas-confetti';
 import { 
   AlertCircle, 
@@ -144,7 +144,7 @@ const loadWrongQuestions = async () => {
     if (selectedCategory.value !== '全部') params.category = selectedCategory.value;
 
     const data = await api.getWrongQuestions(params);
-    wrongQuestions.value = data;
+    wrongQuestions.value = (data || []).map(normalizeQuestion);
 
     // 智能恢复持久化作答状态：优先读取 localStorage，其次读取数据中已记录的 user_answer
     data.forEach(q => {
