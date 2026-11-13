@@ -20,7 +20,6 @@ import {
   Swords,
   CheckSquare,
   CheckCircle2,
-  Brain,
   Dices
 } from 'lucide-vue-next';
 import AnswerSheetModal from './AnswerSheetModal.vue';
@@ -87,32 +86,9 @@ const is1000Workbook = computed(() => {
   return name.includes('1000题') || (typeof props.workbookId === 'number' && props.workbookId >= 34 && props.workbookId <= 39);
 });
 
-// 模式：study (即时解析背题), recall (艾宾浩斯主动回忆模式), exam (模考模式)
-const practiceMode = ref(localStorage.getItem('policy_practice_mode') || 'study'); 
-
 // ========================================================
-// 1. 艾宾浩斯主动回忆模式独立状态隔离
-// 格式: { [qid]: { revealed: bool, selected: string[], isSubmitted: bool, isCorrect: bool, userAns: '' } }
-// 铁律：每题进入回忆模式独立遮罩，作答后判题，绝不篡改正式练习答题卡 user_progress！
-// ========================================================
-const recallStates = ref({});
-const getRecallState = (qid) => {
-  if (!qid) return { revealed: false, selected: [], isSubmitted: false, isCorrect: null, userAns: '' };
-  if (!recallStates.value[qid]) {
-    recallStates.value[qid] = {
-      revealed: false,
-      selected: [],
-      isSubmitted: false,
-      isCorrect: null,
-      userAns: ''
-    };
-  }
-  return recallStates.value[qid];
-};
-
-// ========================================================
-// 2. 独立挑战自测状态隔离 (Drill Session)
-// 用于：每日推荐一题自测、跨题库抽题自测、错题专攻演练与单题随时重新自测
+// 独立挑战自测状态隔离 (Drill Session)
+// 用于：跨题库抽题自测、错题专攻演练与单题随时重新自测
 // 铁律：自测作答独立判题对比，绝不清空原试卷历史做题记录！
 // ========================================================
 const drillStates = ref({});
@@ -130,93 +106,7 @@ const getDrillState = (qid) => {
   return drillStates.value[qid];
 };
 
-const setPracticeMode = (mode) => {
-  practiceMode.value = mode;
-  localStorage.setItem('policy_practice_mode', mode);
-  if (mode === 'recall') {
-    showToast('🧠 已开启【回忆模式】：先在心中主动回忆考点，按空格或点击揭晓作答！');
-  } else if (mode === 'study') {
-    showToast('📝 已切换为【即时背题模式】：作答后立即展示考点精解与正式记录');
-  }
-};
-
 const isRandomOrder = ref(false);
-
-// 每日推荐一题
-const dailyQuestion = ref(null);
-const showDailyBanner = ref(true);
-
-const initDailyQuestion = () => {
-  if (questions.value.length === 0) return;
-  try {
-    const today = new Date().toISOString().slice(0, 10);
-    const savedDate = localStorage.getItem('policy_daily_date');
-    const savedQid = localStorage.getItem('policy_daily_qid');
-
-    if (savedDate === today && savedQid) {
-      const found = questions.value.find(q => String(q.id) === String(savedQid));
-      if (found) {
-        dailyQuestion.value = found;
-        return;
-      }
-    }
-
-    // 智能选取今日一题：优先选急需复习的错题，其次选未答核心题
-    const wrongList = questions.value.filter(q => q.wrong_count > 0 && !q.is_mastered);
-    let picked = null;
-    if (wrongList.length > 0) {
-      picked = wrongList[Math.floor(Math.random() * wrongList.length)];
-    } else {
-      const unattempted = questions.value.filter(q => !q.user_answer);
-      if (unattempted.length > 0) {
-        picked = unattempted[Math.floor(Math.random() * unattempted.length)];
-      } else {
-        picked = questions.value[Math.floor(Math.random() * questions.value.length)];
-      }
-    }
-
-    if (picked) {
-      dailyQuestion.value = picked;
-      localStorage.setItem('policy_daily_date', today);
-      localStorage.setItem('policy_daily_qid', String(picked.id));
-    }
-  } catch (e) {
-    console.warn('初始化每日推荐失败', e);
-  }
-};
-
-const jumpToDailyQuestion = () => {
-  if (!dailyQuestion.value) return;
-  const idx = questions.value.findIndex(q => q.id === dailyQuestion.value.id);
-  if (idx !== -1) {
-    currentIndex.value = idx;
-    // 若该题历史做过，自动开启今日独立挑战自测，绝不直接剧透红绿选项
-    if (questions.value[idx].user_answer) {
-      const ds = getDrillState(questions.value[idx].id);
-      ds.active = true;
-      ds.selected = [];
-      ds.isSubmitted = false;
-      ds.isCorrect = null;
-      ds.userAns = '';
-      showToast(`🎯 今日精选推荐：第 ${dailyQuestion.value.question_num} 题已开启全新挑战自测！`);
-    } else {
-      showToast(`🎯 已载入今日推荐题：第 ${dailyQuestion.value.question_num} 题！`);
-    }
-  }
-};
-
-const changeDailyQuestion = () => {
-  if (questions.value.length <= 1) return;
-  const pool = questions.value.filter(q => !dailyQuestion.value || q.id !== dailyQuestion.value.id);
-  const picked = pool[Math.floor(Math.random() * pool.length)];
-  if (picked) {
-    dailyQuestion.value = picked;
-    const today = new Date().toISOString().slice(0, 10);
-    localStorage.setItem('policy_daily_date', today);
-    localStorage.setItem('policy_daily_qid', String(picked.id));
-    showToast('🎲 已更换今日推荐题目！');
-  }
-};
 
 // 跨题库全局随机盲盒抽题
 const triggerGlobalRandomQuestion = async () => {
@@ -306,16 +196,8 @@ const loadQuestions = async () => {
       data = [...data].sort(() => Math.random() - 0.5);
     }
     questions.value = (data || []).map(normalizeQuestion);
-    initDailyQuestion();
-
-    // 记忆题号位置：优先恢复上次停留在该练习册的具体题号，刷新不再被动重置到第1题
-    const savedIdx = Number(localStorage.getItem(`policy_cur_idx_${props.workbookId}`) || 0);
-    if (savedIdx >= 0 && savedIdx < data.length) {
-      currentIndex.value = savedIdx;
-    } else {
-      currentIndex.value = 0;
-    }
-    isRecallRevealed.value = false;
+    // 始终从第 1 题开始（已按用户要求移除题号记忆）
+    currentIndex.value = 0;
     resetSelection();
   } catch (err) {
     console.error('加载题目失败', err);
@@ -325,9 +207,7 @@ const loadQuestions = async () => {
 };
 
 // 监听题号切换
-watch(currentIndex, (newIdx) => {
-  localStorage.setItem(`policy_cur_idx_${props.workbookId}`, String(newIdx));
-  isRecallRevealed.value = false;
+watch(currentIndex, () => {
   resetSelection();
 });
 
@@ -347,16 +227,12 @@ watch([selectedCategory, selectedType, selectedStatus, isRandomOrder, hideKilled
   loadQuestions();
 });
 
-// 当前题目的独立回忆与自测计算属性
-const currentRecall = computed(() => getRecallState(currentQuestion.value?.id));
+// 当前题目的独立自测计算属性
 const currentDrill = computed(() => getDrillState(currentQuestion.value?.id));
 
 // 当前模式下题目是否已处于揭晓/判定状态
 const isCurrentQuestionResolved = computed(() => {
   if (!currentQuestion.value) return false;
-  if (practiceMode.value === 'recall') {
-    return getRecallState(currentQuestion.value.id).isSubmitted;
-  }
   const ds = getDrillState(currentQuestion.value.id);
   if (ds.active) {
     return ds.isSubmitted;
@@ -367,13 +243,6 @@ const isCurrentQuestionResolved = computed(() => {
 // 当前模式下的判题结果与作答文字
 const currentEvalResult = computed(() => {
   if (!currentQuestion.value) return { isCorrect: false, userAns: '' };
-  if (practiceMode.value === 'recall') {
-    const s = getRecallState(currentQuestion.value.id);
-    return {
-      isCorrect: s.isCorrect,
-      userAns: s.userAns
-    };
-  }
   const ds = getDrillState(currentQuestion.value.id);
   if (ds.active && ds.isSubmitted) {
     return {
@@ -387,12 +256,9 @@ const currentEvalResult = computed(() => {
   };
 });
 
-// 当前待提交的选项集合（支持普通模式、回忆模式、挑战自测模式）
+// 当前待提交的选项集合（支持普通模式、挑战自测模式）
 const currentPendingSelection = computed(() => {
   if (!currentQuestion.value) return [];
-  if (practiceMode.value === 'recall') {
-    return getRecallState(currentQuestion.value.id).selected;
-  }
   const ds = getDrillState(currentQuestion.value.id);
   if (ds.active) {
     return ds.selected;
@@ -400,32 +266,13 @@ const currentPendingSelection = computed(() => {
   return selectedOptions.value;
 });
 
-// 计算选项的独立呈现状态（彻底解耦各大模式冲突）
+// 计算选项的独立呈现状态
 const getOptionStatus = (optKey) => {
   if (!currentQuestion.value) return { isSelected: false, isCorrect: false, isWrong: false, isResolved: false };
 
   const stdAns = currentQuestion.value.answer || '';
 
-  // 1. 回忆模式
-  if (practiceMode.value === 'recall') {
-    const s = getRecallState(currentQuestion.value.id);
-    if (!s.isSubmitted) {
-      return {
-        isSelected: s.selected.includes(optKey),
-        isCorrect: false,
-        isWrong: false,
-        isResolved: false
-      };
-    }
-    return {
-      isSelected: s.selected.includes(optKey),
-      isCorrect: stdAns.includes(optKey),
-      isWrong: s.userAns.includes(optKey) && !stdAns.includes(optKey),
-      isResolved: true
-    };
-  }
-
-  // 2. 独立自测挑战模式
+  // 1. 独立自测挑战模式
   const ds = getDrillState(currentQuestion.value.id);
   if (ds.active) {
     if (!ds.isSubmitted) {
@@ -444,7 +291,7 @@ const getOptionStatus = (optKey) => {
     };
   }
 
-  // 3. 正式题库刷题模式
+  // 2. 正式题库刷题模式
   if (hasAnsweredCurrent.value) {
     const userAns = currentQuestion.value.user_answer || '';
     return {
@@ -467,33 +314,7 @@ const getOptionStatus = (optKey) => {
 const handleOptionClick = (key) => {
   if (!currentQuestion.value) return;
 
-  // 1. 回忆模式
-  if (practiceMode.value === 'recall') {
-    const s = getRecallState(currentQuestion.value.id);
-    if (!s.revealed) {
-      revealRecall();
-      return;
-    }
-    if (s.isSubmitted) return;
-
-    const isMulti = currentQuestion.value.question_type === 'multiple';
-    if (!isMulti) {
-      s.selected = [key];
-      if (singleAutoSubmit.value) {
-        submitRecall();
-      }
-    } else {
-      const idx = s.selected.indexOf(key);
-      if (idx > -1) s.selected.splice(idx, 1);
-      else {
-        s.selected.push(key);
-        s.selected.sort();
-      }
-    }
-    return;
-  }
-
-  // 2. 独立挑战自测模式
+  // 1. 独立挑战自测模式
   const ds = getDrillState(currentQuestion.value.id);
   if (ds.active) {
     if (ds.isSubmitted) return;
@@ -514,7 +335,7 @@ const handleOptionClick = (key) => {
     return;
   }
 
-  // 3. 正式题库刷题模式
+  // 2. 正式题库刷题模式
   if (hasAnsweredCurrent.value) {
     return;
   }
@@ -542,20 +363,6 @@ const handleOptionClick = (key) => {
 const submitAnswerManual = () => {
   if (!currentQuestion.value) return;
 
-  if (practiceMode.value === 'recall') {
-    const s = getRecallState(currentQuestion.value.id);
-    if (!s.revealed) {
-      revealRecall();
-      return;
-    }
-    if (s.selected.length === 0) {
-      showToast('请先选择回忆答案后再确认作答');
-      return;
-    }
-    submitRecall();
-    return;
-  }
-
   const ds = getDrillState(currentQuestion.value.id);
   if (ds.active) {
     if (ds.selected.length === 0) {
@@ -577,49 +384,6 @@ const submitAnswerManual = () => {
 // 提交多选题答案（向后兼容）
 const submitMultiple = () => {
   submitAnswerManual();
-};
-
-// 回忆模式专用交互函数
-const revealRecall = () => {
-  if (!currentQuestion.value) return;
-  const s = getRecallState(currentQuestion.value.id);
-  s.revealed = true;
-  showToast('✨ 选项已揭晓，请选择你的回忆答案！');
-};
-
-const submitRecall = () => {
-  if (!currentQuestion.value) return;
-  const s = getRecallState(currentQuestion.value.id);
-  const userAns = s.selected.join('');
-  const cleanUser = Array.from(userAns.toUpperCase()).sort().join('');
-  const cleanStd = Array.from(currentQuestion.value.answer.toUpperCase()).sort().join('');
-  const isCorrect = cleanUser === cleanStd;
-
-  s.isSubmitted = true;
-  s.userAns = userAns;
-  s.isCorrect = isCorrect;
-
-  if (isCorrect) {
-    confetti({
-      particleCount: 25,
-      spread: 40,
-      origin: { y: 0.8 }
-    });
-    showToast('🧠 回忆正确！考点记忆非常牢固！');
-  } else {
-    showToast('❌ 回忆有偏差，请对照考点精析强化复习！');
-  }
-};
-
-const resetRecallOnCurrent = () => {
-  if (!currentQuestion.value) return;
-  const s = getRecallState(currentQuestion.value.id);
-  s.revealed = false;
-  s.selected = [];
-  s.isSubmitted = false;
-  s.isCorrect = null;
-  s.userAns = '';
-  showToast('🧠 已重新遮罩，请重新尝试主动回忆！');
 };
 
 // 独立挑战自测专用函数
@@ -695,7 +459,7 @@ const doSubmit = async (answer) => {
     curQ.is_correct = isCorrect;
     
     // 如果回答正确，触发小烟花
-    if (isCorrect && practiceMode.value === 'study') {
+    if (isCorrect) {
       confetti({
         particleCount: 25,
         spread: 40,
@@ -798,15 +562,6 @@ const handleKeyDown = (e) => {
   // 排除输入框内的按键
   if (['INPUT', 'TEXTAREA'].includes(e.target.tagName)) return;
 
-  // 回忆模式下按空格键揭晓选项
-  if (practiceMode.value === 'recall' && !currentRecall.value.revealed) {
-    if (e.code === 'Space' || e.key === ' ') {
-      e.preventDefault();
-      revealRecall();
-      return;
-    }
-  }
-
   const key = e.key.toUpperCase();
   if (['A', 'B', 'C', 'D'].includes(key)) {
     e.preventDefault();
@@ -855,55 +610,6 @@ onUnmounted(() => {
 
 <template>
   <div class="max-w-4xl mx-auto px-3 sm:px-6 py-4 pb-24 lg:pb-12">
-    <!-- 艾宾浩斯·每日精选一题横幅 -->
-    <div 
-      v-if="showDailyBanner && dailyQuestion"
-      class="bg-gradient-to-r from-amber-500/10 via-rose-500/10 to-indigo-500/10 border border-amber-200/90 rounded-2xl p-3 sm:p-4 mb-4 flex items-center justify-between gap-3 shadow-2xs backdrop-blur-xs animate-in fade-in duration-300"
-    >
-      <div class="flex items-center gap-2.5 min-w-0">
-        <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-amber-500 to-rose-500 text-white flex items-center justify-center shrink-0 shadow-xs font-bold text-sm">
-          🌟
-        </div>
-        <div class="min-w-0">
-          <div class="flex items-center gap-2 flex-wrap">
-            <span class="text-xs font-bold text-slate-800">艾宾浩斯 · 每日精选一题</span>
-            <span class="px-2 py-0.5 text-[10px] font-bold rounded-md bg-amber-100 text-amber-800 border border-amber-200">
-              {{ dailyQuestion.category }} · {{ dailyQuestion.question_type === 'multiple' ? '多选题' : '单选题' }}
-            </span>
-            <span v-if="dailyQuestion.user_answer" class="px-1.5 py-0.5 text-[10px] font-semibold rounded bg-emerald-100 text-emerald-700">
-              ✓ 今日已完成
-            </span>
-          </div>
-          <p class="text-xs text-slate-600 truncate mt-0.5 max-w-xl">
-            {{ dailyQuestion.stem }}
-          </p>
-        </div>
-      </div>
-
-      <div class="flex items-center gap-2 shrink-0">
-        <button
-          @click="jumpToDailyQuestion"
-          class="px-3 py-1.5 bg-gradient-to-r from-rose-600 to-rose-700 hover:from-rose-700 hover:to-rose-800 text-white text-xs font-semibold rounded-xl shadow-xs transition cursor-pointer flex items-center gap-1 active:scale-95"
-        >
-          <span>{{ dailyQuestion.user_answer ? '查看回顾' : '立即挑战' }}</span>
-        </button>
-        <button
-          @click="changeDailyQuestion"
-          class="p-1.5 text-slate-400 hover:text-slate-600 hover:bg-slate-100 rounded-lg transition cursor-pointer"
-          title="换一题推荐"
-        >
-          <RotateCcw class="w-3.5 h-3.5" />
-        </button>
-        <button
-          @click="showDailyBanner = false"
-          class="p-1 text-slate-300 hover:text-slate-500 rounded transition cursor-pointer"
-          title="关闭"
-        >
-          <X class="w-3.5 h-3.5" />
-        </button>
-      </div>
-    </div>
-
     <!-- Filter and Toolbar Area -->
     <div class="bg-white rounded-2xl p-3 sm:p-4 border border-slate-200 shadow-2xs mb-4">
       <!-- 当前练习册与快捷切换 1000 题 -->
@@ -958,29 +664,8 @@ onUnmounted(() => {
           </button>
         </div>
 
-        <!-- 模式与辅助按钮 -->
+        <!-- 辅助按钮与筛选 -->
         <div class="flex items-center gap-2 flex-wrap">
-          <!-- 模式切换：即时背题 vs 艾宾浩斯主动回忆 -->
-          <div class="bg-slate-100 p-0.5 rounded-lg flex items-center text-xs">
-            <button
-              @click="setPracticeMode('study')"
-              class="px-2 py-1 rounded-md transition cursor-pointer flex items-center gap-1 font-medium"
-              :class="practiceMode === 'study' ? 'bg-white text-slate-800 font-bold shadow-2xs' : 'text-slate-600 hover:text-slate-900'"
-              title="即时背题模式：选择选项后直接展示考点精解"
-            >
-              <span>📝 背题</span>
-            </button>
-            <button
-              @click="setPracticeMode('recall')"
-              class="px-2.5 py-1 rounded-md transition cursor-pointer flex items-center gap-1 font-medium"
-              :class="practiceMode === 'recall' ? 'bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-bold shadow-2xs' : 'text-slate-600 hover:text-indigo-600'"
-              title="艾宾浩斯主动回忆模式：选项默认遮蔽，先在心中主动回忆考点，再揭晓作答！"
-            >
-              <Brain class="w-3.5 h-3.5" />
-              <span>🧠 回忆模式</span>
-            </button>
-          </div>
-
           <!-- 跨题库随机盲盒抽题 -->
           <button
             @click="triggerGlobalRandomQuestion"
@@ -1149,7 +834,7 @@ onUnmounted(() => {
           <div class="flex items-center gap-1.5">
             <!-- 独立自测重练触发按钮 (保护正式答卷) -->
             <button
-              v-if="practiceMode === 'study' && hasAnsweredCurrent && !currentDrill.active"
+              v-if="hasAnsweredCurrent && !currentDrill.active"
               @click="startDrillOnCurrent"
               class="px-2 sm:px-2.5 py-1.5 rounded-lg border border-slate-200 text-xs font-medium text-slate-600 hover:text-indigo-600 hover:bg-indigo-50 hover:border-indigo-200 transition cursor-pointer flex items-center gap-1"
               title="在不改变原试卷正式答卷的前提下，独立重新做本题测试自己"
@@ -1158,7 +843,7 @@ onUnmounted(() => {
               <span class="hidden sm:inline">自测重练</span>
             </button>
             <button
-              v-else-if="practiceMode === 'study' && currentDrill.active"
+              v-else-if="currentDrill.active"
               @click="exitDrillOnCurrent"
               class="px-2 sm:px-2.5 py-1.5 rounded-lg border border-indigo-200 bg-indigo-50 text-xs font-medium text-indigo-700 transition cursor-pointer flex items-center gap-1"
               title="退出自测模式，返回原试卷答卷记录"
@@ -1230,40 +915,8 @@ onUnmounted(() => {
           <span>{{ currentQuestion.stem }}</span>
         </div>
 
-        <!-- 回忆模式：未展开时的遮罩挑战卡片（每题独立隔离，绝不受历史作答干扰） -->
-        <div 
-          v-if="practiceMode === 'recall' && !currentRecall.revealed"
-          class="mt-6 p-6 sm:p-7 bg-gradient-to-br from-indigo-50/90 via-purple-50/70 to-pink-50/50 border-2 border-indigo-200/90 rounded-2xl text-center shadow-xs animate-in fade-in zoom-in-95 duration-200"
-        >
-          <div class="w-12 h-12 bg-white text-indigo-600 rounded-2xl flex items-center justify-center mx-auto mb-3 shadow-2xs border border-indigo-100">
-            <Brain class="w-6 h-6 animate-pulse text-indigo-600" />
-          </div>
-          <h4 class="text-base font-bold text-slate-800 flex items-center justify-center gap-1.5">
-            <span>🧠 艾宾浩斯 · 主动回忆挑战</span>
-          </h4>
-          <p class="text-xs sm:text-sm text-slate-600 mt-2 max-w-lg mx-auto leading-relaxed">
-            <strong class="text-indigo-900">请先勿看选项！</strong> 尝试在脑海中回忆该考点的核心概念、关键词或推导结论。心理学证实：先闭眼回忆再揭晓选项，记忆留存率提升 3 倍！
-          </p>
-
-          <div class="flex items-center justify-center gap-3 mt-5 flex-wrap">
-            <button
-              @click="revealRecall"
-              class="px-5 py-2.5 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white font-bold text-xs sm:text-sm rounded-xl shadow-xs transition cursor-pointer flex items-center gap-2 active:scale-95"
-            >
-              <Sparkles class="w-4 h-4 text-amber-300" />
-              <span>想好了，揭晓选项作答 (按 Space 空格键)</span>
-            </button>
-            <button
-              @click="revealRecall"
-              class="px-4 py-2.5 bg-white hover:bg-slate-100 border border-slate-200 text-slate-600 text-xs sm:text-sm font-medium rounded-xl transition cursor-pointer active:scale-95"
-            >
-              <span>毫无头绪，直接看选项</span>
-            </button>
-          </div>
-        </div>
-
-        <!-- Options List (多模式完全解耦：独立高亮与独立判定) -->
-        <div v-else class="mt-6 space-y-3 animate-in fade-in duration-200">
+        <!-- Options List -->
+        <div class="mt-6 space-y-3 animate-in fade-in duration-200">
           <div
             v-for="(opt, oIdx) in currentQuestion.options"
             :key="opt && typeof opt === 'object' ? opt.key : ('opt_' + oIdx)"
@@ -1353,7 +1006,7 @@ onUnmounted(() => {
 
         <!-- 中间进度指示与快捷键 -->
         <div class="hidden sm:flex items-center gap-2 text-xs text-slate-500">
-          <span>键盘快捷键：A/B/C/D 选答案 · Enter 提交/下一题 · Space 揭晓回忆 · ←/→ 翻题</span>
+          <span>键盘快捷键：A/B/C/D 选答案 · Enter 提交/下一题 · ←/→ 翻题</span>
         </div>
 
         <button
@@ -1395,10 +1048,7 @@ onUnmounted(() => {
             </div>
             <div>
               <div class="font-bold text-sm sm:text-base">
-                <span v-if="practiceMode === 'recall'">
-                  {{ currentEvalResult.isCorrect ? '🧠 回忆挑战成功！知识点记忆非常牢固 🎉' : '💡 回忆稍有偏差，已为你高亮核心考点' }}
-                </span>
-                <span v-else-if="currentDrill.active">
+                <span v-if="currentDrill.active">
                   {{ currentEvalResult.isCorrect ? '🎯 独立自测成功！回答正确 🎉' : '🎯 本次自测未通过，已为你生成对比解析' }}
                 </span>
                 <span v-else>
@@ -1406,9 +1056,9 @@ onUnmounted(() => {
                 </span>
               </div>
               <div class="text-xs mt-0.5 opacity-90 flex items-center gap-3 flex-wrap">
-                <span>{{ practiceMode === 'recall' ? '本次回忆：' : (currentDrill.active ? '本次自测：' : '你的作答：') }}<strong class="font-mono text-sm underline">{{ currentEvalResult.userAns || '未选' }}</strong></span>
+                <span>{{ currentDrill.active ? '本次自测：' : '你的作答：' }}<strong class="font-mono text-sm underline">{{ currentEvalResult.userAns || '未选' }}</strong></span>
                 <span>正确答案：<strong class="font-mono text-sm underline">{{ currentQuestion.answer }}</strong></span>
-                <span v-if="(practiceMode === 'recall' || currentDrill.active) && currentQuestion.user_answer" class="text-slate-600 bg-white/80 px-2 py-0.5 rounded border border-slate-200/80 font-medium">
+                <span v-if="currentDrill.active && currentQuestion.user_answer" class="text-slate-600 bg-white/80 px-2 py-0.5 rounded border border-slate-200/80 font-medium">
                   📖 正式答卷曾选：<strong class="font-mono">{{ currentQuestion.user_answer }}</strong> ({{ currentQuestion.is_correct ? '当时答对' : '当时错选' }})
                 </span>
               </div>
@@ -1416,19 +1066,8 @@ onUnmounted(() => {
           </div>
 
           <div class="flex items-center gap-1.5 shrink-0 flex-wrap justify-end">
-            <!-- 回忆模式专用按钮 -->
-            <button
-              v-if="practiceMode === 'recall'"
-              @click="resetRecallOnCurrent"
-              class="px-2.5 py-1 text-xs font-medium rounded-lg bg-white/90 hover:bg-white text-indigo-700 border border-indigo-200 transition cursor-pointer flex items-center gap-1 shadow-2xs"
-              title="重新隐藏选项，再次检验主动回忆"
-            >
-              <RotateCcw class="w-3.5 h-3.5" />
-              <span>重新回忆</span>
-            </button>
-
             <!-- 自测挑战模式专用按钮 -->
-            <template v-else-if="currentDrill.active">
+            <template v-if="currentDrill.active">
               <button
                 @click="startDrillOnCurrent"
                 class="px-2 py-1 text-xs font-medium rounded-lg bg-white/90 hover:bg-white text-slate-700 border border-slate-200 transition cursor-pointer flex items-center gap-1"

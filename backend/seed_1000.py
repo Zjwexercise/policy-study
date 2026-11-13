@@ -12,7 +12,7 @@ WB_METAS = [
         "name": "【1000题】第一部分 马克思主义基本原理 (马原)",
         "filename": "1000_mayuan.pdf",
         "file_path": "1000题",
-        "total_questions": 277,
+        "total_questions": 271,
         "description": "2027版考研政治精雕细刻1000题 · 第一部分 马克思主义基本原理（哲学、政经、科社全章节客观题精练）"
     },
     {
@@ -28,7 +28,7 @@ WB_METAS = [
         "name": "【1000题】第三部分 习近平新时代中特思想概论 (习思想)",
         "filename": "1000_xisixiang.pdf",
         "file_path": "1000题",
-        "total_questions": 199,
+        "total_questions": 197,
         "description": "2027版考研政治精雕细刻1000题 · 第三部分 习近平新时代中国特色社会主义思想概论（17章全核心题集）"
     },
     {
@@ -36,7 +36,7 @@ WB_METAS = [
         "name": "【1000题】第四部分 中国近现代史纲要 (史纲)",
         "filename": "1000_shigang.pdf",
         "file_path": "1000题",
-        "total_questions": 239,
+        "total_questions": 234,
         "description": "2027版考研政治精雕细刻1000题 · 第四部分 中国近现代史纲要（近现代历史时间线核心考点题）"
     },
     {
@@ -44,7 +44,7 @@ WB_METAS = [
         "name": "【1000题】第五部分 思想道德与法治 (思修)",
         "filename": "1000_sixiu.pdf",
         "file_path": "1000题",
-        "total_questions": 132,
+        "total_questions": 110,
         "description": "2027版考研政治精雕细刻1000题 · 第五部分 思想道德与法治（人生观、理想信念、法治精神核心题）"
     },
     {
@@ -52,8 +52,8 @@ WB_METAS = [
         "name": "【1000题】精雕细刻1000题全科目精选合集",
         "filename": "1000_master.pdf",
         "file_path": "1000题",
-        "total_questions": 946,
-        "description": "2027版考研政治精雕细刻1000题 · 全五大科目（马原、毛中特、习思想、史纲、思修）综合合集共 946 题"
+        "total_questions": 911,
+        "description": "2027版考研政治精雕细刻1000题 · 全五大科目（马原、毛中特、习思想、史纲、思修）综合合集共 911 题"
     }
 ]
 
@@ -85,7 +85,7 @@ def check_and_seed_1000(db_path=None):
         cnt = c.fetchone()[0]
         c.execute("SELECT options_json, question_type FROM questions WHERE workbook_id = 39 LIMIT 1")
         row = c.fetchone()
-        if cnt >= 940 and row and row[0] and row[0].strip().startswith("[") and row[1] in ["single", "multiple"]:
+        if cnt == 911 and row and row[0] and row[0].strip().startswith("[") and row[1] in ["single", "multiple"]:
             # 已经有符合标准的题库了，无需重复注入
             conn.close()
             return
