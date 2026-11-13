@@ -207,14 +207,15 @@ const loadQuestions = async () => {
 };
 
 // 监听题号切换
-watch(currentIndex, () => {
-  resetSelection();
+watch(currentIndex, (newIdx) => {
+  resetSelection(newIdx);
 });
 
-const resetSelection = () => {
+const resetSelection = (targetIdx = currentIndex.value) => {
   selectedOptions.value = [];
-  if (currentQuestion.value && currentQuestion.value.user_answer) {
-    selectedOptions.value = currentQuestion.value.user_answer.split('');
+  const q = questions.value && questions.value[targetIdx];
+  if (q && q.user_answer) {
+    selectedOptions.value = String(q.user_answer).split('');
   }
 };
 
@@ -443,35 +444,49 @@ const syncDrillToOfficial = async () => {
 const doSubmit = async (answer) => {
   if (!currentQuestion.value) return;
   const curQ = questions.value[currentIndex.value] || currentQuestion.value;
+  
+  // 1. 同步立即判题与响应式刷新（0毫秒立即出结果与解析，绝不卡顿或等待网络）
+  const cleanUser = Array.from(String(answer).toUpperCase()).sort().join('');
+  const cleanStd = Array.from(String(curQ.answer || '').toUpperCase()).sort().join('');
+  const isCorrect = cleanUser === cleanStd;
+
+  // 强响应式同步：直接更新当前题目对象与当前选中
+  curQ.user_answer = answer;
+  curQ.is_correct = isCorrect;
+  selectedOptions.value = String(answer).split('');
+
+  // 触发小烟花
+  if (isCorrect) {
+    confetti({
+      particleCount: 25,
+      spread: 40,
+      origin: { y: 0.8 }
+    });
+  }
+
+  // 2. 本地持久化（双重保障，即时生效）
   try {
     const targetWbId = curQ.workbook_id || props.workbookId;
-    const res = await api.submitAnswer(
-      targetWbId, 
-      curQ.id, 
-      answer
-    );
-    const isCorrect = (res && typeof res.is_correct === 'boolean')
-      ? res.is_correct
-      : (answer.toUpperCase().split('').sort().join('') === (curQ.answer || '').toUpperCase().split('').sort().join(''));
-
-    // 强响应式同步：直接更新数组中题目对象以及计算属性引用的属性
-    curQ.user_answer = answer;
-    curQ.is_correct = isCorrect;
-    
-    // 如果回答正确，触发小烟花
-    if (isCorrect) {
-      confetti({
-        particleCount: 25,
-        spread: 40,
-        origin: { y: 0.8 }
-      });
+    localStorage.setItem(`policy_ans_${targetWbId}_${curQ.id}`, answer);
+    localStorage.setItem(`policy_ans_all_${curQ.id}`, answer);
+    localStorage.setItem(`policy_cor_${curQ.id}`, isCorrect ? '1' : '0');
+    if (!isCorrect) {
+      const curWrong = Number(localStorage.getItem(`policy_wrong_cnt_${targetWbId}_${curQ.id}`) || 0);
+      localStorage.setItem(`policy_wrong_cnt_${targetWbId}_${curQ.id}`, String(curWrong + 1));
+      localStorage.setItem(`policy_wrong_master_${curQ.id}`, '0');
     }
+  } catch (e) {
+    console.warn('本地保存作答失败', e);
+  }
+
+  // 3. 后台异步提交与云端同步（网络慢或离线时绝不阻塞当前页面）
+  try {
+    const targetWbId = curQ.workbook_id || props.workbookId;
+    api.submitAnswer(targetWbId, curQ.id, answer).catch(err => {
+      console.warn('后台同步失败（本地已保存）:', err);
+    });
   } catch (err) {
-    console.error('提交答案错误:', err);
-    // 降级本地判定与回填，保障体验绝不卡死
-    const isCorrect = answer.toUpperCase().split('').sort().join('') === (curQ.answer || '').toUpperCase().split('').sort().join('');
-    curQ.user_answer = answer;
-    curQ.is_correct = isCorrect;
+    // 忽略异步网络错误
   }
 };
 
@@ -543,6 +558,7 @@ const prevQuestion = () => {
   }
   if (currentIndex.value > 0) {
     currentIndex.value--;
+    resetSelection(currentIndex.value);
   }
 };
 
@@ -552,6 +568,7 @@ const nextQuestion = () => {
   }
   if (currentIndex.value < questions.value.length - 1) {
     currentIndex.value++;
+    resetSelection(currentIndex.value);
   }
 };
 
@@ -801,7 +818,7 @@ onUnmounted(() => {
 
     <div v-else class="space-y-4">
       <!-- Question Card -->
-      <div class="bg-white rounded-2xl p-4 sm:p-6 border border-slate-200 shadow-2xs relative">
+      <div :key="currentQuestion ? currentQuestion.id : ('q_' + currentIndex)" class="bg-white rounded-2xl p-4 sm:p-6 border border-slate-200 shadow-2xs relative">
         <!-- Question Meta Info -->
         <div class="flex items-center justify-between pb-3 mb-4 border-b border-slate-100 gap-2">
           <div class="flex items-center gap-2 flex-wrap">
@@ -919,7 +936,7 @@ onUnmounted(() => {
         <div class="mt-6 space-y-3 animate-in fade-in duration-200">
           <div
             v-for="(opt, oIdx) in currentQuestion.options"
-            :key="opt && typeof opt === 'object' ? opt.key : ('opt_' + oIdx)"
+            :key="currentQuestion ? (currentQuestion.id + '_' + (opt && typeof opt === 'object' ? opt.key : oIdx)) : ('opt_' + oIdx)"
             @click="handleOptionClick(opt && typeof opt === 'object' ? opt.key : String.fromCharCode(65 + oIdx))"
             class="group p-3.5 sm:p-4 rounded-xl border-2 transition-all flex items-start gap-3 cursor-pointer select-none"
             :class="[
