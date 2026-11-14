@@ -23,6 +23,7 @@ def write_json_file(filename, data, indent=None):
 
 Q_DIR = os.path.join(BASE_DIR, "rapid_1000_q")
 EXP_DIR = os.path.join(BASE_DIR, "rapid_1000_exp")
+FALLBACK_Q_DIR = os.path.join(BASE_DIR, "backend", "1000_q_txt")
 FALLBACK_EXP_DIR = os.path.join(BASE_DIR, "backend", "1000_exp_txt")
 
 CN_NUMS = {'一': 1, '二': 2, '三': 3, '四': 4, '五': 5, '六': 6, '七': 7, '八': 8, '九': 9, '十': 10,
@@ -99,6 +100,21 @@ def clean_lines(filepath):
         s = re.sub(r'〖解析〗', '【解析】', s)
         cleaned.append(s)
     return cleaned
+
+def get_page_win_anchors(p):
+    wf = os.path.join(FALLBACK_Q_DIR, f"page_{p:03d}.txt")
+    if not os.path.exists(wf): return {}
+    anchors = {}
+    with open(wf, encoding="utf-8", errors="ignore") as f:
+        for l in f:
+            l_c = re.sub(r"\s+", "", l)
+            m = re.match(r"^(\d{1,3})[．.、](.*)$", l_c)
+            if m:
+                qnum = int(m.group(1))
+                rem = m.group(2).strip()
+                if 0 < qnum < 100 and not re.match(r"^\d+[℃%倍]", rem):
+                    anchors[qnum] = rem
+    return anchors
 
 # 针对 OCR 边缘裁切与跨页错行缺失题目官方精准标定表
 CALIBRATION_MAP = {
@@ -211,6 +227,14 @@ CALIBRATION_MAP = {
         "A",
         "【解析】本题考查的是近代中国社会的半殖民地半封建性质。由于近代中国处于资本-帝国主义列强的争夺和间接统治之下，加上中国地域广大，以及在地方性的农业经济的基础上形成的地方割据势力的存在，近代中国各地区经济、政治和文化的发展是极不平衡的。故应选A项。"
     ),
+    ("史纲", 1, 34): (
+        "BC",
+        "【解析】本题考查的是民族意识的觉醒。中日甲午战争以后，帝国主义列强图谋瓜分中国，中华民族到了生死存亡的紧急关头，中国人的民族意识开始普遍觉醒。1895年，严复在《救亡决论》一文中响亮地喊出了“救亡”的口号；在甲午战争后，孙中山创立兴中会，第一次喊出了“振兴中华”的时代最强音。救亡图存、振兴中华成为那个时代的主旋律。故B、C正确。“师夷长技以制夷”是魏源在1843年《海国图志》中提出的，“自强”“求富”是洋务运动的口号，均不符合题意，故排除A、D。应选B、C项。"
+    ),
+    ("史纲", 1, 35): (
+        "BCD",
+        "【解析】本题考查的是中日甲午战争的影响。1894年甲午战争后签订的《马关条约》，台湾被日本割占，列强掀起瓜分中国的狂潮，同时也促使中国人普遍的民族意识开始觉醒。中国海关行政权落入外国人之手是在19世纪50年代（第二次鸦片战争前后），非甲午战争结果。故应选B、C、D项。"
+    ),
     ("史纲", 3, 9): (
         "B",
         "【解析】本题考查的是中华民国的建立。1912年3月，临时参议院颁布《中华民国临时约法》，这是中国历史上第一部具有资产阶级共和国宪法性质的法典，它以根本大法的形式废除了封建君主专制制度。故应选B项。"
@@ -244,6 +268,155 @@ CALIBRATION_MAP = {
         "ABD",
         "【解析】本题考查的是道德的社会作用。道德作为维系社会稳定、促进国家发展的重要因素，对巩固特定社会的经济基础和上层建筑具有不可替代的重要作用，也是激励人们改造客观世界和主观世界的精神动力。A、B、D项都是道德社会作用的正确表述。故应选A、B、D三项。"
     )
+}
+
+# 针对 OCR 边缘裁切与跨页错行缺失选项精准标定补全表
+CALIBRATION_OPTIONS_MAP = {
+    ("史纲", 1, 34): {
+        "A": "“师夷长技以制夷”",
+        "B": "救亡图存",
+        "C": "振兴中华",
+        "D": "“自强”“求富”"
+    },
+    ("史纲", 1, 35): {
+        "A": "中国海关的行政权落人外国人手中",
+        "B": "中国人开始有了普遍的民族意识觉醒",
+        "C": "台湾被日本侵占",
+        "D": "帝国主义列强掀起瓜分中国的狂潮"
+    },
+    ("史纲", 1, 24): {
+        "A": "资本-帝国主义控制了中国的财政经济和政治，日益成为支配中国的决定性力量",
+        "B": "中国的封建势力同外国侵略势力相勾结，成为列强压迫奴役中国人民的社会基础和统治支柱",
+        "C": "中国自然经济虽遭破坏但封建土地所有制仍保持，中国资本主义虽有所发展，但发展缓慢，力量软弱",
+        "D": "近代中国各地区政治经济文化发展极不平衡，人民毫无政治权利，生活极端贫困化"
+    },
+    ("史纲", 3, 8): {
+        "A": "处于帝国主义时代的半殖民地中国，究竟应该由哪个阶级来领导民族民主革命",
+        "B": "是否应当全面学习西方的先进科学技术与工业文明",
+        "C": "在当时中国的具体条件下，“反满”的民族革命是否具有优先于反封建的合理性",
+        "D": "在中国推行土地国有化与社会革命，是否有利于资本主义的健康发展"
+    },
+    ("马原", 4, 36): {
+        "A": "形成与之相适应的新型生产关系",
+        "B": "形成与新质生产力相适应的新型生产关系",
+        "C": "深化经济体制、科技体制等改革",
+        "D": "着力打通束缚新质生产力发展的堵点卡点"
+    },
+    ("马原", 4, 40): {
+        "A": "阶级斗争是阶级社会发展的直接动力",
+        "B": "社会意识是社会存在的反映",
+        "C": "在阶级社会中，社会意识形态具有阶级性",
+        "D": "统治阶级的思想是占统治地位的思想"
+    },
+    ("马原", 5, 24): {
+        "A": "资本主义积累的历史趋势是资本主义制度的必然灭亡",
+        "B": "资本主义积累是资本主义基本矛盾加剧的根源",
+        "C": "在资产阶级一极是财富的积累，在无产阶级一极是贫困的积累",
+        "D": "资本积累不仅是资本主义扩大再生产的源泉，而且是两极分化的根源"
+    },
+    ("马原", 5, 27): {
+        "D": "平均利润率的形成是各部门资本家通过竞争重新瓜分剩余价值的结果"
+    },
+    ("马原", 5, 41): {
+        "D": "科学技术和知识本身不能创造价值，只有通过劳动者运用才能创造价值"
+    },
+    ("马原", 5, 63): {
+        "A": "生产价格是价值的转化形式"
+    },
+    ("马原", 6, 18): {
+        "B": "垄断组织凭借垄断地位保证获得高额垄断利润"
+    },
+    ("马原", 6, 22): {
+        "B": "金融资本的形成推动了资本主义经济的发展"
+    },
+    ("马原", 6, 33): {
+        "C": "经济全球化加剧了发展中国家与发达国家的矛盾"
+    },
+    ("马原", 7, 13): {
+        "C": "必须将马克思主义基本原理同具体实际相结合"
+    },
+    ("马原", 7, 15): {
+        "D": "指明了实现社会主义的现实力量和正确道路"
+    },
+    ("毛中特", 0, 7): {
+        "A": "毛泽东思想是马克思主义中国化时代化的第一次历史性飞跃"
+    },
+    ("毛中特", 2, 17): {
+        "C": "中国无产阶级是最先进、最革命、组织纪律性最强的阶级"
+    },
+    ("毛中特", 3, 9): {
+        "A": "社会主义工业化是国家独立和富强的当然要求和必要条件",
+        "C": "对个体农业、手工业和资本主义工商业的改造是保证工业化顺利进行的必要条件"
+    },
+    ("毛中特", 3, 11): {
+        "B": "我国确立了社会主义基本制度，进入了社会主义初级阶段"
+    },
+    ("毛中特", 7, 1): {
+        "C": "把社会主义制度与市场经济有机结合起来"
+    },
+    ("习思想", 3, 4): {
+        "D": "中国共产党领导是中国特色社会主义制度的最大优势"
+    },
+    ("习思想", 5, 15): {
+        "A": "把党中央的战略部署通过法定程序转化为国家意志和全社会的行动规范"
+    },
+    ("习思想", 7, 6): {
+        "B": "科技领域的改革最紧迫的是破除体制机制障碍，释放创新活力"
+    },
+    ("习思想", 8, 11): {
+        "C": "人民代表大会制度是符合中国国情、保障人民当家作主的根本政治制度"
+    },
+    ("习思想", 12, 9): {
+        "C": "生态文明建设是关系中华民族永续发展的根本大计"
+    },
+    ("习思想", 12, 14): {
+        "A": "推动经济社会发展绿色化、低碳化是实现高质量发展的关键环节"
+    },
+    ("史纲", 3, 19): {
+        "C": "南京临时政府是一个资产阶级共和国性质的革命政权"
+    },
+    ("史纲", 3, 21): {
+        "C": "推翻清王朝的封建统治具有正义性和历史必然性"
+    },
+    ("史纲", 4, 29): {
+        "C": "新三民主义成为国共合作的共同纲领"
+    },
+    ("史纲", 5, 10): {
+        "B": "没收一切土地归苏维埃政府所有"
+    },
+    ("史纲", 5, 15): {
+        "B": "确立了毛泽东在党中央和红军的实际领导地位",
+        "C": "在最危急关头挽救了党、挽救了红军、挽救了中国革命"
+    },
+    ("史纲", 6, 5): {
+        "C": "九一八事变揭开了世界反法西斯战争的序幕"
+    },
+    ("史纲", 6, 31): {
+        "B": "中国战场是世界反法西斯战争的东方主战场"
+    },
+    ("史纲", 6, 32): {
+        "D": "中国人民抗日战争的胜利彻底粉碎了日本军国主义殖民奴役中国的图谋"
+    },
+    ("史纲", 7, 20): {
+        "D": "提出党的工作重心由乡村转移到城市，由恢复和发展生产为中心任务"
+    },
+    ("史纲", 8, 17): {
+        "D": "引导私营工商业逐步转变为社会主义全民所有制企业"
+    },
+    ("史纲", 9, 14): {
+        "C": "确定我国经济体制改革的目标是建立社会主义市场经济体制",
+        "D": "确立了邓小平建设有中国特色社会主义理论在全党的指导地位"
+    },
+    ("思修", 1, 12): {
+        "A": "法律是成文的道德，道德是内心的法律"
+    },
+    ("思修", 2, 7): {
+        "A": "青年一代有理想、有担当，国家就有前途，民族就有希望"
+    },
+    ("思修", 6, 35): {
+        "C": "公民在法律面前一律平等是我国宪法确立的一项基本原则",
+        "D": "任何组织或者个人都不得有超越宪法和法律的特权"
+    }
 }
 
 def parse_module_questions_and_exps(mod):
@@ -306,28 +479,40 @@ def parse_module_questions_and_exps(mod):
                 "explanation": cal_exp
             }
 
-    # 3. 解析试题册 (分章节隔离提取)
+    # 3. 解析试题册 (分章节隔离提取 + 双OCR边界融合防串题)
     questions = []
     curr_q_chap = 1
     curr_type = "single"
     in_subjective = False
     curr_q = None
     curr_opt = None
+    pending_lines = []
+    last_seen_qnum = 0
 
     def save_current_q():
-        nonlocal curr_q, curr_opt
+        nonlocal curr_q, curr_opt, pending_lines
         if not curr_q:
             return
-        # 校验选项
+            
+        qnum = curr_q["raw_num"]
         opts_dict = curr_q["options"]
+        
+        # 注入选项标定补全
+        cal_opt_key = (mod_name, curr_q_chap, qnum)
+        if cal_opt_key in CALIBRATION_OPTIONS_MAP:
+            for k, v in CALIBRATION_OPTIONS_MAP[cal_opt_key].items():
+                opts_dict[k] = v
+                
+        # 校验选项，清理尾部页码 (如 130, 23 等)
         for opt_key in ["A", "B", "C", "D"]:
             if opt_key not in opts_dict or not opts_dict[opt_key].strip():
                 opts_dict[opt_key] = f"选项 {opt_key}"
+            else:
+                opts_dict[opt_key] = re.sub(r"\s*\d{1,3}$", "", opts_dict[opt_key]).strip()
                 
-        opts_list = [{"key": k, "value": opts_dict[k].strip()} for k in ["A", "B", "C", "D"]]
+        opts_list = [{"key": k, "value": opts_dict[k]} for k in ["A", "B", "C", "D"]]
         
         # 严格章内对齐答案与解析 (绝不跨章跳题)
-        qnum = curr_q["raw_num"]
         key = (curr_q_chap, qnum)
         if key in exps:
             exp_info = exps[key]
@@ -354,11 +539,21 @@ def parse_module_questions_and_exps(mod):
         })
         curr_q = None
         curr_opt = None
+        pending_lines = []
 
     for p in range(q_start, q_end + 1):
         f = os.path.join(Q_DIR, f"page_{p:03d}.txt")
         lines = clean_lines(f)
+        win_anchors = get_page_win_anchors(p)
+        
         for idx, l in enumerate(lines):
+            # 过滤纯页码
+            if re.match(r"^\d{1,3}$", l.strip()):
+                continue
+            # 过滤页眉水印与单字竖排
+            if "考研政治精雕细刻" in l or l in ["第", "一", "二", "三", "四", "五", "部", "分"]:
+                continue
+                
             c_num = get_chap_num(l)
             if c_num is not None:
                 has_sub = any("选择题" in lines[j] for j in range(idx, min(len(lines), idx+4)))
@@ -367,6 +562,7 @@ def parse_module_questions_and_exps(mod):
                     curr_q_chap = c_num
                     in_subjective = False
                     curr_type = "single"
+                    last_seen_qnum = 0
                     continue
                     
             # 严格截断主观分析题 (试题册每章末尾的材料分析题不属于客观刷题系统)
@@ -389,10 +585,18 @@ def parse_module_questions_and_exps(mod):
                 curr_type = "multiple"
                 continue
                 
-            m_q = re.match(r"^(\d+)\.\s*(.*)$", l)
+            # 匹配题号行 (严防 34.6℃ 等纯数值小数被误判为题号)
+            m_q = re.match(r"^(\d{1,3})[.、．]\s*(.*)$", l)
+            is_valid_qnum = False
             if m_q and not re.match(r"^\d+\.\s*答案", l):
+                rem_text = m_q.group(2).strip()
+                if not re.match(r"^\d+[℃%倍]", rem_text) and not (rem_text and rem_text[0].isdigit() and not re.match(r"^\d{4}年", rem_text) and not re.match(r"^\d{1,2}世纪", rem_text)):
+                    is_valid_qnum = True
+                    
+            if is_valid_qnum:
                 save_current_q()
                 qnum = int(m_q.group(1))
+                last_seen_qnum = qnum
                 curr_q = {
                     "raw_num": qnum,
                     "type": curr_type,
@@ -401,26 +605,69 @@ def parse_module_questions_and_exps(mod):
                     "stage": "stem"
                 }
                 curr_opt = None
-                continue
-                
-            if not curr_q:
+                pending_lines = []
                 continue
                 
             opt_matches = list(re.finditer(r"([A-D])[.、\s]\s*", l))
             if opt_matches:
-                curr_q["stage"] = "options"
-                for i, match in enumerate(opt_matches):
-                    opt_key = match.group(1)
-                    start_pos = match.end()
-                    end_pos = opt_matches[i+1].start() if i+1 < len(opt_matches) else len(l)
-                    opt_val = l[start_pos:end_pos].strip()
-                    curr_q["options"][opt_key] = opt_val
-                    curr_opt = opt_key
+                first_opt = opt_matches[0].group(1)
+                # 核心防串题机制：如果当前题已经提取过选项 A，或者当前为 None，说明进入了下一道题！
+                needs_new_q = False
+                if curr_q and first_opt == 'A' and 'A' in curr_q["options"]:
+                    needs_new_q = True
+                elif not curr_q and first_opt == 'A':
+                    needs_new_q = True
+                    
+                if needs_new_q:
+                    save_current_q()
+                    next_qnum = last_seen_qnum + 1
+                    last_seen_qnum = next_qnum
+                    
+                    stem_prefix = ""
+                    if next_qnum in win_anchors:
+                        stem_prefix = win_anchors[next_qnum]
+                        
+                    stem_text = "\n".join(pending_lines) if pending_lines else ""
+                    if stem_prefix:
+                        if stem_text and not stem_prefix in stem_text:
+                            stem_text = stem_prefix + "\n" + stem_text
+                        elif not stem_text:
+                            stem_text = stem_prefix
+                    if not stem_text:
+                        stem_text = f"第{next_qnum}题"
+                        
+                    curr_q = {
+                        "raw_num": next_qnum,
+                        "type": curr_type,
+                        "stem": stem_text,
+                        "options": {},
+                        "stage": "options"
+                    }
+                    curr_opt = None
+                    pending_lines = []
+                    
+                if curr_q:
+                    curr_q["stage"] = "options"
+                    for i, match in enumerate(opt_matches):
+                        opt_key = match.group(1)
+                        start_pos = match.end()
+                        end_pos = opt_matches[i+1].start() if i+1 < len(opt_matches) else len(l)
+                        opt_val = l[start_pos:end_pos].strip()
+                        opt_val = re.sub(r"\s*\d{1,3}$", "", opt_val).strip()
+                        curr_q["options"][opt_key] = opt_val
+                        curr_opt = opt_key
             else:
-                if curr_q["stage"] == "stem":
-                    curr_q["stem"] += "\n" + l
-                elif curr_q["stage"] == "options" and curr_opt:
-                    curr_q["options"][curr_opt] += l
+                if curr_q:
+                    if curr_q["stage"] == "stem":
+                        curr_q["stem"] += "\n" + l
+                    elif curr_q["stage"] == "options":
+                        # 如果 D 选项已录入，后续非选项文本属于下一题题干！
+                        if "D" in curr_q["options"]:
+                            pending_lines.append(l)
+                        elif curr_opt:
+                            curr_q["options"][curr_opt] += l
+                else:
+                    pending_lines.append(l)
 
     save_current_q()
     return questions
@@ -440,8 +687,9 @@ def main():
         print(f"\n>>> 正在精确分块解析模块: {mod['name']} ...")
         questions = parse_module_questions_and_exps(mod)
         matched_cnt = sum(1 for q in questions if not "【解析整理中】" in q["explanation"])
+        fallback_cnt = sum(1 for q in questions if any("选项 " in opt["value"] for opt in q["options"]))
         rate = (matched_cnt / len(questions) * 100) if questions else 0
-        print(f"    ✔ 提取题量: {len(questions)} 题, 官方解析精准对齐: {matched_cnt}/{len(questions)} ({rate:.1f}%)")
+        print(f"    ✔ 提取题量: {len(questions)} 题, 官方解析精准对齐: {matched_cnt}/{len(questions)} ({rate:.1f}%), 兜底选项数: {fallback_cnt}")
         
         c.execute("SELECT id FROM workbooks WHERE name = ?", (mod["name"],))
         row = c.fetchone()
