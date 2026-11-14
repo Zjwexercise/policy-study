@@ -1,6 +1,6 @@
 [
   {
-    "id": 28840,
+    "id": 32736,
     "workbook_id": 39,
     "question_num": 1,
     "question_type": "single",
@@ -30,7 +30,7 @@
     "order_num": 1
   },
   {
-    "id": 28841,
+    "id": 32737,
     "workbook_id": 39,
     "question_num": 2,
     "question_type": "single",
@@ -60,7 +60,7 @@
     "order_num": 2
   },
   {
-    "id": 28842,
+    "id": 32738,
     "workbook_id": 39,
     "question_num": 3,
     "question_type": "single",
@@ -90,7 +90,7 @@
     "order_num": 3
   },
   {
-    "id": 28843,
+    "id": 32739,
     "workbook_id": 39,
     "question_num": 4,
     "question_type": "single",
@@ -120,7 +120,7 @@
     "order_num": 4
   },
   {
-    "id": 28844,
+    "id": 32740,
     "workbook_id": 39,
     "question_num": 5,
     "question_type": "single",
@@ -150,7 +150,7 @@
     "order_num": 5
   },
   {
-    "id": 28845,
+    "id": 32741,
     "workbook_id": 39,
     "question_num": 6,
     "question_type": "single",
@@ -180,7 +180,7 @@
     "order_num": 6
   },
   {
-    "id": 28846,
+    "id": 32742,
     "workbook_id": 39,
     "question_num": 7,
     "question_type": "single",
@@ -210,7 +210,7 @@
     "order_num": 7
   },
   {
-    "id": 28847,
+    "id": 32743,
     "workbook_id": 39,
     "question_num": 8,
     "question_type": "single",
@@ -240,7 +240,7 @@
     "order_num": 8
   },
   {
-    "id": 28848,
+    "id": 32744,
     "workbook_id": 39,
     "question_num": 9,
     "question_type": "single",
@@ -270,7 +270,7 @@
     "order_num": 9
   },
   {
-    "id": 28849,
+    "id": 32745,
     "workbook_id": 39,
     "question_num": 10,
     "question_type": "multiple",
@@ -300,7 +300,7 @@
     "order_num": 10
   },
   {
-    "id": 28850,
+    "id": 32746,
     "workbook_id": 39,
     "question_num": 11,
     "question_type": "multiple",
@@ -330,7 +330,7 @@
     "order_num": 11
   },
   {
-    "id": 28851,
+    "id": 32747,
     "workbook_id": 39,
     "question_num": 12,
     "question_type": "multiple",
@@ -360,7 +360,7 @@
     "order_num": 12
   },
   {
-    "id": 28852,
+    "id": 32748,
     "workbook_id": 39,
     "question_num": 13,
     "question_type": "multiple",
@@ -390,7 +390,7 @@
     "order_num": 13
   },
   {
-    "id": 28853,
+    "id": 32749,
     "workbook_id": 39,
     "question_num": 14,
     "question_type": "single",
@@ -420,7 +420,7 @@
     "order_num": 14
   },
   {
-    "id": 28854,
+    "id": 32750,
     "workbook_id": 39,
     "question_num": 15,
     "question_type": "single",
@@ -450,7 +450,7 @@
     "order_num": 15
   },
   {
-    "id": 28855,
+    "id": 32751,
     "workbook_id": 39,
     "question_num": 16,
     "question_type": "single",
@@ -480,7 +480,7 @@
     "order_num": 16
   },
   {
-    "id": 28856,
+    "id": 32752,
     "workbook_id": 39,
     "question_num": 17,
     "question_type": "single",
@@ -510,7 +510,7 @@
     "order_num": 17
   },
   {
-    "id": 28857,
+    "id": 32753,
     "workbook_id": 39,
     "question_num": 18,
     "question_type": "single",
@@ -540,7 +540,7 @@
     "order_num": 18
   },
   {
-    "id": 28858,
+    "id": 32754,
     "workbook_id": 39,
     "question_num": 19,
     "question_type": "single",
@@ -570,7 +570,7 @@
     "order_num": 19
   },
   {
-    "id": 28859,
+    "id": 32755,
     "workbook_id": 39,
     "question_num": 20,
     "question_type": "single",
@@ -600,7 +600,7 @@
     "order_num": 20
   },
   {
-    "id": 28860,
+    "id": 32756,
     "workbook_id": 39,
     "question_num": 21,
     "question_type": "single",
@@ -630,7 +630,7 @@
     "order_num": 21
   },
   {
-    "id": 28861,
+    "id": 32757,
     "workbook_id": 39,
     "question_num": 22,
     "question_type": "single",
@@ -660,7 +660,7 @@
     "order_num": 22
   },
   {
-    "id": 28862,
+    "id": 32758,
     "workbook_id": 39,
     "question_num": 23,
     "question_type": "single",
@@ -690,7 +690,7 @@
     "order_num": 23
   },
   {
-    "id": 28863,
+    "id": 32759,
     "workbook_id": 39,
     "question_num": 24,
     "question_type": "single",
@@ -720,12 +720,12 @@
     "order_num": 24
   },
   {
-    "id": 28864,
+    "id": 32760,
     "workbook_id": 39,
     "question_num": 25,
     "question_type": "single",
     "category": "第2章",
-    "stem": "科学家洛伦兹说：“可预言：一只蝴蝶在巴西振动翅膀会在得克萨斯引起龙卷风·”下列说法",
+    "stem": "科学家洛伦兹说：“可预言：一只蝴蝶在巴西振动翅膀会在得克萨斯引起龙卷风·”下列说法\n中，与“蝴蝶效应”包含同一哲理的是",
     "options": [
       {
         "key": "A",
@@ -750,7 +750,7 @@
     "order_num": 25
   },
   {
-    "id": 28865,
+    "id": 32761,
     "workbook_id": 39,
     "question_num": 26,
     "question_type": "single",
@@ -780,12 +780,12 @@
     "order_num": 26
   },
   {
-    "id": 28866,
+    "id": 32762,
     "workbook_id": 39,
     "question_num": 27,
     "question_type": "single",
     "category": "第2章",
-    "stem": "2016年1月18日，习近平总书记在省部级主要领导干部学习贯彻党的十八届五中全会精神",
+    "stem": "2016年1月18日，习近平总书记在省部级主要领导干部学习贯彻党的十八届五中全会精神\n专题研讨班上发表重要讲话。他引用“竭泽而渔，岂不获得？而明年无鱼；焚数而田，岂不获\n得？而明年无兽”等经典，指出我们的先人们早就认识到了保护生态环境的重要性。习近平\n总书记引用的这则谚语给我们的启示是",
     "options": [
       {
         "key": "A",
@@ -810,7 +810,7 @@
     "order_num": 27
   },
   {
-    "id": 28867,
+    "id": 32763,
     "workbook_id": 39,
     "question_num": 28,
     "question_type": "single",
@@ -840,7 +840,7 @@
     "order_num": 28
   },
   {
-    "id": 28868,
+    "id": 32764,
     "workbook_id": 39,
     "question_num": 29,
     "question_type": "single",
@@ -870,7 +870,7 @@
     "order_num": 29
   },
   {
-    "id": 28869,
+    "id": 32765,
     "workbook_id": 39,
     "question_num": 30,
     "question_type": "single",
@@ -900,7 +900,7 @@
     "order_num": 30
   },
   {
-    "id": 28870,
+    "id": 32766,
     "workbook_id": 39,
     "question_num": 31,
     "question_type": "single",
@@ -930,7 +930,7 @@
     "order_num": 31
   },
   {
-    "id": 28871,
+    "id": 32767,
     "workbook_id": 39,
     "question_num": 32,
     "question_type": "single",
@@ -960,7 +960,7 @@
     "order_num": 32
   },
   {
-    "id": 28872,
+    "id": 32768,
     "workbook_id": 39,
     "question_num": 33,
     "question_type": "single",
@@ -990,7 +990,7 @@
     "order_num": 33
   },
   {
-    "id": 28873,
+    "id": 32769,
     "workbook_id": 39,
     "question_num": 34,
     "question_type": "multiple",
@@ -1020,7 +1020,7 @@
     "order_num": 34
   },
   {
-    "id": 28874,
+    "id": 32770,
     "workbook_id": 39,
     "question_num": 35,
     "question_type": "multiple",
@@ -1050,7 +1050,7 @@
     "order_num": 35
   },
   {
-    "id": 28875,
+    "id": 32771,
     "workbook_id": 39,
     "question_num": 36,
     "question_type": "multiple",
@@ -1080,7 +1080,7 @@
     "order_num": 36
   },
   {
-    "id": 28876,
+    "id": 32772,
     "workbook_id": 39,
     "question_num": 37,
     "question_type": "multiple",
@@ -1110,7 +1110,7 @@
     "order_num": 37
   },
   {
-    "id": 28877,
+    "id": 32773,
     "workbook_id": 39,
     "question_num": 38,
     "question_type": "multiple",
@@ -1140,7 +1140,7 @@
     "order_num": 38
   },
   {
-    "id": 28878,
+    "id": 32774,
     "workbook_id": 39,
     "question_num": 39,
     "question_type": "multiple",
@@ -1170,7 +1170,7 @@
     "order_num": 39
   },
   {
-    "id": 28879,
+    "id": 32775,
     "workbook_id": 39,
     "question_num": 40,
     "question_type": "multiple",
@@ -1200,7 +1200,7 @@
     "order_num": 40
   },
   {
-    "id": 28880,
+    "id": 32776,
     "workbook_id": 39,
     "question_num": 41,
     "question_type": "multiple",
@@ -1230,7 +1230,7 @@
     "order_num": 41
   },
   {
-    "id": 28881,
+    "id": 32777,
     "workbook_id": 39,
     "question_num": 42,
     "question_type": "multiple",
@@ -1260,7 +1260,7 @@
     "order_num": 42
   },
   {
-    "id": 28882,
+    "id": 32778,
     "workbook_id": 39,
     "question_num": 43,
     "question_type": "multiple",
@@ -1290,7 +1290,7 @@
     "order_num": 43
   },
   {
-    "id": 28883,
+    "id": 32779,
     "workbook_id": 39,
     "question_num": 44,
     "question_type": "multiple",
@@ -1320,7 +1320,7 @@
     "order_num": 44
   },
   {
-    "id": 28884,
+    "id": 32780,
     "workbook_id": 39,
     "question_num": 45,
     "question_type": "multiple",
@@ -1350,7 +1350,7 @@
     "order_num": 45
   },
   {
-    "id": 28885,
+    "id": 32781,
     "workbook_id": 39,
     "question_num": 46,
     "question_type": "multiple",
@@ -1380,7 +1380,7 @@
     "order_num": 46
   },
   {
-    "id": 28886,
+    "id": 32782,
     "workbook_id": 39,
     "question_num": 47,
     "question_type": "multiple",
@@ -1410,7 +1410,7 @@
     "order_num": 47
   },
   {
-    "id": 28887,
+    "id": 32783,
     "workbook_id": 39,
     "question_num": 48,
     "question_type": "multiple",
@@ -1440,7 +1440,7 @@
     "order_num": 48
   },
   {
-    "id": 28888,
+    "id": 32784,
     "workbook_id": 39,
     "question_num": 49,
     "question_type": "multiple",
@@ -1470,7 +1470,7 @@
     "order_num": 49
   },
   {
-    "id": 28889,
+    "id": 32785,
     "workbook_id": 39,
     "question_num": 50,
     "question_type": "multiple",
@@ -1500,7 +1500,7 @@
     "order_num": 50
   },
   {
-    "id": 28890,
+    "id": 32786,
     "workbook_id": 39,
     "question_num": 51,
     "question_type": "single",
@@ -1530,7 +1530,7 @@
     "order_num": 51
   },
   {
-    "id": 28891,
+    "id": 32787,
     "workbook_id": 39,
     "question_num": 52,
     "question_type": "single",
@@ -1560,7 +1560,7 @@
     "order_num": 52
   },
   {
-    "id": 28892,
+    "id": 32788,
     "workbook_id": 39,
     "question_num": 53,
     "question_type": "single",
@@ -1590,7 +1590,7 @@
     "order_num": 53
   },
   {
-    "id": 28893,
+    "id": 32789,
     "workbook_id": 39,
     "question_num": 54,
     "question_type": "single",
@@ -1620,7 +1620,7 @@
     "order_num": 54
   },
   {
-    "id": 28894,
+    "id": 32790,
     "workbook_id": 39,
     "question_num": 55,
     "question_type": "single",
@@ -1650,7 +1650,7 @@
     "order_num": 55
   },
   {
-    "id": 28895,
+    "id": 32791,
     "workbook_id": 39,
     "question_num": 56,
     "question_type": "single",
@@ -1680,7 +1680,7 @@
     "order_num": 56
   },
   {
-    "id": 28896,
+    "id": 32792,
     "workbook_id": 39,
     "question_num": 57,
     "question_type": "single",
@@ -1710,7 +1710,7 @@
     "order_num": 57
   },
   {
-    "id": 28897,
+    "id": 32793,
     "workbook_id": 39,
     "question_num": 58,
     "question_type": "single",
@@ -1740,7 +1740,7 @@
     "order_num": 58
   },
   {
-    "id": 28898,
+    "id": 32794,
     "workbook_id": 39,
     "question_num": 59,
     "question_type": "single",
@@ -1770,7 +1770,7 @@
     "order_num": 59
   },
   {
-    "id": 28899,
+    "id": 32795,
     "workbook_id": 39,
     "question_num": 60,
     "question_type": "single",
@@ -1800,7 +1800,7 @@
     "order_num": 60
   },
   {
-    "id": 28900,
+    "id": 32796,
     "workbook_id": 39,
     "question_num": 61,
     "question_type": "single",
@@ -1830,7 +1830,7 @@
     "order_num": 61
   },
   {
-    "id": 28901,
+    "id": 32797,
     "workbook_id": 39,
     "question_num": 62,
     "question_type": "single",
@@ -1860,7 +1860,7 @@
     "order_num": 62
   },
   {
-    "id": 28902,
+    "id": 32798,
     "workbook_id": 39,
     "question_num": 63,
     "question_type": "single",
@@ -1890,7 +1890,7 @@
     "order_num": 63
   },
   {
-    "id": 28903,
+    "id": 32799,
     "workbook_id": 39,
     "question_num": 64,
     "question_type": "single",
@@ -1920,7 +1920,7 @@
     "order_num": 64
   },
   {
-    "id": 28904,
+    "id": 32800,
     "workbook_id": 39,
     "question_num": 65,
     "question_type": "single",
@@ -1950,7 +1950,7 @@
     "order_num": 65
   },
   {
-    "id": 28905,
+    "id": 32801,
     "workbook_id": 39,
     "question_num": 66,
     "question_type": "single",
@@ -1980,7 +1980,7 @@
     "order_num": 66
   },
   {
-    "id": 28906,
+    "id": 32802,
     "workbook_id": 39,
     "question_num": 67,
     "question_type": "single",
@@ -2010,7 +2010,7 @@
     "order_num": 67
   },
   {
-    "id": 28907,
+    "id": 32803,
     "workbook_id": 39,
     "question_num": 68,
     "question_type": "single",
@@ -2040,7 +2040,7 @@
     "order_num": 68
   },
   {
-    "id": 28908,
+    "id": 32804,
     "workbook_id": 39,
     "question_num": 69,
     "question_type": "single",
@@ -2070,7 +2070,7 @@
     "order_num": 69
   },
   {
-    "id": 28909,
+    "id": 32805,
     "workbook_id": 39,
     "question_num": 70,
     "question_type": "multiple",
@@ -2100,7 +2100,7 @@
     "order_num": 70
   },
   {
-    "id": 28910,
+    "id": 32806,
     "workbook_id": 39,
     "question_num": 71,
     "question_type": "multiple",
@@ -2130,7 +2130,7 @@
     "order_num": 71
   },
   {
-    "id": 28911,
+    "id": 32807,
     "workbook_id": 39,
     "question_num": 72,
     "question_type": "multiple",
@@ -2160,7 +2160,7 @@
     "order_num": 72
   },
   {
-    "id": 28912,
+    "id": 32808,
     "workbook_id": 39,
     "question_num": 73,
     "question_type": "multiple",
@@ -2190,7 +2190,7 @@
     "order_num": 73
   },
   {
-    "id": 28913,
+    "id": 32809,
     "workbook_id": 39,
     "question_num": 74,
     "question_type": "multiple",
@@ -2220,7 +2220,7 @@
     "order_num": 74
   },
   {
-    "id": 28914,
+    "id": 32810,
     "workbook_id": 39,
     "question_num": 75,
     "question_type": "multiple",
@@ -2250,7 +2250,7 @@
     "order_num": 75
   },
   {
-    "id": 28915,
+    "id": 32811,
     "workbook_id": 39,
     "question_num": 76,
     "question_type": "multiple",
@@ -2280,7 +2280,7 @@
     "order_num": 76
   },
   {
-    "id": 28916,
+    "id": 32812,
     "workbook_id": 39,
     "question_num": 77,
     "question_type": "multiple",
@@ -2310,7 +2310,7 @@
     "order_num": 77
   },
   {
-    "id": 28917,
+    "id": 32813,
     "workbook_id": 39,
     "question_num": 78,
     "question_type": "multiple",
@@ -2340,7 +2340,7 @@
     "order_num": 78
   },
   {
-    "id": 28918,
+    "id": 32814,
     "workbook_id": 39,
     "question_num": 79,
     "question_type": "multiple",
@@ -2370,7 +2370,7 @@
     "order_num": 79
   },
   {
-    "id": 28919,
+    "id": 32815,
     "workbook_id": 39,
     "question_num": 80,
     "question_type": "multiple",
@@ -2400,7 +2400,7 @@
     "order_num": 80
   },
   {
-    "id": 28920,
+    "id": 32816,
     "workbook_id": 39,
     "question_num": 81,
     "question_type": "multiple",
@@ -2430,7 +2430,7 @@
     "order_num": 81
   },
   {
-    "id": 28921,
+    "id": 32817,
     "workbook_id": 39,
     "question_num": 82,
     "question_type": "multiple",
@@ -2460,7 +2460,7 @@
     "order_num": 82
   },
   {
-    "id": 28922,
+    "id": 32818,
     "workbook_id": 39,
     "question_num": 83,
     "question_type": "multiple",
@@ -2490,7 +2490,7 @@
     "order_num": 83
   },
   {
-    "id": 28923,
+    "id": 32819,
     "workbook_id": 39,
     "question_num": 84,
     "question_type": "multiple",
@@ -2520,7 +2520,7 @@
     "order_num": 84
   },
   {
-    "id": 28924,
+    "id": 32820,
     "workbook_id": 39,
     "question_num": 85,
     "question_type": "multiple",
@@ -2550,7 +2550,7 @@
     "order_num": 85
   },
   {
-    "id": 28925,
+    "id": 32821,
     "workbook_id": 39,
     "question_num": 86,
     "question_type": "multiple",
@@ -2580,7 +2580,7 @@
     "order_num": 86
   },
   {
-    "id": 28926,
+    "id": 32822,
     "workbook_id": 39,
     "question_num": 87,
     "question_type": "multiple",
@@ -2610,7 +2610,7 @@
     "order_num": 87
   },
   {
-    "id": 28927,
+    "id": 32823,
     "workbook_id": 39,
     "question_num": 88,
     "question_type": "multiple",
@@ -2640,7 +2640,7 @@
     "order_num": 88
   },
   {
-    "id": 28928,
+    "id": 32824,
     "workbook_id": 39,
     "question_num": 89,
     "question_type": "multiple",
@@ -2670,7 +2670,7 @@
     "order_num": 89
   },
   {
-    "id": 28929,
+    "id": 32825,
     "workbook_id": 39,
     "question_num": 90,
     "question_type": "single",
@@ -2700,7 +2700,7 @@
     "order_num": 90
   },
   {
-    "id": 28930,
+    "id": 32826,
     "workbook_id": 39,
     "question_num": 91,
     "question_type": "single",
@@ -2730,7 +2730,7 @@
     "order_num": 91
   },
   {
-    "id": 28931,
+    "id": 32827,
     "workbook_id": 39,
     "question_num": 92,
     "question_type": "single",
@@ -2760,12 +2760,12 @@
     "order_num": 92
   },
   {
-    "id": 28932,
+    "id": 32828,
     "workbook_id": 39,
     "question_num": 93,
     "question_type": "single",
     "category": "第4章",
-    "stem": "第4题",
+    "stem": "恩格斯指出：“人们的意识决定于人们的存在而不是相反，这个原理看起来很简单，但是仔细考察一下也会立即发现，这个原理一在科学中哪怕只在最初的几步中被贯彻，就会给一切唯心主义，甚至给最隐藏的唯心主义当头一棒。”恩格斯所说的这个原理指的是",
     "options": [
       {
         "key": "A",
@@ -2790,7 +2790,7 @@
     "order_num": 93
   },
   {
-    "id": 28933,
+    "id": 32829,
     "workbook_id": 39,
     "question_num": 94,
     "question_type": "single",
@@ -2820,7 +2820,7 @@
     "order_num": 94
   },
   {
-    "id": 28934,
+    "id": 32830,
     "workbook_id": 39,
     "question_num": 95,
     "question_type": "single",
@@ -2850,7 +2850,7 @@
     "order_num": 95
   },
   {
-    "id": 28935,
+    "id": 32831,
     "workbook_id": 39,
     "question_num": 96,
     "question_type": "single",
@@ -2880,7 +2880,7 @@
     "order_num": 96
   },
   {
-    "id": 28936,
+    "id": 32832,
     "workbook_id": 39,
     "question_num": 97,
     "question_type": "single",
@@ -2910,7 +2910,7 @@
     "order_num": 97
   },
   {
-    "id": 28937,
+    "id": 32833,
     "workbook_id": 39,
     "question_num": 98,
     "question_type": "single",
@@ -2940,7 +2940,7 @@
     "order_num": 98
   },
   {
-    "id": 28938,
+    "id": 32834,
     "workbook_id": 39,
     "question_num": 99,
     "question_type": "single",
@@ -2970,7 +2970,7 @@
     "order_num": 99
   },
   {
-    "id": 28939,
+    "id": 32835,
     "workbook_id": 39,
     "question_num": 100,
     "question_type": "single",
@@ -3000,7 +3000,7 @@
     "order_num": 100
   },
   {
-    "id": 28940,
+    "id": 32836,
     "workbook_id": 39,
     "question_num": 101,
     "question_type": "single",
@@ -3030,12 +3030,12 @@
     "order_num": 101
   },
   {
-    "id": 28941,
+    "id": 32837,
     "workbook_id": 39,
     "question_num": 102,
     "question_type": "single",
     "category": "第4章",
-    "stem": "第13题",
+    "stem": "马克思说：“人们在自己生活的社会生产中发生一定的、必然的、不以他们的意志为转移的关系，即同他们的物质生产力的一定发展阶段相适合的生产关系。这些生产关系的总和构成社会的经济结构，即有法律的和政治的上层建筑竖立其上并有一定的社会意识形式与其相适应的现实基础。”这说明",
     "options": [
       {
         "key": "A",
@@ -3060,7 +3060,7 @@
     "order_num": 102
   },
   {
-    "id": 28942,
+    "id": 32838,
     "workbook_id": 39,
     "question_num": 103,
     "question_type": "single",
@@ -3090,7 +3090,7 @@
     "order_num": 103
   },
   {
-    "id": 28943,
+    "id": 32839,
     "workbook_id": 39,
     "question_num": 104,
     "question_type": "single",
@@ -3120,7 +3120,7 @@
     "order_num": 104
   },
   {
-    "id": 28944,
+    "id": 32840,
     "workbook_id": 39,
     "question_num": 105,
     "question_type": "single",
@@ -3150,7 +3150,7 @@
     "order_num": 105
   },
   {
-    "id": 28945,
+    "id": 32841,
     "workbook_id": 39,
     "question_num": 106,
     "question_type": "single",
@@ -3180,7 +3180,7 @@
     "order_num": 106
   },
   {
-    "id": 28946,
+    "id": 32842,
     "workbook_id": 39,
     "question_num": 107,
     "question_type": "single",
@@ -3210,7 +3210,7 @@
     "order_num": 107
   },
   {
-    "id": 28947,
+    "id": 32843,
     "workbook_id": 39,
     "question_num": 108,
     "question_type": "single",
@@ -3240,7 +3240,7 @@
     "order_num": 108
   },
   {
-    "id": 28948,
+    "id": 32844,
     "workbook_id": 39,
     "question_num": 109,
     "question_type": "single",
@@ -3270,7 +3270,7 @@
     "order_num": 109
   },
   {
-    "id": 28949,
+    "id": 32845,
     "workbook_id": 39,
     "question_num": 110,
     "question_type": "single",
@@ -3300,7 +3300,7 @@
     "order_num": 110
   },
   {
-    "id": 28950,
+    "id": 32846,
     "workbook_id": 39,
     "question_num": 111,
     "question_type": "single",
@@ -3330,7 +3330,7 @@
     "order_num": 111
   },
   {
-    "id": 28951,
+    "id": 32847,
     "workbook_id": 39,
     "question_num": 112,
     "question_type": "single",
@@ -3360,7 +3360,7 @@
     "order_num": 112
   },
   {
-    "id": 28952,
+    "id": 32848,
     "workbook_id": 39,
     "question_num": 113,
     "question_type": "multiple",
@@ -3390,7 +3390,7 @@
     "order_num": 113
   },
   {
-    "id": 28953,
+    "id": 32849,
     "workbook_id": 39,
     "question_num": 114,
     "question_type": "multiple",
@@ -3420,7 +3420,7 @@
     "order_num": 114
   },
   {
-    "id": 28954,
+    "id": 32850,
     "workbook_id": 39,
     "question_num": 115,
     "question_type": "multiple",
@@ -3450,7 +3450,7 @@
     "order_num": 115
   },
   {
-    "id": 28955,
+    "id": 32851,
     "workbook_id": 39,
     "question_num": 116,
     "question_type": "multiple",
@@ -3480,7 +3480,7 @@
     "order_num": 116
   },
   {
-    "id": 28956,
+    "id": 32852,
     "workbook_id": 39,
     "question_num": 117,
     "question_type": "multiple",
@@ -3510,7 +3510,7 @@
     "order_num": 117
   },
   {
-    "id": 28957,
+    "id": 32853,
     "workbook_id": 39,
     "question_num": 118,
     "question_type": "multiple",
@@ -3540,7 +3540,7 @@
     "order_num": 118
   },
   {
-    "id": 28958,
+    "id": 32854,
     "workbook_id": 39,
     "question_num": 119,
     "question_type": "multiple",
@@ -3570,7 +3570,7 @@
     "order_num": 119
   },
   {
-    "id": 28959,
+    "id": 32855,
     "workbook_id": 39,
     "question_num": 120,
     "question_type": "multiple",
@@ -3600,7 +3600,7 @@
     "order_num": 120
   },
   {
-    "id": 28960,
+    "id": 32856,
     "workbook_id": 39,
     "question_num": 121,
     "question_type": "multiple",
@@ -3630,7 +3630,7 @@
     "order_num": 121
   },
   {
-    "id": 28961,
+    "id": 32857,
     "workbook_id": 39,
     "question_num": 122,
     "question_type": "multiple",
@@ -3660,7 +3660,7 @@
     "order_num": 122
   },
   {
-    "id": 28962,
+    "id": 32858,
     "workbook_id": 39,
     "question_num": 123,
     "question_type": "multiple",
@@ -3690,7 +3690,7 @@
     "order_num": 123
   },
   {
-    "id": 28963,
+    "id": 32859,
     "workbook_id": 39,
     "question_num": 124,
     "question_type": "multiple",
@@ -3720,7 +3720,7 @@
     "order_num": 124
   },
   {
-    "id": 28964,
+    "id": 32860,
     "workbook_id": 39,
     "question_num": 125,
     "question_type": "multiple",
@@ -3750,7 +3750,7 @@
     "order_num": 125
   },
   {
-    "id": 28965,
+    "id": 32861,
     "workbook_id": 39,
     "question_num": 126,
     "question_type": "multiple",
@@ -3780,7 +3780,7 @@
     "order_num": 126
   },
   {
-    "id": 28966,
+    "id": 32862,
     "workbook_id": 39,
     "question_num": 127,
     "question_type": "multiple",
@@ -3810,7 +3810,7 @@
     "order_num": 127
   },
   {
-    "id": 28967,
+    "id": 32863,
     "workbook_id": 39,
     "question_num": 128,
     "question_type": "multiple",
@@ -3840,7 +3840,7 @@
     "order_num": 128
   },
   {
-    "id": 28968,
+    "id": 32864,
     "workbook_id": 39,
     "question_num": 129,
     "question_type": "multiple",
@@ -3870,7 +3870,7 @@
     "order_num": 129
   },
   {
-    "id": 28969,
+    "id": 32865,
     "workbook_id": 39,
     "question_num": 130,
     "question_type": "multiple",
@@ -3900,7 +3900,7 @@
     "order_num": 130
   },
   {
-    "id": 28970,
+    "id": 32866,
     "workbook_id": 39,
     "question_num": 131,
     "question_type": "multiple",
@@ -3930,7 +3930,7 @@
     "order_num": 131
   },
   {
-    "id": 28971,
+    "id": 32867,
     "workbook_id": 39,
     "question_num": 132,
     "question_type": "multiple",
@@ -3960,7 +3960,7 @@
     "order_num": 132
   },
   {
-    "id": 28972,
+    "id": 32868,
     "workbook_id": 39,
     "question_num": 133,
     "question_type": "multiple",
@@ -3990,7 +3990,7 @@
     "order_num": 133
   },
   {
-    "id": 28973,
+    "id": 32869,
     "workbook_id": 39,
     "question_num": 134,
     "question_type": "multiple",
@@ -4020,7 +4020,7 @@
     "order_num": 134
   },
   {
-    "id": 28974,
+    "id": 32870,
     "workbook_id": 39,
     "question_num": 135,
     "question_type": "multiple",
@@ -4050,7 +4050,7 @@
     "order_num": 135
   },
   {
-    "id": 28975,
+    "id": 32871,
     "workbook_id": 39,
     "question_num": 136,
     "question_type": "multiple",
@@ -4080,7 +4080,7 @@
     "order_num": 136
   },
   {
-    "id": 28976,
+    "id": 32872,
     "workbook_id": 39,
     "question_num": 137,
     "question_type": "multiple",
@@ -4110,7 +4110,7 @@
     "order_num": 137
   },
   {
-    "id": 28977,
+    "id": 32873,
     "workbook_id": 39,
     "question_num": 138,
     "question_type": "multiple",
@@ -4140,7 +4140,7 @@
     "order_num": 138
   },
   {
-    "id": 28978,
+    "id": 32874,
     "workbook_id": 39,
     "question_num": 139,
     "question_type": "multiple",
@@ -4170,7 +4170,7 @@
     "order_num": 139
   },
   {
-    "id": 28979,
+    "id": 32875,
     "workbook_id": 39,
     "question_num": 140,
     "question_type": "multiple",
@@ -4200,7 +4200,7 @@
     "order_num": 140
   },
   {
-    "id": 28980,
+    "id": 32876,
     "workbook_id": 39,
     "question_num": 141,
     "question_type": "multiple",
@@ -4230,7 +4230,7 @@
     "order_num": 141
   },
   {
-    "id": 28981,
+    "id": 32877,
     "workbook_id": 39,
     "question_num": 142,
     "question_type": "multiple",
@@ -4260,7 +4260,7 @@
     "order_num": 142
   },
   {
-    "id": 28982,
+    "id": 32878,
     "workbook_id": 39,
     "question_num": 143,
     "question_type": "multiple",
@@ -4290,7 +4290,7 @@
     "order_num": 143
   },
   {
-    "id": 28983,
+    "id": 32879,
     "workbook_id": 39,
     "question_num": 144,
     "question_type": "single",
@@ -4320,7 +4320,7 @@
     "order_num": 144
   },
   {
-    "id": 28984,
+    "id": 32880,
     "workbook_id": 39,
     "question_num": 145,
     "question_type": "single",
@@ -4350,7 +4350,7 @@
     "order_num": 145
   },
   {
-    "id": 28985,
+    "id": 32881,
     "workbook_id": 39,
     "question_num": 146,
     "question_type": "single",
@@ -4380,7 +4380,7 @@
     "order_num": 146
   },
   {
-    "id": 28986,
+    "id": 32882,
     "workbook_id": 39,
     "question_num": 147,
     "question_type": "single",
@@ -4410,7 +4410,7 @@
     "order_num": 147
   },
   {
-    "id": 28987,
+    "id": 32883,
     "workbook_id": 39,
     "question_num": 148,
     "question_type": "single",
@@ -4440,7 +4440,7 @@
     "order_num": 148
   },
   {
-    "id": 28988,
+    "id": 32884,
     "workbook_id": 39,
     "question_num": 149,
     "question_type": "single",
@@ -4470,7 +4470,7 @@
     "order_num": 149
   },
   {
-    "id": 28989,
+    "id": 32885,
     "workbook_id": 39,
     "question_num": 150,
     "question_type": "single",
@@ -4500,7 +4500,7 @@
     "order_num": 150
   },
   {
-    "id": 28990,
+    "id": 32886,
     "workbook_id": 39,
     "question_num": 151,
     "question_type": "single",
@@ -4530,12 +4530,12 @@
     "order_num": 151
   },
   {
-    "id": 28991,
+    "id": 32887,
     "workbook_id": 39,
     "question_num": 152,
     "question_type": "single",
     "category": "第5章",
-    "stem": "马克思在《资本论》中指出：“在社会劳动的联系体现为个人劳动产品的私人交换的社会制度",
+    "stem": "马克思在《资本论》中指出：“在社会劳动的联系体现为个人劳动产品的私人交换的社会制度\n下，这种劳动按比例分配所借以实现的形式，正是这些产品的交换价值。”在商品经济条件下，\n按比例合理分配社会劳动的客观要求，是通过",
     "options": [
       {
         "key": "A",
@@ -4560,7 +4560,7 @@
     "order_num": 152
   },
   {
-    "id": 28992,
+    "id": 32888,
     "workbook_id": 39,
     "question_num": 153,
     "question_type": "single",
@@ -4590,7 +4590,7 @@
     "order_num": 153
   },
   {
-    "id": 28993,
+    "id": 32889,
     "workbook_id": 39,
     "question_num": 154,
     "question_type": "single",
@@ -4620,7 +4620,7 @@
     "order_num": 154
   },
   {
-    "id": 28994,
+    "id": 32890,
     "workbook_id": 39,
     "question_num": 155,
     "question_type": "single",
@@ -4650,7 +4650,7 @@
     "order_num": 155
   },
   {
-    "id": 28995,
+    "id": 32891,
     "workbook_id": 39,
     "question_num": 156,
     "question_type": "single",
@@ -4680,7 +4680,7 @@
     "order_num": 156
   },
   {
-    "id": 28996,
+    "id": 32892,
     "workbook_id": 39,
     "question_num": 157,
     "question_type": "single",
@@ -4710,7 +4710,7 @@
     "order_num": 157
   },
   {
-    "id": 28997,
+    "id": 32893,
     "workbook_id": 39,
     "question_num": 158,
     "question_type": "single",
@@ -4740,7 +4740,7 @@
     "order_num": 158
   },
   {
-    "id": 28998,
+    "id": 32894,
     "workbook_id": 39,
     "question_num": 159,
     "question_type": "single",
@@ -4770,7 +4770,7 @@
     "order_num": 159
   },
   {
-    "id": 28999,
+    "id": 32895,
     "workbook_id": 39,
     "question_num": 160,
     "question_type": "single",
@@ -4800,7 +4800,7 @@
     "order_num": 160
   },
   {
-    "id": 29000,
+    "id": 32896,
     "workbook_id": 39,
     "question_num": 161,
     "question_type": "single",
@@ -4830,12 +4830,12 @@
     "order_num": 161
   },
   {
-    "id": 29001,
+    "id": 32897,
     "workbook_id": 39,
     "question_num": 162,
     "question_type": "single",
     "category": "第5章",
-    "stem": "马克思在《资本论》中提到：“采用改良的生产方式的资本家比同行业的其余资本家，可以在一",
+    "stem": "马克思在《资本论》中提到：“采用改良的生产方式的资本家比同行业的其余资本家，可以在一\n个工作日中占有更大的部分作为剩余劳动。他个别地所做的，就是资本全体在生产相对剩余\n价值时所做的。但是另一方面，当新的生产方式被普遍采用，因而比较便宜地生产出来的商\n单个资本家改进生产技术、提高劳动生产率的直接动机是追求",
     "options": [
       {
         "key": "A",
@@ -4860,7 +4860,7 @@
     "order_num": 162
   },
   {
-    "id": 29002,
+    "id": 32898,
     "workbook_id": 39,
     "question_num": 163,
     "question_type": "single",
@@ -4890,7 +4890,7 @@
     "order_num": 163
   },
   {
-    "id": 29003,
+    "id": 32899,
     "workbook_id": 39,
     "question_num": 164,
     "question_type": "single",
@@ -4920,7 +4920,7 @@
     "order_num": 164
   },
   {
-    "id": 29004,
+    "id": 32900,
     "workbook_id": 39,
     "question_num": 165,
     "question_type": "single",
@@ -4950,7 +4950,7 @@
     "order_num": 165
   },
   {
-    "id": 29005,
+    "id": 32901,
     "workbook_id": 39,
     "question_num": 166,
     "question_type": "single",
@@ -4980,7 +4980,7 @@
     "order_num": 166
   },
   {
-    "id": 29006,
+    "id": 32902,
     "workbook_id": 39,
     "question_num": 167,
     "question_type": "single",
@@ -5010,7 +5010,7 @@
     "order_num": 167
   },
   {
-    "id": 29007,
+    "id": 32903,
     "workbook_id": 39,
     "question_num": 168,
     "question_type": "single",
@@ -5040,7 +5040,7 @@
     "order_num": 168
   },
   {
-    "id": 29008,
+    "id": 32904,
     "workbook_id": 39,
     "question_num": 169,
     "question_type": "single",
@@ -5070,7 +5070,7 @@
     "order_num": 169
   },
   {
-    "id": 29009,
+    "id": 32905,
     "workbook_id": 39,
     "question_num": 170,
     "question_type": "single",
@@ -5100,7 +5100,7 @@
     "order_num": 170
   },
   {
-    "id": 29010,
+    "id": 32906,
     "workbook_id": 39,
     "question_num": 171,
     "question_type": "single",
@@ -5130,7 +5130,7 @@
     "order_num": 171
   },
   {
-    "id": 29011,
+    "id": 32907,
     "workbook_id": 39,
     "question_num": 172,
     "question_type": "single",
@@ -5160,7 +5160,7 @@
     "order_num": 172
   },
   {
-    "id": 29012,
+    "id": 32908,
     "workbook_id": 39,
     "question_num": 173,
     "question_type": "single",
@@ -5190,7 +5190,7 @@
     "order_num": 173
   },
   {
-    "id": 29013,
+    "id": 32909,
     "workbook_id": 39,
     "question_num": 174,
     "question_type": "single",
@@ -5220,7 +5220,7 @@
     "order_num": 174
   },
   {
-    "id": 29014,
+    "id": 32910,
     "workbook_id": 39,
     "question_num": 175,
     "question_type": "single",
@@ -5250,7 +5250,7 @@
     "order_num": 175
   },
   {
-    "id": 29015,
+    "id": 32911,
     "workbook_id": 39,
     "question_num": 176,
     "question_type": "single",
@@ -5280,7 +5280,7 @@
     "order_num": 176
   },
   {
-    "id": 29016,
+    "id": 32912,
     "workbook_id": 39,
     "question_num": 177,
     "question_type": "multiple",
@@ -5310,7 +5310,7 @@
     "order_num": 177
   },
   {
-    "id": 29017,
+    "id": 32913,
     "workbook_id": 39,
     "question_num": 178,
     "question_type": "multiple",
@@ -5340,7 +5340,7 @@
     "order_num": 178
   },
   {
-    "id": 29018,
+    "id": 32914,
     "workbook_id": 39,
     "question_num": 179,
     "question_type": "multiple",
@@ -5370,7 +5370,7 @@
     "order_num": 179
   },
   {
-    "id": 29019,
+    "id": 32915,
     "workbook_id": 39,
     "question_num": 180,
     "question_type": "multiple",
@@ -5400,7 +5400,7 @@
     "order_num": 180
   },
   {
-    "id": 29020,
+    "id": 32916,
     "workbook_id": 39,
     "question_num": 181,
     "question_type": "multiple",
@@ -5430,7 +5430,7 @@
     "order_num": 181
   },
   {
-    "id": 29021,
+    "id": 32917,
     "workbook_id": 39,
     "question_num": 182,
     "question_type": "multiple",
@@ -5460,7 +5460,7 @@
     "order_num": 182
   },
   {
-    "id": 29022,
+    "id": 32918,
     "workbook_id": 39,
     "question_num": 183,
     "question_type": "multiple",
@@ -5490,7 +5490,7 @@
     "order_num": 183
   },
   {
-    "id": 29023,
+    "id": 32919,
     "workbook_id": 39,
     "question_num": 184,
     "question_type": "multiple",
@@ -5520,7 +5520,7 @@
     "order_num": 184
   },
   {
-    "id": 29024,
+    "id": 32920,
     "workbook_id": 39,
     "question_num": 185,
     "question_type": "multiple",
@@ -5550,7 +5550,7 @@
     "order_num": 185
   },
   {
-    "id": 29025,
+    "id": 32921,
     "workbook_id": 39,
     "question_num": 186,
     "question_type": "multiple",
@@ -5580,7 +5580,7 @@
     "order_num": 186
   },
   {
-    "id": 29026,
+    "id": 32922,
     "workbook_id": 39,
     "question_num": 187,
     "question_type": "multiple",
@@ -5610,7 +5610,7 @@
     "order_num": 187
   },
   {
-    "id": 29027,
+    "id": 32923,
     "workbook_id": 39,
     "question_num": 188,
     "question_type": "multiple",
@@ -5640,7 +5640,7 @@
     "order_num": 188
   },
   {
-    "id": 29028,
+    "id": 32924,
     "workbook_id": 39,
     "question_num": 189,
     "question_type": "multiple",
@@ -5670,7 +5670,7 @@
     "order_num": 189
   },
   {
-    "id": 29029,
+    "id": 32925,
     "workbook_id": 39,
     "question_num": 190,
     "question_type": "multiple",
@@ -5700,7 +5700,7 @@
     "order_num": 190
   },
   {
-    "id": 29030,
+    "id": 32926,
     "workbook_id": 39,
     "question_num": 191,
     "question_type": "multiple",
@@ -5730,12 +5730,12 @@
     "order_num": 191
   },
   {
-    "id": 29031,
+    "id": 32927,
     "workbook_id": 39,
     "question_num": 192,
     "question_type": "multiple",
     "category": "第5章",
-    "stem": "马克思说：“一切现实的危机的最终原因始终是：群众贫穷和群众的消费受到限制，而与此相",
+    "stem": "马克思说：“一切现实的危机的最终原因始终是：群众贫穷和群众的消费受到限制，而与此相\n对立，资本主义生产却竭力发展生产力，好像只有社会的绝对的消费能力才是生产力发展的\n界限。”这段论述表明",
     "options": [
       {
         "key": "A",
@@ -5760,7 +5760,7 @@
     "order_num": 192
   },
   {
-    "id": 29032,
+    "id": 32928,
     "workbook_id": 39,
     "question_num": 193,
     "question_type": "multiple",
@@ -5790,7 +5790,7 @@
     "order_num": 193
   },
   {
-    "id": 29033,
+    "id": 32929,
     "workbook_id": 39,
     "question_num": 194,
     "question_type": "multiple",
@@ -5820,7 +5820,7 @@
     "order_num": 194
   },
   {
-    "id": 29034,
+    "id": 32930,
     "workbook_id": 39,
     "question_num": 195,
     "question_type": "multiple",
@@ -5850,7 +5850,7 @@
     "order_num": 195
   },
   {
-    "id": 29035,
+    "id": 32931,
     "workbook_id": 39,
     "question_num": 196,
     "question_type": "multiple",
@@ -5880,7 +5880,7 @@
     "order_num": 196
   },
   {
-    "id": 29036,
+    "id": 32932,
     "workbook_id": 39,
     "question_num": 197,
     "question_type": "multiple",
@@ -5910,7 +5910,7 @@
     "order_num": 197
   },
   {
-    "id": 29037,
+    "id": 32933,
     "workbook_id": 39,
     "question_num": 198,
     "question_type": "multiple",
@@ -5940,12 +5940,12 @@
     "order_num": 198
   },
   {
-    "id": 29038,
+    "id": 32934,
     "workbook_id": 39,
     "question_num": 199,
     "question_type": "multiple",
     "category": "第5章",
-    "stem": "马克思在《资本论》中指出：“把工作日延长，使之超出工人只生产自己劳动力价值的等价物的",
+    "stem": "马克思在《资本论》中指出：“把工作日延长，使之超出工人只生产自己劳动力价值的等价物的\n那个点，并由资本占有这部分剩余劳动，这就是绝对剩余价值的生产。而相对剩余价值的生\n产使劳动的技术过程和社会组织发生根本的革命。它把工作日的一个既定部分，即工人只生\n产自已劳动力价值的等价物的时间，也就是必要劳动时间，缩短了。”绝对剩余价值生产和相\n对剩余价值生产在本质上都是",
     "options": [
       {
         "key": "A",
@@ -5970,7 +5970,7 @@
     "order_num": 199
   },
   {
-    "id": 29039,
+    "id": 32935,
     "workbook_id": 39,
     "question_num": 200,
     "question_type": "multiple",
@@ -6000,7 +6000,7 @@
     "order_num": 200
   },
   {
-    "id": 29040,
+    "id": 32936,
     "workbook_id": 39,
     "question_num": 201,
     "question_type": "multiple",
@@ -6030,7 +6030,7 @@
     "order_num": 201
   },
   {
-    "id": 29041,
+    "id": 32937,
     "workbook_id": 39,
     "question_num": 202,
     "question_type": "multiple",
@@ -6060,7 +6060,7 @@
     "order_num": 202
   },
   {
-    "id": 29042,
+    "id": 32938,
     "workbook_id": 39,
     "question_num": 203,
     "question_type": "multiple",
@@ -6090,7 +6090,7 @@
     "order_num": 203
   },
   {
-    "id": 29043,
+    "id": 32939,
     "workbook_id": 39,
     "question_num": 204,
     "question_type": "multiple",
@@ -6120,7 +6120,7 @@
     "order_num": 204
   },
   {
-    "id": 29044,
+    "id": 32940,
     "workbook_id": 39,
     "question_num": 205,
     "question_type": "multiple",
@@ -6150,7 +6150,7 @@
     "order_num": 205
   },
   {
-    "id": 29045,
+    "id": 32941,
     "workbook_id": 39,
     "question_num": 206,
     "question_type": "multiple",
@@ -6180,7 +6180,7 @@
     "order_num": 206
   },
   {
-    "id": 29046,
+    "id": 32942,
     "workbook_id": 39,
     "question_num": 207,
     "question_type": "multiple",
@@ -6210,7 +6210,7 @@
     "order_num": 207
   },
   {
-    "id": 29047,
+    "id": 32943,
     "workbook_id": 39,
     "question_num": 208,
     "question_type": "multiple",
@@ -6240,7 +6240,7 @@
     "order_num": 208
   },
   {
-    "id": 29048,
+    "id": 32944,
     "workbook_id": 39,
     "question_num": 209,
     "question_type": "single",
@@ -6270,7 +6270,7 @@
     "order_num": 209
   },
   {
-    "id": 29049,
+    "id": 32945,
     "workbook_id": 39,
     "question_num": 210,
     "question_type": "single",
@@ -6300,7 +6300,7 @@
     "order_num": 210
   },
   {
-    "id": 29050,
+    "id": 32946,
     "workbook_id": 39,
     "question_num": 211,
     "question_type": "single",
@@ -6330,7 +6330,7 @@
     "order_num": 211
   },
   {
-    "id": 29051,
+    "id": 32947,
     "workbook_id": 39,
     "question_num": 212,
     "question_type": "single",
@@ -6360,7 +6360,7 @@
     "order_num": 212
   },
   {
-    "id": 29052,
+    "id": 32948,
     "workbook_id": 39,
     "question_num": 213,
     "question_type": "single",
@@ -6390,7 +6390,7 @@
     "order_num": 213
   },
   {
-    "id": 29053,
+    "id": 32949,
     "workbook_id": 39,
     "question_num": 214,
     "question_type": "single",
@@ -6420,7 +6420,7 @@
     "order_num": 214
   },
   {
-    "id": 29054,
+    "id": 32950,
     "workbook_id": 39,
     "question_num": 215,
     "question_type": "single",
@@ -6450,7 +6450,7 @@
     "order_num": 215
   },
   {
-    "id": 29055,
+    "id": 32951,
     "workbook_id": 39,
     "question_num": 216,
     "question_type": "single",
@@ -6480,7 +6480,7 @@
     "order_num": 216
   },
   {
-    "id": 29056,
+    "id": 32952,
     "workbook_id": 39,
     "question_num": 217,
     "question_type": "single",
@@ -6510,7 +6510,7 @@
     "order_num": 217
   },
   {
-    "id": 29057,
+    "id": 32953,
     "workbook_id": 39,
     "question_num": 218,
     "question_type": "single",
@@ -6540,7 +6540,7 @@
     "order_num": 218
   },
   {
-    "id": 29058,
+    "id": 32954,
     "workbook_id": 39,
     "question_num": 219,
     "question_type": "single",
@@ -6570,7 +6570,7 @@
     "order_num": 219
   },
   {
-    "id": 29059,
+    "id": 32955,
     "workbook_id": 39,
     "question_num": 220,
     "question_type": "single",
@@ -6600,7 +6600,7 @@
     "order_num": 220
   },
   {
-    "id": 29060,
+    "id": 32956,
     "workbook_id": 39,
     "question_num": 221,
     "question_type": "single",
@@ -6630,7 +6630,7 @@
     "order_num": 221
   },
   {
-    "id": 29061,
+    "id": 32957,
     "workbook_id": 39,
     "question_num": 222,
     "question_type": "single",
@@ -6660,7 +6660,7 @@
     "order_num": 222
   },
   {
-    "id": 29062,
+    "id": 32958,
     "workbook_id": 39,
     "question_num": 223,
     "question_type": "single",
@@ -6690,7 +6690,7 @@
     "order_num": 223
   },
   {
-    "id": 29063,
+    "id": 32959,
     "workbook_id": 39,
     "question_num": 224,
     "question_type": "single",
@@ -6720,7 +6720,7 @@
     "order_num": 224
   },
   {
-    "id": 29064,
+    "id": 32960,
     "workbook_id": 39,
     "question_num": 225,
     "question_type": "single",
@@ -6750,12 +6750,12 @@
     "order_num": 225
   },
   {
-    "id": 29065,
+    "id": 32961,
     "workbook_id": 39,
     "question_num": 226,
     "question_type": "single",
     "category": "第6章",
-    "stem": "第18题",
+    "stem": "列宁指出：“国家垄断资本主义是社会主义的最充分的物质准备，是社会主义的前阶，是历史阶梯上的一级，在这一级和叫作社会主义的那一级之间，没有任何中间级。”这说明",
     "options": [
       {
         "key": "A",
@@ -6780,7 +6780,7 @@
     "order_num": 226
   },
   {
-    "id": 29066,
+    "id": 32962,
     "workbook_id": 39,
     "question_num": 227,
     "question_type": "single",
@@ -6810,7 +6810,7 @@
     "order_num": 227
   },
   {
-    "id": 29067,
+    "id": 32963,
     "workbook_id": 39,
     "question_num": 228,
     "question_type": "multiple",
@@ -6840,7 +6840,7 @@
     "order_num": 228
   },
   {
-    "id": 29068,
+    "id": 32964,
     "workbook_id": 39,
     "question_num": 229,
     "question_type": "multiple",
@@ -6870,7 +6870,7 @@
     "order_num": 229
   },
   {
-    "id": 29069,
+    "id": 32965,
     "workbook_id": 39,
     "question_num": 230,
     "question_type": "multiple",
@@ -6900,7 +6900,7 @@
     "order_num": 230
   },
   {
-    "id": 29070,
+    "id": 32966,
     "workbook_id": 39,
     "question_num": 231,
     "question_type": "multiple",
@@ -6930,7 +6930,7 @@
     "order_num": 231
   },
   {
-    "id": 29071,
+    "id": 32967,
     "workbook_id": 39,
     "question_num": 232,
     "question_type": "multiple",
@@ -6960,7 +6960,7 @@
     "order_num": 232
   },
   {
-    "id": 29072,
+    "id": 32968,
     "workbook_id": 39,
     "question_num": 233,
     "question_type": "multiple",
@@ -6990,7 +6990,7 @@
     "order_num": 233
   },
   {
-    "id": 29073,
+    "id": 32969,
     "workbook_id": 39,
     "question_num": 234,
     "question_type": "multiple",
@@ -7020,7 +7020,7 @@
     "order_num": 234
   },
   {
-    "id": 29074,
+    "id": 32970,
     "workbook_id": 39,
     "question_num": 235,
     "question_type": "multiple",
@@ -7050,7 +7050,7 @@
     "order_num": 235
   },
   {
-    "id": 29075,
+    "id": 32971,
     "workbook_id": 39,
     "question_num": 236,
     "question_type": "multiple",
@@ -7080,12 +7080,12 @@
     "order_num": 236
   },
   {
-    "id": 29076,
+    "id": 32972,
     "workbook_id": 39,
     "question_num": 237,
     "question_type": "multiple",
     "category": "第6章",
-    "stem": "列宁指出：“垄断地位能提供超额利润，即超过全世界一般的、正常的资本主义利润的额外利",
+    "stem": "列宁指出：“垄断地位能提供超额利润，即超过全世界一般的、正常的资本主义利润的额外利\n润。”垄断资本的实质在于获取垄断利润，垄断利润是",
     "options": [
       {
         "key": "A",
@@ -7110,7 +7110,7 @@
     "order_num": 237
   },
   {
-    "id": 29077,
+    "id": 32973,
     "workbook_id": 39,
     "question_num": 238,
     "question_type": "multiple",
@@ -7140,7 +7140,7 @@
     "order_num": 238
   },
   {
-    "id": 29078,
+    "id": 32974,
     "workbook_id": 39,
     "question_num": 239,
     "question_type": "multiple",
@@ -7170,7 +7170,7 @@
     "order_num": 239
   },
   {
-    "id": 29079,
+    "id": 32975,
     "workbook_id": 39,
     "question_num": 240,
     "question_type": "multiple",
@@ -7200,7 +7200,7 @@
     "order_num": 240
   },
   {
-    "id": 29080,
+    "id": 32976,
     "workbook_id": 39,
     "question_num": 241,
     "question_type": "multiple",
@@ -7230,7 +7230,7 @@
     "order_num": 241
   },
   {
-    "id": 29081,
+    "id": 32977,
     "workbook_id": 39,
     "question_num": 242,
     "question_type": "multiple",
@@ -7260,7 +7260,7 @@
     "order_num": 242
   },
   {
-    "id": 29082,
+    "id": 32978,
     "workbook_id": 39,
     "question_num": 243,
     "question_type": "multiple",
@@ -7290,7 +7290,7 @@
     "order_num": 243
   },
   {
-    "id": 29083,
+    "id": 32979,
     "workbook_id": 39,
     "question_num": 244,
     "question_type": "multiple",
@@ -7320,12 +7320,12 @@
     "order_num": 244
   },
   {
-    "id": 29084,
+    "id": 32980,
     "workbook_id": 39,
     "question_num": 245,
     "question_type": "multiple",
     "category": "第6章",
-    "stem": "垄断资本的实质在于获取垄断利润，垄断利润是垄断资本家凭借其在社会生产和流通中的垄",
+    "stem": "垄断资本的实质在于获取垄断利润，垄断利润是垄断资本家凭借其在社会生产和流通中的垄\n断地位而获得的超过平均利润的高额利润。垄断利润主要来源于",
     "options": [
       {
         "key": "A",
@@ -7350,7 +7350,7 @@
     "order_num": 245
   },
   {
-    "id": 29085,
+    "id": 32981,
     "workbook_id": 39,
     "question_num": 246,
     "question_type": "multiple",
@@ -7380,7 +7380,7 @@
     "order_num": 246
   },
   {
-    "id": 29086,
+    "id": 32982,
     "workbook_id": 39,
     "question_num": 247,
     "question_type": "multiple",
@@ -7410,12 +7410,12 @@
     "order_num": 247
   },
   {
-    "id": 29087,
+    "id": 32983,
     "workbook_id": 39,
     "question_num": 248,
     "question_type": "multiple",
     "category": "第6章",
-    "stem": "第40题",
+    "stem": "马克思在《资本论》中指出：“生产资料的集中和劳动的社会化，达到了同它们的资本主义外壳不能相容的地步。这个外壳就要炸毁了。资本主义私有制的丧钟就要响了。剥夺者就要被剥夺了。”资本主义基本矛盾加剧的必然结果是",
     "options": [
       {
         "key": "A",
@@ -7423,7 +7423,7 @@
       },
       {
         "key": "B",
-        "value": "选项 B"
+        "value": "资本主义基本矛盾及其派生的各种矛盾在资本积累中不断发展"
       },
       {
         "key": "C",
@@ -7434,13 +7434,13 @@
         "value": "弱化甚至排斥了资本家个人在管理中的地位和作用"
       }
     ],
-    "options_json": "[{\"key\": \"A\", \"value\": \"使社会主义生产方式得以直接形成\"}, {\"key\": \"B\", \"value\": \"选项 B\"}, {\"key\": \"C\", \"value\": \"在客观上势必导致生产集中和资本集中，使资本的社会化占有成为可能\"}, {\"key\": \"D\", \"value\": \"弱化甚至排斥了资本家个人在管理中的地位和作用\"}]",
+    "options_json": "[{\"key\": \"A\", \"value\": \"使社会主义生产方式得以直接形成\"}, {\"key\": \"B\", \"value\": \"资本主义基本矛盾及其派生的各种矛盾在资本积累中不断发展\"}, {\"key\": \"C\", \"value\": \"在客观上势必导致生产集中和资本集中，使资本的社会化占有成为可能\"}, {\"key\": \"D\", \"value\": \"弱化甚至排斥了资本家个人在管理中的地位和作用\"}]",
     "answer": "BCD",
     "explanation": "【解析】本题考查的是资本主义的历史地位。资本的不断积累使社会生产的规\n提高生产的社会化程度，这在客观上势必导致生产集中和资本集中，使资本的社会化占有成\n员和专业的管理机构，而这些都弱化甚至排斥资本家个人在管理中的地位和作用。总之，当\n资本主义基本矛盾及其派生的各种矛盾在资本积累中不断发展，资本主义生产关系不再适应\n生产力状况时，公有制取代私有制、社会主义取代资本主义就将成为不可避免的结果。这是\n资本积累过程所具有的客观历史趋势。故应选B、C、D三项。\n55\n资本不断积累不会直接形成社会主义生产方式，故A项错误。",
     "order_num": 248
   },
   {
-    "id": 29088,
+    "id": 32984,
     "workbook_id": 39,
     "question_num": 249,
     "question_type": "multiple",
@@ -7470,7 +7470,7 @@
     "order_num": 249
   },
   {
-    "id": 29089,
+    "id": 32985,
     "workbook_id": 39,
     "question_num": 250,
     "question_type": "multiple",
@@ -7500,7 +7500,7 @@
     "order_num": 250
   },
   {
-    "id": 29090,
+    "id": 32986,
     "workbook_id": 39,
     "question_num": 251,
     "question_type": "multiple",
@@ -7530,7 +7530,7 @@
     "order_num": 251
   },
   {
-    "id": 29091,
+    "id": 32987,
     "workbook_id": 39,
     "question_num": 252,
     "question_type": "single",
@@ -7560,7 +7560,7 @@
     "order_num": 252
   },
   {
-    "id": 29092,
+    "id": 32988,
     "workbook_id": 39,
     "question_num": 253,
     "question_type": "single",
@@ -7590,7 +7590,7 @@
     "order_num": 253
   },
   {
-    "id": 29093,
+    "id": 32989,
     "workbook_id": 39,
     "question_num": 254,
     "question_type": "single",
@@ -7620,7 +7620,7 @@
     "order_num": 254
   },
   {
-    "id": 29094,
+    "id": 32990,
     "workbook_id": 39,
     "question_num": 255,
     "question_type": "single",
@@ -7650,7 +7650,7 @@
     "order_num": 255
   },
   {
-    "id": 29095,
+    "id": 32991,
     "workbook_id": 39,
     "question_num": 256,
     "question_type": "single",
@@ -7680,7 +7680,7 @@
     "order_num": 256
   },
   {
-    "id": 29096,
+    "id": 32992,
     "workbook_id": 39,
     "question_num": 257,
     "question_type": "single",
@@ -7710,12 +7710,12 @@
     "order_num": 257
   },
   {
-    "id": 29097,
+    "id": 32993,
     "workbook_id": 39,
     "question_num": 258,
     "question_type": "single",
     "category": "第7章",
-    "stem": "第7题",
+    "stem": "空想社会主义在批判资本主义的某些弊端、提供关于未来社会的积极主张方面，具有天才的闪光，但由于历史条件的限制，他们没有找到实现社会主义的现实力量和正确道路。马克思、恩格斯实现社会主义从空想到科学飞跃的关键在于",
     "options": [
       {
         "key": "A",
@@ -7740,7 +7740,7 @@
     "order_num": 258
   },
   {
-    "id": 29098,
+    "id": 32994,
     "workbook_id": 39,
     "question_num": 259,
     "question_type": "single",
@@ -7770,7 +7770,7 @@
     "order_num": 259
   },
   {
-    "id": 29099,
+    "id": 32995,
     "workbook_id": 39,
     "question_num": 260,
     "question_type": "single",
@@ -7800,7 +7800,7 @@
     "order_num": 260
   },
   {
-    "id": 29100,
+    "id": 32996,
     "workbook_id": 39,
     "question_num": 261,
     "question_type": "multiple",
@@ -7830,7 +7830,7 @@
     "order_num": 261
   },
   {
-    "id": 29101,
+    "id": 32997,
     "workbook_id": 39,
     "question_num": 262,
     "question_type": "multiple",
@@ -7860,7 +7860,7 @@
     "order_num": 262
   },
   {
-    "id": 29102,
+    "id": 32998,
     "workbook_id": 39,
     "question_num": 263,
     "question_type": "multiple",
@@ -7890,7 +7890,7 @@
     "order_num": 263
   },
   {
-    "id": 29103,
+    "id": 32999,
     "workbook_id": 39,
     "question_num": 264,
     "question_type": "multiple",
@@ -7920,7 +7920,7 @@
     "order_num": 264
   },
   {
-    "id": 29104,
+    "id": 33000,
     "workbook_id": 39,
     "question_num": 265,
     "question_type": "multiple",
@@ -7950,7 +7950,7 @@
     "order_num": 265
   },
   {
-    "id": 29105,
+    "id": 33001,
     "workbook_id": 39,
     "question_num": 266,
     "question_type": "multiple",
@@ -7980,7 +7980,7 @@
     "order_num": 266
   },
   {
-    "id": 29106,
+    "id": 33002,
     "workbook_id": 39,
     "question_num": 267,
     "question_type": "multiple",
@@ -8010,7 +8010,7 @@
     "order_num": 267
   },
   {
-    "id": 29107,
+    "id": 33003,
     "workbook_id": 39,
     "question_num": 268,
     "question_type": "multiple",
@@ -8040,12 +8040,12 @@
     "order_num": 268
   },
   {
-    "id": 29108,
+    "id": 33004,
     "workbook_id": 39,
     "question_num": 269,
     "question_type": "multiple",
     "category": "第7章",
-    "stem": "第18题",
+    "stem": "列宁指出：“经济文化相对落后的国家在建立社会主义制度后，同资本主义关系过渡到社会主义关系就愈困难。”列宁的这段话说明，无产阶级及其政党在经济文化相对落后的国家建设社会主义具有长期性和曲折性，其原因在于",
     "options": [
       {
         "key": "A",
@@ -8070,7 +8070,7 @@
     "order_num": 269
   },
   {
-    "id": 29109,
+    "id": 33005,
     "workbook_id": 39,
     "question_num": 270,
     "question_type": "multiple",
@@ -8100,7 +8100,7 @@
     "order_num": 270
   },
   {
-    "id": 29110,
+    "id": 33006,
     "workbook_id": 39,
     "question_num": 271,
     "question_type": "multiple",
@@ -8130,7 +8130,7 @@
     "order_num": 271
   },
   {
-    "id": 29111,
+    "id": 33007,
     "workbook_id": 39,
     "question_num": 272,
     "question_type": "multiple",
@@ -8160,7 +8160,7 @@
     "order_num": 272
   },
   {
-    "id": 29112,
+    "id": 33008,
     "workbook_id": 39,
     "question_num": 273,
     "question_type": "multiple",
@@ -8190,12 +8190,12 @@
     "order_num": 273
   },
   {
-    "id": 29113,
+    "id": 33009,
     "workbook_id": 39,
     "question_num": 274,
     "question_type": "multiple",
     "category": "第7章",
-    "stem": "马克思、恩格斯创立了科学社会主义理论，并提出了正确对待科学社会主义基本原则的科学",
+    "stem": "马克思、恩格斯创立了科学社会主义理论，并提出了正确对待科学社会主义基本原则的科学\n态度。他们在《共产党宣言》1872年德文版序言中指出，“不管最近25年来的情况发生了多大\n际运用，正如宣言中所说的，随时随地都要以当时的历史条件为转移”。这一论述为无产阶级\n政党正确认识和对待科学社会主义基本原则提供了科学的方法指导。具体体现为",
     "options": [
       {
         "key": "A",
@@ -8220,7 +8220,7 @@
     "order_num": 274
   },
   {
-    "id": 29114,
+    "id": 33010,
     "workbook_id": 39,
     "question_num": 275,
     "question_type": "multiple",
@@ -8250,7 +8250,7 @@
     "order_num": 275
   },
   {
-    "id": 29115,
+    "id": 33011,
     "workbook_id": 39,
     "question_num": 276,
     "question_type": "single",
@@ -8280,7 +8280,7 @@
     "order_num": 276
   },
   {
-    "id": 29116,
+    "id": 33012,
     "workbook_id": 39,
     "question_num": 277,
     "question_type": "single",
@@ -8310,12 +8310,12 @@
     "order_num": 277
   },
   {
-    "id": 29117,
+    "id": 33013,
     "workbook_id": 39,
     "question_num": 278,
     "question_type": "single",
     "category": "第8章",
-    "stem": "第3题",
+    "stem": "恩格斯指出：“无产阶级如果不同时使整个社会一劳永逸地摆脱一切剥削、压迫以及阶级差别和阶级斗争，就不能使自己从进行剥削和统治的那个阶级（资产阶级）的奴役下解放出来。”恩格斯的这段话说明",
     "options": [
       {
         "key": "A",
@@ -8327,20 +8327,20 @@
       },
       {
         "key": "C",
-        "value": "选项 C"
+        "value": "无产阶级只有解放全人类才能最后解放自己"
       },
       {
         "key": "D",
         "value": "无产阶级的解放与全人类的解放是完全一致的"
       }
     ],
-    "options_json": "[{\"key\": \"A\", \"value\": \"实现共产主义，必须找到现实的阶级力量\"}, {\"key\": \"B\", \"value\": \"任何阶级都不可能实现消灭剥削和压迫的社会理想\"}, {\"key\": \"C\", \"value\": \"选项 C\"}, {\"key\": \"D\", \"value\": \"无产阶级的解放与全人类的解放是完全一致的\"}]",
+    "options_json": "[{\"key\": \"A\", \"value\": \"实现共产主义，必须找到现实的阶级力量\"}, {\"key\": \"B\", \"value\": \"任何阶级都不可能实现消灭剥削和压迫的社会理想\"}, {\"key\": \"C\", \"value\": \"无产阶级只有解放全人类才能最后解放自己\"}, {\"key\": \"D\", \"value\": \"无产阶级的解放与全人类的解放是完全一致的\"}]",
     "answer": "D",
     "explanation": "【解析】本题考查的是实现共产主义是历史发展的必然。恩格斯这段话说明无产阶\n级的解放与全人类的解放是完全一致的，故应选D项。\n无产阶级特殊的社会地位和历史使命，决定了它只有解放全人类才能使自已最后得到彻\n底解放。A、C两项非材料表明的意思，B项表述错误。",
     "order_num": 278
   },
   {
-    "id": 29118,
+    "id": 33014,
     "workbook_id": 39,
     "question_num": 279,
     "question_type": "single",
@@ -8370,7 +8370,7 @@
     "order_num": 279
   },
   {
-    "id": 29119,
+    "id": 33015,
     "workbook_id": 39,
     "question_num": 280,
     "question_type": "single",
@@ -8400,7 +8400,7 @@
     "order_num": 280
   },
   {
-    "id": 29120,
+    "id": 33016,
     "workbook_id": 39,
     "question_num": 281,
     "question_type": "single",
@@ -8430,7 +8430,7 @@
     "order_num": 281
   },
   {
-    "id": 29121,
+    "id": 33017,
     "workbook_id": 39,
     "question_num": 282,
     "question_type": "multiple",
@@ -8460,7 +8460,7 @@
     "order_num": 282
   },
   {
-    "id": 29122,
+    "id": 33018,
     "workbook_id": 39,
     "question_num": 283,
     "question_type": "multiple",
@@ -8490,7 +8490,7 @@
     "order_num": 283
   },
   {
-    "id": 29123,
+    "id": 33019,
     "workbook_id": 39,
     "question_num": 284,
     "question_type": "multiple",
@@ -8520,7 +8520,7 @@
     "order_num": 284
   },
   {
-    "id": 29124,
+    "id": 33020,
     "workbook_id": 39,
     "question_num": 285,
     "question_type": "multiple",
@@ -8550,7 +8550,7 @@
     "order_num": 285
   },
   {
-    "id": 29125,
+    "id": 33021,
     "workbook_id": 39,
     "question_num": 286,
     "question_type": "multiple",
@@ -8580,12 +8580,12 @@
     "order_num": 286
   },
   {
-    "id": 29126,
+    "id": 33022,
     "workbook_id": 39,
     "question_num": 287,
     "question_type": "multiple",
     "category": "第8章",
-    "stem": "习近平指出；“共产党员特别是党员领导干部要做共产主义远大理想和中国特色社会主义共",
+    "stem": "习近平指出；“共产党员特别是党员领导干部要做共产主义远大理想和中国特色社会主义共\n同理想的坚定信仰者和忠实践行者。”下列关于共同理想与远大理想之间的关系，说法正确\n的有",
     "options": [
       {
         "key": "A",
@@ -8610,7 +8610,7 @@
     "order_num": 287
   },
   {
-    "id": 29127,
+    "id": 33023,
     "workbook_id": 39,
     "question_num": 288,
     "question_type": "multiple",
@@ -8640,7 +8640,7 @@
     "order_num": 288
   },
   {
-    "id": 29128,
+    "id": 33024,
     "workbook_id": 39,
     "question_num": 289,
     "question_type": "multiple",
@@ -8670,7 +8670,7 @@
     "order_num": 289
   },
   {
-    "id": 29129,
+    "id": 33025,
     "workbook_id": 39,
     "question_num": 290,
     "question_type": "single",
@@ -8700,7 +8700,7 @@
     "order_num": 290
   },
   {
-    "id": 29130,
+    "id": 33026,
     "workbook_id": 39,
     "question_num": 291,
     "question_type": "single",
@@ -8730,7 +8730,7 @@
     "order_num": 291
   },
   {
-    "id": 29131,
+    "id": 33027,
     "workbook_id": 39,
     "question_num": 292,
     "question_type": "single",
@@ -8760,7 +8760,7 @@
     "order_num": 292
   },
   {
-    "id": 29132,
+    "id": 33028,
     "workbook_id": 39,
     "question_num": 293,
     "question_type": "single",
@@ -8790,7 +8790,7 @@
     "order_num": 293
   },
   {
-    "id": 29133,
+    "id": 33029,
     "workbook_id": 39,
     "question_num": 294,
     "question_type": "single",
@@ -8820,7 +8820,7 @@
     "order_num": 294
   },
   {
-    "id": 29134,
+    "id": 33030,
     "workbook_id": 39,
     "question_num": 295,
     "question_type": "multiple",
@@ -8850,7 +8850,7 @@
     "order_num": 295
   },
   {
-    "id": 29135,
+    "id": 33031,
     "workbook_id": 39,
     "question_num": 296,
     "question_type": "multiple",
@@ -8880,7 +8880,7 @@
     "order_num": 296
   },
   {
-    "id": 29136,
+    "id": 33032,
     "workbook_id": 39,
     "question_num": 297,
     "question_type": "multiple",
@@ -8910,7 +8910,7 @@
     "order_num": 297
   },
   {
-    "id": 29137,
+    "id": 33033,
     "workbook_id": 39,
     "question_num": 298,
     "question_type": "multiple",
@@ -8940,12 +8940,12 @@
     "order_num": 298
   },
   {
-    "id": 29138,
+    "id": 33034,
     "workbook_id": 39,
     "question_num": 299,
     "question_type": "multiple",
     "category": "导论",
-    "stem": "第10题",
+    "stem": "中国特色社会主义理论体系是中国共产党在改革开放以来形成的马克思主义中国化时代化的重大理论成果。中国特色社会主义理论体系的重大理论贡献在于",
     "options": [
       {
         "key": "A",
@@ -8961,21 +8961,21 @@
       },
       {
         "key": "D",
-        "value": "选项 D"
+        "value": "实现了马克思主义中国化时代化新的飞跃"
       }
     ],
-    "options_json": "[{\"key\": \"A\", \"value\": \"提出走自已的路、建设中国特色社会主义，丰富发展了毛泽东思想关于社会主义建设道路理论\"}, {\"key\": \"B\", \"value\": \"提出中国正处于并将长期处于社会主义初级阶段，丰富发展了毛泽东思想关于中国社会主义发展阶段理论\"}, {\"key\": \"C\", \"value\": \"提出中国式现代化，建设富强民主文明和谐美丽的社会主义现代化国家，丰富发展了毛泽东思想关于社会主义“四个现代化”理论展了毛泽东思想关于党的建设理论国具体实际、同中华优秀传统文化相结合是必由之路。其中“第二个结合”是我们党对马克思主义中国化时代化历史经验的深刻总结，是对中华文明发展规律的深刻把握，表明第二部分\"}, {\"key\": \"D\", \"value\": \"选项 D\"}]",
+    "options_json": "[{\"key\": \"A\", \"value\": \"提出走自已的路、建设中国特色社会主义，丰富发展了毛泽东思想关于社会主义建设道路理论\"}, {\"key\": \"B\", \"value\": \"提出中国正处于并将长期处于社会主义初级阶段，丰富发展了毛泽东思想关于中国社会主义发展阶段理论\"}, {\"key\": \"C\", \"value\": \"提出中国式现代化，建设富强民主文明和谐美丽的社会主义现代化国家，丰富发展了毛泽东思想关于社会主义“四个现代化”理论展了毛泽东思想关于党的建设理论国具体实际、同中华优秀传统文化相结合是必由之路。其中“第二个结合”是我们党对马克思主义中国化时代化历史经验的深刻总结，是对中华文明发展规律的深刻把握，表明第二部分\"}, {\"key\": \"D\", \"value\": \"实现了马克思主义中国化时代化新的飞跃\"}]",
     "answer": "ABCD",
     "explanation": "【解析】本题考查的是马克思主义中国化时代化的理论成果及其关系。中国特\n色社会主义理论体系是中国共产党在改革开放以来形成的理论创新成果，它创造性地提出了\n一系列新思想新观点新论断，进一步丰富和发展了毛泽东思想。比如，提出走自已的路、建设\n中国特色社会主义，丰富发展了毛泽东思想关于社会主义建设道路理论；提出中国正处于并\n将长期处于社会主义初级阶段，丰富发展了毛泽东思想关于中国社会主义发展阶段理论；提\n出中国式现代化，建设富强民主文明和谐美丽的社会主义现代化国家，丰富发展了毛泽东思\n想关于社会主义“四个现代化”理论；提出全面从严治党，推进党的建设新的伟大工程，以党的\n动构建人类命运共同体，丰富发展了毛泽东思想关于独立自主和平外交的理论，等等。故A、\nB、C、D四项全选。",
     "order_num": 299
   },
   {
-    "id": 29139,
+    "id": 33035,
     "workbook_id": 39,
     "question_num": 300,
     "question_type": "multiple",
     "category": "导论",
-    "stem": "第11题",
+    "stem": "习近平总书记指出：“马克思主义中国化时代化这个重大命题本身就决定了我们决不能抛弃马克思主义这个魂脉，决不能抛弃中华优秀传统文化这个根脉。”坚持把马克思主义基本原理同中华优秀传统文化相结合，必须认识到",
     "options": [
       {
         "key": "A",
@@ -9000,7 +9000,7 @@
     "order_num": 300
   },
   {
-    "id": 29140,
+    "id": 33036,
     "workbook_id": 39,
     "question_num": 301,
     "question_type": "single",
@@ -9030,7 +9030,7 @@
     "order_num": 301
   },
   {
-    "id": 29141,
+    "id": 33037,
     "workbook_id": 39,
     "question_num": 302,
     "question_type": "single",
@@ -9060,7 +9060,7 @@
     "order_num": 302
   },
   {
-    "id": 29142,
+    "id": 33038,
     "workbook_id": 39,
     "question_num": 303,
     "question_type": "single",
@@ -9090,7 +9090,7 @@
     "order_num": 303
   },
   {
-    "id": 29143,
+    "id": 33039,
     "workbook_id": 39,
     "question_num": 304,
     "question_type": "single",
@@ -9120,7 +9120,7 @@
     "order_num": 304
   },
   {
-    "id": 29144,
+    "id": 33040,
     "workbook_id": 39,
     "question_num": 305,
     "question_type": "single",
@@ -9150,7 +9150,7 @@
     "order_num": 305
   },
   {
-    "id": 29145,
+    "id": 33041,
     "workbook_id": 39,
     "question_num": 306,
     "question_type": "single",
@@ -9180,7 +9180,7 @@
     "order_num": 306
   },
   {
-    "id": 29146,
+    "id": 33042,
     "workbook_id": 39,
     "question_num": 307,
     "question_type": "multiple",
@@ -9210,7 +9210,7 @@
     "order_num": 307
   },
   {
-    "id": 29147,
+    "id": 33043,
     "workbook_id": 39,
     "question_num": 308,
     "question_type": "multiple",
@@ -9240,7 +9240,7 @@
     "order_num": 308
   },
   {
-    "id": 29148,
+    "id": 33044,
     "workbook_id": 39,
     "question_num": 309,
     "question_type": "multiple",
@@ -9270,7 +9270,7 @@
     "order_num": 309
   },
   {
-    "id": 29149,
+    "id": 33045,
     "workbook_id": 39,
     "question_num": 310,
     "question_type": "multiple",
@@ -9300,12 +9300,12 @@
     "order_num": 310
   },
   {
-    "id": 29150,
+    "id": 33046,
     "workbook_id": 39,
     "question_num": 311,
     "question_type": "multiple",
     "category": "第1章",
-    "stem": "第11题",
+    "stem": "毛泽东指出：“认清中国的国情，乃是认清一切革命问题的基本的依据。”认清中国国情，最根本的是要认清中国近代社会的性质和主要矛盾。这一论断启示我们，进行革命和建设必须",
     "options": [
       {
         "key": "A",
@@ -9330,7 +9330,7 @@
     "order_num": 311
   },
   {
-    "id": 29151,
+    "id": 33047,
     "workbook_id": 39,
     "question_num": 312,
     "question_type": "multiple",
@@ -9360,7 +9360,7 @@
     "order_num": 312
   },
   {
-    "id": 29152,
+    "id": 33048,
     "workbook_id": 39,
     "question_num": 313,
     "question_type": "multiple",
@@ -9390,7 +9390,7 @@
     "order_num": 313
   },
   {
-    "id": 29153,
+    "id": 33049,
     "workbook_id": 39,
     "question_num": 314,
     "question_type": "single",
@@ -9420,7 +9420,7 @@
     "order_num": 314
   },
   {
-    "id": 29154,
+    "id": 33050,
     "workbook_id": 39,
     "question_num": 315,
     "question_type": "single",
@@ -9450,7 +9450,7 @@
     "order_num": 315
   },
   {
-    "id": 29155,
+    "id": 33051,
     "workbook_id": 39,
     "question_num": 316,
     "question_type": "single",
@@ -9480,7 +9480,7 @@
     "order_num": 316
   },
   {
-    "id": 29156,
+    "id": 33052,
     "workbook_id": 39,
     "question_num": 317,
     "question_type": "single",
@@ -9510,7 +9510,7 @@
     "order_num": 317
   },
   {
-    "id": 29157,
+    "id": 33053,
     "workbook_id": 39,
     "question_num": 318,
     "question_type": "single",
@@ -9540,7 +9540,7 @@
     "order_num": 318
   },
   {
-    "id": 29158,
+    "id": 33054,
     "workbook_id": 39,
     "question_num": 319,
     "question_type": "single",
@@ -9570,12 +9570,12 @@
     "order_num": 319
   },
   {
-    "id": 29159,
+    "id": 33055,
     "workbook_id": 39,
     "question_num": 320,
     "question_type": "single",
     "category": "第2章",
-    "stem": "新民主主义革命总路线反映了中国革命的基本规律，指明了中国革命的对象、动力、领导力量，",
+    "stem": "新民主主义革命总路线反映了中国革命的基本规律，指明了中国革命的对象、动力、领导力量，\n是新民主主义革命的指导路线。毛泽东首次对新民主主义革命总路线做了完整概括的著作是",
     "options": [
       {
         "key": "A",
@@ -9600,12 +9600,12 @@
     "order_num": 320
   },
   {
-    "id": 29160,
+    "id": 33056,
     "workbook_id": 39,
     "question_num": 321,
     "question_type": "single",
     "category": "第2章",
-    "stem": "第8题",
+    "stem": "毛泽东指出：“中国现时社会的性质，既然是殖民地、半殖民地、半封建的性质，它就决定了中国革命必须分为两个步骤。第一步，改变这个殖民地、半殖民地、半封建的社会形态，使之变成一个独立的民主主义的社会。第二步，使革命向前发展，建立一个社会主义的社会。”在新民主主义革命与社会主义革命的关系问题上，“左”倾教条主义者的错误在于",
     "options": [
       {
         "key": "A",
@@ -9630,7 +9630,7 @@
     "order_num": 321
   },
   {
-    "id": 29161,
+    "id": 33057,
     "workbook_id": 39,
     "question_num": 322,
     "question_type": "single",
@@ -9660,7 +9660,7 @@
     "order_num": 322
   },
   {
-    "id": 29162,
+    "id": 33058,
     "workbook_id": 39,
     "question_num": 323,
     "question_type": "single",
@@ -9690,7 +9690,7 @@
     "order_num": 323
   },
   {
-    "id": 29163,
+    "id": 33059,
     "workbook_id": 39,
     "question_num": 324,
     "question_type": "single",
@@ -9720,7 +9720,7 @@
     "order_num": 324
   },
   {
-    "id": 29164,
+    "id": 33060,
     "workbook_id": 39,
     "question_num": 325,
     "question_type": "single",
@@ -9750,7 +9750,7 @@
     "order_num": 325
   },
   {
-    "id": 29165,
+    "id": 33061,
     "workbook_id": 39,
     "question_num": 326,
     "question_type": "single",
@@ -9780,7 +9780,7 @@
     "order_num": 326
   },
   {
-    "id": 29166,
+    "id": 33062,
     "workbook_id": 39,
     "question_num": 327,
     "question_type": "single",
@@ -9810,7 +9810,7 @@
     "order_num": 327
   },
   {
-    "id": 29167,
+    "id": 33063,
     "workbook_id": 39,
     "question_num": 328,
     "question_type": "multiple",
@@ -9840,7 +9840,7 @@
     "order_num": 328
   },
   {
-    "id": 29168,
+    "id": 33064,
     "workbook_id": 39,
     "question_num": 329,
     "question_type": "multiple",
@@ -9870,7 +9870,7 @@
     "order_num": 329
   },
   {
-    "id": 29169,
+    "id": 33065,
     "workbook_id": 39,
     "question_num": 330,
     "question_type": "multiple",
@@ -9900,7 +9900,7 @@
     "order_num": 330
   },
   {
-    "id": 29170,
+    "id": 33066,
     "workbook_id": 39,
     "question_num": 331,
     "question_type": "multiple",
@@ -9930,7 +9930,7 @@
     "order_num": 331
   },
   {
-    "id": 29171,
+    "id": 33067,
     "workbook_id": 39,
     "question_num": 332,
     "question_type": "multiple",
@@ -9960,7 +9960,7 @@
     "order_num": 332
   },
   {
-    "id": 29172,
+    "id": 33068,
     "workbook_id": 39,
     "question_num": 333,
     "question_type": "multiple",
@@ -9990,7 +9990,7 @@
     "order_num": 333
   },
   {
-    "id": 29173,
+    "id": 33069,
     "workbook_id": 39,
     "question_num": 334,
     "question_type": "multiple",
@@ -10020,7 +10020,7 @@
     "order_num": 334
   },
   {
-    "id": 29174,
+    "id": 33070,
     "workbook_id": 39,
     "question_num": 335,
     "question_type": "multiple",
@@ -10050,7 +10050,7 @@
     "order_num": 335
   },
   {
-    "id": 29175,
+    "id": 33071,
     "workbook_id": 39,
     "question_num": 336,
     "question_type": "multiple",
@@ -10080,7 +10080,7 @@
     "order_num": 336
   },
   {
-    "id": 29176,
+    "id": 33072,
     "workbook_id": 39,
     "question_num": 337,
     "question_type": "multiple",
@@ -10110,7 +10110,7 @@
     "order_num": 337
   },
   {
-    "id": 29177,
+    "id": 33073,
     "workbook_id": 39,
     "question_num": 338,
     "question_type": "multiple",
@@ -10140,7 +10140,7 @@
     "order_num": 338
   },
   {
-    "id": 29178,
+    "id": 33074,
     "workbook_id": 39,
     "question_num": 339,
     "question_type": "multiple",
@@ -10170,7 +10170,7 @@
     "order_num": 339
   },
   {
-    "id": 29179,
+    "id": 33075,
     "workbook_id": 39,
     "question_num": 340,
     "question_type": "single",
@@ -10200,7 +10200,7 @@
     "order_num": 340
   },
   {
-    "id": 29180,
+    "id": 33076,
     "workbook_id": 39,
     "question_num": 341,
     "question_type": "single",
@@ -10230,7 +10230,7 @@
     "order_num": 341
   },
   {
-    "id": 29181,
+    "id": 33077,
     "workbook_id": 39,
     "question_num": 342,
     "question_type": "single",
@@ -10260,12 +10260,12 @@
     "order_num": 342
   },
   {
-    "id": 29182,
+    "id": 33078,
     "workbook_id": 39,
     "question_num": 343,
     "question_type": "single",
     "category": "第3章",
-    "stem": "中华人民共和国成立初期，毛泽东在谈到我国工业的情况时说：“现在我们能造什么？能造桌",
+    "stem": "中华人民共和国成立初期，毛泽东在谈到我国工业的情况时说：“现在我们能造什么？能造桌\n子椅子，能造茶碗茶壶，能种粮食，还能磨成面粉,还能造纸，但是，一辆汽车、一架飞机、一辆坦\n克、一辆拖拉机都不能造。”这说明",
     "options": [
       {
         "key": "A",
@@ -10290,7 +10290,7 @@
     "order_num": 343
   },
   {
-    "id": 29183,
+    "id": 33079,
     "workbook_id": 39,
     "question_num": 344,
     "question_type": "single",
@@ -10320,7 +10320,7 @@
     "order_num": 344
   },
   {
-    "id": 29184,
+    "id": 33080,
     "workbook_id": 39,
     "question_num": 345,
     "question_type": "single",
@@ -10350,7 +10350,7 @@
     "order_num": 345
   },
   {
-    "id": 29185,
+    "id": 33081,
     "workbook_id": 39,
     "question_num": 346,
     "question_type": "multiple",
@@ -10380,7 +10380,7 @@
     "order_num": 346
   },
   {
-    "id": 29186,
+    "id": 33082,
     "workbook_id": 39,
     "question_num": 347,
     "question_type": "multiple",
@@ -10410,7 +10410,7 @@
     "order_num": 347
   },
   {
-    "id": 29187,
+    "id": 33083,
     "workbook_id": 39,
     "question_num": 348,
     "question_type": "multiple",
@@ -10440,7 +10440,7 @@
     "order_num": 348
   },
   {
-    "id": 29188,
+    "id": 33084,
     "workbook_id": 39,
     "question_num": 349,
     "question_type": "multiple",
@@ -10470,7 +10470,7 @@
     "order_num": 349
   },
   {
-    "id": 29189,
+    "id": 33085,
     "workbook_id": 39,
     "question_num": 350,
     "question_type": "multiple",
@@ -10500,7 +10500,7 @@
     "order_num": 350
   },
   {
-    "id": 29190,
+    "id": 33086,
     "workbook_id": 39,
     "question_num": 351,
     "question_type": "multiple",
@@ -10530,7 +10530,7 @@
     "order_num": 351
   },
   {
-    "id": 29191,
+    "id": 33087,
     "workbook_id": 39,
     "question_num": 352,
     "question_type": "multiple",
@@ -10560,7 +10560,7 @@
     "order_num": 352
   },
   {
-    "id": 29192,
+    "id": 33088,
     "workbook_id": 39,
     "question_num": 353,
     "question_type": "multiple",
@@ -10590,7 +10590,7 @@
     "order_num": 353
   },
   {
-    "id": 29193,
+    "id": 33089,
     "workbook_id": 39,
     "question_num": 354,
     "question_type": "multiple",
@@ -10620,7 +10620,7 @@
     "order_num": 354
   },
   {
-    "id": 29194,
+    "id": 33090,
     "workbook_id": 39,
     "question_num": 355,
     "question_type": "multiple",
@@ -10650,7 +10650,7 @@
     "order_num": 355
   },
   {
-    "id": 29195,
+    "id": 33091,
     "workbook_id": 39,
     "question_num": 356,
     "question_type": "multiple",
@@ -10680,7 +10680,7 @@
     "order_num": 356
   },
   {
-    "id": 29196,
+    "id": 33092,
     "workbook_id": 39,
     "question_num": 357,
     "question_type": "multiple",
@@ -10710,7 +10710,7 @@
     "order_num": 357
   },
   {
-    "id": 29197,
+    "id": 33093,
     "workbook_id": 39,
     "question_num": 358,
     "question_type": "single",
@@ -10740,7 +10740,7 @@
     "order_num": 358
   },
   {
-    "id": 29198,
+    "id": 33094,
     "workbook_id": 39,
     "question_num": 359,
     "question_type": "single",
@@ -10770,7 +10770,7 @@
     "order_num": 359
   },
   {
-    "id": 29199,
+    "id": 33095,
     "workbook_id": 39,
     "question_num": 360,
     "question_type": "single",
@@ -10800,7 +10800,7 @@
     "order_num": 360
   },
   {
-    "id": 29200,
+    "id": 33096,
     "workbook_id": 39,
     "question_num": 361,
     "question_type": "single",
@@ -10830,7 +10830,7 @@
     "order_num": 361
   },
   {
-    "id": 29201,
+    "id": 33097,
     "workbook_id": 39,
     "question_num": 362,
     "question_type": "single",
@@ -10860,7 +10860,7 @@
     "order_num": 362
   },
   {
-    "id": 29202,
+    "id": 33098,
     "workbook_id": 39,
     "question_num": 363,
     "question_type": "single",
@@ -10890,7 +10890,7 @@
     "order_num": 363
   },
   {
-    "id": 29203,
+    "id": 33099,
     "workbook_id": 39,
     "question_num": 364,
     "question_type": "multiple",
@@ -10920,7 +10920,7 @@
     "order_num": 364
   },
   {
-    "id": 29204,
+    "id": 33100,
     "workbook_id": 39,
     "question_num": 365,
     "question_type": "multiple",
@@ -10950,7 +10950,7 @@
     "order_num": 365
   },
   {
-    "id": 29205,
+    "id": 33101,
     "workbook_id": 39,
     "question_num": 366,
     "question_type": "multiple",
@@ -10980,7 +10980,7 @@
     "order_num": 366
   },
   {
-    "id": 29206,
+    "id": 33102,
     "workbook_id": 39,
     "question_num": 367,
     "question_type": "multiple",
@@ -11010,7 +11010,7 @@
     "order_num": 367
   },
   {
-    "id": 29207,
+    "id": 33103,
     "workbook_id": 39,
     "question_num": 368,
     "question_type": "multiple",
@@ -11040,7 +11040,7 @@
     "order_num": 368
   },
   {
-    "id": 29208,
+    "id": 33104,
     "workbook_id": 39,
     "question_num": 369,
     "question_type": "multiple",
@@ -11070,7 +11070,7 @@
     "order_num": 369
   },
   {
-    "id": 29209,
+    "id": 33105,
     "workbook_id": 39,
     "question_num": 370,
     "question_type": "multiple",
@@ -11100,12 +11100,12 @@
     "order_num": 370
   },
   {
-    "id": 29210,
+    "id": 33106,
     "workbook_id": 39,
     "question_num": 371,
     "question_type": "multiple",
     "category": "第4章",
-    "stem": "1957年2月，毛泽东分析了社会主义社会的基本矛盾的性质、特点和解决途椏，揭示了社会主",
+    "stem": "1957年2月，毛泽东分析了社会主义社会的基本矛盾的性质、特点和解决途椏，揭示了社会主\n义社会发展的一般规律。关于社会主义社会的基本矛盾。毛泽东指出",
     "options": [
       {
         "key": "A",
@@ -11130,7 +11130,7 @@
     "order_num": 371
   },
   {
-    "id": 29211,
+    "id": 33107,
     "workbook_id": 39,
     "question_num": 372,
     "question_type": "multiple",
@@ -11160,12 +11160,12 @@
     "order_num": 372
   },
   {
-    "id": 29212,
+    "id": 33108,
     "workbook_id": 39,
     "question_num": 373,
     "question_type": "multiple",
     "category": "第4章",
-    "stem": "第16题",
+    "stem": "毛泽东在读苏联《政治经济学教科书》时提出，社会主义可以分为两个阶段。1964年三届全国人大一次会议上，周恩来在政府工作报告中正式提出“两步走”战略构想，即",
     "options": [
       {
         "key": "A",
@@ -11190,7 +11190,7 @@
     "order_num": 373
   },
   {
-    "id": 29213,
+    "id": 33109,
     "workbook_id": 39,
     "question_num": 374,
     "question_type": "multiple",
@@ -11220,7 +11220,7 @@
     "order_num": 374
   },
   {
-    "id": 29214,
+    "id": 33110,
     "workbook_id": 39,
     "question_num": 375,
     "question_type": "single",
@@ -11250,7 +11250,7 @@
     "order_num": 375
   },
   {
-    "id": 29215,
+    "id": 33111,
     "workbook_id": 39,
     "question_num": 376,
     "question_type": "multiple",
@@ -11280,7 +11280,7 @@
     "order_num": 376
   },
   {
-    "id": 29216,
+    "id": 33112,
     "workbook_id": 39,
     "question_num": 377,
     "question_type": "multiple",
@@ -11310,7 +11310,7 @@
     "order_num": 377
   },
   {
-    "id": 29217,
+    "id": 33113,
     "workbook_id": 39,
     "question_num": 378,
     "question_type": "single",
@@ -11340,7 +11340,7 @@
     "order_num": 378
   },
   {
-    "id": 29218,
+    "id": 33114,
     "workbook_id": 39,
     "question_num": 379,
     "question_type": "single",
@@ -11370,7 +11370,7 @@
     "order_num": 379
   },
   {
-    "id": 29219,
+    "id": 33115,
     "workbook_id": 39,
     "question_num": 380,
     "question_type": "single",
@@ -11400,7 +11400,7 @@
     "order_num": 380
   },
   {
-    "id": 29220,
+    "id": 33116,
     "workbook_id": 39,
     "question_num": 381,
     "question_type": "single",
@@ -11430,7 +11430,7 @@
     "order_num": 381
   },
   {
-    "id": 29221,
+    "id": 33117,
     "workbook_id": 39,
     "question_num": 382,
     "question_type": "single",
@@ -11460,7 +11460,7 @@
     "order_num": 382
   },
   {
-    "id": 29222,
+    "id": 33118,
     "workbook_id": 39,
     "question_num": 383,
     "question_type": "single",
@@ -11490,7 +11490,7 @@
     "order_num": 383
   },
   {
-    "id": 29223,
+    "id": 33119,
     "workbook_id": 39,
     "question_num": 384,
     "question_type": "single",
@@ -11520,7 +11520,7 @@
     "order_num": 384
   },
   {
-    "id": 29224,
+    "id": 33120,
     "workbook_id": 39,
     "question_num": 385,
     "question_type": "single",
@@ -11550,7 +11550,7 @@
     "order_num": 385
   },
   {
-    "id": 29225,
+    "id": 33121,
     "workbook_id": 39,
     "question_num": 386,
     "question_type": "multiple",
@@ -11580,7 +11580,7 @@
     "order_num": 386
   },
   {
-    "id": 29226,
+    "id": 33122,
     "workbook_id": 39,
     "question_num": 387,
     "question_type": "multiple",
@@ -11610,7 +11610,7 @@
     "order_num": 387
   },
   {
-    "id": 29227,
+    "id": 33123,
     "workbook_id": 39,
     "question_num": 388,
     "question_type": "multiple",
@@ -11640,7 +11640,7 @@
     "order_num": 388
   },
   {
-    "id": 29228,
+    "id": 33124,
     "workbook_id": 39,
     "question_num": 389,
     "question_type": "multiple",
@@ -11670,7 +11670,7 @@
     "order_num": 389
   },
   {
-    "id": 29229,
+    "id": 33125,
     "workbook_id": 39,
     "question_num": 390,
     "question_type": "multiple",
@@ -11700,7 +11700,7 @@
     "order_num": 390
   },
   {
-    "id": 29230,
+    "id": 33126,
     "workbook_id": 39,
     "question_num": 391,
     "question_type": "multiple",
@@ -11730,7 +11730,7 @@
     "order_num": 391
   },
   {
-    "id": 29231,
+    "id": 33127,
     "workbook_id": 39,
     "question_num": 392,
     "question_type": "single",
@@ -11760,7 +11760,7 @@
     "order_num": 392
   },
   {
-    "id": 29232,
+    "id": 33128,
     "workbook_id": 39,
     "question_num": 393,
     "question_type": "single",
@@ -11790,7 +11790,7 @@
     "order_num": 393
   },
   {
-    "id": 29233,
+    "id": 33129,
     "workbook_id": 39,
     "question_num": 394,
     "question_type": "multiple",
@@ -11820,7 +11820,7 @@
     "order_num": 394
   },
   {
-    "id": 29234,
+    "id": 33130,
     "workbook_id": 39,
     "question_num": 395,
     "question_type": "single",
@@ -11850,7 +11850,7 @@
     "order_num": 395
   },
   {
-    "id": 29235,
+    "id": 33131,
     "workbook_id": 39,
     "question_num": 396,
     "question_type": "single",
@@ -11880,7 +11880,7 @@
     "order_num": 396
   },
   {
-    "id": 29236,
+    "id": 33132,
     "workbook_id": 39,
     "question_num": 397,
     "question_type": "multiple",
@@ -11910,7 +11910,7 @@
     "order_num": 397
   },
   {
-    "id": 29237,
+    "id": 33133,
     "workbook_id": 39,
     "question_num": 398,
     "question_type": "single",
@@ -11940,7 +11940,7 @@
     "order_num": 398
   },
   {
-    "id": 29238,
+    "id": 33134,
     "workbook_id": 39,
     "question_num": 399,
     "question_type": "single",
@@ -11970,7 +11970,7 @@
     "order_num": 399
   },
   {
-    "id": 29239,
+    "id": 33135,
     "workbook_id": 39,
     "question_num": 400,
     "question_type": "single",
@@ -12000,7 +12000,7 @@
     "order_num": 400
   },
   {
-    "id": 29240,
+    "id": 33136,
     "workbook_id": 39,
     "question_num": 401,
     "question_type": "single",
@@ -12030,7 +12030,7 @@
     "order_num": 401
   },
   {
-    "id": 29241,
+    "id": 33137,
     "workbook_id": 39,
     "question_num": 402,
     "question_type": "multiple",
@@ -12060,7 +12060,7 @@
     "order_num": 402
   },
   {
-    "id": 29242,
+    "id": 33138,
     "workbook_id": 39,
     "question_num": 403,
     "question_type": "multiple",
@@ -12090,12 +12090,12 @@
     "order_num": 403
   },
   {
-    "id": 29243,
+    "id": 33139,
     "workbook_id": 39,
     "question_num": 404,
     "question_type": "multiple",
     "category": "导论",
-    "stem": "习近平新时代中国特色社会主义思想是马克思主义基本原理同中国具体实际相结合、同中华",
+    "stem": "习近平新时代中国特色社会主义思想是马克思主义基本原理同中国具体实际相结合、同中华\n优秀传统文化相结合的重大成果，是坚持“两个结合”的光辉典范。“两个结合”是",
     "options": [
       {
         "key": "A",
@@ -12120,7 +12120,7 @@
     "order_num": 404
   },
   {
-    "id": 29244,
+    "id": 33140,
     "workbook_id": 39,
     "question_num": 405,
     "question_type": "multiple",
@@ -12150,7 +12150,7 @@
     "order_num": 405
   },
   {
-    "id": 29245,
+    "id": 33141,
     "workbook_id": 39,
     "question_num": 406,
     "question_type": "multiple",
@@ -12180,7 +12180,7 @@
     "order_num": 406
   },
   {
-    "id": 29246,
+    "id": 33142,
     "workbook_id": 39,
     "question_num": 407,
     "question_type": "multiple",
@@ -12210,7 +12210,7 @@
     "order_num": 407
   },
   {
-    "id": 29247,
+    "id": 33143,
     "workbook_id": 39,
     "question_num": 408,
     "question_type": "multiple",
@@ -12240,7 +12240,7 @@
     "order_num": 408
   },
   {
-    "id": 29248,
+    "id": 33144,
     "workbook_id": 39,
     "question_num": 409,
     "question_type": "single",
@@ -12270,7 +12270,7 @@
     "order_num": 409
   },
   {
-    "id": 29249,
+    "id": 33145,
     "workbook_id": 39,
     "question_num": 410,
     "question_type": "single",
@@ -12300,7 +12300,7 @@
     "order_num": 410
   },
   {
-    "id": 29250,
+    "id": 33146,
     "workbook_id": 39,
     "question_num": 411,
     "question_type": "single",
@@ -12330,7 +12330,7 @@
     "order_num": 411
   },
   {
-    "id": 29251,
+    "id": 33147,
     "workbook_id": 39,
     "question_num": 412,
     "question_type": "single",
@@ -12360,7 +12360,7 @@
     "order_num": 412
   },
   {
-    "id": 29252,
+    "id": 33148,
     "workbook_id": 39,
     "question_num": 413,
     "question_type": "multiple",
@@ -12390,7 +12390,7 @@
     "order_num": 413
   },
   {
-    "id": 29253,
+    "id": 33149,
     "workbook_id": 39,
     "question_num": 414,
     "question_type": "multiple",
@@ -12420,7 +12420,7 @@
     "order_num": 414
   },
   {
-    "id": 29254,
+    "id": 33150,
     "workbook_id": 39,
     "question_num": 415,
     "question_type": "multiple",
@@ -12450,7 +12450,7 @@
     "order_num": 415
   },
   {
-    "id": 29255,
+    "id": 33151,
     "workbook_id": 39,
     "question_num": 416,
     "question_type": "single",
@@ -12480,7 +12480,7 @@
     "order_num": 416
   },
   {
-    "id": 29256,
+    "id": 33152,
     "workbook_id": 39,
     "question_num": 417,
     "question_type": "single",
@@ -12510,7 +12510,7 @@
     "order_num": 417
   },
   {
-    "id": 29257,
+    "id": 33153,
     "workbook_id": 39,
     "question_num": 418,
     "question_type": "single",
@@ -12540,7 +12540,7 @@
     "order_num": 418
   },
   {
-    "id": 29258,
+    "id": 33154,
     "workbook_id": 39,
     "question_num": 419,
     "question_type": "multiple",
@@ -12570,7 +12570,7 @@
     "order_num": 419
   },
   {
-    "id": 29259,
+    "id": 33155,
     "workbook_id": 39,
     "question_num": 420,
     "question_type": "multiple",
@@ -12600,7 +12600,7 @@
     "order_num": 420
   },
   {
-    "id": 29260,
+    "id": 33156,
     "workbook_id": 39,
     "question_num": 421,
     "question_type": "multiple",
@@ -12630,7 +12630,7 @@
     "order_num": 421
   },
   {
-    "id": 29261,
+    "id": 33157,
     "workbook_id": 39,
     "question_num": 422,
     "question_type": "multiple",
@@ -12639,7 +12639,7 @@
     "options": [
       {
         "key": "A",
-        "value": "选项 A"
+        "value": "打破了“现代化=西方化”的迷思，展现了现代化的另一幅图景"
       },
       {
         "key": "B",
@@ -12654,13 +12654,13 @@
         "value": "为广大发展中国家迈向现代化提供了现成模式"
       }
     ],
-    "options_json": "[{\"key\": \"A\", \"value\": \"选项 A\"}, {\"key\": \"B\", \"value\": \"为人类对更好社会制度的探索提供了中国方案\"}, {\"key\": \"C\", \"value\": \"是对世界现代化理论和实践的重大创新\"}, {\"key\": \"D\", \"value\": \"为广大发展中国家迈向现代化提供了现成模式\"}]",
+    "options_json": "[{\"key\": \"A\", \"value\": \"打破了“现代化=西方化”的迷思，展现了现代化的另一幅图景\"}, {\"key\": \"B\", \"value\": \"为人类对更好社会制度的探索提供了中国方案\"}, {\"key\": \"C\", \"value\": \"是对世界现代化理论和实践的重大创新\"}, {\"key\": \"D\", \"value\": \"为广大发展中国家迈向现代化提供了现成模式\"}]",
     "answer": "ABC",
     "explanation": "【解析】本题考查的是中国式现代化创造了人类文明新形态。中国式现代化不仅\n改变了中国的面貌，而且具有重大世界意义。其一，中国式现代化，打破了“现代化=西方化”\n的迷思，展现了不同于西方现代化的新图景。其二，中国式现代化为人类实现现代化提供了新\n的选择。中国式现代化彻底打破了只有遵循资本主义发展模式才能实现现代化的神话，给世\n界上那些既希望加快发展又希望保持自身独立性的国家和民族提供了宝贵经验与全新选择。\n其三，中国式现代化蕴含的独特世界观、价值观、历史观、文明观、民主观、生态观等及其伟大实\n践，是对世界现代化理论和实践的重大创新。故应选A、B、C三项。\n中国式现代化用事实表明，世界上既不存在唯一的现代化模式，也不存在完全统一的现代\n化标准。一个国家走向现代化没有现成模式可复制，故D项表述错误。",
     "order_num": 422
   },
   {
-    "id": 29262,
+    "id": 33158,
     "workbook_id": 39,
     "question_num": 423,
     "question_type": "multiple",
@@ -12690,7 +12690,7 @@
     "order_num": 423
   },
   {
-    "id": 29263,
+    "id": 33159,
     "workbook_id": 39,
     "question_num": 424,
     "question_type": "single",
@@ -12720,7 +12720,7 @@
     "order_num": 424
   },
   {
-    "id": 29264,
+    "id": 33160,
     "workbook_id": 39,
     "question_num": 425,
     "question_type": "single",
@@ -12750,7 +12750,7 @@
     "order_num": 425
   },
   {
-    "id": 29265,
+    "id": 33161,
     "workbook_id": 39,
     "question_num": 426,
     "question_type": "multiple",
@@ -12780,7 +12780,7 @@
     "order_num": 426
   },
   {
-    "id": 29266,
+    "id": 33162,
     "workbook_id": 39,
     "question_num": 427,
     "question_type": "multiple",
@@ -12810,7 +12810,7 @@
     "order_num": 427
   },
   {
-    "id": 29267,
+    "id": 33163,
     "workbook_id": 39,
     "question_num": 428,
     "question_type": "multiple",
@@ -12840,7 +12840,7 @@
     "order_num": 428
   },
   {
-    "id": 29268,
+    "id": 33164,
     "workbook_id": 39,
     "question_num": 429,
     "question_type": "multiple",
@@ -12870,7 +12870,7 @@
     "order_num": 429
   },
   {
-    "id": 29269,
+    "id": 33165,
     "workbook_id": 39,
     "question_num": 430,
     "question_type": "single",
@@ -12900,7 +12900,7 @@
     "order_num": 430
   },
   {
-    "id": 29270,
+    "id": 33166,
     "workbook_id": 39,
     "question_num": 431,
     "question_type": "single",
@@ -12930,7 +12930,7 @@
     "order_num": 431
   },
   {
-    "id": 29271,
+    "id": 33167,
     "workbook_id": 39,
     "question_num": 432,
     "question_type": "single",
@@ -12960,7 +12960,7 @@
     "order_num": 432
   },
   {
-    "id": 29272,
+    "id": 33168,
     "workbook_id": 39,
     "question_num": 433,
     "question_type": "multiple",
@@ -12990,7 +12990,7 @@
     "order_num": 433
   },
   {
-    "id": 29273,
+    "id": 33169,
     "workbook_id": 39,
     "question_num": 434,
     "question_type": "multiple",
@@ -13020,7 +13020,7 @@
     "order_num": 434
   },
   {
-    "id": 29274,
+    "id": 33170,
     "workbook_id": 39,
     "question_num": 435,
     "question_type": "multiple",
@@ -13050,7 +13050,7 @@
     "order_num": 435
   },
   {
-    "id": 29275,
+    "id": 33171,
     "workbook_id": 39,
     "question_num": 436,
     "question_type": "multiple",
@@ -13080,7 +13080,7 @@
     "order_num": 436
   },
   {
-    "id": 29276,
+    "id": 33172,
     "workbook_id": 39,
     "question_num": 437,
     "question_type": "multiple",
@@ -13110,7 +13110,7 @@
     "order_num": 437
   },
   {
-    "id": 29277,
+    "id": 33173,
     "workbook_id": 39,
     "question_num": 438,
     "question_type": "multiple",
@@ -13140,7 +13140,7 @@
     "order_num": 438
   },
   {
-    "id": 29278,
+    "id": 33174,
     "workbook_id": 39,
     "question_num": 439,
     "question_type": "multiple",
@@ -13170,7 +13170,7 @@
     "order_num": 439
   },
   {
-    "id": 29279,
+    "id": 33175,
     "workbook_id": 39,
     "question_num": 440,
     "question_type": "multiple",
@@ -13200,7 +13200,7 @@
     "order_num": 440
   },
   {
-    "id": 29280,
+    "id": 33176,
     "workbook_id": 39,
     "question_num": 441,
     "question_type": "single",
@@ -13230,7 +13230,7 @@
     "order_num": 441
   },
   {
-    "id": 29281,
+    "id": 33177,
     "workbook_id": 39,
     "question_num": 442,
     "question_type": "single",
@@ -13260,7 +13260,7 @@
     "order_num": 442
   },
   {
-    "id": 29282,
+    "id": 33178,
     "workbook_id": 39,
     "question_num": 443,
     "question_type": "single",
@@ -13290,7 +13290,7 @@
     "order_num": 443
   },
   {
-    "id": 29283,
+    "id": 33179,
     "workbook_id": 39,
     "question_num": 444,
     "question_type": "single",
@@ -13320,7 +13320,7 @@
     "order_num": 444
   },
   {
-    "id": 29284,
+    "id": 33180,
     "workbook_id": 39,
     "question_num": 445,
     "question_type": "single",
@@ -13350,7 +13350,7 @@
     "order_num": 445
   },
   {
-    "id": 29285,
+    "id": 33181,
     "workbook_id": 39,
     "question_num": 446,
     "question_type": "multiple",
@@ -13380,7 +13380,7 @@
     "order_num": 446
   },
   {
-    "id": 29286,
+    "id": 33182,
     "workbook_id": 39,
     "question_num": 447,
     "question_type": "multiple",
@@ -13410,7 +13410,7 @@
     "order_num": 447
   },
   {
-    "id": 29287,
+    "id": 33183,
     "workbook_id": 39,
     "question_num": 448,
     "question_type": "multiple",
@@ -13440,7 +13440,7 @@
     "order_num": 448
   },
   {
-    "id": 29288,
+    "id": 33184,
     "workbook_id": 39,
     "question_num": 449,
     "question_type": "multiple",
@@ -13470,7 +13470,7 @@
     "order_num": 449
   },
   {
-    "id": 29289,
+    "id": 33185,
     "workbook_id": 39,
     "question_num": 450,
     "question_type": "multiple",
@@ -13500,7 +13500,7 @@
     "order_num": 450
   },
   {
-    "id": 29290,
+    "id": 33186,
     "workbook_id": 39,
     "question_num": 451,
     "question_type": "multiple",
@@ -13530,7 +13530,7 @@
     "order_num": 451
   },
   {
-    "id": 29291,
+    "id": 33187,
     "workbook_id": 39,
     "question_num": 452,
     "question_type": "multiple",
@@ -13560,7 +13560,7 @@
     "order_num": 452
   },
   {
-    "id": 29292,
+    "id": 33188,
     "workbook_id": 39,
     "question_num": 453,
     "question_type": "multiple",
@@ -13590,7 +13590,7 @@
     "order_num": 453
   },
   {
-    "id": 29293,
+    "id": 33189,
     "workbook_id": 39,
     "question_num": 454,
     "question_type": "multiple",
@@ -13620,7 +13620,7 @@
     "order_num": 454
   },
   {
-    "id": 29294,
+    "id": 33190,
     "workbook_id": 39,
     "question_num": 455,
     "question_type": "multiple",
@@ -13650,7 +13650,7 @@
     "order_num": 455
   },
   {
-    "id": 29295,
+    "id": 33191,
     "workbook_id": 39,
     "question_num": 456,
     "question_type": "single",
@@ -13680,7 +13680,7 @@
     "order_num": 456
   },
   {
-    "id": 29296,
+    "id": 33192,
     "workbook_id": 39,
     "question_num": 457,
     "question_type": "single",
@@ -13710,7 +13710,7 @@
     "order_num": 457
   },
   {
-    "id": 29297,
+    "id": 33193,
     "workbook_id": 39,
     "question_num": 458,
     "question_type": "single",
@@ -13740,7 +13740,7 @@
     "order_num": 458
   },
   {
-    "id": 29298,
+    "id": 33194,
     "workbook_id": 39,
     "question_num": 459,
     "question_type": "single",
@@ -13770,12 +13770,12 @@
     "order_num": 459
   },
   {
-    "id": 29299,
+    "id": 33195,
     "workbook_id": 39,
     "question_num": 460,
     "question_type": "single",
     "category": "第6章",
-    "stem": "第5题",
+    "stem": "党的二十届三中全会对深化经济体制改革作出系统部署，强调必须更好统筹发展和安全，深化供给侧结构性改革。推动经济高质量发展，关键在于",
     "options": [
       {
         "key": "A",
@@ -13800,7 +13800,7 @@
     "order_num": 460
   },
   {
-    "id": 29300,
+    "id": 33196,
     "workbook_id": 39,
     "question_num": 461,
     "question_type": "single",
@@ -13830,7 +13830,7 @@
     "order_num": 461
   },
   {
-    "id": 29301,
+    "id": 33197,
     "workbook_id": 39,
     "question_num": 462,
     "question_type": "single",
@@ -13860,7 +13860,7 @@
     "order_num": 462
   },
   {
-    "id": 29302,
+    "id": 33198,
     "workbook_id": 39,
     "question_num": 463,
     "question_type": "single",
@@ -13890,7 +13890,7 @@
     "order_num": 463
   },
   {
-    "id": 29303,
+    "id": 33199,
     "workbook_id": 39,
     "question_num": 464,
     "question_type": "single",
@@ -13920,7 +13920,7 @@
     "order_num": 464
   },
   {
-    "id": 29304,
+    "id": 33200,
     "workbook_id": 39,
     "question_num": 465,
     "question_type": "single",
@@ -13950,7 +13950,7 @@
     "order_num": 465
   },
   {
-    "id": 29305,
+    "id": 33201,
     "workbook_id": 39,
     "question_num": 466,
     "question_type": "single",
@@ -13980,7 +13980,7 @@
     "order_num": 466
   },
   {
-    "id": 29306,
+    "id": 33202,
     "workbook_id": 39,
     "question_num": 467,
     "question_type": "single",
@@ -14010,7 +14010,7 @@
     "order_num": 467
   },
   {
-    "id": 29307,
+    "id": 33203,
     "workbook_id": 39,
     "question_num": 468,
     "question_type": "single",
@@ -14040,7 +14040,7 @@
     "order_num": 468
   },
   {
-    "id": 29308,
+    "id": 33204,
     "workbook_id": 39,
     "question_num": 469,
     "question_type": "single",
@@ -14070,7 +14070,7 @@
     "order_num": 469
   },
   {
-    "id": 29309,
+    "id": 33205,
     "workbook_id": 39,
     "question_num": 470,
     "question_type": "single",
@@ -14100,7 +14100,7 @@
     "order_num": 470
   },
   {
-    "id": 29310,
+    "id": 33206,
     "workbook_id": 39,
     "question_num": 471,
     "question_type": "single",
@@ -14130,7 +14130,7 @@
     "order_num": 471
   },
   {
-    "id": 29311,
+    "id": 33207,
     "workbook_id": 39,
     "question_num": 472,
     "question_type": "single",
@@ -14160,7 +14160,7 @@
     "order_num": 472
   },
   {
-    "id": 29312,
+    "id": 33208,
     "workbook_id": 39,
     "question_num": 473,
     "question_type": "multiple",
@@ -14190,7 +14190,7 @@
     "order_num": 473
   },
   {
-    "id": 29313,
+    "id": 33209,
     "workbook_id": 39,
     "question_num": 474,
     "question_type": "multiple",
@@ -14220,7 +14220,7 @@
     "order_num": 474
   },
   {
-    "id": 29314,
+    "id": 33210,
     "workbook_id": 39,
     "question_num": 475,
     "question_type": "multiple",
@@ -14250,7 +14250,7 @@
     "order_num": 475
   },
   {
-    "id": 29315,
+    "id": 33211,
     "workbook_id": 39,
     "question_num": 476,
     "question_type": "multiple",
@@ -14280,7 +14280,7 @@
     "order_num": 476
   },
   {
-    "id": 29316,
+    "id": 33212,
     "workbook_id": 39,
     "question_num": 477,
     "question_type": "multiple",
@@ -14310,7 +14310,7 @@
     "order_num": 477
   },
   {
-    "id": 29317,
+    "id": 33213,
     "workbook_id": 39,
     "question_num": 478,
     "question_type": "multiple",
@@ -14340,7 +14340,7 @@
     "order_num": 478
   },
   {
-    "id": 29318,
+    "id": 33214,
     "workbook_id": 39,
     "question_num": 479,
     "question_type": "multiple",
@@ -14370,7 +14370,7 @@
     "order_num": 479
   },
   {
-    "id": 29319,
+    "id": 33215,
     "workbook_id": 39,
     "question_num": 480,
     "question_type": "multiple",
@@ -14400,7 +14400,7 @@
     "order_num": 480
   },
   {
-    "id": 29320,
+    "id": 33216,
     "workbook_id": 39,
     "question_num": 481,
     "question_type": "multiple",
@@ -14430,7 +14430,7 @@
     "order_num": 481
   },
   {
-    "id": 29321,
+    "id": 33217,
     "workbook_id": 39,
     "question_num": 482,
     "question_type": "multiple",
@@ -14460,7 +14460,7 @@
     "order_num": 482
   },
   {
-    "id": 29322,
+    "id": 33218,
     "workbook_id": 39,
     "question_num": 483,
     "question_type": "multiple",
@@ -14490,7 +14490,7 @@
     "order_num": 483
   },
   {
-    "id": 29323,
+    "id": 33219,
     "workbook_id": 39,
     "question_num": 484,
     "question_type": "multiple",
@@ -14520,7 +14520,7 @@
     "order_num": 484
   },
   {
-    "id": 29324,
+    "id": 33220,
     "workbook_id": 39,
     "question_num": 485,
     "question_type": "multiple",
@@ -14550,7 +14550,7 @@
     "order_num": 485
   },
   {
-    "id": 29325,
+    "id": 33221,
     "workbook_id": 39,
     "question_num": 486,
     "question_type": "multiple",
@@ -14580,7 +14580,7 @@
     "order_num": 486
   },
   {
-    "id": 29326,
+    "id": 33222,
     "workbook_id": 39,
     "question_num": 487,
     "question_type": "multiple",
@@ -14610,7 +14610,7 @@
     "order_num": 487
   },
   {
-    "id": 29327,
+    "id": 33223,
     "workbook_id": 39,
     "question_num": 488,
     "question_type": "multiple",
@@ -14640,7 +14640,7 @@
     "order_num": 488
   },
   {
-    "id": 29328,
+    "id": 33224,
     "workbook_id": 39,
     "question_num": 489,
     "question_type": "multiple",
@@ -14670,7 +14670,7 @@
     "order_num": 489
   },
   {
-    "id": 29329,
+    "id": 33225,
     "workbook_id": 39,
     "question_num": 490,
     "question_type": "multiple",
@@ -14700,7 +14700,7 @@
     "order_num": 490
   },
   {
-    "id": 29330,
+    "id": 33226,
     "workbook_id": 39,
     "question_num": 491,
     "question_type": "multiple",
@@ -14730,7 +14730,7 @@
     "order_num": 491
   },
   {
-    "id": 29331,
+    "id": 33227,
     "workbook_id": 39,
     "question_num": 492,
     "question_type": "single",
@@ -14760,7 +14760,7 @@
     "order_num": 492
   },
   {
-    "id": 29332,
+    "id": 33228,
     "workbook_id": 39,
     "question_num": 493,
     "question_type": "single",
@@ -14790,7 +14790,7 @@
     "order_num": 493
   },
   {
-    "id": 29333,
+    "id": 33229,
     "workbook_id": 39,
     "question_num": 494,
     "question_type": "single",
@@ -14820,7 +14820,7 @@
     "order_num": 494
   },
   {
-    "id": 29334,
+    "id": 33230,
     "workbook_id": 39,
     "question_num": 495,
     "question_type": "single",
@@ -14850,7 +14850,7 @@
     "order_num": 495
   },
   {
-    "id": 29335,
+    "id": 33231,
     "workbook_id": 39,
     "question_num": 496,
     "question_type": "single",
@@ -14880,7 +14880,7 @@
     "order_num": 496
   },
   {
-    "id": 29336,
+    "id": 33232,
     "workbook_id": 39,
     "question_num": 497,
     "question_type": "single",
@@ -14910,7 +14910,7 @@
     "order_num": 497
   },
   {
-    "id": 29337,
+    "id": 33233,
     "workbook_id": 39,
     "question_num": 498,
     "question_type": "multiple",
@@ -14940,7 +14940,7 @@
     "order_num": 498
   },
   {
-    "id": 29338,
+    "id": 33234,
     "workbook_id": 39,
     "question_num": 499,
     "question_type": "multiple",
@@ -14970,7 +14970,7 @@
     "order_num": 499
   },
   {
-    "id": 29339,
+    "id": 33235,
     "workbook_id": 39,
     "question_num": 500,
     "question_type": "multiple",
@@ -15000,7 +15000,7 @@
     "order_num": 500
   },
   {
-    "id": 29340,
+    "id": 33236,
     "workbook_id": 39,
     "question_num": 501,
     "question_type": "multiple",
@@ -15030,7 +15030,7 @@
     "order_num": 501
   },
   {
-    "id": 29341,
+    "id": 33237,
     "workbook_id": 39,
     "question_num": 502,
     "question_type": "multiple",
@@ -15060,7 +15060,7 @@
     "order_num": 502
   },
   {
-    "id": 29342,
+    "id": 33238,
     "workbook_id": 39,
     "question_num": 503,
     "question_type": "multiple",
@@ -15090,12 +15090,12 @@
     "order_num": 503
   },
   {
-    "id": 29343,
+    "id": 33239,
     "workbook_id": 39,
     "question_num": 504,
     "question_type": "multiple",
     "category": "第7章",
-    "stem": "“十四五”时期，我国科技投人持续增加，2024年全社会研发投人超3．6万亿元，较2020年增",
+    "stem": "“十四五”时期，我国科技投人持续增加，2024年全社会研发投人超3．6万亿元，较2020年增\n长48%；研发投入强度达到2.68%，超过欧盟国家平均水平；基础研究水平进一步提升基础\n研究经费达2497亿元，较2020年增长超过70%，在量子科技、生命科学、物质科学、空间科学\n等领域取得一批重大原创性成果，高水平国际期刊论文数量和国际专利申请量连续5年世界\n第一。国家综合创新能力排名由2020年的第14位提升至2024年的第10位。高新技术企业\n超过50万家，企业创新能力显著增强，企业研发投人占比超过77%。“十四五\"时期科技创新\n取得的成就表明",
     "options": [
       {
         "key": "A",
@@ -15120,7 +15120,7 @@
     "order_num": 504
   },
   {
-    "id": 29344,
+    "id": 33240,
     "workbook_id": 39,
     "question_num": 505,
     "question_type": "single",
@@ -15150,7 +15150,7 @@
     "order_num": 505
   },
   {
-    "id": 29345,
+    "id": 33241,
     "workbook_id": 39,
     "question_num": 506,
     "question_type": "single",
@@ -15180,7 +15180,7 @@
     "order_num": 506
   },
   {
-    "id": 29346,
+    "id": 33242,
     "workbook_id": 39,
     "question_num": 507,
     "question_type": "single",
@@ -15210,7 +15210,7 @@
     "order_num": 507
   },
   {
-    "id": 29347,
+    "id": 33243,
     "workbook_id": 39,
     "question_num": 508,
     "question_type": "single",
@@ -15240,7 +15240,7 @@
     "order_num": 508
   },
   {
-    "id": 29348,
+    "id": 33244,
     "workbook_id": 39,
     "question_num": 509,
     "question_type": "single",
@@ -15270,7 +15270,7 @@
     "order_num": 509
   },
   {
-    "id": 29349,
+    "id": 33245,
     "workbook_id": 39,
     "question_num": 510,
     "question_type": "single",
@@ -15300,7 +15300,7 @@
     "order_num": 510
   },
   {
-    "id": 29350,
+    "id": 33246,
     "workbook_id": 39,
     "question_num": 511,
     "question_type": "multiple",
@@ -15330,7 +15330,7 @@
     "order_num": 511
   },
   {
-    "id": 29351,
+    "id": 33247,
     "workbook_id": 39,
     "question_num": 512,
     "question_type": "multiple",
@@ -15360,7 +15360,7 @@
     "order_num": 512
   },
   {
-    "id": 29352,
+    "id": 33248,
     "workbook_id": 39,
     "question_num": 513,
     "question_type": "multiple",
@@ -15390,7 +15390,7 @@
     "order_num": 513
   },
   {
-    "id": 29353,
+    "id": 33249,
     "workbook_id": 39,
     "question_num": 514,
     "question_type": "multiple",
@@ -15420,7 +15420,7 @@
     "order_num": 514
   },
   {
-    "id": 29354,
+    "id": 33250,
     "workbook_id": 39,
     "question_num": 515,
     "question_type": "multiple",
@@ -15450,7 +15450,7 @@
     "order_num": 515
   },
   {
-    "id": 29355,
+    "id": 33251,
     "workbook_id": 39,
     "question_num": 516,
     "question_type": "multiple",
@@ -15480,7 +15480,7 @@
     "order_num": 516
   },
   {
-    "id": 29356,
+    "id": 33252,
     "workbook_id": 39,
     "question_num": 517,
     "question_type": "multiple",
@@ -15510,7 +15510,7 @@
     "order_num": 517
   },
   {
-    "id": 29357,
+    "id": 33253,
     "workbook_id": 39,
     "question_num": 518,
     "question_type": "multiple",
@@ -15540,7 +15540,7 @@
     "order_num": 518
   },
   {
-    "id": 29358,
+    "id": 33254,
     "workbook_id": 39,
     "question_num": 519,
     "question_type": "multiple",
@@ -15570,7 +15570,7 @@
     "order_num": 519
   },
   {
-    "id": 29359,
+    "id": 33255,
     "workbook_id": 39,
     "question_num": 520,
     "question_type": "multiple",
@@ -15600,7 +15600,7 @@
     "order_num": 520
   },
   {
-    "id": 29360,
+    "id": 33256,
     "workbook_id": 39,
     "question_num": 521,
     "question_type": "multiple",
@@ -15630,7 +15630,7 @@
     "order_num": 521
   },
   {
-    "id": 29361,
+    "id": 33257,
     "workbook_id": 39,
     "question_num": 522,
     "question_type": "single",
@@ -15660,7 +15660,7 @@
     "order_num": 522
   },
   {
-    "id": 29362,
+    "id": 33258,
     "workbook_id": 39,
     "question_num": 523,
     "question_type": "single",
@@ -15690,7 +15690,7 @@
     "order_num": 523
   },
   {
-    "id": 29363,
+    "id": 33259,
     "workbook_id": 39,
     "question_num": 524,
     "question_type": "single",
@@ -15720,7 +15720,7 @@
     "order_num": 524
   },
   {
-    "id": 29364,
+    "id": 33260,
     "workbook_id": 39,
     "question_num": 525,
     "question_type": "single",
@@ -15750,7 +15750,7 @@
     "order_num": 525
   },
   {
-    "id": 29365,
+    "id": 33261,
     "workbook_id": 39,
     "question_num": 526,
     "question_type": "single",
@@ -15780,7 +15780,7 @@
     "order_num": 526
   },
   {
-    "id": 29366,
+    "id": 33262,
     "workbook_id": 39,
     "question_num": 527,
     "question_type": "single",
@@ -15810,7 +15810,7 @@
     "order_num": 527
   },
   {
-    "id": 29367,
+    "id": 33263,
     "workbook_id": 39,
     "question_num": 528,
     "question_type": "single",
@@ -15840,7 +15840,7 @@
     "order_num": 528
   },
   {
-    "id": 29368,
+    "id": 33264,
     "workbook_id": 39,
     "question_num": 529,
     "question_type": "multiple",
@@ -15870,7 +15870,7 @@
     "order_num": 529
   },
   {
-    "id": 29369,
+    "id": 33265,
     "workbook_id": 39,
     "question_num": 530,
     "question_type": "multiple",
@@ -15900,7 +15900,7 @@
     "order_num": 530
   },
   {
-    "id": 29370,
+    "id": 33266,
     "workbook_id": 39,
     "question_num": 531,
     "question_type": "multiple",
@@ -15930,7 +15930,7 @@
     "order_num": 531
   },
   {
-    "id": 29371,
+    "id": 33267,
     "workbook_id": 39,
     "question_num": 532,
     "question_type": "multiple",
@@ -15960,7 +15960,7 @@
     "order_num": 532
   },
   {
-    "id": 29372,
+    "id": 33268,
     "workbook_id": 39,
     "question_num": 533,
     "question_type": "multiple",
@@ -15990,7 +15990,7 @@
     "order_num": 533
   },
   {
-    "id": 29373,
+    "id": 33269,
     "workbook_id": 39,
     "question_num": 534,
     "question_type": "multiple",
@@ -16020,7 +16020,7 @@
     "order_num": 534
   },
   {
-    "id": 29374,
+    "id": 33270,
     "workbook_id": 39,
     "question_num": 535,
     "question_type": "single",
@@ -16050,7 +16050,7 @@
     "order_num": 535
   },
   {
-    "id": 29375,
+    "id": 33271,
     "workbook_id": 39,
     "question_num": 536,
     "question_type": "single",
@@ -16080,7 +16080,7 @@
     "order_num": 536
   },
   {
-    "id": 29376,
+    "id": 33272,
     "workbook_id": 39,
     "question_num": 537,
     "question_type": "single",
@@ -16110,7 +16110,7 @@
     "order_num": 537
   },
   {
-    "id": 29377,
+    "id": 33273,
     "workbook_id": 39,
     "question_num": 538,
     "question_type": "single",
@@ -16140,7 +16140,7 @@
     "order_num": 538
   },
   {
-    "id": 29378,
+    "id": 33274,
     "workbook_id": 39,
     "question_num": 539,
     "question_type": "single",
@@ -16170,7 +16170,7 @@
     "order_num": 539
   },
   {
-    "id": 29379,
+    "id": 33275,
     "workbook_id": 39,
     "question_num": 540,
     "question_type": "single",
@@ -16200,7 +16200,7 @@
     "order_num": 540
   },
   {
-    "id": 29380,
+    "id": 33276,
     "workbook_id": 39,
     "question_num": 541,
     "question_type": "multiple",
@@ -16230,7 +16230,7 @@
     "order_num": 541
   },
   {
-    "id": 29381,
+    "id": 33277,
     "workbook_id": 39,
     "question_num": 542,
     "question_type": "multiple",
@@ -16260,7 +16260,7 @@
     "order_num": 542
   },
   {
-    "id": 29382,
+    "id": 33278,
     "workbook_id": 39,
     "question_num": 543,
     "question_type": "multiple",
@@ -16290,7 +16290,7 @@
     "order_num": 543
   },
   {
-    "id": 29383,
+    "id": 33279,
     "workbook_id": 39,
     "question_num": 544,
     "question_type": "multiple",
@@ -16320,12 +16320,12 @@
     "order_num": 544
   },
   {
-    "id": 29384,
+    "id": 33280,
     "workbook_id": 39,
     "question_num": 545,
     "question_type": "multiple",
     "category": "第11章",
-    "stem": "20世纪60年代初，浙江诸暨枫桥镇干部群众创造了依靠群众就地化解矛盾的“枫桥经验”。",
+    "stem": "20世纪60年代初，浙江诸暨枫桥镇干部群众创造了依靠群众就地化解矛盾的“枫桥经验”。\n毛泽东同志亲笔批示“要各地仿效，经过试点，推广去做”。60多年来，各地学习推广“小事不\n出村、大事不出镇、矛盾不上交”等经验做法，“枫桥经验”在传承中发展、在发展中创新，展示\n出历久弥新的魅力。“枫桥经验”启示我们",
     "options": [
       {
         "key": "A",
@@ -16350,7 +16350,7 @@
     "order_num": 545
   },
   {
-    "id": 29385,
+    "id": 33281,
     "workbook_id": 39,
     "question_num": 546,
     "question_type": "multiple",
@@ -16380,7 +16380,7 @@
     "order_num": 546
   },
   {
-    "id": 29386,
+    "id": 33282,
     "workbook_id": 39,
     "question_num": 547,
     "question_type": "single",
@@ -16410,7 +16410,7 @@
     "order_num": 547
   },
   {
-    "id": 29387,
+    "id": 33283,
     "workbook_id": 39,
     "question_num": 548,
     "question_type": "single",
@@ -16440,7 +16440,7 @@
     "order_num": 548
   },
   {
-    "id": 29388,
+    "id": 33284,
     "workbook_id": 39,
     "question_num": 549,
     "question_type": "single",
@@ -16470,7 +16470,7 @@
     "order_num": 549
   },
   {
-    "id": 29389,
+    "id": 33285,
     "workbook_id": 39,
     "question_num": 550,
     "question_type": "single",
@@ -16500,7 +16500,7 @@
     "order_num": 550
   },
   {
-    "id": 29390,
+    "id": 33286,
     "workbook_id": 39,
     "question_num": 551,
     "question_type": "multiple",
@@ -16530,7 +16530,7 @@
     "order_num": 551
   },
   {
-    "id": 29391,
+    "id": 33287,
     "workbook_id": 39,
     "question_num": 552,
     "question_type": "multiple",
@@ -16560,7 +16560,7 @@
     "order_num": 552
   },
   {
-    "id": 29392,
+    "id": 33288,
     "workbook_id": 39,
     "question_num": 553,
     "question_type": "multiple",
@@ -16590,7 +16590,7 @@
     "order_num": 553
   },
   {
-    "id": 29393,
+    "id": 33289,
     "workbook_id": 39,
     "question_num": 554,
     "question_type": "multiple",
@@ -16620,7 +16620,7 @@
     "order_num": 554
   },
   {
-    "id": 29394,
+    "id": 33290,
     "workbook_id": 39,
     "question_num": 555,
     "question_type": "multiple",
@@ -16650,7 +16650,7 @@
     "order_num": 555
   },
   {
-    "id": 29395,
+    "id": 33291,
     "workbook_id": 39,
     "question_num": 556,
     "question_type": "multiple",
@@ -16680,7 +16680,7 @@
     "order_num": 556
   },
   {
-    "id": 29396,
+    "id": 33292,
     "workbook_id": 39,
     "question_num": 557,
     "question_type": "multiple",
@@ -16710,7 +16710,7 @@
     "order_num": 557
   },
   {
-    "id": 29397,
+    "id": 33293,
     "workbook_id": 39,
     "question_num": 558,
     "question_type": "multiple",
@@ -16740,7 +16740,7 @@
     "order_num": 558
   },
   {
-    "id": 29398,
+    "id": 33294,
     "workbook_id": 39,
     "question_num": 559,
     "question_type": "multiple",
@@ -16770,7 +16770,7 @@
     "order_num": 559
   },
   {
-    "id": 29399,
+    "id": 33295,
     "workbook_id": 39,
     "question_num": 560,
     "question_type": "multiple",
@@ -16800,7 +16800,7 @@
     "order_num": 560
   },
   {
-    "id": 29400,
+    "id": 33296,
     "workbook_id": 39,
     "question_num": 561,
     "question_type": "single",
@@ -16830,7 +16830,7 @@
     "order_num": 561
   },
   {
-    "id": 29401,
+    "id": 33297,
     "workbook_id": 39,
     "question_num": 562,
     "question_type": "single",
@@ -16860,7 +16860,7 @@
     "order_num": 562
   },
   {
-    "id": 29402,
+    "id": 33298,
     "workbook_id": 39,
     "question_num": 563,
     "question_type": "single",
@@ -16890,7 +16890,7 @@
     "order_num": 563
   },
   {
-    "id": 29403,
+    "id": 33299,
     "workbook_id": 39,
     "question_num": 564,
     "question_type": "multiple",
@@ -16920,7 +16920,7 @@
     "order_num": 564
   },
   {
-    "id": 29404,
+    "id": 33300,
     "workbook_id": 39,
     "question_num": 565,
     "question_type": "multiple",
@@ -16950,7 +16950,7 @@
     "order_num": 565
   },
   {
-    "id": 29405,
+    "id": 33301,
     "workbook_id": 39,
     "question_num": 566,
     "question_type": "multiple",
@@ -16980,7 +16980,7 @@
     "order_num": 566
   },
   {
-    "id": 29406,
+    "id": 33302,
     "workbook_id": 39,
     "question_num": 567,
     "question_type": "multiple",
@@ -17010,7 +17010,7 @@
     "order_num": 567
   },
   {
-    "id": 29407,
+    "id": 33303,
     "workbook_id": 39,
     "question_num": 568,
     "question_type": "multiple",
@@ -17040,7 +17040,7 @@
     "order_num": 568
   },
   {
-    "id": 29408,
+    "id": 33304,
     "workbook_id": 39,
     "question_num": 569,
     "question_type": "single",
@@ -17070,7 +17070,7 @@
     "order_num": 569
   },
   {
-    "id": 29409,
+    "id": 33305,
     "workbook_id": 39,
     "question_num": 570,
     "question_type": "single",
@@ -17100,7 +17100,7 @@
     "order_num": 570
   },
   {
-    "id": 29410,
+    "id": 33306,
     "workbook_id": 39,
     "question_num": 571,
     "question_type": "single",
@@ -17130,7 +17130,7 @@
     "order_num": 571
   },
   {
-    "id": 29411,
+    "id": 33307,
     "workbook_id": 39,
     "question_num": 572,
     "question_type": "multiple",
@@ -17160,7 +17160,7 @@
     "order_num": 572
   },
   {
-    "id": 29412,
+    "id": 33308,
     "workbook_id": 39,
     "question_num": 573,
     "question_type": "single",
@@ -17190,7 +17190,7 @@
     "order_num": 573
   },
   {
-    "id": 29413,
+    "id": 33309,
     "workbook_id": 39,
     "question_num": 574,
     "question_type": "single",
@@ -17220,7 +17220,7 @@
     "order_num": 574
   },
   {
-    "id": 29414,
+    "id": 33310,
     "workbook_id": 39,
     "question_num": 575,
     "question_type": "single",
@@ -17250,7 +17250,7 @@
     "order_num": 575
   },
   {
-    "id": 29415,
+    "id": 33311,
     "workbook_id": 39,
     "question_num": 576,
     "question_type": "single",
@@ -17280,7 +17280,7 @@
     "order_num": 576
   },
   {
-    "id": 29416,
+    "id": 33312,
     "workbook_id": 39,
     "question_num": 577,
     "question_type": "multiple",
@@ -17310,7 +17310,7 @@
     "order_num": 577
   },
   {
-    "id": 29417,
+    "id": 33313,
     "workbook_id": 39,
     "question_num": 578,
     "question_type": "multiple",
@@ -17340,12 +17340,12 @@
     "order_num": 578
   },
   {
-    "id": 29418,
+    "id": 33314,
     "workbook_id": 39,
     "question_num": 579,
     "question_type": "multiple",
     "category": "第15章",
-    "stem": "1992年，海峡两岸关系协会（简称海协会）与台湾海峡交流基金会（简称海基会）经由香港会谈",
+    "stem": "1992年，海峡两岸关系协会（简称海协会）与台湾海峡交流基金会（简称海基会）经由香港会谈\n及其后函电往来，达成各自以口头方式表述“海峡两岸均坚持一个中国原则”的共识，体现一个\n中国原则的“九二共识”",
     "options": [
       {
         "key": "A",
@@ -17370,12 +17370,12 @@
     "order_num": 579
   },
   {
-    "id": 29419,
+    "id": 33315,
     "workbook_id": 39,
     "question_num": 580,
     "question_type": "multiple",
     "category": "第15章",
-    "stem": "第8题",
+    "stem": "习近平总书记强调：“‘一国两制’的提出首先是为了实现和维护国家统一。”关于“一国”与“两制”的辩证关系，下列表述正确的是",
     "options": [
       {
         "key": "A",
@@ -17400,7 +17400,7 @@
     "order_num": 580
   },
   {
-    "id": 29420,
+    "id": 33316,
     "workbook_id": 39,
     "question_num": 581,
     "question_type": "multiple",
@@ -17430,7 +17430,7 @@
     "order_num": 581
   },
   {
-    "id": 29421,
+    "id": 33317,
     "workbook_id": 39,
     "question_num": 582,
     "question_type": "multiple",
@@ -17460,7 +17460,7 @@
     "order_num": 582
   },
   {
-    "id": 29422,
+    "id": 33318,
     "workbook_id": 39,
     "question_num": 583,
     "question_type": "multiple",
@@ -17490,7 +17490,7 @@
     "order_num": 583
   },
   {
-    "id": 29423,
+    "id": 33319,
     "workbook_id": 39,
     "question_num": 584,
     "question_type": "single",
@@ -17520,7 +17520,7 @@
     "order_num": 584
   },
   {
-    "id": 29424,
+    "id": 33320,
     "workbook_id": 39,
     "question_num": 585,
     "question_type": "single",
@@ -17550,7 +17550,7 @@
     "order_num": 585
   },
   {
-    "id": 29425,
+    "id": 33321,
     "workbook_id": 39,
     "question_num": 586,
     "question_type": "single",
@@ -17580,7 +17580,7 @@
     "order_num": 586
   },
   {
-    "id": 29426,
+    "id": 33322,
     "workbook_id": 39,
     "question_num": 587,
     "question_type": "single",
@@ -17610,7 +17610,7 @@
     "order_num": 587
   },
   {
-    "id": 29427,
+    "id": 33323,
     "workbook_id": 39,
     "question_num": 588,
     "question_type": "single",
@@ -17640,12 +17640,12 @@
     "order_num": 588
   },
   {
-    "id": 29428,
+    "id": 33324,
     "workbook_id": 39,
     "question_num": 589,
     "question_type": "multiple",
     "category": "第16章",
-    "stem": "中国坚定不移地奉行独立自主的和平外交政策，坚持互相尊重主权和领土完整、互不侵犯、互",
+    "stem": "中国坚定不移地奉行独立自主的和平外交政策，坚持互相尊重主权和领土完整、互不侵犯、互\n不干涉内政、平等互利、和平共处五项原则，具体体现为",
     "options": [
       {
         "key": "A",
@@ -17670,7 +17670,7 @@
     "order_num": 589
   },
   {
-    "id": 29429,
+    "id": 33325,
     "workbook_id": 39,
     "question_num": 590,
     "question_type": "multiple",
@@ -17700,7 +17700,7 @@
     "order_num": 590
   },
   {
-    "id": 29430,
+    "id": 33326,
     "workbook_id": 39,
     "question_num": 591,
     "question_type": "multiple",
@@ -17730,7 +17730,7 @@
     "order_num": 591
   },
   {
-    "id": 29431,
+    "id": 33327,
     "workbook_id": 39,
     "question_num": 592,
     "question_type": "multiple",
@@ -17760,7 +17760,7 @@
     "order_num": 592
   },
   {
-    "id": 29432,
+    "id": 33328,
     "workbook_id": 39,
     "question_num": 593,
     "question_type": "multiple",
@@ -17790,7 +17790,7 @@
     "order_num": 593
   },
   {
-    "id": 29433,
+    "id": 33329,
     "workbook_id": 39,
     "question_num": 594,
     "question_type": "single",
@@ -17820,7 +17820,7 @@
     "order_num": 594
   },
   {
-    "id": 29434,
+    "id": 33330,
     "workbook_id": 39,
     "question_num": 595,
     "question_type": "single",
@@ -17850,7 +17850,7 @@
     "order_num": 595
   },
   {
-    "id": 29435,
+    "id": 33331,
     "workbook_id": 39,
     "question_num": 596,
     "question_type": "single",
@@ -17880,7 +17880,7 @@
     "order_num": 596
   },
   {
-    "id": 29436,
+    "id": 33332,
     "workbook_id": 39,
     "question_num": 597,
     "question_type": "single",
@@ -17910,7 +17910,7 @@
     "order_num": 597
   },
   {
-    "id": 29437,
+    "id": 33333,
     "workbook_id": 39,
     "question_num": 598,
     "question_type": "multiple",
@@ -17940,7 +17940,7 @@
     "order_num": 598
   },
   {
-    "id": 29438,
+    "id": 33334,
     "workbook_id": 39,
     "question_num": 599,
     "question_type": "multiple",
@@ -17970,7 +17970,7 @@
     "order_num": 599
   },
   {
-    "id": 29439,
+    "id": 33335,
     "workbook_id": 39,
     "question_num": 600,
     "question_type": "multiple",
@@ -18000,7 +18000,7 @@
     "order_num": 600
   },
   {
-    "id": 29440,
+    "id": 33336,
     "workbook_id": 39,
     "question_num": 601,
     "question_type": "multiple",
@@ -18030,7 +18030,7 @@
     "order_num": 601
   },
   {
-    "id": 29441,
+    "id": 33337,
     "workbook_id": 39,
     "question_num": 602,
     "question_type": "multiple",
@@ -18060,7 +18060,7 @@
     "order_num": 602
   },
   {
-    "id": 29442,
+    "id": 33338,
     "workbook_id": 39,
     "question_num": 603,
     "question_type": "single",
@@ -18090,7 +18090,7 @@
     "order_num": 603
   },
   {
-    "id": 29443,
+    "id": 33339,
     "workbook_id": 39,
     "question_num": 604,
     "question_type": "single",
@@ -18120,7 +18120,7 @@
     "order_num": 604
   },
   {
-    "id": 29444,
+    "id": 33340,
     "workbook_id": 39,
     "question_num": 605,
     "question_type": "single",
@@ -18150,7 +18150,7 @@
     "order_num": 605
   },
   {
-    "id": 29445,
+    "id": 33341,
     "workbook_id": 39,
     "question_num": 606,
     "question_type": "single",
@@ -18180,12 +18180,12 @@
     "order_num": 606
   },
   {
-    "id": 29446,
+    "id": 33342,
     "workbook_id": 39,
     "question_num": 607,
     "question_type": "single",
     "category": "第1章",
-    "stem": "近代史上中国人民第一次大规模的反侵略武装斗争，显示了中国人民不甘屈服和敢于斗争的",
+    "stem": "近代史上中国人民第一次大规模的反侵略武装斗争，显示了中国人民不甘屈服和敢于斗争的\n英雄气概的是",
     "options": [
       {
         "key": "A",
@@ -18210,7 +18210,7 @@
     "order_num": 607
   },
   {
-    "id": 29447,
+    "id": 33343,
     "workbook_id": 39,
     "question_num": 608,
     "question_type": "single",
@@ -18240,7 +18240,7 @@
     "order_num": 608
   },
   {
-    "id": 29448,
+    "id": 33344,
     "workbook_id": 39,
     "question_num": 609,
     "question_type": "single",
@@ -18270,7 +18270,7 @@
     "order_num": 609
   },
   {
-    "id": 29449,
+    "id": 33345,
     "workbook_id": 39,
     "question_num": 610,
     "question_type": "single",
@@ -18300,7 +18300,7 @@
     "order_num": 610
   },
   {
-    "id": 29450,
+    "id": 33346,
     "workbook_id": 39,
     "question_num": 611,
     "question_type": "single",
@@ -18330,7 +18330,7 @@
     "order_num": 611
   },
   {
-    "id": 29451,
+    "id": 33347,
     "workbook_id": 39,
     "question_num": 612,
     "question_type": "single",
@@ -18360,7 +18360,7 @@
     "order_num": 612
   },
   {
-    "id": 29452,
+    "id": 33348,
     "workbook_id": 39,
     "question_num": 613,
     "question_type": "single",
@@ -18390,7 +18390,7 @@
     "order_num": 613
   },
   {
-    "id": 29453,
+    "id": 33349,
     "workbook_id": 39,
     "question_num": 614,
     "question_type": "single",
@@ -18420,7 +18420,7 @@
     "order_num": 614
   },
   {
-    "id": 29454,
+    "id": 33350,
     "workbook_id": 39,
     "question_num": 615,
     "question_type": "single",
@@ -18450,7 +18450,7 @@
     "order_num": 615
   },
   {
-    "id": 29455,
+    "id": 33351,
     "workbook_id": 39,
     "question_num": 616,
     "question_type": "single",
@@ -18480,7 +18480,7 @@
     "order_num": 616
   },
   {
-    "id": 29456,
+    "id": 33352,
     "workbook_id": 39,
     "question_num": 617,
     "question_type": "single",
@@ -18510,7 +18510,7 @@
     "order_num": 617
   },
   {
-    "id": 29457,
+    "id": 33353,
     "workbook_id": 39,
     "question_num": 618,
     "question_type": "single",
@@ -18540,7 +18540,7 @@
     "order_num": 618
   },
   {
-    "id": 29458,
+    "id": 33354,
     "workbook_id": 39,
     "question_num": 619,
     "question_type": "single",
@@ -18570,7 +18570,7 @@
     "order_num": 619
   },
   {
-    "id": 29459,
+    "id": 33355,
     "workbook_id": 39,
     "question_num": 620,
     "question_type": "single",
@@ -18600,7 +18600,7 @@
     "order_num": 620
   },
   {
-    "id": 29460,
+    "id": 33356,
     "workbook_id": 39,
     "question_num": 621,
     "question_type": "single",
@@ -18630,12 +18630,12 @@
     "order_num": 621
   },
   {
-    "id": 29461,
+    "id": 33357,
     "workbook_id": 39,
     "question_num": 622,
     "question_type": "single",
     "category": "第1章",
-    "stem": "第20题",
+    "stem": "魏源在1843年1月编成《海国图志》，总结了鸦片战争的经验教训，提出“师夷长技以制夷”的思想。1859年，洪仁玕在天京提出《资政新篇》，主张在中国发展资本主义。《海国图志》和《资政新篇》的相似之处在于都主张",
     "options": [
       {
         "key": "A",
@@ -18660,7 +18660,7 @@
     "order_num": 622
   },
   {
-    "id": 29462,
+    "id": 33358,
     "workbook_id": 39,
     "question_num": 623,
     "question_type": "multiple",
@@ -18690,7 +18690,7 @@
     "order_num": 623
   },
   {
-    "id": 29463,
+    "id": 33359,
     "workbook_id": 39,
     "question_num": 624,
     "question_type": "multiple",
@@ -18720,7 +18720,7 @@
     "order_num": 624
   },
   {
-    "id": 29464,
+    "id": 33360,
     "workbook_id": 39,
     "question_num": 625,
     "question_type": "multiple",
@@ -18750,7 +18750,7 @@
     "order_num": 625
   },
   {
-    "id": 29465,
+    "id": 33361,
     "workbook_id": 39,
     "question_num": 626,
     "question_type": "multiple",
@@ -18780,7 +18780,7 @@
     "order_num": 626
   },
   {
-    "id": 29466,
+    "id": 33362,
     "workbook_id": 39,
     "question_num": 627,
     "question_type": "multiple",
@@ -18810,7 +18810,7 @@
     "order_num": 627
   },
   {
-    "id": 29467,
+    "id": 33363,
     "workbook_id": 39,
     "question_num": 628,
     "question_type": "multiple",
@@ -18840,7 +18840,7 @@
     "order_num": 628
   },
   {
-    "id": 29468,
+    "id": 33364,
     "workbook_id": 39,
     "question_num": 629,
     "question_type": "multiple",
@@ -18870,12 +18870,12 @@
     "order_num": 629
   },
   {
-    "id": 29469,
+    "id": 33365,
     "workbook_id": 39,
     "question_num": 630,
     "question_type": "multiple",
     "category": "第1章",
-    "stem": "第28题",
+    "stem": "帝国主义列强不能灭亡和瓜分中国，中国也未能像印度那样沦为完全殖民地的根本原因是",
     "options": [
       {
         "key": "A",
@@ -18900,7 +18900,7 @@
     "order_num": 630
   },
   {
-    "id": 29470,
+    "id": 33366,
     "workbook_id": 39,
     "question_num": 631,
     "question_type": "multiple",
@@ -18930,12 +18930,12 @@
     "order_num": 631
   },
   {
-    "id": 29471,
+    "id": 33367,
     "workbook_id": 39,
     "question_num": 632,
     "question_type": "multiple",
     "category": "第1章",
-    "stem": "在近代中国社会阶级关系的变动中，诞生了新的阶级一一工人阶级和资产阶级。中国工人阶",
+    "stem": "在近代中国社会阶级关系的变动中，诞生了新的阶级一一工人阶级和资产阶级。中国工人阶\n级的来源主要是城乡破产失业的农民、手工业者和城市贫民，最早出现于19世纪40至50年\n代外国资本主义在华企业中。因此，它是先于中国的资产阶级而产生的。中国工人阶级产生\n的这一特点意味着",
     "options": [
       {
         "key": "A",
@@ -18960,7 +18960,7 @@
     "order_num": 632
   },
   {
-    "id": 29472,
+    "id": 33368,
     "workbook_id": 39,
     "question_num": 633,
     "question_type": "multiple",
@@ -18990,7 +18990,7 @@
     "order_num": 633
   },
   {
-    "id": 29473,
+    "id": 33369,
     "workbook_id": 39,
     "question_num": 634,
     "question_type": "multiple",
@@ -19020,7 +19020,7 @@
     "order_num": 634
   },
   {
-    "id": 29474,
+    "id": 33370,
     "workbook_id": 39,
     "question_num": 635,
     "question_type": "multiple",
@@ -19050,7 +19050,7 @@
     "order_num": 635
   },
   {
-    "id": 29475,
+    "id": 33371,
     "workbook_id": 39,
     "question_num": 636,
     "question_type": "multiple",
@@ -19080,12 +19080,12 @@
     "order_num": 636
   },
   {
-    "id": 29476,
+    "id": 33372,
     "workbook_id": 39,
     "question_num": 637,
     "question_type": "multiple",
     "category": "第1章",
-    "stem": "1894年7月，日本发动甲午战争，清朝在战争中战败．吴玉章说：“我还记得甲午战败的消息",
+    "stem": "1894年7月，日本发动甲午战争，清朝在战争中战败．吴玉章说：“我还记得甲午战败的消息\n传到我家乡的时候，我和我的二哥（吴永锟）曾经痛哭不止。”“这真是空前未有的亡国条约！\n它使全中国都为之震动。从前我国还只是被西方大国打败过，现在竟被东方的小国打败了，\n而且失败得那样惨，条约又订得那样苛，这是多么大的耻辱啊！”梁启超说：“吾国四千馀年大",
     "options": [
       {
         "key": "A",
@@ -19110,7 +19110,7 @@
     "order_num": 637
   },
   {
-    "id": 29477,
+    "id": 33373,
     "workbook_id": 39,
     "question_num": 638,
     "question_type": "single",
@@ -19140,7 +19140,7 @@
     "order_num": 638
   },
   {
-    "id": 29478,
+    "id": 33374,
     "workbook_id": 39,
     "question_num": 639,
     "question_type": "single",
@@ -19170,7 +19170,7 @@
     "order_num": 639
   },
   {
-    "id": 29479,
+    "id": 33375,
     "workbook_id": 39,
     "question_num": 640,
     "question_type": "single",
@@ -19200,7 +19200,7 @@
     "order_num": 640
   },
   {
-    "id": 29480,
+    "id": 33376,
     "workbook_id": 39,
     "question_num": 641,
     "question_type": "single",
@@ -19230,7 +19230,7 @@
     "order_num": 641
   },
   {
-    "id": 29481,
+    "id": 33377,
     "workbook_id": 39,
     "question_num": 642,
     "question_type": "single",
@@ -19260,7 +19260,7 @@
     "order_num": 642
   },
   {
-    "id": 29482,
+    "id": 33378,
     "workbook_id": 39,
     "question_num": 643,
     "question_type": "single",
@@ -19290,7 +19290,7 @@
     "order_num": 643
   },
   {
-    "id": 29483,
+    "id": 33379,
     "workbook_id": 39,
     "question_num": 644,
     "question_type": "single",
@@ -19320,7 +19320,7 @@
     "order_num": 644
   },
   {
-    "id": 29484,
+    "id": 33380,
     "workbook_id": 39,
     "question_num": 645,
     "question_type": "single",
@@ -19350,7 +19350,7 @@
     "order_num": 645
   },
   {
-    "id": 29485,
+    "id": 33381,
     "workbook_id": 39,
     "question_num": 646,
     "question_type": "single",
@@ -19380,7 +19380,7 @@
     "order_num": 646
   },
   {
-    "id": 29486,
+    "id": 33382,
     "workbook_id": 39,
     "question_num": 647,
     "question_type": "multiple",
@@ -19410,7 +19410,7 @@
     "order_num": 647
   },
   {
-    "id": 29487,
+    "id": 33383,
     "workbook_id": 39,
     "question_num": 648,
     "question_type": "multiple",
@@ -19440,7 +19440,7 @@
     "order_num": 648
   },
   {
-    "id": 29488,
+    "id": 33384,
     "workbook_id": 39,
     "question_num": 649,
     "question_type": "multiple",
@@ -19470,7 +19470,7 @@
     "order_num": 649
   },
   {
-    "id": 29489,
+    "id": 33385,
     "workbook_id": 39,
     "question_num": 650,
     "question_type": "multiple",
@@ -19500,7 +19500,7 @@
     "order_num": 650
   },
   {
-    "id": 29490,
+    "id": 33386,
     "workbook_id": 39,
     "question_num": 651,
     "question_type": "multiple",
@@ -19530,7 +19530,7 @@
     "order_num": 651
   },
   {
-    "id": 29491,
+    "id": 33387,
     "workbook_id": 39,
     "question_num": 652,
     "question_type": "multiple",
@@ -19560,7 +19560,7 @@
     "order_num": 652
   },
   {
-    "id": 29492,
+    "id": 33388,
     "workbook_id": 39,
     "question_num": 653,
     "question_type": "multiple",
@@ -19590,7 +19590,7 @@
     "order_num": 653
   },
   {
-    "id": 29493,
+    "id": 33389,
     "workbook_id": 39,
     "question_num": 654,
     "question_type": "multiple",
@@ -19620,7 +19620,7 @@
     "order_num": 654
   },
   {
-    "id": 29494,
+    "id": 33390,
     "workbook_id": 39,
     "question_num": 655,
     "question_type": "multiple",
@@ -19650,7 +19650,7 @@
     "order_num": 655
   },
   {
-    "id": 29495,
+    "id": 33391,
     "workbook_id": 39,
     "question_num": 656,
     "question_type": "single",
@@ -19680,7 +19680,7 @@
     "order_num": 656
   },
   {
-    "id": 29496,
+    "id": 33392,
     "workbook_id": 39,
     "question_num": 657,
     "question_type": "single",
@@ -19710,7 +19710,7 @@
     "order_num": 657
   },
   {
-    "id": 29497,
+    "id": 33393,
     "workbook_id": 39,
     "question_num": 658,
     "question_type": "single",
@@ -19740,7 +19740,7 @@
     "order_num": 658
   },
   {
-    "id": 29498,
+    "id": 33394,
     "workbook_id": 39,
     "question_num": 659,
     "question_type": "single",
@@ -19770,7 +19770,7 @@
     "order_num": 659
   },
   {
-    "id": 29499,
+    "id": 33395,
     "workbook_id": 39,
     "question_num": 660,
     "question_type": "single",
@@ -19800,7 +19800,7 @@
     "order_num": 660
   },
   {
-    "id": 29500,
+    "id": 33396,
     "workbook_id": 39,
     "question_num": 661,
     "question_type": "single",
@@ -19830,7 +19830,7 @@
     "order_num": 661
   },
   {
-    "id": 29501,
+    "id": 33397,
     "workbook_id": 39,
     "question_num": 662,
     "question_type": "single",
@@ -19860,7 +19860,7 @@
     "order_num": 662
   },
   {
-    "id": 29502,
+    "id": 33398,
     "workbook_id": 39,
     "question_num": 663,
     "question_type": "single",
@@ -19890,7 +19890,7 @@
     "order_num": 663
   },
   {
-    "id": 29503,
+    "id": 33399,
     "workbook_id": 39,
     "question_num": 664,
     "question_type": "single",
@@ -19920,7 +19920,7 @@
     "order_num": 664
   },
   {
-    "id": 29504,
+    "id": 33400,
     "workbook_id": 39,
     "question_num": 665,
     "question_type": "single",
@@ -19950,7 +19950,7 @@
     "order_num": 665
   },
   {
-    "id": 29505,
+    "id": 33401,
     "workbook_id": 39,
     "question_num": 666,
     "question_type": "single",
@@ -19980,7 +19980,7 @@
     "order_num": 666
   },
   {
-    "id": 29506,
+    "id": 33402,
     "workbook_id": 39,
     "question_num": 667,
     "question_type": "single",
@@ -20010,7 +20010,7 @@
     "order_num": 667
   },
   {
-    "id": 29507,
+    "id": 33403,
     "workbook_id": 39,
     "question_num": 668,
     "question_type": "single",
@@ -20040,7 +20040,7 @@
     "order_num": 668
   },
   {
-    "id": 29508,
+    "id": 33404,
     "workbook_id": 39,
     "question_num": 669,
     "question_type": "multiple",
@@ -20070,7 +20070,7 @@
     "order_num": 669
   },
   {
-    "id": 29509,
+    "id": 33405,
     "workbook_id": 39,
     "question_num": 670,
     "question_type": "multiple",
@@ -20100,7 +20100,7 @@
     "order_num": 670
   },
   {
-    "id": 29510,
+    "id": 33406,
     "workbook_id": 39,
     "question_num": 671,
     "question_type": "multiple",
@@ -20130,7 +20130,7 @@
     "order_num": 671
   },
   {
-    "id": 29511,
+    "id": 33407,
     "workbook_id": 39,
     "question_num": 672,
     "question_type": "multiple",
@@ -20160,7 +20160,7 @@
     "order_num": 672
   },
   {
-    "id": 29512,
+    "id": 33408,
     "workbook_id": 39,
     "question_num": 673,
     "question_type": "multiple",
@@ -20190,7 +20190,7 @@
     "order_num": 673
   },
   {
-    "id": 29513,
+    "id": 33409,
     "workbook_id": 39,
     "question_num": 674,
     "question_type": "multiple",
@@ -20220,7 +20220,7 @@
     "order_num": 674
   },
   {
-    "id": 29514,
+    "id": 33410,
     "workbook_id": 39,
     "question_num": 675,
     "question_type": "multiple",
@@ -20250,7 +20250,7 @@
     "order_num": 675
   },
   {
-    "id": 29515,
+    "id": 33411,
     "workbook_id": 39,
     "question_num": 676,
     "question_type": "multiple",
@@ -20280,7 +20280,7 @@
     "order_num": 676
   },
   {
-    "id": 29516,
+    "id": 33412,
     "workbook_id": 39,
     "question_num": 677,
     "question_type": "multiple",
@@ -20310,7 +20310,7 @@
     "order_num": 677
   },
   {
-    "id": 29517,
+    "id": 33413,
     "workbook_id": 39,
     "question_num": 678,
     "question_type": "multiple",
@@ -20340,7 +20340,7 @@
     "order_num": 678
   },
   {
-    "id": 29518,
+    "id": 33414,
     "workbook_id": 39,
     "question_num": 679,
     "question_type": "multiple",
@@ -20370,7 +20370,7 @@
     "order_num": 679
   },
   {
-    "id": 29519,
+    "id": 33415,
     "workbook_id": 39,
     "question_num": 680,
     "question_type": "multiple",
@@ -20400,7 +20400,7 @@
     "order_num": 680
   },
   {
-    "id": 29520,
+    "id": 33416,
     "workbook_id": 39,
     "question_num": 681,
     "question_type": "multiple",
@@ -20430,7 +20430,7 @@
     "order_num": 681
   },
   {
-    "id": 29521,
+    "id": 33417,
     "workbook_id": 39,
     "question_num": 682,
     "question_type": "multiple",
@@ -20460,7 +20460,7 @@
     "order_num": 682
   },
   {
-    "id": 29522,
+    "id": 33418,
     "workbook_id": 39,
     "question_num": 683,
     "question_type": "single",
@@ -20490,7 +20490,7 @@
     "order_num": 683
   },
   {
-    "id": 29523,
+    "id": 33419,
     "workbook_id": 39,
     "question_num": 684,
     "question_type": "single",
@@ -20520,7 +20520,7 @@
     "order_num": 684
   },
   {
-    "id": 29524,
+    "id": 33420,
     "workbook_id": 39,
     "question_num": 685,
     "question_type": "single",
@@ -20550,7 +20550,7 @@
     "order_num": 685
   },
   {
-    "id": 29525,
+    "id": 33421,
     "workbook_id": 39,
     "question_num": 686,
     "question_type": "single",
@@ -20580,7 +20580,7 @@
     "order_num": 686
   },
   {
-    "id": 29526,
+    "id": 33422,
     "workbook_id": 39,
     "question_num": 687,
     "question_type": "single",
@@ -20610,7 +20610,7 @@
     "order_num": 687
   },
   {
-    "id": 29527,
+    "id": 33423,
     "workbook_id": 39,
     "question_num": 688,
     "question_type": "single",
@@ -20640,7 +20640,7 @@
     "order_num": 688
   },
   {
-    "id": 29528,
+    "id": 33424,
     "workbook_id": 39,
     "question_num": 689,
     "question_type": "single",
@@ -20670,7 +20670,7 @@
     "order_num": 689
   },
   {
-    "id": 29529,
+    "id": 33425,
     "workbook_id": 39,
     "question_num": 690,
     "question_type": "single",
@@ -20700,12 +20700,12 @@
     "order_num": 690
   },
   {
-    "id": 29530,
+    "id": 33426,
     "workbook_id": 39,
     "question_num": 691,
     "question_type": "single",
     "category": "第4章",
-    "stem": "1922年7月，中共二大在分析中国社会是“半独立的封建国家”、处于“军阀官僚的封建制度把",
+    "stem": "1922年7月，中共二大在分析中国社会是“半独立的封建国家”、处于“军阀官僚的封建制度把\n持之下”以及“帝国主义共同支配”的状况后，破天荒地第一次提出了明确的反帝反封建的民主\n革命纲领。党的最低纲领是：消除内乱，打倒军阀，建设国内和平；推翻国际帝国主义的压迫，\n达到中华民族完全独立；统一中国为真正的民主共和国。这一纲领的提出，表明刚刚成立的中\n国共产党，最重要的任务是",
     "options": [
       {
         "key": "A",
@@ -20730,7 +20730,7 @@
     "order_num": 691
   },
   {
-    "id": 29531,
+    "id": 33427,
     "workbook_id": 39,
     "question_num": 692,
     "question_type": "single",
@@ -20760,7 +20760,7 @@
     "order_num": 692
   },
   {
-    "id": 29532,
+    "id": 33428,
     "workbook_id": 39,
     "question_num": 693,
     "question_type": "single",
@@ -20790,7 +20790,7 @@
     "order_num": 693
   },
   {
-    "id": 29533,
+    "id": 33429,
     "workbook_id": 39,
     "question_num": 694,
     "question_type": "single",
@@ -20820,7 +20820,7 @@
     "order_num": 694
   },
   {
-    "id": 29534,
+    "id": 33430,
     "workbook_id": 39,
     "question_num": 695,
     "question_type": "single",
@@ -20850,7 +20850,7 @@
     "order_num": 695
   },
   {
-    "id": 29535,
+    "id": 33431,
     "workbook_id": 39,
     "question_num": 696,
     "question_type": "single",
@@ -20880,7 +20880,7 @@
     "order_num": 696
   },
   {
-    "id": 29536,
+    "id": 33432,
     "workbook_id": 39,
     "question_num": 697,
     "question_type": "single",
@@ -20910,7 +20910,7 @@
     "order_num": 697
   },
   {
-    "id": 29537,
+    "id": 33433,
     "workbook_id": 39,
     "question_num": 698,
     "question_type": "single",
@@ -20940,12 +20940,12 @@
     "order_num": 698
   },
   {
-    "id": 29538,
+    "id": 33434,
     "workbook_id": 39,
     "question_num": 699,
     "question_type": "multiple",
     "category": "第4章",
-    "stem": "《中共中央关于党的百年奋斗重大成就和历史经验的决议》指出：“在中国人民和中华民族的",
+    "stem": "《中共中央关于党的百年奋斗重大成就和历史经验的决议》指出：“在中国人民和中华民族的\n伟大觉醒中，在马克思列宁主义同中国工人运动的紧密结合中，一九二一年七月中国共产党\n应运而生。”中国共产党应运而生的历史背景包括",
     "options": [
       {
         "key": "A",
@@ -20970,7 +20970,7 @@
     "order_num": 699
   },
   {
-    "id": 29539,
+    "id": 33435,
     "workbook_id": 39,
     "question_num": 700,
     "question_type": "multiple",
@@ -21000,7 +21000,7 @@
     "order_num": 700
   },
   {
-    "id": 29540,
+    "id": 33436,
     "workbook_id": 39,
     "question_num": 701,
     "question_type": "multiple",
@@ -21030,12 +21030,12 @@
     "order_num": 701
   },
   {
-    "id": 29541,
+    "id": 33437,
     "workbook_id": 39,
     "question_num": 702,
     "question_type": "multiple",
     "category": "第4章",
-    "stem": "中国共产党的成立，是近现代中国历史发展的必然产物，是中国人民在救亡图存斗争中顽强",
+    "stem": "中国共产党的成立，是近现代中国历史发展的必然产物，是中国人民在救亡图存斗争中顽强\n求索的必然产物，是实现中华民族伟大复兴的必然产物。1921年7月，中国共产党第一次全\n国代表大会在上海召开，后因法租界巡捕搜查，转移至浙江嘉兴南湖的一艘游船上继续进行。\n第四部分\n产党作为中国最先进的阶级一工人阶级的政党，不仅代表着工人阶级的利益，而且代表着\n整个中华民族和中国最广大人民的利益。中国共产党一经成立",
     "options": [
       {
         "key": "A",
@@ -21060,7 +21060,7 @@
     "order_num": 702
   },
   {
-    "id": 29542,
+    "id": 33438,
     "workbook_id": 39,
     "question_num": 703,
     "question_type": "multiple",
@@ -21090,7 +21090,7 @@
     "order_num": 703
   },
   {
-    "id": 29543,
+    "id": 33439,
     "workbook_id": 39,
     "question_num": 704,
     "question_type": "multiple",
@@ -21120,7 +21120,7 @@
     "order_num": 704
   },
   {
-    "id": 29544,
+    "id": 33440,
     "workbook_id": 39,
     "question_num": 705,
     "question_type": "multiple",
@@ -21150,7 +21150,7 @@
     "order_num": 705
   },
   {
-    "id": 29545,
+    "id": 33441,
     "workbook_id": 39,
     "question_num": 706,
     "question_type": "multiple",
@@ -21180,7 +21180,7 @@
     "order_num": 706
   },
   {
-    "id": 29546,
+    "id": 33442,
     "workbook_id": 39,
     "question_num": 707,
     "question_type": "multiple",
@@ -21210,7 +21210,7 @@
     "order_num": 707
   },
   {
-    "id": 29547,
+    "id": 33443,
     "workbook_id": 39,
     "question_num": 708,
     "question_type": "multiple",
@@ -21240,7 +21240,7 @@
     "order_num": 708
   },
   {
-    "id": 29548,
+    "id": 33444,
     "workbook_id": 39,
     "question_num": 709,
     "question_type": "multiple",
@@ -21270,7 +21270,7 @@
     "order_num": 709
   },
   {
-    "id": 29549,
+    "id": 33445,
     "workbook_id": 39,
     "question_num": 710,
     "question_type": "multiple",
@@ -21300,7 +21300,7 @@
     "order_num": 710
   },
   {
-    "id": 29550,
+    "id": 33446,
     "workbook_id": 39,
     "question_num": 711,
     "question_type": "multiple",
@@ -21330,7 +21330,7 @@
     "order_num": 711
   },
   {
-    "id": 29551,
+    "id": 33447,
     "workbook_id": 39,
     "question_num": 712,
     "question_type": "multiple",
@@ -21360,7 +21360,7 @@
     "order_num": 712
   },
   {
-    "id": 29552,
+    "id": 33448,
     "workbook_id": 39,
     "question_num": 713,
     "question_type": "multiple",
@@ -21390,7 +21390,7 @@
     "order_num": 713
   },
   {
-    "id": 29553,
+    "id": 33449,
     "workbook_id": 39,
     "question_num": 714,
     "question_type": "multiple",
@@ -21420,7 +21420,7 @@
     "order_num": 714
   },
   {
-    "id": 29554,
+    "id": 33450,
     "workbook_id": 39,
     "question_num": 715,
     "question_type": "multiple",
@@ -21450,7 +21450,7 @@
     "order_num": 715
   },
   {
-    "id": 29555,
+    "id": 33451,
     "workbook_id": 39,
     "question_num": 716,
     "question_type": "multiple",
@@ -21480,7 +21480,7 @@
     "order_num": 716
   },
   {
-    "id": 29556,
+    "id": 33452,
     "workbook_id": 39,
     "question_num": 717,
     "question_type": "multiple",
@@ -21510,7 +21510,7 @@
     "order_num": 717
   },
   {
-    "id": 29557,
+    "id": 33453,
     "workbook_id": 39,
     "question_num": 718,
     "question_type": "multiple",
@@ -21540,7 +21540,7 @@
     "order_num": 718
   },
   {
-    "id": 29558,
+    "id": 33454,
     "workbook_id": 39,
     "question_num": 719,
     "question_type": "multiple",
@@ -21570,7 +21570,7 @@
     "order_num": 719
   },
   {
-    "id": 29559,
+    "id": 33455,
     "workbook_id": 39,
     "question_num": 720,
     "question_type": "multiple",
@@ -21600,7 +21600,7 @@
     "order_num": 720
   },
   {
-    "id": 29560,
+    "id": 33456,
     "workbook_id": 39,
     "question_num": 721,
     "question_type": "single",
@@ -21630,7 +21630,7 @@
     "order_num": 721
   },
   {
-    "id": 29561,
+    "id": 33457,
     "workbook_id": 39,
     "question_num": 722,
     "question_type": "single",
@@ -21660,7 +21660,7 @@
     "order_num": 722
   },
   {
-    "id": 29562,
+    "id": 33458,
     "workbook_id": 39,
     "question_num": 723,
     "question_type": "single",
@@ -21690,7 +21690,7 @@
     "order_num": 723
   },
   {
-    "id": 29563,
+    "id": 33459,
     "workbook_id": 39,
     "question_num": 724,
     "question_type": "single",
@@ -21720,7 +21720,7 @@
     "order_num": 724
   },
   {
-    "id": 29564,
+    "id": 33460,
     "workbook_id": 39,
     "question_num": 725,
     "question_type": "single",
@@ -21750,7 +21750,7 @@
     "order_num": 725
   },
   {
-    "id": 29565,
+    "id": 33461,
     "workbook_id": 39,
     "question_num": 726,
     "question_type": "single",
@@ -21780,7 +21780,7 @@
     "order_num": 726
   },
   {
-    "id": 29566,
+    "id": 33462,
     "workbook_id": 39,
     "question_num": 727,
     "question_type": "single",
@@ -21810,7 +21810,7 @@
     "order_num": 727
   },
   {
-    "id": 29567,
+    "id": 33463,
     "workbook_id": 39,
     "question_num": 728,
     "question_type": "single",
@@ -21840,12 +21840,12 @@
     "order_num": 728
   },
   {
-    "id": 29568,
+    "id": 33464,
     "workbook_id": 39,
     "question_num": 729,
     "question_type": "single",
     "category": "第5章",
-    "stem": "第9题",
+    "stem": "1927年8月1日，在以周恩来为书记的中共前敌委员会及贺龙、叶挺、朱德、刘伯承等人领导下，八一南昌起义爆发。担任前敌总指挥的是",
     "options": [
       {
         "key": "A",
@@ -21870,12 +21870,12 @@
     "order_num": 729
   },
   {
-    "id": 29569,
+    "id": 33465,
     "workbook_id": 39,
     "question_num": 730,
     "question_type": "single",
     "category": "第5章",
-    "stem": "1928年12月，毛泽东在井冈山主持制定中国共产党历史上第一个土地法，以立法的形式，首",
+    "stem": "1928年12月，毛泽东在井冈山主持制定中国共产党历史上第一个土地法，以立法的形式，首\n次肯定了广大农民以革命的手段获得土地的权利。1929年4月，毛泽东在兴国主持制定第二\n个土地法，《兴国土地法》对《井冈山土地法》进行的一个原则性改动是",
     "options": [
       {
         "key": "A",
@@ -21900,7 +21900,7 @@
     "order_num": 730
   },
   {
-    "id": 29570,
+    "id": 33466,
     "workbook_id": 39,
     "question_num": 731,
     "question_type": "single",
@@ -21930,7 +21930,7 @@
     "order_num": 731
   },
   {
-    "id": 29571,
+    "id": 33467,
     "workbook_id": 39,
     "question_num": 732,
     "question_type": "single",
@@ -21960,7 +21960,7 @@
     "order_num": 732
   },
   {
-    "id": 29572,
+    "id": 33468,
     "workbook_id": 39,
     "question_num": 733,
     "question_type": "single",
@@ -21990,7 +21990,7 @@
     "order_num": 733
   },
   {
-    "id": 29573,
+    "id": 33469,
     "workbook_id": 39,
     "question_num": 734,
     "question_type": "single",
@@ -22020,7 +22020,7 @@
     "order_num": 734
   },
   {
-    "id": 29574,
+    "id": 33470,
     "workbook_id": 39,
     "question_num": 735,
     "question_type": "single",
@@ -22050,7 +22050,7 @@
     "order_num": 735
   },
   {
-    "id": 29575,
+    "id": 33471,
     "workbook_id": 39,
     "question_num": 736,
     "question_type": "single",
@@ -22080,7 +22080,7 @@
     "order_num": 736
   },
   {
-    "id": 29576,
+    "id": 33472,
     "workbook_id": 39,
     "question_num": 737,
     "question_type": "single",
@@ -22110,7 +22110,7 @@
     "order_num": 737
   },
   {
-    "id": 29577,
+    "id": 33473,
     "workbook_id": 39,
     "question_num": 738,
     "question_type": "single",
@@ -22140,7 +22140,7 @@
     "order_num": 738
   },
   {
-    "id": 29578,
+    "id": 33474,
     "workbook_id": 39,
     "question_num": 739,
     "question_type": "multiple",
@@ -22170,7 +22170,7 @@
     "order_num": 739
   },
   {
-    "id": 29579,
+    "id": 33475,
     "workbook_id": 39,
     "question_num": 740,
     "question_type": "multiple",
@@ -22200,7 +22200,7 @@
     "order_num": 740
   },
   {
-    "id": 29580,
+    "id": 33476,
     "workbook_id": 39,
     "question_num": 741,
     "question_type": "multiple",
@@ -22230,7 +22230,7 @@
     "order_num": 741
   },
   {
-    "id": 29581,
+    "id": 33477,
     "workbook_id": 39,
     "question_num": 742,
     "question_type": "multiple",
@@ -22260,7 +22260,7 @@
     "order_num": 742
   },
   {
-    "id": 29582,
+    "id": 33478,
     "workbook_id": 39,
     "question_num": 743,
     "question_type": "multiple",
@@ -22290,12 +22290,12 @@
     "order_num": 743
   },
   {
-    "id": 29583,
+    "id": 33479,
     "workbook_id": 39,
     "question_num": 744,
     "question_type": "multiple",
     "category": "第5章",
-    "stem": "1930年1月，毛泽东在《星星之火，可以燎原》一文中指出，红军、游击队和红色区域的建立和",
+    "stem": "1930年1月，毛泽东在《星星之火，可以燎原》一文中指出，红军、游击队和红色区域的建立和\n发展",
     "options": [
       {
         "key": "A",
@@ -22320,7 +22320,7 @@
     "order_num": 744
   },
   {
-    "id": 29584,
+    "id": 33480,
     "workbook_id": 39,
     "question_num": 745,
     "question_type": "multiple",
@@ -22350,7 +22350,7 @@
     "order_num": 745
   },
   {
-    "id": 29585,
+    "id": 33481,
     "workbook_id": 39,
     "question_num": 746,
     "question_type": "multiple",
@@ -22380,7 +22380,7 @@
     "order_num": 746
   },
   {
-    "id": 29586,
+    "id": 33482,
     "workbook_id": 39,
     "question_num": 747,
     "question_type": "multiple",
@@ -22410,7 +22410,7 @@
     "order_num": 747
   },
   {
-    "id": 29587,
+    "id": 33483,
     "workbook_id": 39,
     "question_num": 748,
     "question_type": "multiple",
@@ -22440,7 +22440,7 @@
     "order_num": 748
   },
   {
-    "id": 29588,
+    "id": 33484,
     "workbook_id": 39,
     "question_num": 749,
     "question_type": "multiple",
@@ -22470,12 +22470,12 @@
     "order_num": 749
   },
   {
-    "id": 29589,
+    "id": 33485,
     "workbook_id": 39,
     "question_num": 750,
     "question_type": "multiple",
     "category": "第5章",
-    "stem": "90年前，就在大西南的山水之间，中国共产党领导的红军历经血与火的考验，冲破艰难险阻，",
+    "stem": "30.90年前，就在大西南的山水之间，中国共产党领导的红军历经血与火的考验，冲破艰难险阻，\n实现了生死攸关的转折。2025年全国两会闭幕不到一周，习近平总书记即赴贵州和云南考\n第四部分\n察调研。在贵州考察时，习近平总书记感慨系之：“从通道转兵到黎平会议，从猴场会议到遵\n义会议，这是一条红军的生路，一条共产党的生路，这个火种保留下来，才有了我们今天。要\n弘扬长征精神和遵义会议精神，以昂扬斗志走好新时代的长征路。”要弘扬伟大的长征精神和\n遵义会议精神，这是因为这些革命精神",
     "options": [
       {
         "key": "A",
@@ -22500,7 +22500,7 @@
     "order_num": 750
   },
   {
-    "id": 29590,
+    "id": 33486,
     "workbook_id": 39,
     "question_num": 751,
     "question_type": "multiple",
@@ -22530,12 +22530,12 @@
     "order_num": 751
   },
   {
-    "id": 29591,
+    "id": 33487,
     "workbook_id": 39,
     "question_num": 752,
     "question_type": "multiple",
     "category": "第5章",
-    "stem": "毛泽东曾形象地指出：“长征是历史纪录上的第一次，长征是宣言书，长征是宣传队，长征是播",
+    "stem": "毛泽东曾形象地指出：“长征是历史纪录上的第一次，长征是宣言书，长征是宣传队，长征是播\n种机。”长征的胜利",
     "options": [
       {
         "key": "A",
@@ -22560,7 +22560,7 @@
     "order_num": 752
   },
   {
-    "id": 29592,
+    "id": 33488,
     "workbook_id": 39,
     "question_num": 753,
     "question_type": "single",
@@ -22590,7 +22590,7 @@
     "order_num": 753
   },
   {
-    "id": 29593,
+    "id": 33489,
     "workbook_id": 39,
     "question_num": 754,
     "question_type": "single",
@@ -22620,7 +22620,7 @@
     "order_num": 754
   },
   {
-    "id": 29594,
+    "id": 33490,
     "workbook_id": 39,
     "question_num": 755,
     "question_type": "single",
@@ -22650,7 +22650,7 @@
     "order_num": 755
   },
   {
-    "id": 29595,
+    "id": 33491,
     "workbook_id": 39,
     "question_num": 756,
     "question_type": "single",
@@ -22680,7 +22680,7 @@
     "order_num": 756
   },
   {
-    "id": 29596,
+    "id": 33492,
     "workbook_id": 39,
     "question_num": 757,
     "question_type": "single",
@@ -22710,7 +22710,7 @@
     "order_num": 757
   },
   {
-    "id": 29597,
+    "id": 33493,
     "workbook_id": 39,
     "question_num": 758,
     "question_type": "single",
@@ -22740,7 +22740,7 @@
     "order_num": 758
   },
   {
-    "id": 29598,
+    "id": 33494,
     "workbook_id": 39,
     "question_num": 759,
     "question_type": "single",
@@ -22770,7 +22770,7 @@
     "order_num": 759
   },
   {
-    "id": 29599,
+    "id": 33495,
     "workbook_id": 39,
     "question_num": 760,
     "question_type": "single",
@@ -22800,7 +22800,7 @@
     "order_num": 760
   },
   {
-    "id": 29600,
+    "id": 33496,
     "workbook_id": 39,
     "question_num": 761,
     "question_type": "single",
@@ -22830,7 +22830,7 @@
     "order_num": 761
   },
   {
-    "id": 29601,
+    "id": 33497,
     "workbook_id": 39,
     "question_num": 762,
     "question_type": "single",
@@ -22860,7 +22860,7 @@
     "order_num": 762
   },
   {
-    "id": 29602,
+    "id": 33498,
     "workbook_id": 39,
     "question_num": 763,
     "question_type": "single",
@@ -22890,7 +22890,7 @@
     "order_num": 763
   },
   {
-    "id": 29603,
+    "id": 33499,
     "workbook_id": 39,
     "question_num": 764,
     "question_type": "single",
@@ -22920,7 +22920,7 @@
     "order_num": 764
   },
   {
-    "id": 29604,
+    "id": 33500,
     "workbook_id": 39,
     "question_num": 765,
     "question_type": "single",
@@ -22950,7 +22950,7 @@
     "order_num": 765
   },
   {
-    "id": 29605,
+    "id": 33501,
     "workbook_id": 39,
     "question_num": 766,
     "question_type": "single",
@@ -22980,7 +22980,7 @@
     "order_num": 766
   },
   {
-    "id": 29606,
+    "id": 33502,
     "workbook_id": 39,
     "question_num": 767,
     "question_type": "single",
@@ -23010,12 +23010,12 @@
     "order_num": 767
   },
   {
-    "id": 29607,
+    "id": 33503,
     "workbook_id": 39,
     "question_num": 768,
     "question_type": "single",
     "category": "第6章",
-    "stem": "毛泽东在回答中国共产党能否跳出“其兴也勃焉”“其亡也忽焉”的历史兴亡周期率问题时讲",
+    "stem": "毛泽东在回答中国共产党能否跳出“其兴也勃焉”“其亡也忽焉”的历史兴亡周期率问题时讲\n过：“我们已经找到新路，我们能跳出这周期率。”这条新路，就是",
     "options": [
       {
         "key": "A",
@@ -23040,7 +23040,7 @@
     "order_num": 768
   },
   {
-    "id": 29608,
+    "id": 33504,
     "workbook_id": 39,
     "question_num": 769,
     "question_type": "single",
@@ -23070,7 +23070,7 @@
     "order_num": 769
   },
   {
-    "id": 29609,
+    "id": 33505,
     "workbook_id": 39,
     "question_num": 770,
     "question_type": "single",
@@ -23100,7 +23100,7 @@
     "order_num": 770
   },
   {
-    "id": 29610,
+    "id": 33506,
     "workbook_id": 39,
     "question_num": 771,
     "question_type": "multiple",
@@ -23130,7 +23130,7 @@
     "order_num": 771
   },
   {
-    "id": 29611,
+    "id": 33507,
     "workbook_id": 39,
     "question_num": 772,
     "question_type": "multiple",
@@ -23160,12 +23160,12 @@
     "order_num": 772
   },
   {
-    "id": 29612,
+    "id": 33508,
     "workbook_id": 39,
     "question_num": 773,
     "question_type": "multiple",
     "category": "第6章",
-    "stem": "面对日本的进一步侵略和全国抗日救亡运动的高涨，蒋介石还没有根本改变对日本的态度，",
+    "stem": "面对日本的进一步侵略和全国抗日救亡运动的高涨，蒋介石还没有根本改变对日本的态度，\n仍然准备组织力量对陕甘革命根据地和红军发动新的“会剿”。1936年12月12日凌晨，张学\n良、杨虎城在屡次劝谏无效的情况下，发动了西安事变。事变后，张、杨联合发表通电，提出了\n改组南京政府、停止一切内战、开放民众爱国运动等八项抗日主张。中国共产党从民族大义\n出发，确定促成事变和平解决的基本方针，并派周恩来等到西安，参加谈判，迫使蒋介石做出\n了停止“剿共”、联合红军抗日等六项承诺。西安事变的和平解决",
     "options": [
       {
         "key": "A",
@@ -23190,7 +23190,7 @@
     "order_num": 773
   },
   {
-    "id": 29613,
+    "id": 33509,
     "workbook_id": 39,
     "question_num": 774,
     "question_type": "multiple",
@@ -23220,7 +23220,7 @@
     "order_num": 774
   },
   {
-    "id": 29614,
+    "id": 33510,
     "workbook_id": 39,
     "question_num": 775,
     "question_type": "multiple",
@@ -23250,12 +23250,12 @@
     "order_num": 775
   },
   {
-    "id": 29615,
+    "id": 33511,
     "workbook_id": 39,
     "question_num": 776,
     "question_type": "multiple",
     "category": "第6章",
-    "stem": "1935年12月9日，北平学生举行声势浩大的抗日游行，喊出“反对华北自治”“打倒日本帝国",
+    "stem": "1935年12月9日，北平学生举行声势浩大的抗日游行，喊出“反对华北自治”“打倒日本帝国\n主义”“停止内战，一致对外”等口号，遭到国民党军警镇压。12月16日，北平学生和市民1万\n多人召开市民大会，会后举行了更大规模的示威游行。由此开始的一二·九运动迅速波及全\n国。这一运动",
     "options": [
       {
         "key": "A",
@@ -23280,7 +23280,7 @@
     "order_num": 776
   },
   {
-    "id": 29616,
+    "id": 33512,
     "workbook_id": 39,
     "question_num": 777,
     "question_type": "multiple",
@@ -23310,7 +23310,7 @@
     "order_num": 777
   },
   {
-    "id": 29617,
+    "id": 33513,
     "workbook_id": 39,
     "question_num": 778,
     "question_type": "multiple",
@@ -23340,7 +23340,7 @@
     "order_num": 778
   },
   {
-    "id": 29618,
+    "id": 33514,
     "workbook_id": 39,
     "question_num": 779,
     "question_type": "multiple",
@@ -23370,7 +23370,7 @@
     "order_num": 779
   },
   {
-    "id": 29619,
+    "id": 33515,
     "workbook_id": 39,
     "question_num": 780,
     "question_type": "multiple",
@@ -23400,12 +23400,12 @@
     "order_num": 780
   },
   {
-    "id": 29620,
+    "id": 33516,
     "workbook_id": 39,
     "question_num": 781,
     "question_type": "multiple",
     "category": "第6章",
-    "stem": "第29题",
+    "stem": "1937年9月，以国民党中央通讯社发表《中国共产党为公布国共合作宣言》和蒋介石发表谈话为标志，抗日民族统一战线正式形成。与第一次国共合作相比，抗日民族统一战线的特点是",
     "options": [
       {
         "key": "A",
@@ -23430,7 +23430,7 @@
     "order_num": 781
   },
   {
-    "id": 29621,
+    "id": 33517,
     "workbook_id": 39,
     "question_num": 782,
     "question_type": "multiple",
@@ -23460,7 +23460,7 @@
     "order_num": 782
   },
   {
-    "id": 29622,
+    "id": 33518,
     "workbook_id": 39,
     "question_num": 783,
     "question_type": "multiple",
@@ -23490,7 +23490,7 @@
     "order_num": 783
   },
   {
-    "id": 29623,
+    "id": 33519,
     "workbook_id": 39,
     "question_num": 784,
     "question_type": "multiple",
@@ -23520,7 +23520,7 @@
     "order_num": 784
   },
   {
-    "id": 29624,
+    "id": 33520,
     "workbook_id": 39,
     "question_num": 785,
     "question_type": "single",
@@ -23550,7 +23550,7 @@
     "order_num": 785
   },
   {
-    "id": 29625,
+    "id": 33521,
     "workbook_id": 39,
     "question_num": 786,
     "question_type": "single",
@@ -23580,7 +23580,7 @@
     "order_num": 786
   },
   {
-    "id": 29626,
+    "id": 33522,
     "workbook_id": 39,
     "question_num": 787,
     "question_type": "single",
@@ -23610,7 +23610,7 @@
     "order_num": 787
   },
   {
-    "id": 29627,
+    "id": 33523,
     "workbook_id": 39,
     "question_num": 788,
     "question_type": "single",
@@ -23640,7 +23640,7 @@
     "order_num": 788
   },
   {
-    "id": 29628,
+    "id": 33524,
     "workbook_id": 39,
     "question_num": 789,
     "question_type": "single",
@@ -23670,12 +23670,12 @@
     "order_num": 789
   },
   {
-    "id": 29629,
+    "id": 33525,
     "workbook_id": 39,
     "question_num": 790,
     "question_type": "single",
     "category": "第7章",
-    "stem": "为了向全国人民公开阐明中国共产党在建立新中国问题上的主张，在中国共产党成立28周年",
+    "stem": "为了向全国人民公开阐明中国共产党在建立新中国问题上的主张，在中国共产党成立28周年\n的前夕，1949年6月30日，毛泽东发表了《论人民民主专政》一文，明确指出，人民民主专政需\n要工人阶级的领导。因为只有工人阶级最有远见，大公无私，最富于革命的彻底性。人民民主\n专政的基础是",
     "options": [
       {
         "key": "A",
@@ -23700,7 +23700,7 @@
     "order_num": 790
   },
   {
-    "id": 29630,
+    "id": 33526,
     "workbook_id": 39,
     "question_num": 791,
     "question_type": "single",
@@ -23730,7 +23730,7 @@
     "order_num": 791
   },
   {
-    "id": 29631,
+    "id": 33527,
     "workbook_id": 39,
     "question_num": 792,
     "question_type": "single",
@@ -23760,7 +23760,7 @@
     "order_num": 792
   },
   {
-    "id": 29632,
+    "id": 33528,
     "workbook_id": 39,
     "question_num": 793,
     "question_type": "single",
@@ -23790,7 +23790,7 @@
     "order_num": 793
   },
   {
-    "id": 29633,
+    "id": 33529,
     "workbook_id": 39,
     "question_num": 794,
     "question_type": "single",
@@ -23820,7 +23820,7 @@
     "order_num": 794
   },
   {
-    "id": 29634,
+    "id": 33530,
     "workbook_id": 39,
     "question_num": 795,
     "question_type": "multiple",
@@ -23850,7 +23850,7 @@
     "order_num": 795
   },
   {
-    "id": 29635,
+    "id": 33531,
     "workbook_id": 39,
     "question_num": 796,
     "question_type": "multiple",
@@ -23880,7 +23880,7 @@
     "order_num": 796
   },
   {
-    "id": 29636,
+    "id": 33532,
     "workbook_id": 39,
     "question_num": 797,
     "question_type": "multiple",
@@ -23910,7 +23910,7 @@
     "order_num": 797
   },
   {
-    "id": 29637,
+    "id": 33533,
     "workbook_id": 39,
     "question_num": 798,
     "question_type": "multiple",
@@ -23940,7 +23940,7 @@
     "order_num": 798
   },
   {
-    "id": 29638,
+    "id": 33534,
     "workbook_id": 39,
     "question_num": 799,
     "question_type": "multiple",
@@ -23970,12 +23970,12 @@
     "order_num": 799
   },
   {
-    "id": 29639,
+    "id": 33535,
     "workbook_id": 39,
     "question_num": 800,
     "question_type": "multiple",
     "category": "第7章",
-    "stem": "1947年底到1948年初，中国民主同盟指出：“在民主运动胜利高潮快要到来的现阶段，中国已",
+    "stem": "1947年底到1948年初，中国民主同盟指出：“在民主运动胜利高潮快要到来的现阶段，中国已\n存在了。”基于这一形势，中国共产党采取的行动是",
     "options": [
       {
         "key": "A",
@@ -24000,7 +24000,7 @@
     "order_num": 800
   },
   {
-    "id": 29640,
+    "id": 33536,
     "workbook_id": 39,
     "question_num": 801,
     "question_type": "multiple",
@@ -24030,7 +24030,7 @@
     "order_num": 801
   },
   {
-    "id": 29641,
+    "id": 33537,
     "workbook_id": 39,
     "question_num": 802,
     "question_type": "multiple",
@@ -24060,7 +24060,7 @@
     "order_num": 802
   },
   {
-    "id": 29642,
+    "id": 33538,
     "workbook_id": 39,
     "question_num": 803,
     "question_type": "multiple",
@@ -24090,7 +24090,7 @@
     "order_num": 803
   },
   {
-    "id": 29643,
+    "id": 33539,
     "workbook_id": 39,
     "question_num": 804,
     "question_type": "multiple",
@@ -24120,7 +24120,7 @@
     "order_num": 804
   },
   {
-    "id": 29644,
+    "id": 33540,
     "workbook_id": 39,
     "question_num": 805,
     "question_type": "multiple",
@@ -24150,7 +24150,7 @@
     "order_num": 805
   },
   {
-    "id": 29645,
+    "id": 33541,
     "workbook_id": 39,
     "question_num": 806,
     "question_type": "multiple",
@@ -24180,7 +24180,7 @@
     "order_num": 806
   },
   {
-    "id": 29646,
+    "id": 33542,
     "workbook_id": 39,
     "question_num": 807,
     "question_type": "single",
@@ -24210,12 +24210,12 @@
     "order_num": 807
   },
   {
-    "id": 29647,
+    "id": 33543,
     "workbook_id": 39,
     "question_num": 808,
     "question_type": "single",
     "category": "第8章",
-    "stem": "第2题",
+    "stem": "1953年12月，中共中央宣传部发布关于党在过渡时期总路线的学习和宣传提纲。毛泽东审阅修改时，将过渡时期总路线的完整表述确定下来。党在过渡时期的总路线和总任务是",
     "options": [
       {
         "key": "A",
@@ -24240,7 +24240,7 @@
     "order_num": 808
   },
   {
-    "id": 29648,
+    "id": 33544,
     "workbook_id": 39,
     "question_num": 809,
     "question_type": "single",
@@ -24270,7 +24270,7 @@
     "order_num": 809
   },
   {
-    "id": 29649,
+    "id": 33545,
     "workbook_id": 39,
     "question_num": 810,
     "question_type": "single",
@@ -24300,7 +24300,7 @@
     "order_num": 810
   },
   {
-    "id": 29650,
+    "id": 33546,
     "workbook_id": 39,
     "question_num": 811,
     "question_type": "single",
@@ -24330,7 +24330,7 @@
     "order_num": 811
   },
   {
-    "id": 29651,
+    "id": 33547,
     "workbook_id": 39,
     "question_num": 812,
     "question_type": "single",
@@ -24360,7 +24360,7 @@
     "order_num": 812
   },
   {
-    "id": 29652,
+    "id": 33548,
     "workbook_id": 39,
     "question_num": 813,
     "question_type": "single",
@@ -24390,7 +24390,7 @@
     "order_num": 813
   },
   {
-    "id": 29653,
+    "id": 33549,
     "workbook_id": 39,
     "question_num": 814,
     "question_type": "single",
@@ -24420,7 +24420,7 @@
     "order_num": 814
   },
   {
-    "id": 29654,
+    "id": 33550,
     "workbook_id": 39,
     "question_num": 815,
     "question_type": "single",
@@ -24450,7 +24450,7 @@
     "order_num": 815
   },
   {
-    "id": 29655,
+    "id": 33551,
     "workbook_id": 39,
     "question_num": 816,
     "question_type": "single",
@@ -24480,7 +24480,7 @@
     "order_num": 816
   },
   {
-    "id": 29656,
+    "id": 33552,
     "workbook_id": 39,
     "question_num": 817,
     "question_type": "single",
@@ -24510,7 +24510,7 @@
     "order_num": 817
   },
   {
-    "id": 29657,
+    "id": 33553,
     "workbook_id": 39,
     "question_num": 818,
     "question_type": "single",
@@ -24540,7 +24540,7 @@
     "order_num": 818
   },
   {
-    "id": 29658,
+    "id": 33554,
     "workbook_id": 39,
     "question_num": 819,
     "question_type": "multiple",
@@ -24570,12 +24570,12 @@
     "order_num": 819
   },
   {
-    "id": 29659,
+    "id": 33555,
     "workbook_id": 39,
     "question_num": 820,
     "question_type": "multiple",
     "category": "第8章",
-    "stem": "第14题",
+    "stem": "中华人民共和国成立初期，面临着许多严重的困难和紧迫的问题。这对于刚刚执掌全国政权的中国共产党来说，是新的严峻考验。这些考验有",
     "options": [
       {
         "key": "A",
@@ -24600,7 +24600,7 @@
     "order_num": 820
   },
   {
-    "id": 29660,
+    "id": 33556,
     "workbook_id": 39,
     "question_num": 821,
     "question_type": "multiple",
@@ -24630,7 +24630,7 @@
     "order_num": 821
   },
   {
-    "id": 29661,
+    "id": 33557,
     "workbook_id": 39,
     "question_num": 822,
     "question_type": "multiple",
@@ -24660,7 +24660,7 @@
     "order_num": 822
   },
   {
-    "id": 29662,
+    "id": 33558,
     "workbook_id": 39,
     "question_num": 823,
     "question_type": "multiple",
@@ -24690,7 +24690,7 @@
     "order_num": 823
   },
   {
-    "id": 29663,
+    "id": 33559,
     "workbook_id": 39,
     "question_num": 824,
     "question_type": "multiple",
@@ -24720,7 +24720,7 @@
     "order_num": 824
   },
   {
-    "id": 29664,
+    "id": 33560,
     "workbook_id": 39,
     "question_num": 825,
     "question_type": "multiple",
@@ -24750,7 +24750,7 @@
     "order_num": 825
   },
   {
-    "id": 29665,
+    "id": 33561,
     "workbook_id": 39,
     "question_num": 826,
     "question_type": "multiple",
@@ -24780,7 +24780,7 @@
     "order_num": 826
   },
   {
-    "id": 29666,
+    "id": 33562,
     "workbook_id": 39,
     "question_num": 827,
     "question_type": "multiple",
@@ -24810,7 +24810,7 @@
     "order_num": 827
   },
   {
-    "id": 29667,
+    "id": 33563,
     "workbook_id": 39,
     "question_num": 828,
     "question_type": "multiple",
@@ -24840,7 +24840,7 @@
     "order_num": 828
   },
   {
-    "id": 29668,
+    "id": 33564,
     "workbook_id": 39,
     "question_num": 829,
     "question_type": "multiple",
@@ -24870,7 +24870,7 @@
     "order_num": 829
   },
   {
-    "id": 29669,
+    "id": 33565,
     "workbook_id": 39,
     "question_num": 830,
     "question_type": "multiple",
@@ -24900,7 +24900,7 @@
     "order_num": 830
   },
   {
-    "id": 29670,
+    "id": 33566,
     "workbook_id": 39,
     "question_num": 831,
     "question_type": "multiple",
@@ -24930,7 +24930,7 @@
     "order_num": 831
   },
   {
-    "id": 29671,
+    "id": 33567,
     "workbook_id": 39,
     "question_num": 832,
     "question_type": "multiple",
@@ -24960,7 +24960,7 @@
     "order_num": 832
   },
   {
-    "id": 29672,
+    "id": 33568,
     "workbook_id": 39,
     "question_num": 833,
     "question_type": "multiple",
@@ -24990,7 +24990,7 @@
     "order_num": 833
   },
   {
-    "id": 29673,
+    "id": 33569,
     "workbook_id": 39,
     "question_num": 834,
     "question_type": "single",
@@ -25020,7 +25020,7 @@
     "order_num": 834
   },
   {
-    "id": 29674,
+    "id": 33570,
     "workbook_id": 39,
     "question_num": 835,
     "question_type": "single",
@@ -25050,7 +25050,7 @@
     "order_num": 835
   },
   {
-    "id": 29675,
+    "id": 33571,
     "workbook_id": 39,
     "question_num": 836,
     "question_type": "single",
@@ -25080,7 +25080,7 @@
     "order_num": 836
   },
   {
-    "id": 29676,
+    "id": 33572,
     "workbook_id": 39,
     "question_num": 837,
     "question_type": "single",
@@ -25110,7 +25110,7 @@
     "order_num": 837
   },
   {
-    "id": 29677,
+    "id": 33573,
     "workbook_id": 39,
     "question_num": 838,
     "question_type": "single",
@@ -25140,7 +25140,7 @@
     "order_num": 838
   },
   {
-    "id": 29678,
+    "id": 33574,
     "workbook_id": 39,
     "question_num": 839,
     "question_type": "single",
@@ -25170,7 +25170,7 @@
     "order_num": 839
   },
   {
-    "id": 29679,
+    "id": 33575,
     "workbook_id": 39,
     "question_num": 840,
     "question_type": "multiple",
@@ -25200,7 +25200,7 @@
     "order_num": 840
   },
   {
-    "id": 29680,
+    "id": 33576,
     "workbook_id": 39,
     "question_num": 841,
     "question_type": "multiple",
@@ -25230,7 +25230,7 @@
     "order_num": 841
   },
   {
-    "id": 29681,
+    "id": 33577,
     "workbook_id": 39,
     "question_num": 842,
     "question_type": "multiple",
@@ -25260,7 +25260,7 @@
     "order_num": 842
   },
   {
-    "id": 29682,
+    "id": 33578,
     "workbook_id": 39,
     "question_num": 843,
     "question_type": "multiple",
@@ -25290,7 +25290,7 @@
     "order_num": 843
   },
   {
-    "id": 29683,
+    "id": 33579,
     "workbook_id": 39,
     "question_num": 844,
     "question_type": "multiple",
@@ -25320,7 +25320,7 @@
     "order_num": 844
   },
   {
-    "id": 29684,
+    "id": 33580,
     "workbook_id": 39,
     "question_num": 845,
     "question_type": "multiple",
@@ -25350,7 +25350,7 @@
     "order_num": 845
   },
   {
-    "id": 29685,
+    "id": 33581,
     "workbook_id": 39,
     "question_num": 846,
     "question_type": "multiple",
@@ -25380,7 +25380,7 @@
     "order_num": 846
   },
   {
-    "id": 29686,
+    "id": 33582,
     "workbook_id": 39,
     "question_num": 847,
     "question_type": "multiple",
@@ -25410,7 +25410,7 @@
     "order_num": 847
   },
   {
-    "id": 29687,
+    "id": 33583,
     "workbook_id": 39,
     "question_num": 848,
     "question_type": "single",
@@ -25440,7 +25440,7 @@
     "order_num": 848
   },
   {
-    "id": 29688,
+    "id": 33584,
     "workbook_id": 39,
     "question_num": 849,
     "question_type": "single",
@@ -25470,7 +25470,7 @@
     "order_num": 849
   },
   {
-    "id": 29689,
+    "id": 33585,
     "workbook_id": 39,
     "question_num": 850,
     "question_type": "single",
@@ -25500,7 +25500,7 @@
     "order_num": 850
   },
   {
-    "id": 29690,
+    "id": 33586,
     "workbook_id": 39,
     "question_num": 851,
     "question_type": "single",
@@ -25530,7 +25530,7 @@
     "order_num": 851
   },
   {
-    "id": 29691,
+    "id": 33587,
     "workbook_id": 39,
     "question_num": 852,
     "question_type": "single",
@@ -25560,7 +25560,7 @@
     "order_num": 852
   },
   {
-    "id": 29692,
+    "id": 33588,
     "workbook_id": 39,
     "question_num": 853,
     "question_type": "single",
@@ -25590,7 +25590,7 @@
     "order_num": 853
   },
   {
-    "id": 29693,
+    "id": 33589,
     "workbook_id": 39,
     "question_num": 854,
     "question_type": "multiple",
@@ -25620,7 +25620,7 @@
     "order_num": 854
   },
   {
-    "id": 29694,
+    "id": 33590,
     "workbook_id": 39,
     "question_num": 855,
     "question_type": "multiple",
@@ -25650,7 +25650,7 @@
     "order_num": 855
   },
   {
-    "id": 29695,
+    "id": 33591,
     "workbook_id": 39,
     "question_num": 856,
     "question_type": "multiple",
@@ -25680,7 +25680,7 @@
     "order_num": 856
   },
   {
-    "id": 29696,
+    "id": 33592,
     "workbook_id": 39,
     "question_num": 857,
     "question_type": "multiple",
@@ -25710,12 +25710,12 @@
     "order_num": 857
   },
   {
-    "id": 29697,
+    "id": 33593,
     "workbook_id": 39,
     "question_num": 858,
     "question_type": "multiple",
     "category": "第10章",
-    "stem": "党的二十大报告指出：十八大召开至今已经十年了。十年来，我们经历了对党和人民事业具",
+    "stem": "党的二十大报告指出：十八大召开至今已经十年了。十年来，我们经历了对党和人民事业具\n有重大现实意义和深远历史意义的三件大事是",
     "options": [
       {
         "key": "A",
@@ -25740,7 +25740,7 @@
     "order_num": 858
   },
   {
-    "id": 29698,
+    "id": 33594,
     "workbook_id": 39,
     "question_num": 859,
     "question_type": "single",
@@ -25770,7 +25770,7 @@
     "order_num": 859
   },
   {
-    "id": 29699,
+    "id": 33595,
     "workbook_id": 39,
     "question_num": 860,
     "question_type": "single",
@@ -25800,7 +25800,7 @@
     "order_num": 860
   },
   {
-    "id": 29700,
+    "id": 33596,
     "workbook_id": 39,
     "question_num": 861,
     "question_type": "single",
@@ -25830,7 +25830,7 @@
     "order_num": 861
   },
   {
-    "id": 29701,
+    "id": 33597,
     "workbook_id": 39,
     "question_num": 862,
     "question_type": "single",
@@ -25860,7 +25860,7 @@
     "order_num": 862
   },
   {
-    "id": 29702,
+    "id": 33598,
     "workbook_id": 39,
     "question_num": 863,
     "question_type": "single",
@@ -25890,7 +25890,7 @@
     "order_num": 863
   },
   {
-    "id": 29703,
+    "id": 33599,
     "workbook_id": 39,
     "question_num": 864,
     "question_type": "single",
@@ -25920,7 +25920,7 @@
     "order_num": 864
   },
   {
-    "id": 29704,
+    "id": 33600,
     "workbook_id": 39,
     "question_num": 865,
     "question_type": "multiple",
@@ -25950,7 +25950,7 @@
     "order_num": 865
   },
   {
-    "id": 29705,
+    "id": 33601,
     "workbook_id": 39,
     "question_num": 866,
     "question_type": "multiple",
@@ -25980,12 +25980,12 @@
     "order_num": 866
   },
   {
-    "id": 29706,
+    "id": 33602,
     "workbook_id": 39,
     "question_num": 867,
     "question_type": "multiple",
     "category": "第1章",
-    "stem": "第9题",
+    "stem": "司马迁说：“文王拘而演《周易》；仲尼厄而作《春秋》；屈原放逐，乃赋《离骚》；左丘失明，厥有《国语》；孙子膑脚，《兵法》修列；不韦迁蜀，世传《吕览》；韩非囚秦，《说难》《孤愤》；《诗》三百篇，大底圣贤发愤之所为作也。”司马迁的这段话给我们的启示是",
     "options": [
       {
         "key": "A",
@@ -26010,7 +26010,7 @@
     "order_num": 867
   },
   {
-    "id": 29707,
+    "id": 33603,
     "workbook_id": 39,
     "question_num": 868,
     "question_type": "multiple",
@@ -26040,7 +26040,7 @@
     "order_num": 868
   },
   {
-    "id": 29708,
+    "id": 33604,
     "workbook_id": 39,
     "question_num": 869,
     "question_type": "multiple",
@@ -26070,7 +26070,7 @@
     "order_num": 869
   },
   {
-    "id": 29709,
+    "id": 33605,
     "workbook_id": 39,
     "question_num": 870,
     "question_type": "multiple",
@@ -26100,7 +26100,7 @@
     "order_num": 870
   },
   {
-    "id": 29710,
+    "id": 33606,
     "workbook_id": 39,
     "question_num": 871,
     "question_type": "single",
@@ -26130,12 +26130,12 @@
     "order_num": 871
   },
   {
-    "id": 29711,
+    "id": 33607,
     "workbook_id": 39,
     "question_num": 872,
     "question_type": "single",
     "category": "第2章",
-    "stem": "第2题",
+    "stem": "习近平总书记指出：“青年一代有理想、有担当，国家就有前途，民族就有希望，实现我们的发展目标就有源源不断的强大力量。”青年人在确立自己的个人理想时，必须深刻认识到",
     "options": [
       {
         "key": "A",
@@ -26160,7 +26160,7 @@
     "order_num": 872
   },
   {
-    "id": 29712,
+    "id": 33608,
     "workbook_id": 39,
     "question_num": 873,
     "question_type": "single",
@@ -26190,7 +26190,7 @@
     "order_num": 873
   },
   {
-    "id": 29713,
+    "id": 33609,
     "workbook_id": 39,
     "question_num": 874,
     "question_type": "single",
@@ -26220,7 +26220,7 @@
     "order_num": 874
   },
   {
-    "id": 29714,
+    "id": 33610,
     "workbook_id": 39,
     "question_num": 875,
     "question_type": "multiple",
@@ -26250,7 +26250,7 @@
     "order_num": 875
   },
   {
-    "id": 29715,
+    "id": 33611,
     "workbook_id": 39,
     "question_num": 876,
     "question_type": "multiple",
@@ -26280,7 +26280,7 @@
     "order_num": 876
   },
   {
-    "id": 29716,
+    "id": 33612,
     "workbook_id": 39,
     "question_num": 877,
     "question_type": "multiple",
@@ -26310,7 +26310,7 @@
     "order_num": 877
   },
   {
-    "id": 29717,
+    "id": 33613,
     "workbook_id": 39,
     "question_num": 878,
     "question_type": "single",
@@ -26340,7 +26340,7 @@
     "order_num": 878
   },
   {
-    "id": 29718,
+    "id": 33614,
     "workbook_id": 39,
     "question_num": 879,
     "question_type": "single",
@@ -26370,7 +26370,7 @@
     "order_num": 879
   },
   {
-    "id": 29719,
+    "id": 33615,
     "workbook_id": 39,
     "question_num": 880,
     "question_type": "single",
@@ -26400,7 +26400,7 @@
     "order_num": 880
   },
   {
-    "id": 29720,
+    "id": 33616,
     "workbook_id": 39,
     "question_num": 881,
     "question_type": "single",
@@ -26430,7 +26430,7 @@
     "order_num": 881
   },
   {
-    "id": 29721,
+    "id": 33617,
     "workbook_id": 39,
     "question_num": 882,
     "question_type": "single",
@@ -26460,7 +26460,7 @@
     "order_num": 882
   },
   {
-    "id": 29722,
+    "id": 33618,
     "workbook_id": 39,
     "question_num": 883,
     "question_type": "single",
@@ -26490,12 +26490,12 @@
     "order_num": 883
   },
   {
-    "id": 29723,
+    "id": 33619,
     "workbook_id": 39,
     "question_num": 884,
     "question_type": "single",
     "category": "第3章",
-    "stem": "第7题",
+    "stem": "中华民族崇尚精神的优秀传统，表现为对理想人格的追求与塑造。儒家推崇“君子”“圣人”，道家追求“真人”“至人”，近代梁启超呼吁“新民”。这些理想人格虽然时代不同、类型有别，但其共同点在于",
     "options": [
       {
         "key": "A",
@@ -26520,7 +26520,7 @@
     "order_num": 884
   },
   {
-    "id": 29724,
+    "id": 33620,
     "workbook_id": 39,
     "question_num": 885,
     "question_type": "multiple",
@@ -26550,12 +26550,12 @@
     "order_num": 885
   },
   {
-    "id": 29725,
+    "id": 33621,
     "workbook_id": 39,
     "question_num": 886,
     "question_type": "multiple",
     "category": "第3章",
-    "stem": "第9题",
+    "stem": "新时代大学生要深刻领悟中国共产党为什么“能”、马克思主义为什么“行”、中国特色社会主义为什么“好”，传承红色基因，赓续红色血脉。培育和践行爱国主义精神，要求新时代青年必须",
     "options": [
       {
         "key": "A",
@@ -26580,7 +26580,7 @@
     "order_num": 886
   },
   {
-    "id": 29726,
+    "id": 33622,
     "workbook_id": 39,
     "question_num": 887,
     "question_type": "multiple",
@@ -26610,7 +26610,7 @@
     "order_num": 887
   },
   {
-    "id": 29727,
+    "id": 33623,
     "workbook_id": 39,
     "question_num": 888,
     "question_type": "multiple",
@@ -26640,7 +26640,7 @@
     "order_num": 888
   },
   {
-    "id": 29728,
+    "id": 33624,
     "workbook_id": 39,
     "question_num": 889,
     "question_type": "multiple",
@@ -26670,7 +26670,7 @@
     "order_num": 889
   },
   {
-    "id": 29729,
+    "id": 33625,
     "workbook_id": 39,
     "question_num": 890,
     "question_type": "multiple",
@@ -26700,7 +26700,7 @@
     "order_num": 890
   },
   {
-    "id": 29730,
+    "id": 33626,
     "workbook_id": 39,
     "question_num": 891,
     "question_type": "multiple",
@@ -26730,7 +26730,7 @@
     "order_num": 891
   },
   {
-    "id": 29731,
+    "id": 33627,
     "workbook_id": 39,
     "question_num": 892,
     "question_type": "multiple",
@@ -26760,7 +26760,7 @@
     "order_num": 892
   },
   {
-    "id": 29732,
+    "id": 33628,
     "workbook_id": 39,
     "question_num": 893,
     "question_type": "multiple",
@@ -26790,7 +26790,7 @@
     "order_num": 893
   },
   {
-    "id": 29733,
+    "id": 33629,
     "workbook_id": 39,
     "question_num": 894,
     "question_type": "single",
@@ -26820,7 +26820,7 @@
     "order_num": 894
   },
   {
-    "id": 29734,
+    "id": 33630,
     "workbook_id": 39,
     "question_num": 895,
     "question_type": "single",
@@ -26850,7 +26850,7 @@
     "order_num": 895
   },
   {
-    "id": 29735,
+    "id": 33631,
     "workbook_id": 39,
     "question_num": 896,
     "question_type": "single",
@@ -26880,7 +26880,7 @@
     "order_num": 896
   },
   {
-    "id": 29736,
+    "id": 33632,
     "workbook_id": 39,
     "question_num": 897,
     "question_type": "single",
@@ -26910,7 +26910,7 @@
     "order_num": 897
   },
   {
-    "id": 29737,
+    "id": 33633,
     "workbook_id": 39,
     "question_num": 898,
     "question_type": "single",
@@ -26940,7 +26940,7 @@
     "order_num": 898
   },
   {
-    "id": 29738,
+    "id": 33634,
     "workbook_id": 39,
     "question_num": 899,
     "question_type": "single",
@@ -26970,7 +26970,7 @@
     "order_num": 899
   },
   {
-    "id": 29739,
+    "id": 33635,
     "workbook_id": 39,
     "question_num": 900,
     "question_type": "single",
@@ -27000,7 +27000,7 @@
     "order_num": 900
   },
   {
-    "id": 29740,
+    "id": 33636,
     "workbook_id": 39,
     "question_num": 901,
     "question_type": "multiple",
@@ -27030,7 +27030,7 @@
     "order_num": 901
   },
   {
-    "id": 29741,
+    "id": 33637,
     "workbook_id": 39,
     "question_num": 902,
     "question_type": "multiple",
@@ -27060,7 +27060,7 @@
     "order_num": 902
   },
   {
-    "id": 29742,
+    "id": 33638,
     "workbook_id": 39,
     "question_num": 903,
     "question_type": "multiple",
@@ -27090,7 +27090,7 @@
     "order_num": 903
   },
   {
-    "id": 29743,
+    "id": 33639,
     "workbook_id": 39,
     "question_num": 904,
     "question_type": "multiple",
@@ -27120,7 +27120,7 @@
     "order_num": 904
   },
   {
-    "id": 29744,
+    "id": 33640,
     "workbook_id": 39,
     "question_num": 905,
     "question_type": "multiple",
@@ -27150,7 +27150,7 @@
     "order_num": 905
   },
   {
-    "id": 29745,
+    "id": 33641,
     "workbook_id": 39,
     "question_num": 906,
     "question_type": "multiple",
@@ -27180,7 +27180,7 @@
     "order_num": 906
   },
   {
-    "id": 29746,
+    "id": 33642,
     "workbook_id": 39,
     "question_num": 907,
     "question_type": "multiple",
@@ -27210,7 +27210,7 @@
     "order_num": 907
   },
   {
-    "id": 29747,
+    "id": 33643,
     "workbook_id": 39,
     "question_num": 908,
     "question_type": "single",
@@ -27240,7 +27240,7 @@
     "order_num": 908
   },
   {
-    "id": 29748,
+    "id": 33644,
     "workbook_id": 39,
     "question_num": 909,
     "question_type": "single",
@@ -27270,7 +27270,7 @@
     "order_num": 909
   },
   {
-    "id": 29749,
+    "id": 33645,
     "workbook_id": 39,
     "question_num": 910,
     "question_type": "single",
@@ -27300,7 +27300,7 @@
     "order_num": 910
   },
   {
-    "id": 29750,
+    "id": 33646,
     "workbook_id": 39,
     "question_num": 911,
     "question_type": "single",
@@ -27330,7 +27330,7 @@
     "order_num": 911
   },
   {
-    "id": 29751,
+    "id": 33647,
     "workbook_id": 39,
     "question_num": 912,
     "question_type": "single",
@@ -27360,7 +27360,7 @@
     "order_num": 912
   },
   {
-    "id": 29752,
+    "id": 33648,
     "workbook_id": 39,
     "question_num": 913,
     "question_type": "single",
@@ -27390,7 +27390,7 @@
     "order_num": 913
   },
   {
-    "id": 29753,
+    "id": 33649,
     "workbook_id": 39,
     "question_num": 914,
     "question_type": "single",
@@ -27420,7 +27420,7 @@
     "order_num": 914
   },
   {
-    "id": 29754,
+    "id": 33650,
     "workbook_id": 39,
     "question_num": 915,
     "question_type": "single",
@@ -27450,7 +27450,7 @@
     "order_num": 915
   },
   {
-    "id": 29755,
+    "id": 33651,
     "workbook_id": 39,
     "question_num": 916,
     "question_type": "single",
@@ -27480,7 +27480,7 @@
     "order_num": 916
   },
   {
-    "id": 29756,
+    "id": 33652,
     "workbook_id": 39,
     "question_num": 917,
     "question_type": "single",
@@ -27510,7 +27510,7 @@
     "order_num": 917
   },
   {
-    "id": 29757,
+    "id": 33653,
     "workbook_id": 39,
     "question_num": 918,
     "question_type": "single",
@@ -27540,7 +27540,7 @@
     "order_num": 918
   },
   {
-    "id": 29758,
+    "id": 33654,
     "workbook_id": 39,
     "question_num": 919,
     "question_type": "single",
@@ -27570,7 +27570,7 @@
     "order_num": 919
   },
   {
-    "id": 29759,
+    "id": 33655,
     "workbook_id": 39,
     "question_num": 920,
     "question_type": "single",
@@ -27600,7 +27600,7 @@
     "order_num": 920
   },
   {
-    "id": 29760,
+    "id": 33656,
     "workbook_id": 39,
     "question_num": 921,
     "question_type": "single",
@@ -27630,7 +27630,7 @@
     "order_num": 921
   },
   {
-    "id": 29761,
+    "id": 33657,
     "workbook_id": 39,
     "question_num": 922,
     "question_type": "single",
@@ -27660,7 +27660,7 @@
     "order_num": 922
   },
   {
-    "id": 29762,
+    "id": 33658,
     "workbook_id": 39,
     "question_num": 923,
     "question_type": "multiple",
@@ -27690,7 +27690,7 @@
     "order_num": 923
   },
   {
-    "id": 29763,
+    "id": 33659,
     "workbook_id": 39,
     "question_num": 924,
     "question_type": "multiple",
@@ -27720,7 +27720,7 @@
     "order_num": 924
   },
   {
-    "id": 29764,
+    "id": 33660,
     "workbook_id": 39,
     "question_num": 925,
     "question_type": "multiple",
@@ -27750,7 +27750,7 @@
     "order_num": 925
   },
   {
-    "id": 29765,
+    "id": 33661,
     "workbook_id": 39,
     "question_num": 926,
     "question_type": "multiple",
@@ -27780,7 +27780,7 @@
     "order_num": 926
   },
   {
-    "id": 29766,
+    "id": 33662,
     "workbook_id": 39,
     "question_num": 927,
     "question_type": "multiple",
@@ -27810,7 +27810,7 @@
     "order_num": 927
   },
   {
-    "id": 29767,
+    "id": 33663,
     "workbook_id": 39,
     "question_num": 928,
     "question_type": "multiple",
@@ -27840,7 +27840,7 @@
     "order_num": 928
   },
   {
-    "id": 29768,
+    "id": 33664,
     "workbook_id": 39,
     "question_num": 929,
     "question_type": "multiple",
@@ -27870,7 +27870,7 @@
     "order_num": 929
   },
   {
-    "id": 29769,
+    "id": 33665,
     "workbook_id": 39,
     "question_num": 930,
     "question_type": "multiple",
@@ -27900,7 +27900,7 @@
     "order_num": 930
   },
   {
-    "id": 29770,
+    "id": 33666,
     "workbook_id": 39,
     "question_num": 931,
     "question_type": "multiple",
@@ -27930,7 +27930,7 @@
     "order_num": 931
   },
   {
-    "id": 29771,
+    "id": 33667,
     "workbook_id": 39,
     "question_num": 932,
     "question_type": "multiple",
@@ -27960,7 +27960,7 @@
     "order_num": 932
   },
   {
-    "id": 29772,
+    "id": 33668,
     "workbook_id": 39,
     "question_num": 933,
     "question_type": "multiple",
@@ -27990,7 +27990,7 @@
     "order_num": 933
   },
   {
-    "id": 29773,
+    "id": 33669,
     "workbook_id": 39,
     "question_num": 934,
     "question_type": "multiple",
@@ -28020,7 +28020,7 @@
     "order_num": 934
   },
   {
-    "id": 29774,
+    "id": 33670,
     "workbook_id": 39,
     "question_num": 935,
     "question_type": "multiple",
@@ -28050,7 +28050,7 @@
     "order_num": 935
   },
   {
-    "id": 29775,
+    "id": 33671,
     "workbook_id": 39,
     "question_num": 936,
     "question_type": "multiple",
@@ -28080,7 +28080,7 @@
     "order_num": 936
   },
   {
-    "id": 29776,
+    "id": 33672,
     "workbook_id": 39,
     "question_num": 937,
     "question_type": "multiple",
@@ -28110,7 +28110,7 @@
     "order_num": 937
   },
   {
-    "id": 29777,
+    "id": 33673,
     "workbook_id": 39,
     "question_num": 938,
     "question_type": "multiple",
@@ -28140,7 +28140,7 @@
     "order_num": 938
   },
   {
-    "id": 29778,
+    "id": 33674,
     "workbook_id": 39,
     "question_num": 939,
     "question_type": "multiple",
@@ -28170,7 +28170,7 @@
     "order_num": 939
   },
   {
-    "id": 29779,
+    "id": 33675,
     "workbook_id": 39,
     "question_num": 940,
     "question_type": "single",
@@ -28200,7 +28200,7 @@
     "order_num": 940
   },
   {
-    "id": 29780,
+    "id": 33676,
     "workbook_id": 39,
     "question_num": 941,
     "question_type": "single",
@@ -28230,7 +28230,7 @@
     "order_num": 941
   },
   {
-    "id": 29781,
+    "id": 33677,
     "workbook_id": 39,
     "question_num": 942,
     "question_type": "single",
@@ -28260,7 +28260,7 @@
     "order_num": 942
   },
   {
-    "id": 29782,
+    "id": 33678,
     "workbook_id": 39,
     "question_num": 943,
     "question_type": "single",
@@ -28290,7 +28290,7 @@
     "order_num": 943
   },
   {
-    "id": 29783,
+    "id": 33679,
     "workbook_id": 39,
     "question_num": 944,
     "question_type": "single",
@@ -28320,7 +28320,7 @@
     "order_num": 944
   },
   {
-    "id": 29784,
+    "id": 33680,
     "workbook_id": 39,
     "question_num": 945,
     "question_type": "single",
@@ -28350,7 +28350,7 @@
     "order_num": 945
   },
   {
-    "id": 29785,
+    "id": 33681,
     "workbook_id": 39,
     "question_num": 946,
     "question_type": "single",
@@ -28380,7 +28380,7 @@
     "order_num": 946
   },
   {
-    "id": 29786,
+    "id": 33682,
     "workbook_id": 39,
     "question_num": 947,
     "question_type": "single",
@@ -28410,7 +28410,7 @@
     "order_num": 947
   },
   {
-    "id": 29787,
+    "id": 33683,
     "workbook_id": 39,
     "question_num": 948,
     "question_type": "single",
@@ -28440,7 +28440,7 @@
     "order_num": 948
   },
   {
-    "id": 29788,
+    "id": 33684,
     "workbook_id": 39,
     "question_num": 949,
     "question_type": "single",
@@ -28470,7 +28470,7 @@
     "order_num": 949
   },
   {
-    "id": 29789,
+    "id": 33685,
     "workbook_id": 39,
     "question_num": 950,
     "question_type": "single",
@@ -28500,7 +28500,7 @@
     "order_num": 950
   },
   {
-    "id": 29790,
+    "id": 33686,
     "workbook_id": 39,
     "question_num": 951,
     "question_type": "single",
@@ -28530,7 +28530,7 @@
     "order_num": 951
   },
   {
-    "id": 29791,
+    "id": 33687,
     "workbook_id": 39,
     "question_num": 952,
     "question_type": "single",
@@ -28560,7 +28560,7 @@
     "order_num": 952
   },
   {
-    "id": 29792,
+    "id": 33688,
     "workbook_id": 39,
     "question_num": 953,
     "question_type": "single",
@@ -28590,7 +28590,7 @@
     "order_num": 953
   },
   {
-    "id": 29793,
+    "id": 33689,
     "workbook_id": 39,
     "question_num": 954,
     "question_type": "single",
@@ -28620,7 +28620,7 @@
     "order_num": 954
   },
   {
-    "id": 29794,
+    "id": 33690,
     "workbook_id": 39,
     "question_num": 955,
     "question_type": "single",
@@ -28650,7 +28650,7 @@
     "order_num": 955
   },
   {
-    "id": 29795,
+    "id": 33691,
     "workbook_id": 39,
     "question_num": 956,
     "question_type": "single",
@@ -28680,7 +28680,7 @@
     "order_num": 956
   },
   {
-    "id": 29796,
+    "id": 33692,
     "workbook_id": 39,
     "question_num": 957,
     "question_type": "single",
@@ -28710,7 +28710,7 @@
     "order_num": 957
   },
   {
-    "id": 29797,
+    "id": 33693,
     "workbook_id": 39,
     "question_num": 958,
     "question_type": "single",
@@ -28740,12 +28740,12 @@
     "order_num": 958
   },
   {
-    "id": 29798,
+    "id": 33694,
     "workbook_id": 39,
     "question_num": 959,
     "question_type": "single",
     "category": "第6章",
-    "stem": "第20题",
+    "stem": "英国哲学家培根说：“一次不公正的审判，其恶果甚至超过十次犯罪。因为犯罪虽是无视法律——好比污染了水流，而不公正的审判则毁坏法律——好比污染了水源。”这主要说明了",
     "options": [
       {
         "key": "A",
@@ -28770,7 +28770,7 @@
     "order_num": 959
   },
   {
-    "id": 29799,
+    "id": 33695,
     "workbook_id": 39,
     "question_num": 960,
     "question_type": "single",
@@ -28800,7 +28800,7 @@
     "order_num": 960
   },
   {
-    "id": 29800,
+    "id": 33696,
     "workbook_id": 39,
     "question_num": 961,
     "question_type": "single",
@@ -28830,7 +28830,7 @@
     "order_num": 961
   },
   {
-    "id": 29801,
+    "id": 33697,
     "workbook_id": 39,
     "question_num": 962,
     "question_type": "single",
@@ -28860,7 +28860,7 @@
     "order_num": 962
   },
   {
-    "id": 29802,
+    "id": 33698,
     "workbook_id": 39,
     "question_num": 963,
     "question_type": "single",
@@ -28890,7 +28890,7 @@
     "order_num": 963
   },
   {
-    "id": 29803,
+    "id": 33699,
     "workbook_id": 39,
     "question_num": 964,
     "question_type": "single",
@@ -28920,7 +28920,7 @@
     "order_num": 964
   },
   {
-    "id": 29804,
+    "id": 33700,
     "workbook_id": 39,
     "question_num": 965,
     "question_type": "single",
@@ -28950,7 +28950,7 @@
     "order_num": 965
   },
   {
-    "id": 29805,
+    "id": 33701,
     "workbook_id": 39,
     "question_num": 966,
     "question_type": "single",
@@ -28980,7 +28980,7 @@
     "order_num": 966
   },
   {
-    "id": 29806,
+    "id": 33702,
     "workbook_id": 39,
     "question_num": 967,
     "question_type": "multiple",
@@ -29010,7 +29010,7 @@
     "order_num": 967
   },
   {
-    "id": 29807,
+    "id": 33703,
     "workbook_id": 39,
     "question_num": 968,
     "question_type": "multiple",
@@ -29040,7 +29040,7 @@
     "order_num": 968
   },
   {
-    "id": 29808,
+    "id": 33704,
     "workbook_id": 39,
     "question_num": 969,
     "question_type": "multiple",
@@ -29070,7 +29070,7 @@
     "order_num": 969
   },
   {
-    "id": 29809,
+    "id": 33705,
     "workbook_id": 39,
     "question_num": 970,
     "question_type": "multiple",
@@ -29100,7 +29100,7 @@
     "order_num": 970
   },
   {
-    "id": 29810,
+    "id": 33706,
     "workbook_id": 39,
     "question_num": 971,
     "question_type": "multiple",
@@ -29130,7 +29130,7 @@
     "order_num": 971
   },
   {
-    "id": 29811,
+    "id": 33707,
     "workbook_id": 39,
     "question_num": 972,
     "question_type": "multiple",
@@ -29160,7 +29160,7 @@
     "order_num": 972
   },
   {
-    "id": 29812,
+    "id": 33708,
     "workbook_id": 39,
     "question_num": 973,
     "question_type": "multiple",
@@ -29190,7 +29190,7 @@
     "order_num": 973
   },
   {
-    "id": 29813,
+    "id": 33709,
     "workbook_id": 39,
     "question_num": 974,
     "question_type": "multiple",
