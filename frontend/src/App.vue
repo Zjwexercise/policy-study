@@ -11,9 +11,10 @@ import StatsView from './components/StatsView.vue';
 import MobileQrModal from './components/MobileQrModal.vue';
 import SyncModal from './components/SyncModal.vue';
 import LoginModal from './components/LoginModal.vue';
+import AdminView from './components/AdminView.vue';
 import { auth } from './auth';
 
-const currentTab = ref('practice'); // practice, wrong, killed, notes, workbooks, stats
+const currentTab = ref('practice'); // practice, wrong, killed, notes, workbooks, stats, admin
 const workbooks = ref([]);
 const activeWorkbookId = ref(localStorage.getItem('policy_active_wb_id') || 'all'); // 记忆用户最后打开的练习册，刷新绝不重置丢失
 const showMobileQr = ref(false);
@@ -174,6 +175,11 @@ onUnmounted(() => {
         v-else-if="currentTab === 'stats'"
         @open-sync="showSyncModal = true"
       />
+
+      <AdminView 
+        v-else-if="currentTab === 'admin'"
+        @switch-tab="currentTab = $event"
+      />
     </main>
 
     <!-- Mobile QR Modal -->
@@ -195,6 +201,7 @@ onUnmounted(() => {
       :show="showLoginModal"
       @close="showLoginModal = false"
       @login-success="handleLoginSuccess"
+      @open-admin="currentTab = 'admin'"
     />
   </div>
 </template>

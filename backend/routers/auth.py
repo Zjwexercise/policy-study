@@ -2,14 +2,32 @@ import hashlib
 import secrets
 import json
 import sqlite3
-from datetime import datetime
-from typing import Optional, Dict, Any
-from fastapi import APIRouter, HTTPException, Depends, Header
+from datetime import datetime, timedelta
+from typing import Optional, Dict, Any, List
+from fastapi import APIRouter, HTTPException, Depends, Header, Request
 from pydantic import BaseModel, Field
 
 from database import get_db
 
 router = APIRouter(prefix="/api/auth", tags=["auth"])
+
+# 内存级 IP 注册限流字典：ip -> [timestamp, ...]
+_ip_register_records: Dict[str, List[datetime]] = {}
+
+def check_ip_rate_limit(client_ip: str, max_requests: int = 3, window_seconds: int = 60):
+    """防脚本爆破与批量恶意注册：限制同 IP 在指定时间内最多注册次数"""
+    now = datetime.now()
+    cutoff = now - timedelta(seconds=window_seconds)
+    
+    # 清理过期记录
+    timestamps = [t for t in _ip_register_records.get(client_ip, []) if t > cutoff]
+    if len(timestamps) >= max_requests:
+        raise HTTPException(
+            status_code=429,
+            detail=f"注册请求过于频繁，为防止机器人恶意灌水，请 {window_seconds} 秒后再试。"
+        )
+    timestamps.append(now)
+    _ip_register_records[client_ip] = timestamps
 
 def hash_password(password: str, salt: str) -> str:
     """使用 PBKDF2-HMAC-SHA256 进行密码哈希，具备高强度防暴力破解"""
@@ -27,6 +45,7 @@ class RegisterRequest(BaseModel):
     username: str = Field(..., min_length=2, max_length=32, description="登录账号")
     password: str = Field(..., min_length=4, max_length=64, description="登录密码")
     nickname: Optional[str] = Field(None, max_length=32, description="用户昵称")
+    invite_code: Optional[str] = Field(None, max_length=64, description="注册专属邀请口令")
 
 class LoginRequest(BaseModel):
     username: str = Field(..., description="登录账号")
@@ -50,7 +69,7 @@ def get_current_user_from_header(
     token = parts[1]
     cursor = conn.cursor()
     cursor.execute("""
-        SELECT u.id, u.username, u.nickname, u.avatar, u.created_at
+        SELECT u.id, u.username, u.nickname, u.avatar, u.role, u.is_active, u.created_at
         FROM user_tokens t
         JOIN users u ON t.user_id = u.id
         WHERE t.token = ?
@@ -59,16 +78,62 @@ def get_current_user_from_header(
     if not row:
         raise HTTPException(status_code=401, detail="登录凭据已过期或无效，请重新登录")
     
+    if row["is_active"] == 0:
+        raise HTTPException(status_code=403, detail="该账号已被管理员封禁，无法使用系统服务")
+    
     return {
         "id": row["id"],
         "username": row["username"],
         "nickname": row["nickname"],
         "avatar": row["avatar"],
+        "role": row["role"] or "user",
+        "is_active": row["is_active"],
         "created_at": row["created_at"]
     }
 
+def get_current_admin(
+    current_user: dict = Depends(get_current_user_from_header)
+) -> dict:
+    if current_user.get("role") != "admin":
+        raise HTTPException(status_code=403, detail="无权访问管理员后台，需要超级管理员权限")
+    return current_user
+
+@router.get("/register-config")
+def get_register_config(conn: sqlite3.Connection = Depends(get_db)):
+    """获取公开的注册安全策略配置"""
+    cursor = conn.cursor()
+    cursor.execute("SELECT key, value FROM system_settings WHERE key IN ('allow_registration', 'invite_code_enabled')")
+    settings = dict(cursor.fetchall())
+    return {
+        "allow_registration": settings.get("allow_registration", "true").lower() == "true",
+        "invite_code_required": settings.get("invite_code_enabled", "true").lower() == "true"
+    }
+
 @router.post("/register")
-def register(req: RegisterRequest, conn: sqlite3.Connection = Depends(get_db)):
+def register(
+    req: RegisterRequest, 
+    request: Request,
+    conn: sqlite3.Connection = Depends(get_db)
+):
+    # 1. 检查 IP 注册频率（防脚本刷爆）
+    client_ip = request.client.host if request.client else "127.0.0.1"
+    check_ip_rate_limit(client_ip)
+
+    cursor = conn.cursor()
+
+    # 2. 检查系统注册开关与邀请码
+    cursor.execute("SELECT key, value FROM system_settings")
+    settings = dict(cursor.fetchall())
+
+    if settings.get("allow_registration", "true").lower() != "true":
+        raise HTTPException(status_code=403, detail="系统当前已暂停新用户公开注册，请联系管理员")
+
+    if settings.get("invite_code_enabled", "true").lower() == "true":
+        expected_code = settings.get("invite_code", "2027kaoyan").strip()
+        user_code = (req.invite_code or "").strip()
+        if not user_code or user_code != expected_code:
+            raise HTTPException(status_code=400, detail="注册邀请口令不正确，防恶意灌水保护已拦截")
+
     username = req.username.strip()
     if len(username) < 2:
         raise HTTPException(status_code=400, detail="用户名不能少于2个字符")
@@ -76,7 +141,6 @@ def register(req: RegisterRequest, conn: sqlite3.Connection = Depends(get_db)):
         raise HTTPException(status_code=400, detail="密码长度不能少于4位")
     
     nickname = (req.nickname or "").strip() or username
-    cursor = conn.cursor()
 
     # 检查用户名是否已存在
     cursor.execute("SELECT id FROM users WHERE username = ?", (username,))
@@ -87,8 +151,8 @@ def register(req: RegisterRequest, conn: sqlite3.Connection = Depends(get_db)):
     pwd_hash = hash_password(req.password, salt)
 
     cursor.execute("""
-        INSERT INTO users (username, password_hash, salt, nickname)
-        VALUES (?, ?, ?, ?)
+        INSERT INTO users (username, password_hash, salt, nickname, role, is_active)
+        VALUES (?, ?, ?, ?, 'user', 1)
     """, (username, pwd_hash, salt, nickname))
     user_id = cursor.lastrowid
 
@@ -114,7 +178,8 @@ def register(req: RegisterRequest, conn: sqlite3.Connection = Depends(get_db)):
         "user": {
             "id": user_id,
             "username": username,
-            "nickname": nickname
+            "nickname": nickname,
+            "role": "user"
         },
         "cloud_data": {
             "records": {},
@@ -127,7 +192,7 @@ def login(req: LoginRequest, conn: sqlite3.Connection = Depends(get_db)):
     username = req.username.strip()
     cursor = conn.cursor()
     cursor.execute("""
-        SELECT id, username, password_hash, salt, nickname, avatar
+        SELECT id, username, password_hash, salt, nickname, avatar, role, is_active
         FROM users 
         WHERE username = ?
     """, (username,))
@@ -137,6 +202,9 @@ def login(req: LoginRequest, conn: sqlite3.Connection = Depends(get_db)):
 
     if not verify_password(req.password, row["salt"], row["password_hash"]):
         raise HTTPException(status_code=400, detail="用户名或密码不正确")
+
+    if row["is_active"] == 0:
+        raise HTTPException(status_code=403, detail="该账号已被管理员封禁，无法登录系统")
 
     user_id = row["id"]
     # 更新最后登录时间
@@ -171,7 +239,8 @@ def login(req: LoginRequest, conn: sqlite3.Connection = Depends(get_db)):
             "id": user_id,
             "username": row["username"],
             "nickname": row["nickname"],
-            "avatar": row["avatar"]
+            "avatar": row["avatar"],
+            "role": row["role"] or "user"
         },
         "cloud_data": {
             "records": records,

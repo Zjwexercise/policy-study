@@ -559,5 +559,111 @@ export const api = {
 
   clearAllUserData() {
     return localStore.clearAllUserData();
+  },
+
+  // ==========================================
+  // 管理后台与防火墙控制面板 API
+  // ==========================================
+  async getRegisterConfig() {
+    try {
+      const res = await fetch(`${API_BASE}/auth/register-config`);
+      if (!res.ok) throw new Error();
+      return await res.json();
+    } catch {
+      return { allow_registration: true, invite_code_required: true };
+    }
+  },
+
+  async getAdminStats() {
+    const token = localStorage.getItem('policy_auth_token') || '';
+    const res = await fetch(`${API_BASE}/admin/stats`, {
+      headers: {
+        'Accept': 'application/json',
+        'Authorization': `Bearer ${token}`
+      }
+    });
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({}));
+      throw new Error(err.detail || '获取管理后台数据失败');
+    }
+    return await res.json();
+  },
+
+  async getAdminUsers() {
+    const token = localStorage.getItem('policy_auth_token') || '';
+    const res = await fetch(`${API_BASE}/admin/users`, {
+      headers: {
+        'Accept': 'application/json',
+        'Authorization': `Bearer ${token}`
+      }
+    });
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({}));
+      throw new Error(err.detail || '获取用户列表失败');
+    }
+    return await res.json();
+  },
+
+  async updateUserStatus(userId, isActive) {
+    const token = localStorage.getItem('policy_auth_token') || '';
+    const res = await fetch(`${API_BASE}/admin/users/${userId}/status`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      },
+      body: JSON.stringify({ is_active: isActive })
+    });
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({}));
+      throw new Error(err.detail || '更新用户状态失败');
+    }
+    return await res.json();
+  },
+
+  async deleteUser(userId) {
+    const token = localStorage.getItem('policy_auth_token') || '';
+    const res = await fetch(`${API_BASE}/admin/users/${userId}`, {
+      method: 'DELETE',
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    });
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({}));
+      throw new Error(err.detail || '删除用户失败');
+    }
+    return await res.json();
+  },
+
+  async getAdminSettings() {
+    const token = localStorage.getItem('policy_auth_token') || '';
+    const res = await fetch(`${API_BASE}/admin/settings`, {
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    });
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({}));
+      throw new Error(err.detail || '获取系统安全设置失败');
+    }
+    return await res.json();
+  },
+
+  async updateAdminSettings(settings) {
+    const token = localStorage.getItem('policy_auth_token') || '';
+    const res = await fetch(`${API_BASE}/admin/settings`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      },
+      body: JSON.stringify(settings)
+    });
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({}));
+      throw new Error(err.detail || '更新系统安全设置失败');
+    }
+    return await res.json();
   }
 };

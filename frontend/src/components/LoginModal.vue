@@ -15,7 +15,8 @@ import {
   ShieldCheck, 
   Smartphone,
   ChevronDown,
-  ChevronUp
+  ChevronUp,
+  Key
 } from 'lucide-vue-next';
 import { auth } from '../auth';
 
@@ -26,12 +27,13 @@ const props = defineProps({
   }
 });
 
-const emit = defineEmits(['close', 'login-success']);
+const emit = defineEmits(['close', 'login-success', 'open-admin']);
 
 const activeTab = ref('login'); // 'login' | 'register'
 const username = ref('');
 const password = ref('');
 const nickname = ref('');
+const inviteCode = ref('2027kaoyan');
 const loading = ref(false);
 const errorMsg = ref('');
 const successMsg = ref('');
@@ -70,7 +72,7 @@ const handleAuth = async () => {
 
   try {
     if (activeTab.value === 'register') {
-      const u = await auth.register(username.value, password.value, nickname.value);
+      const u = await auth.register(username.value, password.value, nickname.value, inviteCode.value);
       successMsg.value = `注册成功！欢迎同学：${u.nickname || u.username}`;
     } else {
       const u = await auth.login(username.value, password.value);
@@ -196,6 +198,9 @@ const testServerConnection = async () => {
                 <div class="flex items-center gap-2">
                   <span class="font-bold text-slate-800 text-base">{{ currentUser.nickname || currentUser.username }}</span>
                   <span class="px-1.5 py-0.5 text-[10px] font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200 rounded">已登录</span>
+                  <span v-if="currentUser.role === 'admin'" class="px-1.5 py-0.5 text-[10px] font-bold bg-amber-100 text-amber-800 border border-amber-300 rounded flex items-center gap-0.5">
+                    👑 超级管理员
+                  </span>
                 </div>
                 <p class="text-xs text-slate-500">账号: @{{ currentUser.username }}</p>
               </div>
@@ -206,6 +211,25 @@ const testServerConnection = async () => {
             >
               <LogOut class="w-3.5 h-3.5" />
               退出
+            </button>
+          </div>
+
+          <!-- 超级管理员快捷入口 -->
+          <div v-if="currentUser.role === 'admin'" class="p-3.5 bg-linear-to-r from-amber-50 to-orange-50 border border-amber-200 rounded-xl flex items-center justify-between shadow-2xs">
+            <div class="flex items-center gap-2.5">
+              <div class="w-8 h-8 rounded-lg bg-amber-500 text-white flex items-center justify-center font-bold text-sm shadow-xs">
+                👑
+              </div>
+              <div>
+                <div class="text-xs font-bold text-amber-950">系统超级管理权限已激活</div>
+                <div class="text-[11px] text-amber-700">查看注册用户、封禁恶意账号、设置注册邀请码</div>
+              </div>
+            </div>
+            <button 
+              @click="emit('open-admin'); emit('close');"
+              class="px-3 py-1.5 bg-amber-600 hover:bg-amber-700 text-white text-xs font-bold rounded-lg shadow-xs transition cursor-pointer shrink-0"
+            >
+              管理后台
             </button>
           </div>
 
@@ -308,6 +332,24 @@ const testServerConnection = async () => {
                 />
                 <UserPlus class="w-4 h-4 text-slate-400 absolute left-3 top-2.5" />
               </div>
+            </div>
+
+            <div v-if="activeTab === 'register'">
+              <div class="flex items-center justify-between mb-1">
+                <label class="block text-xs font-semibold text-slate-700">注册邀请码 / 防恶意刷号口令</label>
+                <span class="text-[10px] text-rose-500 font-medium">默认口令: 2027kaoyan</span>
+              </div>
+              <div class="relative">
+                <input 
+                  v-model="inviteCode"
+                  type="text"
+                  required
+                  placeholder="请输入专属邀请码（防脚本批量注册）"
+                  class="w-full pl-9 pr-3 py-2 text-sm border border-slate-200 rounded-lg focus:outline-hidden focus:ring-2 focus:ring-rose-500/20 focus:border-rose-500"
+                />
+                <Key class="w-4 h-4 text-slate-400 absolute left-3 top-2.5" />
+              </div>
+              <p class="text-[10px] text-slate-400 mt-1">系统已开启防黑客恶意脚本防护，请凭邀请码注册</p>
             </div>
 
             <div>

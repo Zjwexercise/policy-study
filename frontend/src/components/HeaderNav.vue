@@ -153,6 +153,22 @@ const handleSelectChange = (val) => {
             <component :is="tab.icon" class="w-4 h-4" />
             <span>{{ tab.label }}</span>
           </button>
+
+          <!-- 超级管理员专用后台入口 -->
+          <button
+            v-if="currentUser && currentUser.role === 'admin'"
+            @click="emit('update:currentTab', 'admin')"
+            class="flex items-center space-x-1 px-2.5 py-1.5 rounded-lg text-sm font-bold transition cursor-pointer shadow-2xs ml-1"
+            :class="[
+              currentTab === 'admin'
+                ? 'bg-amber-500 text-white shadow-amber-200'
+                : 'bg-amber-50 text-amber-800 hover:bg-amber-100 border border-amber-200'
+            ]"
+            title="进入超级管理后台与防火墙控制面板"
+          >
+            <span>👑</span>
+            <span>管理后台</span>
+          </button>
         </nav>
 
         <!-- Right Tools: User, Mobile QR & Sync -->
@@ -221,6 +237,17 @@ const handleSelectChange = (val) => {
       >
         <component :is="tab.icon" class="w-4 h-4 sm:w-5 sm:h-5 mb-0.5" />
         <span class="text-[10px] sm:text-[11px] truncate tracking-tight">{{ tab.label }}</span>
+      </button>
+
+      <!-- 手机底栏特别增加：管理后台（仅管理员可见） -->
+      <button
+        v-if="currentUser && currentUser.role === 'admin'"
+        @click="emit('update:currentTab', 'admin')"
+        class="flex flex-col items-center justify-center py-1 px-1 rounded-lg transition flex-1 cursor-pointer min-w-0"
+        :class="currentTab === 'admin' ? 'text-amber-600 font-bold' : 'text-amber-700 hover:text-amber-900'"
+      >
+        <span class="text-sm leading-none mb-0.5">👑</span>
+        <span class="text-[10px] sm:text-[11px] truncate tracking-tight font-bold">后台</span>
       </button>
 
       <!-- 手机底栏特别增加：我的 / 账号登录 -->

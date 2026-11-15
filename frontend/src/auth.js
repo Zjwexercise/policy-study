@@ -238,10 +238,11 @@ export const auth = {
   },
 
   // 注册新账号（免开机、免Wi-Fi、手机电脑全网通用）
-  async register(username, password, nickname = '') {
+  async register(username, password, nickname = '', inviteCode = '') {
     const cleanUser = username.trim();
     const cleanPwd = password.trim();
     const cleanNick = (nickname || '').trim() || cleanUser;
+    const cleanCode = (inviteCode || '').trim();
 
     if (cleanUser.length < 2) throw new Error('用户名不能少于2个字符');
     if (cleanPwd.length < 4) throw new Error('密码长度不能少于4位');
@@ -257,6 +258,7 @@ export const auth = {
 
     // 1. 如果有后端服务器（如当前访问云服务器），优先向后端注册
     let backendSuccess = false;
+    let registeredRole = 'user';
     const backendBase = getBackendBaseUrl();
     if (backendBase) {
       try {
@@ -266,7 +268,8 @@ export const auth = {
           body: JSON.stringify({
             username: cleanUser,
             password: cleanPwd,
-            nickname: cleanNick
+            nickname: cleanNick,
+            invite_code: cleanCode
           })
         });
         if (bRes.ok) {
@@ -275,15 +278,18 @@ export const auth = {
             authToken.value = bData.token;
             localStorage.setItem('policy_auth_token', bData.token);
             backendSuccess = true;
+            if (bData.user && bData.user.role) {
+              registeredRole = bData.user.role;
+            }
           }
         } else {
           const errData = await bRes.json().catch(() => ({}));
-          if (errData.detail && (errData.detail.includes('已被注册') || errData.detail.includes('已存在'))) {
+          if (errData.detail) {
             throw new Error(errData.detail);
           }
         }
       } catch (e) {
-        if (e.message && (e.message.includes('已被注册') || e.message.includes('已存在'))) {
+        if (e.message && (e.message.includes('已被注册') || e.message.includes('口令') || e.message.includes('暂停') || e.message.includes('频繁'))) {
           throw e;
         }
       }
@@ -303,6 +309,7 @@ export const auth = {
     const userData = {
       username: cleanUser,
       nickname: cleanNick,
+      role: registeredRole,
       salt,
       pwdHash,
       created_at: new Date().toISOString(),
@@ -362,8 +369,10 @@ export const auth = {
             authToken.value = bData.token;
             localStorage.setItem('policy_auth_token', bData.token);
             userData = {
+              id: bData.user.id,
               username: bData.user.username,
               nickname: bData.user.nickname || bData.user.username,
+              role: bData.user.role || 'user',
               records: (bData.cloud_data && bData.cloud_data.records) || {},
               stats: (bData.cloud_data && bData.cloud_data.stats) || {}
             };
@@ -371,12 +380,12 @@ export const auth = {
           }
         } else {
           const errData = await bRes.json().catch(() => ({}));
-          if (errData.detail && (errData.detail.includes('密码') || errData.detail.includes('不正确'))) {
+          if (errData.detail) {
             throw new Error(errData.detail);
           }
         }
       } catch (e) {
-        if (e.message && (e.message.includes('密码') || e.message.includes('不正确'))) {
+        if (e.message) {
           throw e;
         }
       }
@@ -426,8 +435,10 @@ export const auth = {
 
   saveSession(userData, pwdHash, salt) {
     currentUser.value = {
+      id: userData.id,
       username: userData.username,
-      nickname: userData.nickname || userData.username
+      nickname: userData.nickname || userData.username,
+      role: userData.role || 'user'
     };
     if (pwdHash) {
       authToken.value = pwdHash;
@@ -561,8 +572,37 @@ export const auth = {
     }, delay);
   },
 
-  // 页面加载时自动静默与云端同步
+  // 页面加载时自动静默与云端同步并刷新角色权限
   async initAuth() {
+    if (authToken.value) {
+      const backendBase = getBackendBaseUrl();
+      if (backendBase) {
+        try {
+          const meRes = await fetch(`${backendBase}/api/auth/me`, {
+            headers: { 'Authorization': `Bearer ${authToken.value}` }
+          });
+          if (meRes.ok) {
+            const meData = await meRes.json();
+            if (meData.user) {
+              currentUser.value = {
+                id: meData.user.id,
+                username: meData.user.username,
+                nickname: meData.user.nickname || meData.user.username,
+                role: meData.user.role || 'user'
+              };
+              localStorage.setItem('policy_auth_user', JSON.stringify(currentUser.value));
+            }
+          } else if (meRes.status === 401 || meRes.status === 403) {
+            if (meRes.status === 403) {
+              await this.logout();
+            }
+          }
+        } catch (e) {
+          console.warn('后端连通性检查跳过:', e);
+        }
+      }
+    }
+
     if (!currentUser.value) return;
     try {
       await this.syncNow();

@@ -116,6 +116,8 @@ def init_db():
         salt TEXT NOT NULL,
         nickname TEXT NOT NULL,
         avatar TEXT DEFAULT '',
+        role TEXT DEFAULT 'user', -- 'admin' 或 'user'
+        is_active INTEGER DEFAULT 1, -- 1 为正常，0 为封禁
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         last_login TIMESTAMP DEFAULT CURRENT_TIMESTAMP
     )
@@ -142,11 +144,46 @@ def init_db():
     )
     """)
 
+    # 全局系统安全配置表（防恶意注册与安全开关）
+    cursor.execute("""
+    CREATE TABLE IF NOT EXISTS system_settings (
+        key TEXT PRIMARY KEY,
+        value TEXT NOT NULL,
+        description TEXT DEFAULT '',
+        updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    )
+    """)
+
+    # 初始化默认安全配置
+    default_settings = [
+        ("allow_registration", "true", "全站是否开放新用户注册(true/false)"),
+        ("invite_code_enabled", "true", "是否启用注册邀请码校验(true/false)"),
+        ("invite_code", "2027kaoyan", "注册专属邀请口令")
+    ]
+    for s_key, s_val, s_desc in default_settings:
+        cursor.execute("""
+            INSERT OR IGNORE INTO system_settings (key, value, description)
+            VALUES (?, ?, ?)
+        """, (s_key, s_val, s_desc))
+
     # 检查并补充字段
     cursor.execute("PRAGMA table_info(user_progress)")
     up_cols = [c[1] for c in cursor.fetchall()]
     if "is_killed" not in up_cols:
         cursor.execute("ALTER TABLE user_progress ADD COLUMN is_killed INTEGER DEFAULT 0")
+
+    cursor.execute("PRAGMA table_info(users)")
+    user_cols = [c[1] for c in cursor.fetchall()]
+    if "role" not in user_cols:
+        cursor.execute("ALTER TABLE users ADD COLUMN role TEXT DEFAULT 'user'")
+    if "is_active" not in user_cols:
+        cursor.execute("ALTER TABLE users ADD COLUMN is_active INTEGER DEFAULT 1")
+
+    # 默认将创始用户提升为超级管理员
+    cursor.execute("""
+        UPDATE users SET role = 'admin' 
+        WHERE id = 1 OR username IN ('zjw_student', 'zjw2027', 'admin')
+    """)
 
     conn.commit()
     conn.close()
