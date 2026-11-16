@@ -523,10 +523,12 @@ export const auth = {
           });
           if (sRes.ok) {
             const sData = await sRes.json();
-            if (sData.server_records) {
+            const serverRecs = sData.server_records || sData.merged_records;
+            const serverStats = sData.server_stats || sData.merged_stats || {};
+            if (serverRecs && Object.keys(serverRecs).length > 0) {
               localStore.importData({
-                records: sData.server_records,
-                stats: sData.server_stats || {}
+                records: serverRecs,
+                stats: serverStats
               }, 'merge');
             }
           }

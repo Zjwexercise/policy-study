@@ -125,10 +125,7 @@ def get_user_list(
     admin: dict = Depends(get_current_admin),
     conn: sqlite3.Connection = Depends(get_db)
 ):
-    """获取全站所有注册用户列表及做题情况（自动双向合流 KVDB 公网用户）"""
-    # 自动合并公网注册的考生数据
-    sync_kvdb_users(conn)
-
+    """获取全站所有注册用户列表及做题情况"""
     cursor = conn.cursor()
     cursor.execute("""
         SELECT u.id, u.username, u.phone, u.nickname, u.role, u.is_active, u.created_at, u.last_login,

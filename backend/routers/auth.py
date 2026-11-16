@@ -365,19 +365,29 @@ def sync_records(
             if s_val is None:
                 server_records[k] = in_val
 
-    # 合并学习时长与每日刷题数统计
+    # 合并学习时长与每日刷题数统计（兼容时长秒数字值与复杂字典）
     client_stats = req.client_stats or {}
     for date_key, in_stat in client_stats.items():
         if date_key not in server_stats:
             server_stats[date_key] = in_stat
         else:
-            # 取双方最大时长
-            s_sec = server_stats[date_key].get("duration_seconds", 0)
-            in_sec = in_stat.get("duration_seconds", 0)
-            server_stats[date_key]["duration_seconds"] = max(s_sec, in_sec)
-            s_cnt = server_stats[date_key].get("question_count", 0)
-            in_cnt = in_stat.get("question_count", 0)
-            server_stats[date_key]["question_count"] = max(s_cnt, in_cnt)
+            if isinstance(server_stats[date_key], dict) and isinstance(in_stat, dict):
+                s_sec = server_stats[date_key].get("duration_seconds", 0)
+                in_sec = in_stat.get("duration_seconds", 0)
+                server_stats[date_key]["duration_seconds"] = max(s_sec, in_sec)
+                s_cnt = server_stats[date_key].get("question_count", 0)
+                in_cnt = in_stat.get("question_count", 0)
+                server_stats[date_key]["question_count"] = max(s_cnt, in_cnt)
+            else:
+                try:
+                    s_num = int(server_stats[date_key] or 0)
+                except Exception:
+                    s_num = 0
+                try:
+                    in_num = int(in_stat or 0)
+                except Exception:
+                    in_num = 0
+                server_stats[date_key] = max(s_num, in_num)
 
     # 保存最新合并数据
     now_str = datetime.now().isoformat()
@@ -397,7 +407,9 @@ def sync_records(
         "message": "云端同步完成",
         "updated_at": now_str,
         "merged_records": server_records,
-        "merged_stats": server_stats
+        "server_records": server_records,
+        "merged_stats": server_stats,
+        "server_stats": server_stats
     }
 
 @router.post("/logout")
