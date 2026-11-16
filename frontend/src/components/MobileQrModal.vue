@@ -10,17 +10,24 @@ const props = defineProps({
 
 const emit = defineEmits(['close', 'open-sync']);
 
-const activeTab = ref('lan'); // 'lan' | 'cloud'
+const activeTab = ref('server'); // 'server' | 'cloud' | 'lan'
 const loading = ref(true);
-const lanUrl = ref('');
+const serverUrl = ref('http://47.93.172.13:8000');
 const cloudUrl = ref('https://zjwexercise.github.io/policy-study/');
+const lanUrl = ref('');
 const qrDataUrl = ref('');
 const copied = ref(false);
+
+const getActiveUrl = () => {
+  if (activeTab.value === 'server') return serverUrl.value;
+  if (activeTab.value === 'cloud') return cloudUrl.value;
+  return lanUrl.value || window.location.href;
+};
 
 const updateQr = async () => {
   loading.value = true;
   try {
-    const url = activeTab.value === 'lan' ? (lanUrl.value || window.location.href) : cloudUrl.value;
+    const url = getActiveUrl();
     qrDataUrl.value = await QRCode.toDataURL(url, {
       width: 260,
       margin: 2,
@@ -93,46 +100,60 @@ onMounted(() => {
         <p class="text-xs text-slate-500 mt-0.5">选择适合你当前网络环境的打开方式</p>
       </div>
 
-      <!-- 两种模式切换 Tab -->
-      <div class="flex bg-slate-100 p-1 rounded-xl mb-3 text-xs font-semibold">
+      <!-- 模式切换 Tab -->
+      <div class="flex bg-slate-100 p-1 rounded-xl mb-3 text-xs font-semibold gap-1">
         <button 
-          @click="activeTab = 'lan'"
-          class="flex-1 py-1.5 rounded-lg transition flex items-center justify-center gap-1.5 cursor-pointer"
-          :class="activeTab === 'lan' ? 'bg-white text-rose-600 shadow-xs' : 'text-slate-600 hover:text-slate-900'"
+          @click="activeTab = 'server'"
+          class="flex-1 py-1.5 rounded-lg transition flex items-center justify-center gap-1 cursor-pointer"
+          :class="activeTab === 'server' ? 'bg-white text-rose-600 shadow-xs' : 'text-slate-600 hover:text-slate-900'"
         >
-          <Wifi class="w-3.5 h-3.5" />
-          <span>同 Wi-Fi 直连电脑 (可登录)</span>
+          <span>🚀 云服务器 (推荐)</span>
         </button>
         <button 
           @click="activeTab = 'cloud'"
-          class="flex-1 py-1.5 rounded-lg transition flex items-center justify-center gap-1.5 cursor-pointer"
+          class="flex-1 py-1.5 rounded-lg transition flex items-center justify-center gap-1 cursor-pointer"
           :class="activeTab === 'cloud' ? 'bg-white text-rose-600 shadow-xs' : 'text-slate-600 hover:text-slate-900'"
         >
           <Globe class="w-3.5 h-3.5" />
-          <span>免开机云端版 (无需登录)</span>
+          <span>GitHub Pages</span>
+        </button>
+        <button 
+          @click="activeTab = 'lan'"
+          class="flex-1 py-1.5 rounded-lg transition flex items-center justify-center gap-1 cursor-pointer"
+          :class="activeTab === 'lan' ? 'bg-white text-rose-600 shadow-xs' : 'text-slate-600 hover:text-slate-900'"
+        >
+          <Wifi class="w-3.5 h-3.5" />
+          <span>同 Wi-Fi</span>
         </button>
       </div>
 
       <!-- 模式说明与注意事项 -->
-      <div v-if="activeTab === 'lan'" class="p-2.5 bg-rose-50/70 border border-rose-200 rounded-xl text-left text-xs space-y-1 text-rose-900">
+      <div v-if="activeTab === 'server'" class="p-2.5 bg-rose-50/70 border border-rose-200 rounded-xl text-left text-xs space-y-1 text-rose-900">
         <div class="font-bold flex items-center gap-1 text-rose-700">
-          <AlertTriangle class="w-3.5 h-3.5" />
-          <span>手机打不开 / 连不上的原因排查：</span>
+          <span>🚀 阿里云公网服务器直连：</span>
         </div>
-        <ul class="list-disc list-inside space-y-0.5 text-[11px] text-rose-800">
-          <li><strong>Wi-Fi 检查</strong>：手机必须和电脑连接同一个 Wi-Fi（不能用 4G/5G 手机流量）。</li>
-          <li><strong>代理软件拦截</strong>：若电脑开了 Clash / VPN，请在代理软件中打开<strong>「允许局域网连接 (Allow LAN)」</strong>，或暂退代理。</li>
-          <li><strong>浏览器推荐</strong>：微信扫码若拦截，请用手机自带的 Safari / Chrome 浏览器打开。</li>
-        </ul>
+        <p class="text-[11px] text-rose-800 leading-relaxed">
+          手机用4G/5G流量或自习室Wi-Fi<strong>均可秒级直连</strong>！手机端注册、答题与电脑端后台数据<strong>100% 实时互通同步</strong>，管理后台秒级可见！
+        </p>
       </div>
 
-      <div v-else class="p-2.5 bg-emerald-50/70 border border-emerald-200 rounded-xl text-left text-xs space-y-1 text-emerald-900">
+      <div v-else-if="activeTab === 'cloud'" class="p-2.5 bg-emerald-50/70 border border-emerald-200 rounded-xl text-left text-xs space-y-1 text-emerald-900">
         <div class="font-bold flex items-center gap-1 text-emerald-700">
           <Globe class="w-3.5 h-3.5" />
-          <span>免开机在线版特性：</span>
+          <span>GitHub Pages 镜像特性：</span>
         </div>
         <p class="text-[11px] text-emerald-800 leading-relaxed">
-          手机用流量或任何Wi-Fi都能打开，<strong>电脑关机也能刷题</strong>！题目全量内嵌，<strong>无需登录直接答题</strong>，进度自动保存在手机本地。
+          永久免费公网托管镜像，离线与本地刷题体验极佳。在此注册的考生也会在管理员后台自动合流同步！
+        </p>
+      </div>
+
+      <div v-else class="p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-left text-xs space-y-1 text-slate-800">
+        <div class="font-bold flex items-center gap-1 text-slate-700">
+          <Wifi class="w-3.5 h-3.5" />
+          <span>本地局域网特性：</span>
+        </div>
+        <p class="text-[11px] text-slate-600 leading-relaxed">
+          电脑开机并在同一 Wi-Fi 下访问。适合电脑本地开发调试。
         </p>
       </div>
 
@@ -161,17 +182,17 @@ onMounted(() => {
       <!-- URL Copy -->
       <div class="mt-2 text-left">
         <label class="block text-xs font-medium text-slate-600 mb-1">
-          {{ activeTab === 'lan' ? '局域网访问地址 (需电脑开机+同Wi-Fi)：' : '公网免开机网址 (手机流量随处刷)：' }}
+          当前访问网址：
         </label>
         <div class="flex items-center gap-1.5 bg-slate-100 rounded-lg p-1.5 border border-slate-200">
           <input 
             type="text" 
             readonly 
-            :value="activeTab === 'lan' ? lanUrl : cloudUrl"
+            :value="getActiveUrl()"
             class="text-xs text-slate-700 font-mono px-2 py-1 bg-transparent w-full focus:outline-hidden select-all"
           />
           <button 
-            @click="copyUrl(activeTab === 'lan' ? lanUrl : cloudUrl)"
+            @click="copyUrl(getActiveUrl())"
             class="px-2.5 py-1 text-xs font-medium rounded-md bg-white text-slate-700 border border-slate-200 hover:bg-slate-50 shrink-0 flex items-center gap-1 shadow-2xs transition cursor-pointer"
           >
             <component :is="copied ? Check : Copy" class="w-3 h-3 text-slate-500" />

@@ -178,6 +178,12 @@ def init_db():
         cursor.execute("ALTER TABLE users ADD COLUMN role TEXT DEFAULT 'user'")
     if "is_active" not in user_cols:
         cursor.execute("ALTER TABLE users ADD COLUMN is_active INTEGER DEFAULT 1")
+    if "phone" not in user_cols:
+        cursor.execute("ALTER TABLE users ADD COLUMN phone TEXT DEFAULT ''")
+
+    # 创建常用检索索引
+    cursor.execute("CREATE INDEX IF NOT EXISTS idx_users_phone ON users(phone)")
+    cursor.execute("CREATE INDEX IF NOT EXISTS idx_users_username ON users(username)")
 
     # 默认将创始用户提升为超级管理员
     cursor.execute("""

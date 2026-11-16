@@ -42,6 +42,8 @@ const serverUrlInput = ref(auth.customServerUrl.value || '');
 const serverTesting = ref(false);
 const serverTestResult = ref(null); // { success: boolean, msg: string }
 
+const isPhone = computed(() => /^1[3-9]\d{9}$/.test((username.value || '').trim()));
+
 // 监听弹窗打开，重置表单与消息
 watch(() => props.show, (newVal) => {
   if (newVal) {
@@ -82,7 +84,13 @@ const handleAuth = async () => {
 
   try {
     if (activeTab.value === 'register') {
-      const u = await auth.register(username.value, password.value, nickname.value, inviteCode.value);
+      const u = await auth.register(
+        username.value, 
+        password.value, 
+        nickname.value, 
+        inviteCode.value,
+        isPhone.value ? username.value.trim() : ''
+      );
       successMsg.value = `注册成功！欢迎同学：${u.nickname || u.username}`;
     } else {
       const u = await auth.login(username.value, password.value);
@@ -318,17 +326,26 @@ const testServerConnection = async () => {
           <!-- 表单字段 -->
           <form @submit.prevent="handleAuth" class="space-y-3.5">
             <div>
-              <label class="block text-xs font-semibold text-slate-700 mb-1">用户名 / 账号</label>
+              <div class="flex items-center justify-between mb-1">
+                <label class="block text-xs font-semibold text-slate-700">手机号 / 登录账号</label>
+                <span v-if="isPhone" class="text-[10px] text-emerald-600 font-bold bg-emerald-50 px-1.5 py-0.2 rounded border border-emerald-200">
+                  📱 识别为11位手机号
+                </span>
+              </div>
               <div class="relative">
                 <input 
                   v-model="username"
                   type="text"
                   required
-                  placeholder="例如: zjw2027"
+                  :placeholder="activeTab === 'register' ? '输入11位手机号或常用账号 (如: 13800138000)' : '输入手机号或账号'"
                   class="w-full pl-9 pr-3 py-2 text-sm border border-slate-200 rounded-lg focus:outline-hidden focus:ring-2 focus:ring-rose-500/20 focus:border-rose-500"
                 />
-                <User class="w-4 h-4 text-slate-400 absolute left-3 top-2.5" />
+                <Smartphone v-if="isPhone" class="w-4 h-4 text-emerald-600 absolute left-3 top-2.5" />
+                <User v-else class="w-4 h-4 text-slate-400 absolute left-3 top-2.5" />
               </div>
+              <p class="text-[10px] text-slate-400 mt-1" v-if="activeTab === 'register'">
+                支持直接使用 11 位手机号注册，方便手机电脑跨设备记忆与一键同步
+              </p>
             </div>
 
             <div v-if="activeTab === 'register'">

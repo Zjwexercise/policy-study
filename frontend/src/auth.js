@@ -128,9 +128,13 @@ function getBackendBaseUrl() {
   if (customServerUrl.value) {
     return customServerUrl.value.replace(/\/+$/, '');
   }
-  if (typeof window !== 'undefined' && window.location && window.location.origin) {
-    if (window.location.origin.startsWith('http')) {
-      return window.location.origin;
+  if (typeof window !== 'undefined' && window.location) {
+    const origin = window.location.origin || '';
+    if (window.location.hostname.includes('github.io')) {
+      return '';
+    }
+    if (origin.startsWith('http')) {
+      return origin;
     }
   }
   return '';
@@ -241,14 +245,18 @@ export const auth = {
     }
   },
 
-  // 注册新账号（免开机、免Wi-Fi、手机电脑全网通用）
-  async register(username, password, nickname = '', inviteCode = '') {
+  // 注册新账号（支持11位手机号或普通账号，免开机、免Wi-Fi、手机电脑全网通用）
+  async register(username, password, nickname = '', inviteCode = '', phone = '') {
     const cleanUser = username.trim();
     const cleanPwd = password.trim();
-    const cleanNick = (nickname || '').trim() || cleanUser;
     const cleanCode = (inviteCode || '').trim();
+    let cleanPhone = (phone || '').trim();
+    if (!cleanPhone && /^1[3-9]\d{9}$/.test(cleanUser)) {
+      cleanPhone = cleanUser;
+    }
+    const cleanNick = (nickname || '').trim() || cleanUser;
 
-    if (cleanUser.length < 2) throw new Error('用户名不能少于2个字符');
+    if (cleanUser.length < 2) throw new Error('账号或手机号不能少于2个字符');
     if (cleanPwd.length < 4) throw new Error('密码长度不能少于4位');
 
     syncError.value = '';
@@ -263,6 +271,7 @@ export const auth = {
     // 1. 如果有后端服务器（如当前访问云服务器），优先向后端注册
     let backendSuccess = false;
     let registeredRole = 'user';
+    let serverToken = '';
     const backendBase = getBackendBaseUrl();
     if (backendBase) {
       try {
@@ -271,6 +280,7 @@ export const auth = {
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
             username: cleanUser,
+            phone: cleanPhone,
             password: cleanPwd,
             nickname: cleanNick,
             invite_code: cleanCode
@@ -279,6 +289,7 @@ export const auth = {
         if (bRes.ok) {
           const bData = await bRes.json();
           if (bData.token) {
+            serverToken = bData.token;
             authToken.value = bData.token;
             localStorage.setItem('policy_auth_token', bData.token);
             backendSuccess = true;
@@ -303,7 +314,7 @@ export const auth = {
     try {
       const checkRes = await fetch(cloudUrl, { method: 'GET', cache: 'no-cache' });
       if (checkRes.ok) {
-        throw new Error('该用户名已被注册，请直接登录或换一个用户名');
+        throw new Error('该账号已被注册，请直接登录或换一个用户名/手机号');
       }
     } catch (e) {
       if (e.message.includes('已被注册')) throw e;
@@ -312,6 +323,7 @@ export const auth = {
     // 3. 写入 KVDB (全天候免开机公网同步备份)
     const userData = {
       username: cleanUser,
+      phone: cleanPhone,
       nickname: cleanNick,
       role: registeredRole,
       salt,
@@ -335,17 +347,17 @@ export const auth = {
       }
     }
 
-    // 4. 保存本地会话
-    this.saveSession(userData, pwdHash, salt);
+    // 4. 保存本地会话（绝不将 pwdHash 错误赋值给 authToken）
+    this.saveSession(userData, pwdHash, salt, serverToken);
     return currentUser.value;
   },
 
-  // 账号登录（免开机、免Wi-Fi、跨设备恢复）
+  // 账号登录（支持11位手机号或用户名登录，免开机、免Wi-Fi、跨设备恢复）
   async login(username, password) {
     const cleanUser = username.trim();
     const cleanPwd = password.trim();
 
-    if (!cleanUser) throw new Error('请输入用户名');
+    if (!cleanUser) throw new Error('请输入手机号或账号');
     if (!cleanPwd) throw new Error('请输入密码');
 
     syncError.value = '';
@@ -354,6 +366,7 @@ export const auth = {
 
     let loggedIn = false;
     let userData = null;
+    let serverToken = '';
 
     // 1. 优先尝试本地/云服务器后端登录
     const backendBase = getBackendBaseUrl();
@@ -370,11 +383,13 @@ export const auth = {
         if (bRes.ok) {
           const bData = await bRes.json();
           if (bData.token && bData.user) {
+            serverToken = bData.token;
             authToken.value = bData.token;
             localStorage.setItem('policy_auth_token', bData.token);
             userData = {
               id: bData.user.id,
               username: bData.user.username,
+              phone: bData.user.phone || '',
               nickname: bData.user.nickname || bData.user.username,
               role: bData.user.role || 'user',
               records: (bData.cloud_data && bData.cloud_data.records) || {},
@@ -408,7 +423,7 @@ export const auth = {
       userData = await res.json();
       const calcHash = await sha256Hex(cleanPwd + ':' + (userData.salt || ''));
       if (calcHash !== userData.pwdHash) {
-        throw new Error('用户名或密码不正确，请重新输入');
+        throw new Error('手机号/账号或密码不正确，请重新输入');
       }
       loggedIn = true;
     }
@@ -426,7 +441,7 @@ export const auth = {
     }
 
     // 4. 保存本地会话
-    this.saveSession(userData, userData.pwdHash || '', userData.salt || '');
+    this.saveSession(userData, userData.pwdHash || '', userData.salt || '', serverToken);
 
     // 5. 双向对齐：静默把两端合并后的最全数据推回云端与服务器
     try {
@@ -437,15 +452,19 @@ export const auth = {
     return currentUser.value;
   },
 
-  saveSession(userData, pwdHash, salt) {
+  saveSession(userData, pwdHash, salt, serverToken = '') {
     currentUser.value = {
       id: userData.id,
       username: userData.username,
+      phone: userData.phone || '',
       nickname: userData.nickname || userData.username,
       role: userData.role || 'user'
     };
+    if (serverToken) {
+      authToken.value = serverToken;
+      localStorage.setItem('policy_auth_token', serverToken);
+    }
     if (pwdHash) {
-      authToken.value = pwdHash;
       localStorage.setItem('policy_auth_pwd', pwdHash);
     }
     if (salt) {

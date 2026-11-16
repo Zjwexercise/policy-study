@@ -604,6 +604,18 @@ export const api = {
     return await res.json();
   },
 
+  async syncKvdbUsers() {
+    const token = localStorage.getItem('policy_auth_token') || '';
+    const res = await fetch(`${API_BASE}/admin/users/sync-kvdb`, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    });
+    if (!res.ok) throw new Error('同步公网用户失败');
+    return await res.json();
+  },
+
   async updateUserStatus(userId, isActive) {
     const token = localStorage.getItem('policy_auth_token') || '';
     const res = await fetch(`${API_BASE}/admin/users/${userId}/status`, {

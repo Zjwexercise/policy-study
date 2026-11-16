@@ -42,13 +42,14 @@ def verify_password(password: str, salt: str, expected_hash: str) -> bool:
     return secrets.compare_digest(hash_password(password, salt), expected_hash)
 
 class RegisterRequest(BaseModel):
-    username: str = Field(..., min_length=2, max_length=32, description="登录账号")
+    username: str = Field(..., min_length=2, max_length=32, description="登录账号（支持11位手机号或英文数字账号）")
+    phone: Optional[str] = Field(None, max_length=20, description="手机号码（选填）")
     password: str = Field(..., min_length=4, max_length=64, description="登录密码")
     nickname: Optional[str] = Field(None, max_length=32, description="用户昵称")
     invite_code: Optional[str] = Field(None, max_length=64, description="注册专属邀请口令")
 
 class LoginRequest(BaseModel):
-    username: str = Field(..., description="登录账号")
+    username: str = Field(..., description="登录账号（支持用户名或11位手机号）")
     password: str = Field(..., description="登录密码")
 
 class SyncRequest(BaseModel):
@@ -69,7 +70,7 @@ def get_current_user_from_header(
     token = parts[1]
     cursor = conn.cursor()
     cursor.execute("""
-        SELECT u.id, u.username, u.nickname, u.avatar, u.role, u.is_active, u.created_at
+        SELECT u.id, u.username, u.phone, u.nickname, u.avatar, u.role, u.is_active, u.created_at
         FROM user_tokens t
         JOIN users u ON t.user_id = u.id
         WHERE t.token = ?
@@ -84,6 +85,7 @@ def get_current_user_from_header(
     return {
         "id": row["id"],
         "username": row["username"],
+        "phone": row["phone"] or "",
         "nickname": row["nickname"],
         "avatar": row["avatar"],
         "role": row["role"] or "user",
@@ -136,24 +138,34 @@ def register(
 
     username = req.username.strip()
     if len(username) < 2:
-        raise HTTPException(status_code=400, detail="用户名不能少于2个字符")
+        raise HTTPException(status_code=400, detail="用户名或手机号不能少于2个字符")
     if len(req.password) < 4:
         raise HTTPException(status_code=400, detail="密码长度不能少于4位")
     
+    phone = (req.phone or "").strip()
+    # 自动识别 11 位手机号码（以 1 开头的 11 位纯数字）
+    import re
+    if re.match(r"^1[3-9]\d{9}$", username):
+        if not phone:
+            phone = username
+
     nickname = (req.nickname or "").strip() or username
 
-    # 检查用户名是否已存在
-    cursor.execute("SELECT id FROM users WHERE username = ?", (username,))
+    # 检查用户名或手机号是否已存在
+    if phone:
+        cursor.execute("SELECT id FROM users WHERE username = ? OR (phone != '' AND phone = ?)", (username, phone))
+    else:
+        cursor.execute("SELECT id FROM users WHERE username = ?", (username,))
     if cursor.fetchone():
-        raise HTTPException(status_code=400, detail="该用户名已被注册，请直接登录或换一个用户名")
+        raise HTTPException(status_code=400, detail="该账号或手机号已被注册，请直接登录或换一个号码")
 
     salt = secrets.token_hex(16)
     pwd_hash = hash_password(req.password, salt)
 
     cursor.execute("""
-        INSERT INTO users (username, password_hash, salt, nickname, role, is_active)
-        VALUES (?, ?, ?, ?, 'user', 1)
-    """, (username, pwd_hash, salt, nickname))
+        INSERT INTO users (username, phone, password_hash, salt, nickname, role, is_active)
+        VALUES (?, ?, ?, ?, ?, 'user', 1)
+    """, (username, phone, pwd_hash, salt, nickname))
     user_id = cursor.lastrowid
 
     # 初始化该用户的云端存档
@@ -178,6 +190,7 @@ def register(
         "user": {
             "id": user_id,
             "username": username,
+            "phone": phone,
             "nickname": nickname,
             "role": "user"
         },
@@ -189,19 +202,20 @@ def register(
 
 @router.post("/login")
 def login(req: LoginRequest, conn: sqlite3.Connection = Depends(get_db)):
-    username = req.username.strip()
+    account = req.username.strip()
     cursor = conn.cursor()
+    # 支持用户名或手机号双重免切换直接登录
     cursor.execute("""
-        SELECT id, username, password_hash, salt, nickname, avatar, role, is_active
+        SELECT id, username, phone, password_hash, salt, nickname, avatar, role, is_active
         FROM users 
-        WHERE username = ?
-    """, (username,))
+        WHERE username = ? OR (phone != '' AND phone = ?)
+    """, (account, account))
     row = cursor.fetchone()
     if not row:
-        raise HTTPException(status_code=400, detail="用户名或密码不正确")
+        raise HTTPException(status_code=400, detail="账号或密码不正确")
 
     if not verify_password(req.password, row["salt"], row["password_hash"]):
-        raise HTTPException(status_code=400, detail="用户名或密码不正确")
+        raise HTTPException(status_code=400, detail="账号或密码不正确")
 
     if row["is_active"] == 0:
         raise HTTPException(status_code=403, detail="该账号已被管理员封禁，无法登录系统")
@@ -238,6 +252,7 @@ def login(req: LoginRequest, conn: sqlite3.Connection = Depends(get_db)):
         "user": {
             "id": user_id,
             "username": row["username"],
+            "phone": row["phone"] or "",
             "nickname": row["nickname"],
             "avatar": row["avatar"],
             "role": row["role"] or "user"

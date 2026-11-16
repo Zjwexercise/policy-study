@@ -133,6 +133,19 @@ const confirmDeleteUser = (user) => {
   showDeleteConfirm.value = true;
 };
 
+const handleSyncKvdb = async () => {
+  actionLoading.value = true;
+  try {
+    const res = await api.syncKvdbUsers();
+    showToast(res.message || '已成功与公网云端合流注册考生！');
+    await loadData();
+  } catch (err) {
+    showToast(err.message || '同步公网用户失败', 'error');
+  } finally {
+    actionLoading.value = false;
+  }
+};
+
 const executeDeleteUser = async () => {
   if (!userToDelete.value) return;
   actionLoading.value = true;
@@ -402,11 +415,22 @@ onMounted(() => {
             <input 
               v-model="searchQuery"
               type="text"
-              placeholder="搜索账号 / 昵称 / ID"
+              placeholder="搜索账号 / 昵称 / ID / 手机"
               class="w-full pl-8 pr-3 py-1.5 text-xs bg-slate-50 border border-slate-200 rounded-lg focus:outline-hidden focus:ring-2 focus:ring-rose-500/20 focus:border-rose-500"
             />
             <Search class="w-3.5 h-3.5 text-slate-400 absolute left-2.5 top-2.5" />
           </div>
+
+          <!-- 同步公网注册考生按钮 -->
+          <button
+            @click="handleSyncKvdb"
+            :disabled="actionLoading"
+            class="px-2.5 py-1.5 bg-indigo-50 hover:bg-indigo-100 text-indigo-700 border border-indigo-200 text-xs font-semibold rounded-lg flex items-center gap-1 cursor-pointer transition shadow-2xs"
+            title="合流 GitHub Pages / 手机网页端注册的考生与答题进度"
+          >
+            <RefreshCw class="w-3.5 h-3.5" :class="{ 'animate-spin': actionLoading }" />
+            <span>合流公网考生</span>
+          </button>
         </div>
       </div>
 
@@ -458,6 +482,7 @@ onMounted(() => {
                       <span v-if="user.is_current_admin" class="text-[10px] text-amber-600 bg-amber-100 px-1 py-0.2 rounded font-bold">我</span>
                     </div>
                     <div class="text-[11px] text-slate-400">@{{ user.username }}</div>
+                    <div v-if="user.phone" class="text-[10px] text-emerald-600 font-mono font-medium">📱 {{ user.phone }}</div>
                   </div>
                 </div>
               </td>
