@@ -604,6 +604,9 @@ const handleKeyDown = (e) => {
   // 排除输入框内的按键
   if (['INPUT', 'TEXTAREA'].includes(e.target.tagName)) return;
 
+  // 必须忽略 Ctrl / Command / Alt 组合键（严防选中文本按 Ctrl+C 复制题目、Ctrl+A 全选等误触选项）
+  if (e.ctrlKey || e.metaKey || e.altKey) return;
+
   const key = e.key.toUpperCase();
   if (['A', 'B', 'C', 'D'].includes(key)) {
     e.preventDefault();
