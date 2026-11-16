@@ -562,7 +562,7 @@ export const localStore = {
 
     for (let i = 0; i < localStorage.length; i++) {
       const key = localStorage.key(i);
-      if (key && key.startsWith('policy_')) {
+      if (key && key.startsWith('policy_') && !key.startsWith('policy_auth_')) {
         const val = localStorage.getItem(key);
         data.records[key] = val;
 
@@ -658,6 +658,28 @@ export const localStore = {
     const keys = Object.keys(records);
 
     if (keys.length === 0) {
+      if (mode === 'overwrite') {
+        const keysToRemove = [];
+        for (let i = 0; i < localStorage.length; i++) {
+          const k = localStorage.key(i);
+          if (k && k.startsWith('policy_') && !k.startsWith('policy_auth_')) {
+            keysToRemove.push(k);
+          }
+        }
+        keysToRemove.forEach(k => localStorage.removeItem(k));
+        return {
+          success: true,
+          mode,
+          stats: {
+            merged_total_keys: 0,
+            answer_count: 0,
+            wrong_count: 0,
+            killed_count: 0,
+            notes_count: 0,
+            stars_count: 0
+          }
+        };
+      }
       throw new Error('备份数据中没有包含任何刷题记录');
     }
 
@@ -669,11 +691,11 @@ export const localStore = {
     let starsMerged = 0;
 
     if (mode === 'overwrite') {
-      // 覆盖模式：清空现有全部 policy_ 数据
+      // 覆盖模式：清空现有全部 policy_ 答题数据（保留 policy_auth_ 登录态）
       const keysToRemove = [];
       for (let i = 0; i < localStorage.length; i++) {
         const k = localStorage.key(i);
-        if (k && k.startsWith('policy_')) {
+        if (k && k.startsWith('policy_') && !k.startsWith('policy_auth_')) {
           keysToRemove.push(k);
         }
       }
@@ -681,7 +703,7 @@ export const localStore = {
 
       // 写入全部导入数据
       for (const [key, val] of Object.entries(records)) {
-        if (key.startsWith('policy_')) {
+        if (key.startsWith('policy_') && !key.startsWith('policy_auth_')) {
           localStorage.setItem(key, String(val));
           mergedCount++;
           if (key.startsWith('policy_ans_')) answerMerged++;
@@ -784,12 +806,15 @@ export const localStore = {
     };
   },
 
-  // 清空当前设备所有刷题数据
-  clearAllUserData() {
+  // 清空当前设备所有刷题数据（支持是否保留登录态）
+  clearAllUserData(preserveAuth = false) {
     const keysToRemove = [];
     for (let i = 0; i < localStorage.length; i++) {
       const k = localStorage.key(i);
       if (k && k.startsWith('policy_')) {
+        if (preserveAuth && k.startsWith('policy_auth_')) {
+          continue;
+        }
         keysToRemove.push(k);
       }
     }

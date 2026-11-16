@@ -265,8 +265,9 @@ export const auth = {
     const salt = Math.random().toString(36).slice(2) + Date.now().toString(36);
     const pwdHash = await sha256Hex(cleanPwd + ':' + salt);
 
-    const localExport = localStore.exportData();
-    const studyLogs = JSON.parse(localStorage.getItem('policy_study_logs') || '{}');
+    // 新账号注册：彻底清空前一个账号留在本机的题目缓存，绝不污染新账号（新账号 0 题起步）
+    localStore.clearAllUserData(true);
+    localStorage.removeItem('policy_study_logs');
 
     // 1. 如果有后端服务器（如当前访问云服务器），优先向后端注册
     let backendSuccess = false;
@@ -320,7 +321,7 @@ export const auth = {
       if (e.message.includes('已被注册')) throw e;
     }
 
-    // 3. 写入 KVDB (全天候免开机公网同步备份)
+    // 3. 写入 KVDB (全天候免开机公网同步备份，新账号干净初始0题)
     const userData = {
       username: cleanUser,
       phone: cleanPhone,
@@ -330,8 +331,8 @@ export const auth = {
       pwdHash,
       created_at: new Date().toISOString(),
       last_sync: new Date().toISOString(),
-      records: localExport.records || {},
-      stats: studyLogs || {}
+      records: {},
+      stats: {}
     };
 
     try {
@@ -428,15 +429,18 @@ export const auth = {
       loggedIn = true;
     }
 
-    // 3. 登录成功：智能无损合并云端历史记录到本地
+    // 3. 登录成功：先清空本设备前一个账号残留的答题缓存，再纯净恢复当前登录用户的云端记录
+    localStore.clearAllUserData(true);
+    localStorage.removeItem('policy_study_logs');
+
     if (userData.records && Object.keys(userData.records).length > 0) {
       try {
         localStore.importData({
           records: userData.records,
           stats: userData.stats || {}
-        }, 'merge');
+        }, 'overwrite');
       } catch (e) {
-        console.warn('本地合并云端记录提示:', e);
+        console.warn('本地加载云端记录提示:', e);
       }
     }
 
@@ -483,10 +487,9 @@ export const auth = {
     authToken.value = '';
     syncStatus.value = 'idle';
     syncError.value = '';
-    localStorage.removeItem('policy_auth_user');
-    localStorage.removeItem('policy_auth_token');
-    localStorage.removeItem('policy_auth_pwd');
-    localStorage.removeItem('policy_auth_salt');
+    // 彻底清空本设备所有答题记录与会话，严防下一次登录或注册受到串号污染
+    localStore.clearAllUserData(false);
+    localStorage.removeItem('policy_study_logs');
   },
 
   // 立即执行一次公网云端双向静默同步
