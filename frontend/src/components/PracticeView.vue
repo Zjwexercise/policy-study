@@ -144,7 +144,30 @@ watch(() => props.initialRedo, (newVal) => {
   redoWrongMode.value = !!newVal;
 });
 
-const categories = ['全部', '马原', '毛中特', '习思想', '史纲', '思修', '时政'];
+const defaultCategories = ['全部', '马原', '毛中特', '习思想', '史纲', '思修', '时政'];
+const categories = computed(() => {
+  const wbId = Number(props.workbookId);
+  // 单学科 1000 题分册（34马原、35毛中特、36习思想、37史纲、38思修）：自适应显示章节标签
+  if (wbId >= 34 && wbId <= 38) {
+    const chapters = new Set();
+    questions.value.forEach(q => {
+      if (q.category && q.category !== '综合') {
+        chapters.add(q.category);
+      }
+    });
+    if (chapters.size > 0) {
+      const sorted = Array.from(chapters).sort((a, b) => {
+        if (a === '导论' || a === '序章') return -1;
+        if (b === '导论' || b === '序章') return 1;
+        const numA = parseInt(a.replace(/\D/g, '')) || 0;
+        const numB = parseInt(b.replace(/\D/g, '')) || 0;
+        return numA - numB;
+      });
+      return ['全部', ...sorted];
+    }
+  }
+  return defaultCategories;
+});
 const types = [
   { id: '全部', label: '全部题型' },
   { id: 'single', label: '单选题' },
@@ -221,6 +244,8 @@ const resetSelection = (targetIdx = currentIndex.value) => {
 
 // 监听练习册或筛选改变
 watch(() => props.workbookId, () => {
+  selectedCategory.value = '全部';
+  selectedType.value = '全部';
   loadQuestions();
 });
 
