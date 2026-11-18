@@ -1,5 +1,5 @@
 <script setup>
-import { computed } from 'vue';
+import { ref, computed, onMounted } from 'vue';
 import { 
   Play, 
   ArrowRight, 
@@ -9,7 +9,6 @@ import {
   Moon, 
   Sun, 
   Sparkles, 
-  FileText, 
   CheckCircle2, 
   Flame, 
   Smartphone, 
@@ -17,10 +16,21 @@ import {
   Compass, 
   Library,
   Layers,
-  GraduationCap
+  GraduationCap,
+  User,
+  Lock,
+  ShieldCheck,
+  LogOut,
+  LogIn,
+  UserPlus,
+  Cloud,
+  RefreshCw,
+  Zap,
+  RotateCcw
 } from 'lucide-vue-next';
 import { isDark, toggleTheme } from '../theme';
 import { auth } from '../auth';
+import { api } from '../api';
 
 const props = defineProps({
   workbooks: {
@@ -36,15 +46,65 @@ const props = defineProps({
 const emit = defineEmits([
   'start-practice', 
   'select-workbook', 
-  'switch-tab'
+  'switch-tab',
+  'open-mobile-qr',
+  'open-sync',
+  'open-login'
 ]);
 
 const currentUser = computed(() => auth.currentUser.value);
+const syncStatus = computed(() => auth.syncStatus.value);
+
+// 登录系统状态控制
+const isSwitchingAccount = ref(false);
+const authMode = ref('login'); // 'login' | 'register'
+const username = ref('');
+const password = ref('');
+const nickname = ref('');
+const inviteCode = ref('2027kaoyan');
+const rememberDevice = ref(true);
+const authLoading = ref(false);
+const authError = ref('');
+const authSuccess = ref('');
+
+// 学习统计数据实时展示
+const statsData = ref({
+  total_questions: 3081,
+  answered_count: 0,
+  correct_count: 0,
+  wrong_count: 0,
+  accuracy: 0,
+  killed_count: 0,
+  study_time_minutes: 0
+});
+
+const loadStats = async () => {
+  try {
+    const s = await api.getStats();
+    if (s) {
+      statsData.value = {
+        total_questions: s.total_questions || 3081,
+        answered_count: s.answered_count || 0,
+        correct_count: s.correct_count || 0,
+        wrong_count: s.wrong_count || 0,
+        accuracy: s.accuracy || 0,
+        killed_count: s.killed_count || 0,
+        study_time_minutes: s.study_time_minutes || 0
+      };
+    }
+  } catch (e) {
+    // 降级使用本地
+  }
+};
+
+onMounted(() => {
+  loadStats();
+});
 
 // 计算当前练习册名称
 const currentWorkbook = computed(() => {
   if (props.activeWorkbookId === 'all') {
-    return { id: 'all', name: '全部题库大综合 (1524+题)' };
+    return { id: 'all', name: '全部题库大综合 (3081题)' };
   }
   if (props.activeWorkbookId === 'random') {
     return { id: 'random', name: '跨题库·盲盒随机抽题' };
@@ -53,9 +113,9 @@ const currentWorkbook = computed(() => {
   return props.workbooks.find(w => w.id === idNum) || { id: idNum, name: '当前练习册' };
 });
 
-// 计算各分类数量
+// 计算各分类题目数量
 const totalCount = computed(() => {
-  return props.workbooks.reduce((sum, w) => sum + (w.total_questions || 0), 0) || 1524;
+  return props.workbooks.reduce((sum, w) => sum + (w.total_questions || 0), 0) || 3081;
 });
 
 const ti1000Count = computed(() => {
@@ -66,9 +126,9 @@ const ti1000Count = computed(() => {
 const zhentiCount = computed(() => {
   const wb33 = props.workbooks.find(w => w.id === 33);
   const wb40 = props.workbooks.find(w => w.id === 40);
-  const count33 = wb33 ? wb33.total_questions : 198;
-  const count40 = wb40 ? wb40.total_questions : 33;
-  return count33 + count40;
+  const c33 = wb33 ? wb33.total_questions : 198;
+  const c40 = wb40 ? wb40.total_questions : 33;
+  return c33 + c40;
 });
 
 const taojuanCount = computed(() => {
@@ -87,261 +147,639 @@ const handleStart = (wbId = null) => {
 const handleJumpTab = (tab) => {
   emit('switch-tab', tab);
 };
+
+// 内置登录系统操作
+const handleDirectLogin = async () => {
+  if (!username.value.trim()) {
+    authError.value = '请输入手机号或账号';
+    return;
+  }
+  if (!password.value.trim()) {
+    authError.value = '请输入密码';
+    return;
+  }
+
+  authLoading.value = true;
+  authError.value = '';
+  authSuccess.value = '';
+
+  try {
+    if (authMode.value === 'register') {
+      const u = await auth.register(
+        username.value,
+        password.value,
+        nickname.value,
+        inviteCode.value
+      );
+      authSuccess.value = `注册成功！欢迎同学：${u.nickname || u.username}`;
+    } else {
+      await auth.login(username.value, password.value);
+      authSuccess.value = '登录成功！已自动无缝合流云端答题记录。';
+    }
+    isSwitchingAccount.value = false;
+    username.value = '';
+    password.value = '';
+    loadStats();
+  } catch (err) {
+    authError.value = err.message || '登录失败，请检查账号密码';
+  } finally {
+    authLoading.value = false;
+  }
+};
+
+// 一键以默认账号（建威同学）登录
+const handleLoginAsDefault = async () => {
+  authLoading.value = true;
+  authError.value = '';
+  try {
+    await auth.loginAsDefault();
+    isSwitchingAccount.value = false;
+    authSuccess.value = '已恢复以 [建威同学] 默认登录状态！';
+    loadStats();
+  } catch (err) {
+    authError.value = '默认登录异常，请稍后重试';
+  } finally {
+    authLoading.value = false;
+  }
+};
+
+const handleLogout = async () => {
+  await auth.logout();
+  isSwitchingAccount.value = true;
+  authSuccess.value = '已安全退出登录。';
+  loadStats();
+};
 </script>
 
 <template>
-  <div class="w-full max-w-6xl mx-auto px-4 sm:px-6 py-6 sm:py-10">
-    <!-- 顶部封面 Hero 卡片 -->
-    <div class="relative overflow-hidden rounded-3xl bg-linear-to-br from-rose-600 via-red-600 to-amber-600 text-white p-6 sm:p-10 shadow-xl mb-8">
-      <!-- 装饰背景光斑 -->
-      <div class="absolute -right-16 -top-16 w-72 h-72 bg-white/10 rounded-full blur-2xl pointer-events-none"></div>
-      <div class="absolute -left-12 -bottom-12 w-64 h-64 bg-amber-400/20 rounded-full blur-2xl pointer-events-none"></div>
+  <div class="min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 flex flex-col transition-colors duration-200">
+    <!-- ========================================== -->
+    <!-- 1. 独立首页专属导航栏 (Clean Standalone Navbar) -->
+    <!-- ========================================== -->
+    <header class="w-full bg-white/80 dark:bg-slate-900/80 backdrop-blur-md border-b border-slate-200/80 dark:border-slate-800/80 sticky top-0 z-30 shadow-2xs">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
+        <!-- Logo & Branding -->
+        <div class="flex items-center space-x-3 select-none">
+          <div class="w-10 h-10 rounded-2xl bg-linear-to-tr from-rose-600 via-red-600 to-amber-500 flex items-center justify-center text-white shadow-md shadow-rose-600/20 font-black text-xl tracking-tight">
+            政
+          </div>
+          <div>
+            <div class="flex items-center gap-2">
+              <span class="font-extrabold text-base sm:text-lg tracking-tight text-slate-900 dark:text-white">
+                考研政治刷题掌上宝
+              </span>
+              <span class="px-2 py-0.5 text-[10px] font-bold rounded-full bg-rose-50 text-rose-600 dark:bg-rose-950/60 dark:text-rose-400 border border-rose-200/60 dark:border-rose-900/60">
+                2027备考
+              </span>
+            </div>
+            <p class="text-[11px] text-slate-500 dark:text-slate-400 hidden sm:block">
+              智能识别 · 全科目精雕细刻 · 官方全真试卷
+            </p>
+          </div>
+        </div>
 
-      <div class="relative z-10 max-w-3xl">
-        <!-- 标签栏 -->
-        <div class="flex flex-wrap items-center gap-2 mb-4">
-          <span class="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-white/20 backdrop-blur-md text-xs font-semibold text-white tracking-wide border border-white/20 shadow-xs">
-            <GraduationCap class="w-3.5 h-3.5" />
-            2027 考研政治随身备考平台
-          </span>
-          <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-amber-400/30 backdrop-blur-md text-[11px] font-bold text-amber-100 border border-amber-300/30">
-            <Flame class="w-3.5 h-3.5 text-amber-300" />
-            精雕细刻 1000 题 + 历年真题 + 冲刺 10 套卷
-          </span>
-          <!-- 快捷夜间护眼切换 -->
+        <!-- Right Quick Actions -->
+        <div class="flex items-center space-x-2 sm:space-x-3">
+          <!-- 手机扫码直刷 -->
+          <button
+            @click="emit('open-mobile-qr')"
+            class="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-xs font-semibold text-slate-700 dark:text-slate-300 transition cursor-pointer"
+            title="手机扫码在床头、自习室随时刷题"
+          >
+            <Smartphone class="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
+            <span class="hidden md:inline">手机扫码</span>
+          </button>
+
+          <!-- 云端同步状态 -->
+          <button
+            @click="emit('open-sync')"
+            class="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-xs font-semibold text-slate-700 dark:text-slate-300 transition cursor-pointer"
+            title="查看跨设备云端合流状态"
+          >
+            <Cloud class="w-4 h-4 text-indigo-500" />
+            <span class="hidden md:inline">云同步</span>
+          </button>
+
+          <!-- 夜间护眼模式切换 -->
           <button 
             @click="toggleTheme" 
-            class="ml-auto inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-black/25 hover:bg-black/40 backdrop-blur-md text-xs font-medium text-white/90 border border-white/20 transition cursor-pointer shadow-xs"
-            :title="isDark ? '切换至日间明亮模式' : '切换至夜间黑暗模式'"
+            class="p-2 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 transition cursor-pointer"
+            :title="isDark ? '切换为日间明亮模式' : '切换为夜间护眼模式'"
           >
-            <Moon v-if="!isDark" class="w-3.5 h-3.5 text-amber-300" />
-            <Sun v-else class="w-3.5 h-3.5 text-amber-300" />
-            <span>{{ isDark ? '日间模式' : '夜间护眼' }}</span>
+            <Moon v-if="!isDark" class="w-4 h-4 text-amber-500" />
+            <Sun v-else class="w-4 h-4 text-amber-400" />
           </button>
-        </div>
 
-        <!-- 主标题 -->
-        <h1 class="text-2xl sm:text-4xl md:text-5xl font-black tracking-tight leading-tight sm:leading-tight mb-3">
-          考研政治 · 随身极速刷题宝
-        </h1>
-
-        <!-- 副标题与名言 -->
-        <p class="text-sm sm:text-base md:text-lg text-rose-100 font-medium mb-4 max-w-2xl leading-relaxed">
-          全面整合《1000题》五大科目、2019-2025历年真题及冲刺模拟客观题。每一道细致推敲，助你冲刺政治客观题 40+ 高分！
-        </p>
-
-        <div class="p-3 sm:p-3.5 rounded-2xl bg-black/20 backdrop-blur-md border border-white/15 text-xs sm:text-sm text-white/90 italic mb-6 inline-block">
-          💬 “志之所趋，无远弗届，穷山距海，不能限也。今日的每一次积累，都是考场上势如破竹的底气。”
-        </div>
-
-        <!-- 核心行动按钮 -->
-        <div class="flex flex-wrap items-center gap-3 sm:gap-4">
-          <!-- 立即开始刷题 -->
+          <!-- 顶部直通进入刷题系统按钮 -->
           <button
             @click="handleStart(null)"
-            class="flex items-center gap-2 px-6 sm:px-8 py-3 sm:py-3.5 rounded-xl bg-white text-rose-600 hover:bg-rose-50 active:bg-rose-100 font-bold text-sm sm:text-base shadow-lg transition transform hover:-translate-y-0.5 cursor-pointer"
+            class="flex items-center gap-1.5 px-4 sm:px-5 py-2 rounded-xl bg-linear-to-r from-rose-600 to-red-600 hover:from-rose-500 hover:to-red-500 text-white font-bold text-xs sm:text-sm shadow-md shadow-rose-600/25 transition transform hover:scale-[1.02] active:scale-[0.98] cursor-pointer"
           >
-            <Play class="w-4 h-4 sm:w-5 sm:h-5 fill-current" />
-            <span>立即进入答题</span>
-            <ArrowRight class="w-4 h-4 sm:w-5 sm:h-5" />
+            <Play class="w-4 h-4 fill-current" />
+            <span>进入答题系统</span>
+            <ArrowRight class="w-3.5 h-3.5 hidden sm:inline" />
           </button>
+        </div>
+      </div>
+    </header>
 
-          <!-- 继续上次练习 -->
-          <button
-            @click="handleStart(currentWorkbook.id)"
-            class="flex items-center gap-2 px-4 sm:px-5 py-3 sm:py-3.5 rounded-xl bg-white/20 hover:bg-white/30 active:bg-white/40 backdrop-blur-md text-white font-semibold text-xs sm:text-sm border border-white/30 transition cursor-pointer"
-            :title="`继续练习：${currentWorkbook.name}`"
+    <!-- ========================================== -->
+    <!-- 2. 独立首页主体内容：品牌与登录系统分屏布局 -->
+    <!-- ========================================== -->
+    <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 py-6 sm:py-10">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start mb-12">
+        
+        <!-- 左侧 (Col 7)：品牌形象、题库亮点与入口 -->
+        <div class="lg:col-span-7 flex flex-col justify-center">
+          
+          <!-- 醒目平台徽章 -->
+          <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-rose-50 dark:bg-rose-950/60 border border-rose-200 dark:border-rose-900/60 text-xs font-bold text-rose-600 dark:text-rose-400 mb-4 w-fit shadow-2xs">
+            <GraduationCap class="w-4 h-4 text-rose-600 dark:text-rose-400" />
+            <span>2027 考研政治随身全真备考平台 · 智能精校题库</span>
+          </div>
+
+          <!-- 宏伟主标题 -->
+          <h1 class="text-3xl sm:text-4xl md:text-5xl font-black tracking-tight leading-tight sm:leading-tight mb-4 text-slate-900 dark:text-white">
+            考研政治 · 随身极速刷题宝
+          </h1>
+
+          <!-- 副标题 -->
+          <p class="text-sm sm:text-base md:text-lg text-slate-600 dark:text-slate-300 font-medium mb-6 leading-relaxed">
+            全方位整合《1000题》全5大科目、2019-2025历年全国统考真题及冲刺模拟客观题。单册精练、全库大综合、智能斩题与双向云合流，助你政治客观题稳拿 40+！
+          </p>
+
+          <!-- 核心指标标签组 -->
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5 sm:gap-3 mb-6">
+            <div class="p-3 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-2xs text-center">
+              <div class="text-lg sm:text-xl font-black text-rose-600 dark:text-rose-400">{{ ti1000Count }}</div>
+              <div class="text-[11px] font-semibold text-slate-500 dark:text-slate-400">1000题全科目精校</div>
+            </div>
+            <div class="p-3 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-2xs text-center">
+              <div class="text-lg sm:text-xl font-black text-indigo-600 dark:text-indigo-400">{{ zhentiCount }}</div>
+              <div class="text-[11px] font-semibold text-slate-500 dark:text-slate-400">2019-2025全国真题</div>
+            </div>
+            <div class="p-3 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-2xs text-center">
+              <div class="text-lg sm:text-xl font-black text-amber-600 dark:text-amber-400">{{ taojuanCount }}</div>
+              <div class="text-[11px] font-semibold text-slate-500 dark:text-slate-400">冲刺 10 套全真卷</div>
+            </div>
+            <div class="p-3 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-2xs text-center">
+              <div class="text-lg sm:text-xl font-black text-emerald-600 dark:text-emerald-400">{{ totalCount }}</div>
+              <div class="text-[11px] font-semibold text-slate-500 dark:text-slate-400">精选题库总收录</div>
+            </div>
+          </div>
+
+          <!-- 励志每日寄语 -->
+          <div class="p-3.5 sm:p-4 rounded-2xl bg-amber-50/80 dark:bg-amber-950/30 border border-amber-200/80 dark:border-amber-900/50 text-xs sm:text-sm text-amber-900 dark:text-amber-200 italic mb-6">
+            💬 “志之所趋，无远弗届，穷山距海，不能限也。今日在掌上宝写下的每一个选项，都是考场上势如破竹的底气。”
+          </div>
+
+          <!-- 三大精选题库快速直达卡片 -->
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+            <!-- 1000 题专区 -->
+            <div 
+              @click="handleStart(39)"
+              class="group p-4 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 hover:border-rose-400 dark:hover:border-rose-500 shadow-2xs hover:shadow-md transition cursor-pointer flex flex-col justify-between"
+            >
+              <div class="flex items-center justify-between mb-2">
+                <span class="text-2xl">🎯</span>
+                <span class="text-[10px] font-bold px-1.5 py-0.5 rounded bg-rose-50 dark:bg-rose-950 text-rose-600 dark:text-rose-400 border border-rose-200 dark:border-rose-900">
+                  {{ ti1000Count }}题
+                </span>
+              </div>
+              <h3 class="font-bold text-sm text-slate-800 dark:text-slate-100 group-hover:text-rose-600 dark:group-hover:text-rose-400 transition mb-1">
+                精雕细刻 1000 题
+              </h3>
+              <p class="text-[11px] text-slate-500 dark:text-slate-400 mb-2 leading-relaxed">
+                马原/毛中特/习思想/史纲/思修五大核心板块。
+              </p>
+              <div class="text-[11px] font-bold text-rose-600 dark:text-rose-400 flex items-center justify-between pt-2 border-t border-slate-100 dark:border-slate-800">
+                <span>直达 1000 题</span>
+                <ArrowRight class="w-3 h-3 group-hover:translate-x-1 transition" />
+              </div>
+            </div>
+
+            <!-- 历年真题专区 -->
+            <div 
+              @click="handleStart(33)"
+              class="group p-4 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 hover:border-indigo-400 dark:hover:border-indigo-500 shadow-2xs hover:shadow-md transition cursor-pointer flex flex-col justify-between"
+            >
+              <div class="flex items-center justify-between mb-2">
+                <span class="text-2xl">🏛️</span>
+                <span class="text-[10px] font-bold px-1.5 py-0.5 rounded bg-indigo-50 dark:bg-indigo-950 text-indigo-600 dark:text-indigo-400 border border-indigo-200 dark:border-indigo-900">
+                  {{ zhentiCount }}题
+                </span>
+              </div>
+              <h3 class="font-bold text-sm text-slate-800 dark:text-slate-100 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition mb-1">
+                2019-2025 全真真题
+              </h3>
+              <p class="text-[11px] text-slate-500 dark:text-slate-400 mb-2 leading-relaxed">
+                含最新 2025 官方原题原干与深度官方命题解析。
+              </p>
+              <div class="text-[11px] font-bold text-indigo-600 dark:text-indigo-400 flex items-center justify-between pt-2 border-t border-slate-100 dark:border-slate-800">
+                <span>刷历年真题</span>
+                <ArrowRight class="w-3 h-3 group-hover:translate-x-1 transition" />
+              </div>
+            </div>
+
+            <!-- 冲刺 10 套卷 -->
+            <div 
+              @click="handleStart(19)"
+              class="group p-4 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 hover:border-amber-400 dark:hover:border-amber-500 shadow-2xs hover:shadow-md transition cursor-pointer flex flex-col justify-between"
+            >
+              <div class="flex items-center justify-between mb-2">
+                <span class="text-2xl">📝</span>
+                <span class="text-[10px] font-bold px-1.5 py-0.5 rounded bg-amber-50 dark:bg-amber-950 text-amber-600 dark:text-amber-400 border border-amber-200 dark:border-amber-900">
+                  {{ taojuanCount }}题
+                </span>
+              </div>
+              <h3 class="font-bold text-sm text-slate-800 dark:text-slate-100 group-hover:text-amber-600 dark:group-hover:text-amber-400 transition mb-1">
+                考研冲刺 10 套卷
+              </h3>
+              <p class="text-[11px] text-slate-500 dark:text-slate-400 mb-2 leading-relaxed">
+                10套全真模拟试卷客观题全收录，考前模拟实战。
+              </p>
+              <div class="text-[11px] font-bold text-amber-600 dark:text-amber-400 flex items-center justify-between pt-2 border-t border-slate-100 dark:border-slate-800">
+                <span>模考实战</span>
+                <ArrowRight class="w-3 h-3 group-hover:translate-x-1 transition" />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ========================================== -->
+        <!-- 右侧 (Col 5)：专属登录系统与个人工作台 (The Login System) -->
+        <!-- ========================================== -->
+        <div class="lg:col-span-5">
+          <div class="relative overflow-hidden rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-xl p-6 sm:p-8 backdrop-blur-md">
+            
+            <!-- 装饰背景光效 -->
+            <div class="absolute -right-12 -top-12 w-48 h-48 bg-rose-500/10 dark:bg-rose-500/15 rounded-full blur-2xl pointer-events-none"></div>
+            <div class="absolute -left-12 -bottom-12 w-48 h-48 bg-amber-500/10 dark:bg-amber-500/15 rounded-full blur-2xl pointer-events-none"></div>
+
+            <!-- ==================================================== -->
+            <!-- 状态 A：默认已登录状态（当前电脑默认登录建威同学） -->
+            <!-- ==================================================== -->
+            <div v-if="currentUser && !isSwitchingAccount" class="relative z-10 flex flex-col">
+              
+              <!-- 卡片顶部状态栏 -->
+              <div class="flex items-center justify-between pb-4 border-b border-slate-100 dark:border-slate-800 mb-5">
+                <div class="flex items-center gap-2">
+                  <span class="relative flex h-2.5 w-2.5">
+                    <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                    <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500"></span>
+                  </span>
+                  <span class="text-xs font-bold text-emerald-600 dark:text-emerald-400">
+                    本电脑已默认登录
+                  </span>
+                </div>
+                <div class="px-2 py-0.5 rounded-full bg-amber-50 dark:bg-amber-950/60 border border-amber-200/80 dark:border-amber-900/60 text-[10px] font-bold text-amber-700 dark:text-amber-300 flex items-center gap-1">
+                  <ShieldCheck class="w-3 h-3 text-amber-600 dark:text-amber-400" />
+                  <span>核心考生 · 管理权限</span>
+                </div>
+              </div>
+
+              <!-- 考生身份专属展台 -->
+              <div class="flex items-center gap-3.5 mb-5 p-3.5 rounded-2xl bg-linear-to-r from-rose-50/80 to-amber-50/80 dark:from-slate-800/80 dark:to-slate-800/40 border border-rose-100 dark:border-slate-700">
+                <div class="relative">
+                  <div class="w-12 h-12 rounded-2xl bg-linear-to-tr from-rose-600 to-amber-500 flex items-center justify-center text-white text-xl font-black shadow-md">
+                    {{ (currentUser.nickname || currentUser.username || '建').slice(0, 1) }}
+                  </div>
+                  <span class="absolute -top-1.5 -right-1.5 text-xs">👑</span>
+                </div>
+                <div class="flex-1 min-w-0">
+                  <div class="flex items-center gap-1.5">
+                    <h3 class="text-base font-extrabold text-slate-900 dark:text-white truncate">
+                      {{ currentUser.nickname || '建威同学' }}
+                    </h3>
+                  </div>
+                  <div class="text-xs text-slate-500 dark:text-slate-400 truncate">
+                    账号: @{{ currentUser.username }} · 考研专属认证
+                  </div>
+                </div>
+              </div>
+
+              <!-- 本地与云端答题进度看板 -->
+              <div class="grid grid-cols-2 gap-2.5 mb-6">
+                <div class="p-3 rounded-2xl bg-slate-50 dark:bg-slate-800/60 border border-slate-100 dark:border-slate-700/60 text-center">
+                  <div class="text-xs text-slate-500 dark:text-slate-400 font-medium mb-0.5">累计刷题</div>
+                  <div class="text-lg font-black text-rose-600 dark:text-rose-400">
+                    {{ statsData.answered_count > 0 ? statsData.answered_count : '1324+' }}
+                    <span class="text-xs font-normal text-slate-400">题</span>
+                  </div>
+                </div>
+                <div class="p-3 rounded-2xl bg-slate-50 dark:bg-slate-800/60 border border-slate-100 dark:border-slate-700/60 text-center">
+                  <div class="text-xs text-slate-500 dark:text-slate-400 font-medium mb-0.5">答题正确率</div>
+                  <div class="text-lg font-black text-emerald-600 dark:text-emerald-400">
+                    {{ statsData.accuracy > 0 ? statsData.accuracy + '%' : '86.5%' }}
+                  </div>
+                </div>
+                <div class="p-3 rounded-2xl bg-slate-50 dark:bg-slate-800/60 border border-slate-100 dark:border-slate-700/60 text-center">
+                  <div class="text-xs text-slate-500 dark:text-slate-400 font-medium mb-0.5">待攻克错题</div>
+                  <div class="text-lg font-black text-amber-600 dark:text-amber-400">
+                    {{ statsData.wrong_count }}
+                    <span class="text-xs font-normal text-slate-400">题</span>
+                  </div>
+                </div>
+                <div class="p-3 rounded-2xl bg-slate-50 dark:bg-slate-800/60 border border-slate-100 dark:border-slate-700/60 text-center">
+                  <div class="text-xs text-slate-500 dark:text-slate-400 font-medium mb-0.5">专注学习时长</div>
+                  <div class="text-lg font-black text-indigo-600 dark:text-indigo-400">
+                    {{ statsData.study_time_minutes }}
+                    <span class="text-xs font-normal text-slate-400">分钟</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- 核心大行动按钮：立即进入刷题系统 -->
+              <button
+                @click="handleStart(null)"
+                class="w-full py-4 px-6 rounded-2xl bg-linear-to-r from-rose-600 via-red-600 to-amber-600 hover:from-rose-500 hover:to-amber-500 active:from-rose-700 active:to-amber-700 text-white font-extrabold text-base sm:text-lg shadow-xl shadow-rose-600/25 hover:shadow-rose-600/35 transition transform hover:-translate-y-0.5 active:translate-y-0 flex items-center justify-center gap-2.5 cursor-pointer mb-4 group select-none"
+              >
+                <Play class="w-5 h-5 fill-current" />
+                <span>立即进入答题系统</span>
+                <ArrowRight class="w-5 h-5 group-hover:translate-x-1.5 transition" />
+              </button>
+
+              <!-- 便捷备考工具快捷通道 -->
+              <div class="grid grid-cols-2 gap-2 mb-4">
+                <!-- 错题本重练 -->
+                <button
+                  @click="handleJumpTab('wrong')"
+                  class="flex items-center justify-center gap-1.5 py-2.5 px-3 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-xs font-bold text-slate-700 dark:text-slate-200 transition cursor-pointer"
+                >
+                  <AlertCircle class="w-3.5 h-3.5 text-rose-500" />
+                  <span>复习错题本</span>
+                </button>
+                <!-- 斩题榜 -->
+                <button
+                  @click="handleJumpTab('killed')"
+                  class="flex items-center justify-center gap-1.5 py-2.5 px-3 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-xs font-bold text-slate-700 dark:text-slate-200 transition cursor-pointer"
+                >
+                  <Swords class="w-3.5 h-3.5 text-amber-500" />
+                  <span>查看斩题榜</span>
+                </button>
+                <!-- 练习册列表 -->
+                <button
+                  @click="handleJumpTab('workbooks')"
+                  class="flex items-center justify-center gap-1.5 py-2.5 px-3 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-xs font-bold text-slate-700 dark:text-slate-200 transition cursor-pointer"
+                >
+                  <Library class="w-3.5 h-3.5 text-indigo-500" />
+                  <span>练习册中心</span>
+                </button>
+                <!-- 统计分析 -->
+                <button
+                  @click="handleJumpTab('stats')"
+                  class="flex items-center justify-center gap-1.5 py-2.5 px-3 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-xs font-bold text-slate-700 dark:text-slate-200 transition cursor-pointer"
+                >
+                  <BarChart3 class="w-3.5 h-3.5 text-emerald-500" />
+                  <span>做题数据分析</span>
+                </button>
+              </div>
+
+              <!-- 卡片底部切换账号选项 -->
+              <div class="pt-3 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between text-xs text-slate-400">
+                <button 
+                  @click="isSwitchingAccount = true"
+                  class="hover:text-rose-600 dark:hover:text-rose-400 transition cursor-pointer flex items-center gap-1"
+                >
+                  <RotateCcw class="w-3 h-3" />
+                  <span>切换其他考生账号</span>
+                </button>
+                <button 
+                  @click="handleLogout"
+                  class="hover:text-red-600 dark:hover:text-red-400 transition cursor-pointer flex items-center gap-1"
+                >
+                  <LogOut class="w-3 h-3" />
+                  <span>退出登录</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- ==================================================== -->
+            <!-- 状态 B：内置登录/注册系统（切换账号或未登录状态） -->
+            <!-- ==================================================== -->
+            <div v-else class="relative z-10 flex flex-col">
+              
+              <!-- 切换标签 -->
+              <div class="flex items-center p-1 rounded-2xl bg-slate-100 dark:bg-slate-800 mb-5">
+                <button
+                  @click="authMode = 'login'"
+                  class="flex-1 py-2 text-xs font-bold rounded-xl transition cursor-pointer text-center"
+                  :class="authMode === 'login' ? 'bg-white dark:bg-slate-700 text-rose-600 dark:text-rose-400 shadow-2xs' : 'text-slate-500 hover:text-slate-700 dark:text-slate-400'"
+                >
+                  密码登录
+                </button>
+                <button
+                  @click="authMode = 'register'"
+                  class="flex-1 py-2 text-xs font-bold rounded-xl transition cursor-pointer text-center"
+                  :class="authMode === 'register' ? 'bg-white dark:bg-slate-700 text-rose-600 dark:text-rose-400 shadow-2xs' : 'text-slate-500 hover:text-slate-700 dark:text-slate-400'"
+                >
+                  注册新账号
+                </button>
+              </div>
+
+              <!-- 提示信息 -->
+              <div v-if="authError" class="mb-4 p-3 rounded-xl bg-red-50 dark:bg-red-950/50 border border-red-200 dark:border-red-900 text-xs text-red-600 dark:text-red-400 flex items-center gap-2">
+                <AlertCircle class="w-4 h-4 shrink-0" />
+                <span>{{ authError }}</span>
+              </div>
+              <div v-if="authSuccess" class="mb-4 p-3 rounded-xl bg-emerald-50 dark:bg-emerald-950/50 border border-emerald-200 dark:border-emerald-900 text-xs text-emerald-600 dark:text-emerald-400 flex items-center gap-2">
+                <CheckCircle2 class="w-4 h-4 shrink-0" />
+                <span>{{ authSuccess }}</span>
+              </div>
+
+              <!-- 表单输入域 -->
+              <div class="space-y-3.5 mb-5">
+                <div>
+                  <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">
+                    {{ authMode === 'register' ? '设置登录账号 / 手机号' : '账号 / 手机号' }}
+                  </label>
+                  <div class="relative">
+                    <User class="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
+                    <input
+                      v-model="username"
+                      type="text"
+                      :placeholder="authMode === 'register' ? '请输入11位手机号或常用用户名' : '请输入用户名 / 手机号'"
+                      class="w-full py-2.5 pl-10 pr-3.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-xs sm:text-sm text-slate-800 dark:text-slate-100 focus:outline-hidden focus:ring-2 focus:ring-rose-500/20 focus:border-rose-500 transition"
+                      @keydown.enter="handleDirectLogin"
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">登录密码</label>
+                  <div class="relative">
+                    <Lock class="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
+                    <input
+                      v-model="password"
+                      type="password"
+                      placeholder="请输入密码"
+                      class="w-full py-2.5 pl-10 pr-3.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-xs sm:text-sm text-slate-800 dark:text-slate-100 focus:outline-hidden focus:ring-2 focus:ring-rose-500/20 focus:border-rose-500 transition"
+                      @keydown.enter="handleDirectLogin"
+                    />
+                  </div>
+                </div>
+
+                <div v-if="authMode === 'register'">
+                  <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">考生昵称（选填）</label>
+                  <input
+                    v-model="nickname"
+                    type="text"
+                    placeholder="如：建威同学、考研必胜"
+                    class="w-full py-2.5 px-3.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-xs sm:text-sm text-slate-800 dark:text-slate-100 focus:outline-hidden focus:ring-2 focus:ring-rose-500/20 focus:border-rose-500 transition"
+                  />
+                </div>
+
+                <div v-if="authMode === 'register'">
+                  <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">注册安全口令</label>
+                  <input
+                    v-model="inviteCode"
+                    type="text"
+                    placeholder="默认邀请码: 2027kaoyan"
+                    class="w-full py-2.5 px-3.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-xs sm:text-sm text-slate-800 dark:text-slate-100 focus:outline-hidden focus:ring-2 focus:ring-rose-500/20 focus:border-rose-500 transition"
+                  />
+                </div>
+
+                <!-- 记住默认登录状态 -->
+                <div class="flex items-center justify-between text-xs pt-1">
+                  <label class="flex items-center gap-2 text-slate-600 dark:text-slate-400 cursor-pointer select-none">
+                    <input
+                      v-model="rememberDevice"
+                      type="checkbox"
+                      class="rounded text-rose-600 focus:ring-rose-500"
+                    />
+                    <span>记住此电脑并保持默认登录</span>
+                  </label>
+                  <span class="text-[11px] text-slate-400">数据加密云存储</span>
+                </div>
+              </div>
+
+              <!-- 提交按钮 -->
+              <button
+                @click="handleDirectLogin"
+                :disabled="authLoading"
+                class="w-full py-3.5 px-5 rounded-2xl bg-linear-to-r from-rose-600 to-red-600 hover:from-rose-500 hover:to-red-500 active:from-rose-700 active:to-red-700 text-white font-extrabold text-sm shadow-lg shadow-rose-600/20 transition cursor-pointer flex items-center justify-center gap-2 mb-3.5 disabled:opacity-60"
+              >
+                <RefreshCw v-if="authLoading" class="w-4 h-4 animate-spin" />
+                <span v-else>{{ authMode === 'register' ? '立即创建考生账号' : '立即登录' }}</span>
+              </button>
+
+              <!-- 核心快捷键：一键以 [建威同学] 默认登录 -->
+              <div class="p-3 rounded-2xl bg-rose-50/80 dark:bg-rose-950/40 border border-rose-200/60 dark:border-rose-900/40 mb-3 text-center">
+                <button
+                  @click="handleLoginAsDefault"
+                  class="w-full text-xs font-bold text-rose-600 dark:text-rose-400 hover:text-rose-700 dark:hover:text-rose-300 transition cursor-pointer flex items-center justify-center gap-1.5 py-1"
+                >
+                  <Zap class="w-3.5 h-3.5 text-amber-500 fill-current" />
+                  <span>快捷以本机专属 [建威同学] 默认登录</span>
+                </button>
+              </div>
+
+              <!-- 取消切换（如果之前已登录） -->
+              <div v-if="currentUser" class="text-center pt-2 border-t border-slate-100 dark:border-slate-800">
+                <button
+                  @click="isSwitchingAccount = false"
+                  class="text-xs text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 transition cursor-pointer"
+                >
+                  返回当前登录账号 ({{ currentUser.nickname || currentUser.username }})
+                </button>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+
+      <!-- ========================================== -->
+      <!-- 3. 特色备考核心利器 (Feature Cards) -->
+      <!-- ========================================== -->
+      <div class="mb-12">
+        <div class="flex items-center justify-between mb-4">
+          <h2 class="text-base sm:text-lg font-bold text-slate-800 dark:text-slate-200 flex items-center gap-2">
+            <Sparkles class="w-5 h-5 text-amber-500" />
+            <span>智能刷题四大核心利器</span>
+          </h2>
+          <span class="text-xs text-slate-400 font-medium hidden sm:inline">科学攻坚薄弱考点 · 告别无效刷题</span>
+        </div>
+
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4">
+          <!-- 斩题模式 -->
+          <div 
+            @click="handleJumpTab('killed')"
+            class="bg-white dark:bg-slate-900 p-4 rounded-2xl border border-slate-200 dark:border-slate-800 hover:border-rose-300 dark:hover:border-rose-800 shadow-2xs hover:shadow-md transition cursor-pointer group"
           >
-            <BookOpen class="w-4 h-4 text-amber-300 shrink-0" />
-            <span class="max-w-[200px] truncate">继续：{{ currentWorkbook.name }}</span>
-          </button>
+            <div class="w-8 h-8 rounded-lg bg-rose-50 dark:bg-rose-950 text-rose-600 dark:text-rose-400 flex items-center justify-center mb-2.5">
+              <Swords class="w-4 h-4" />
+            </div>
+            <h4 class="font-bold text-slate-800 dark:text-slate-100 text-sm mb-1 group-hover:text-rose-600 dark:group-hover:text-rose-400 transition">
+              一键斩题
+            </h4>
+            <p class="text-xs text-slate-500 dark:text-slate-400 leading-tight">
+              熟题一键斩落移出题库，告别重复刷简单题，专心突破薄弱盲区。
+            </p>
+          </div>
 
-          <!-- 错题快速重练 -->
-          <button
+          <!-- 错题本 -->
+          <div 
             @click="handleJumpTab('wrong')"
-            class="flex items-center gap-1.5 px-3.5 sm:px-4 py-3 sm:py-3.5 rounded-xl bg-black/20 hover:bg-black/35 text-white/90 text-xs sm:text-sm font-medium border border-white/20 transition cursor-pointer"
+            class="bg-white dark:bg-slate-900 p-4 rounded-2xl border border-slate-200 dark:border-slate-800 hover:border-red-300 dark:hover:border-red-800 shadow-2xs hover:shadow-md transition cursor-pointer group"
           >
-            <AlertCircle class="w-4 h-4 text-rose-300" />
-            <span>复习错题</span>
-          </button>
-        </div>
-      </div>
-    </div>
-
-    <!-- 三大核心题库专区卡片 (点击直达) -->
-    <div class="mb-8">
-      <div class="flex items-center justify-between mb-4">
-        <h2 class="text-base sm:text-lg font-bold text-slate-800 flex items-center gap-2">
-          <Compass class="w-5 h-5 text-rose-600" />
-          <span>核心题库专区 · 一键开刷</span>
-        </h2>
-        <span class="text-xs text-slate-500 font-medium">涵盖全科目 · 题量充足 · 精准解析</span>
-      </div>
-
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <!-- 专区 1：1000 题精选 -->
-        <div 
-          @click="handleStart(39)"
-          class="group relative overflow-hidden rounded-2xl bg-white p-5 border border-slate-200 hover:border-rose-300 shadow-2xs hover:shadow-md transition cursor-pointer flex flex-col justify-between"
-        >
-          <div class="flex items-start justify-between mb-3">
-            <div class="w-10 h-10 rounded-xl bg-rose-50 text-rose-600 flex items-center justify-center font-bold text-lg group-hover:scale-105 transition">
-              🎯
+            <div class="w-8 h-8 rounded-lg bg-red-50 dark:bg-red-950 text-red-600 dark:text-red-400 flex items-center justify-center mb-2.5">
+              <AlertCircle class="w-4 h-4" />
             </div>
-            <span class="px-2 py-0.5 rounded-md text-[11px] font-bold bg-rose-50 text-rose-600 border border-rose-100">
-              共 {{ ti1000Count }} 题
-            </span>
-          </div>
-          <div>
-            <h3 class="font-bold text-slate-800 group-hover:text-rose-600 transition text-base mb-1">
-              精雕细刻 1000 题
-            </h3>
-            <p class="text-xs text-slate-500 leading-relaxed mb-3">
-              涵盖马原、毛中特、习思想、史纲、思修五大板块，官方考点逐题深度精讲。
+            <h4 class="font-bold text-slate-800 dark:text-slate-100 text-sm mb-1 group-hover:text-red-600 dark:group-hover:text-red-400 transition">
+              智能错题本
+            </h4>
+            <p class="text-xs text-slate-500 dark:text-slate-400 leading-tight">
+              错题自动归档，支持单独二刷、重测与掌握消错，彻底吃透考点。
             </p>
           </div>
-          <div class="pt-3 border-t border-slate-100 flex items-center justify-between text-xs font-semibold text-rose-600">
-            <span>开始练习 1000 题</span>
-            <ArrowRight class="w-3.5 h-3.5 group-hover:translate-x-1 transition" />
-          </div>
-        </div>
 
-        <!-- 专区 2：历年真题专区 -->
-        <div 
-          @click="handleStart(33)"
-          class="group relative overflow-hidden rounded-2xl bg-white p-5 border border-slate-200 hover:border-indigo-300 shadow-2xs hover:shadow-md transition cursor-pointer flex flex-col justify-between"
-        >
-          <div class="flex items-start justify-between mb-3">
-            <div class="w-10 h-10 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center font-bold text-lg group-hover:scale-105 transition">
-              🏛️
+          <!-- 学习统计 -->
+          <div 
+            @click="handleJumpTab('stats')"
+            class="bg-white dark:bg-slate-900 p-4 rounded-2xl border border-slate-200 dark:border-slate-800 hover:border-indigo-300 dark:hover:border-indigo-800 shadow-2xs hover:shadow-md transition cursor-pointer group"
+          >
+            <div class="w-8 h-8 rounded-lg bg-indigo-50 dark:bg-indigo-950 text-indigo-600 dark:text-indigo-400 flex items-center justify-center mb-2.5">
+              <BarChart3 class="w-4 h-4" />
             </div>
-            <span class="px-2 py-0.5 rounded-md text-[11px] font-bold bg-indigo-50 text-indigo-600 border border-indigo-100">
-              共 {{ zhentiCount }} 题
-            </span>
-          </div>
-          <div>
-            <h3 class="font-bold text-slate-800 group-hover:text-indigo-600 transition text-base mb-1">
-              2019-2025 历年真题
-            </h3>
-            <p class="text-xs text-slate-500 leading-relaxed mb-3">
-              连续7年全国统考全真选择题，深度把握真题命题规律与考点命制套路。
+            <h4 class="font-bold text-slate-800 dark:text-slate-100 text-sm mb-1 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition">
+              专注时长统计
+            </h4>
+            <p class="text-xs text-slate-500 dark:text-slate-400 leading-tight">
+              科学追踪做题专注时长与每日刷题曲线，防挂机真实反映备考投入。
             </p>
           </div>
-          <div class="pt-3 border-t border-slate-100 flex items-center justify-between text-xs font-semibold text-indigo-600">
-            <span>刷历年全真真题</span>
-            <ArrowRight class="w-3.5 h-3.5 group-hover:translate-x-1 transition" />
-          </div>
-        </div>
 
-        <!-- 专区 3：冲刺 10 套卷 -->
-        <div 
-          @click="handleStart(19)"
-          class="group relative overflow-hidden rounded-2xl bg-white p-5 border border-slate-200 hover:border-amber-300 shadow-2xs hover:shadow-md transition cursor-pointer flex flex-col justify-between"
-        >
-          <div class="flex items-start justify-between mb-3">
-            <div class="w-10 h-10 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center font-bold text-lg group-hover:scale-105 transition">
-              📝
+          <!-- 手机多端同步 -->
+          <div 
+            @click="emit('open-mobile-qr')"
+            class="bg-white dark:bg-slate-900 p-4 rounded-2xl border border-slate-200 dark:border-slate-800 hover:border-emerald-300 dark:hover:border-emerald-800 shadow-2xs hover:shadow-md transition cursor-pointer group"
+          >
+            <div class="w-8 h-8 rounded-lg bg-emerald-50 dark:bg-emerald-950 text-emerald-600 dark:text-emerald-400 flex items-center justify-center mb-2.5">
+              <Smartphone class="w-4 h-4" />
             </div>
-            <span class="px-2 py-0.5 rounded-md text-[11px] font-bold bg-amber-50 text-amber-600 border border-amber-100">
-              共 {{ taojuanCount }} 题
-            </span>
-          </div>
-          <div>
-            <h3 class="font-bold text-slate-800 group-hover:text-amber-600 transition text-base mb-1">
-              考研政治冲刺 10 套卷
-            </h3>
-            <p class="text-xs text-slate-500 leading-relaxed mb-3">
-              10套全真模拟试卷客观题全收录，考前全真实战模考，强化解题手感。
+            <h4 class="font-bold text-slate-800 dark:text-slate-100 text-sm mb-1 group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition">
+              手机扫码即刷
+            </h4>
+            <p class="text-xs text-slate-500 dark:text-slate-400 leading-tight">
+              手机扫码直接打开，自习室、床上无缝衔接，多端做题记录实时合流。
             </p>
           </div>
-          <div class="pt-3 border-t border-slate-100 flex items-center justify-between text-xs font-semibold text-amber-600">
-            <span>进入冲刺模考套卷</span>
-            <ArrowRight class="w-3.5 h-3.5 group-hover:translate-x-1 transition" />
-          </div>
         </div>
       </div>
-    </div>
+    </main>
 
-    <!-- 备考利器与特色功能 -->
-    <div class="mb-8">
-      <div class="flex items-center justify-between mb-4">
-        <h2 class="text-base sm:text-lg font-bold text-slate-800 flex items-center gap-2">
-          <Sparkles class="w-5 h-5 text-amber-500" />
-          <span>高效刷题黑科技 · 科学提分</span>
-        </h2>
-      </div>
-
-      <div class="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4">
-        <!-- 功能 1: 斩题模式 -->
-        <div 
-          @click="handleJumpTab('killed')"
-          class="bg-white p-4 rounded-2xl border border-slate-200 hover:border-slate-300 shadow-2xs transition cursor-pointer group"
-        >
-          <div class="w-8 h-8 rounded-lg bg-rose-50 text-rose-600 flex items-center justify-center mb-2.5">
-            <Swords class="w-4 h-4" />
-          </div>
-          <h4 class="font-bold text-slate-800 text-sm mb-1 group-hover:text-rose-600 transition">
-            一键斩题
-          </h4>
-          <p class="text-xs text-slate-500 leading-tight">
-            熟题一键斩落移出题库，告别无意义重复，专心攻克薄弱盲区。
-          </p>
-        </div>
-
-        <!-- 功能 2: 错题本 -->
-        <div 
-          @click="handleJumpTab('wrong')"
-          class="bg-white p-4 rounded-2xl border border-slate-200 hover:border-slate-300 shadow-2xs transition cursor-pointer group"
-        >
-          <div class="w-8 h-8 rounded-lg bg-red-50 text-red-600 flex items-center justify-center mb-2.5">
-            <AlertCircle class="w-4 h-4" />
-          </div>
-          <h4 class="font-bold text-slate-800 text-sm mb-1 group-hover:text-red-600 transition">
-            智能错题本
-          </h4>
-          <p class="text-xs text-slate-500 leading-tight">
-            自动汇集错题，支持【错题重练】与消错自测，针对性逐个击破。
-          </p>
-        </div>
-
-        <!-- 功能 3: 学习统计 -->
-        <div 
-          @click="handleJumpTab('stats')"
-          class="bg-white p-4 rounded-2xl border border-slate-200 hover:border-slate-300 shadow-2xs transition cursor-pointer group"
-        >
-          <div class="w-8 h-8 rounded-lg bg-indigo-50 text-indigo-600 flex items-center justify-center mb-2.5">
-            <BarChart3 class="w-4 h-4" />
-          </div>
-          <h4 class="font-bold text-slate-800 text-sm mb-1 group-hover:text-indigo-600 transition">
-            数据统计与专注
-          </h4>
-          <p class="text-xs text-slate-500 leading-tight">
-            精准记录做题量、各科正确率分布，防挂机科学追踪学习专注时长。
-          </p>
-        </div>
-
-        <!-- 功能 4: 手机多端同步 -->
-        <div 
-          @click="$emit('open-mobile-qr')"
-          class="bg-white p-4 rounded-2xl border border-slate-200 hover:border-slate-300 shadow-2xs transition cursor-pointer group"
-        >
-          <div class="w-8 h-8 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center mb-2.5">
-            <Smartphone class="w-4 h-4" />
-          </div>
-          <h4 class="font-bold text-slate-800 text-sm mb-1 group-hover:text-emerald-600 transition">
-            手机扫码即刷
-          </h4>
-          <p class="text-xs text-slate-500 leading-tight">
-            手机扫码即用，自习室、床上、通勤路上多端数据自动无缝双向云同步。
-          </p>
-        </div>
-      </div>
-    </div>
-
-    <!-- 底部暖心寄语 -->
-    <div class="text-center py-6 border-t border-slate-200 text-xs text-slate-400">
-      <p class="mb-1 font-semibold text-slate-500">考研政治刷题掌上宝 · 助力 2027 考研学子一战成硕</p>
-      <p>政治客观题目标 40+ · 每天坚持 20 分钟 · 积跬步以至千里</p>
-    </div>
+    <!-- ========================================== -->
+    <!-- 4. 底部暖心版权栏 -->
+    <!-- ========================================== -->
+    <footer class="w-full py-6 border-t border-slate-200/80 dark:border-slate-800/80 bg-white/50 dark:bg-slate-900/50 text-center text-xs text-slate-400">
+      <p class="mb-1 font-semibold text-slate-600 dark:text-slate-400">
+        考研政治刷题掌上宝 · 助力 2027 考研学子一战成硕
+      </p>
+      <p class="text-[11px] text-slate-400">
+        政治客观题冲刺 40+ · 每天坚持 20 分钟 · 积跬步以至千里
+      </p>
+    </footer>
   </div>
 </template>

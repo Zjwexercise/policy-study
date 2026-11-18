@@ -77,7 +77,7 @@ const taojuanWorkbooks = computed(() => {
 });
 
 const tabs = [
-  { id: 'welcome', label: '首页封面', icon: Compass },
+  { id: 'welcome', label: '首页门户', icon: Compass },
   { id: 'practice', label: '刷题练习', icon: BookOpen },
   { id: 'wrong', label: '错题本', icon: AlertCircle },
   { id: 'killed', label: '斩题榜', icon: Swords },
@@ -87,7 +87,7 @@ const tabs = [
 ];
 
 const mobileTabs = [
-  { id: 'welcome', label: '封面', icon: Compass },
+  { id: 'welcome', label: '首页', icon: Compass },
   { id: 'practice', label: '刷题', icon: BookOpen },
   { id: 'wrong', label: '错题', icon: AlertCircle },
   { id: 'killed', label: '斩题', icon: Swords },

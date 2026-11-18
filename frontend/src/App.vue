@@ -127,8 +127,9 @@ onUnmounted(() => {
 
 <template>
   <div class="min-h-screen bg-slate-50 dark:bg-slate-950 flex flex-col selection:bg-rose-500 selection:text-white transition-colors duration-200">
-    <!-- Header Navigation -->
+    <!-- Header Navigation: 仅在进入具体学习板块时显示完整工具栏与练习册下拉 -->
     <HeaderNav 
+      v-if="currentTab !== 'welcome'"
       :current-tab="currentTab"
       :workbooks="workbooks"
       :active-workbook-id="activeWorkbookId"
@@ -141,7 +142,7 @@ onUnmounted(() => {
 
     <!-- Main Content Area -->
     <main class="flex-1 w-full">
-      <!-- 欢迎界面（封面） -->
+      <!-- 欢迎界面（独立首页门户：Logo + 登录系统 + 题库直通） -->
       <WelcomeCoverView 
         v-if="currentTab === 'welcome'"
         :workbooks="workbooks"
@@ -150,6 +151,8 @@ onUnmounted(() => {
         @select-workbook="selectWorkbook"
         @switch-tab="currentTab = $event"
         @open-mobile-qr="showMobileQr = true"
+        @open-sync="showSyncModal = true"
+        @open-login="showLoginModal = true"
       />
 
       <!-- 答题练习页面 -->

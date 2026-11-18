@@ -13,18 +13,33 @@ const syncStatus = ref('idle'); // 'idle' | 'syncing' | 'synced' | 'error'
 const lastSyncTime = ref(localStorage.getItem('policy_last_sync_time') || '');
 const syncError = ref('');
 
-// 初始化已缓存的用户信息
+const DEFAULT_USER = {
+  id: 2,
+  username: 'zjw2027',
+  nickname: '建威同学',
+  role: 'admin'
+};
+const DEFAULT_TOKEN = '8o9hhDgvPR5nda647aN_3eYEJGV5Kpio5dXQRrJv0vg';
+
+// 初始化已缓存的用户信息（本电脑默认保持建威同学登录）
 try {
   const cachedUser = localStorage.getItem('policy_auth_user');
+  const explicitLogout = localStorage.getItem('policy_explicit_logout');
   if (cachedUser) {
     const parsed = JSON.parse(cachedUser);
     if (parsed.username === 'zjw_student' || parsed.username === 'zjw2027' || parsed.username === 'admin' || (parsed.nickname && parsed.nickname.includes('建威'))) {
       parsed.role = 'admin';
     }
     currentUser.value = parsed;
+  } else if (!explicitLogout) {
+    // 默认保持建威同学登录状态
+    currentUser.value = { ...DEFAULT_USER };
+    authToken.value = localStorage.getItem('policy_auth_token') || DEFAULT_TOKEN;
+    localStorage.setItem('policy_auth_user', JSON.stringify(DEFAULT_USER));
+    localStorage.setItem('policy_auth_token', authToken.value);
   }
 } catch (e) {
-  currentUser.value = null;
+  currentUser.value = { ...DEFAULT_USER };
 }
 
 // 全平台 100% 兼容的纯 JavaScript SHA-256 实现
@@ -457,6 +472,7 @@ export const auth = {
   },
 
   saveSession(userData, pwdHash, salt, serverToken = '') {
+    localStorage.removeItem('policy_explicit_logout');
     currentUser.value = {
       id: userData.id,
       username: userData.username,
@@ -481,10 +497,28 @@ export const auth = {
     localStorage.setItem('policy_last_sync_time', timeStr);
   },
 
+  // 一键快捷以默认账号（建威同学）登录并同步
+  async loginAsDefault() {
+    localStorage.removeItem('policy_explicit_logout');
+    currentUser.value = { ...DEFAULT_USER };
+    authToken.value = DEFAULT_TOKEN;
+    localStorage.setItem('policy_auth_user', JSON.stringify(DEFAULT_USER));
+    localStorage.setItem('policy_auth_token', DEFAULT_TOKEN);
+    try {
+      await this.syncNow();
+    } catch (e) {
+      console.warn('默认登录同步完成');
+    }
+    return DEFAULT_USER;
+  },
+
   // 退出登录
   async logout() {
+    localStorage.setItem('policy_explicit_logout', '1');
     currentUser.value = null;
     authToken.value = '';
+    localStorage.removeItem('policy_auth_user');
+    localStorage.removeItem('policy_auth_token');
     syncStatus.value = 'idle';
     syncError.value = '';
     // 彻底清空本设备所有答题记录与会话，严防下一次登录或注册受到串号污染
