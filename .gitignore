@@ -63,3 +63,6 @@ app.ico
 *.bat
 *.vbs
 all_10_set_*.json
+
+*.db-shm
+*.db-wal

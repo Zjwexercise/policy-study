@@ -30,13 +30,16 @@ if [ -d "policy-study" ]; then
     # 备份保护云端用户的最新做题进度与数据库，防止被覆盖
     if [ -f "backend/policy_study.db" ]; then
         cp -p backend/policy_study.db /var/www/policy_study.db.safe_backup 2>/dev/null || true
+        if [ -f "backend/server_migrate.py" ]; then
+            python3 backend/server_migrate.py backup /var/www/user_data_backup.json 2>/dev/null || true
+        fi
     fi
     git remote set-url origin https://ghfast.top/https://github.com/Zjwexercise/policy-study.git 2>/dev/null || true
     git fetch origin main || git fetch --all || true
     git reset --hard origin/main || true
-    # 确保 1000 题全套题库注入且用户答题记录安全保留
-    if [ -f "backend/seed_1000.py" ]; then
-        python3 backend/seed_1000.py 2>/dev/null || python backend/seed_1000.py 2>/dev/null || true
+    # 恢复合并用户做题记录（确保做题进度 100% 毫发无损）
+    if [ -f "/var/www/user_data_backup.json" ] && [ -f "backend/server_migrate.py" ]; then
+        python3 backend/server_migrate.py restore /var/www/user_data_backup.json 2>/dev/null || true
     fi
 else
     if ! git clone https://ghfast.top/https://github.com/Zjwexercise/policy-study.git policy-study; then
