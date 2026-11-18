@@ -1,6 +1,6 @@
 [
   {
-    "id": 32620,
+    "id": 32625,
     "workbook_id": 38,
     "question_num": 1,
     "question_type": "single",
@@ -30,7 +30,7 @@
     "order_num": 1
   },
   {
-    "id": 32621,
+    "id": 32626,
     "workbook_id": 38,
     "question_num": 2,
     "question_type": "single",
@@ -60,7 +60,7 @@
     "order_num": 2
   },
   {
-    "id": 32622,
+    "id": 32627,
     "workbook_id": 38,
     "question_num": 3,
     "question_type": "single",
@@ -90,7 +90,7 @@
     "order_num": 3
   },
   {
-    "id": 32623,
+    "id": 32628,
     "workbook_id": 38,
     "question_num": 4,
     "question_type": "single",
@@ -120,7 +120,7 @@
     "order_num": 4
   },
   {
-    "id": 32624,
+    "id": 32629,
     "workbook_id": 38,
     "question_num": 5,
     "question_type": "single",
@@ -150,7 +150,7 @@
     "order_num": 5
   },
   {
-    "id": 32625,
+    "id": 32630,
     "workbook_id": 38,
     "question_num": 6,
     "question_type": "single",
@@ -180,7 +180,7 @@
     "order_num": 6
   },
   {
-    "id": 32626,
+    "id": 32631,
     "workbook_id": 38,
     "question_num": 7,
     "question_type": "multiple",
@@ -210,7 +210,7 @@
     "order_num": 7
   },
   {
-    "id": 32627,
+    "id": 32632,
     "workbook_id": 38,
     "question_num": 8,
     "question_type": "multiple",
@@ -240,7 +240,7 @@
     "order_num": 8
   },
   {
-    "id": 32628,
+    "id": 32633,
     "workbook_id": 38,
     "question_num": 9,
     "question_type": "multiple",
@@ -270,7 +270,7 @@
     "order_num": 9
   },
   {
-    "id": 32629,
+    "id": 32634,
     "workbook_id": 38,
     "question_num": 10,
     "question_type": "multiple",
@@ -300,7 +300,7 @@
     "order_num": 10
   },
   {
-    "id": 32630,
+    "id": 32635,
     "workbook_id": 38,
     "question_num": 11,
     "question_type": "multiple",
@@ -330,7 +330,7 @@
     "order_num": 11
   },
   {
-    "id": 32631,
+    "id": 32636,
     "workbook_id": 38,
     "question_num": 12,
     "question_type": "multiple",
@@ -360,7 +360,7 @@
     "order_num": 12
   },
   {
-    "id": 32632,
+    "id": 32637,
     "workbook_id": 38,
     "question_num": 13,
     "question_type": "single",
@@ -390,7 +390,7 @@
     "order_num": 13
   },
   {
-    "id": 32633,
+    "id": 32638,
     "workbook_id": 38,
     "question_num": 14,
     "question_type": "single",
@@ -420,7 +420,7 @@
     "order_num": 14
   },
   {
-    "id": 32634,
+    "id": 32639,
     "workbook_id": 38,
     "question_num": 15,
     "question_type": "single",
@@ -450,7 +450,7 @@
     "order_num": 15
   },
   {
-    "id": 32635,
+    "id": 32640,
     "workbook_id": 38,
     "question_num": 16,
     "question_type": "single",
@@ -480,7 +480,7 @@
     "order_num": 16
   },
   {
-    "id": 32636,
+    "id": 32641,
     "workbook_id": 38,
     "question_num": 17,
     "question_type": "multiple",
@@ -510,7 +510,7 @@
     "order_num": 17
   },
   {
-    "id": 32637,
+    "id": 32642,
     "workbook_id": 38,
     "question_num": 18,
     "question_type": "multiple",
@@ -540,7 +540,7 @@
     "order_num": 18
   },
   {
-    "id": 32638,
+    "id": 32643,
     "workbook_id": 38,
     "question_num": 19,
     "question_type": "multiple",
@@ -570,7 +570,7 @@
     "order_num": 19
   },
   {
-    "id": 32639,
+    "id": 32644,
     "workbook_id": 38,
     "question_num": 20,
     "question_type": "single",
@@ -600,7 +600,7 @@
     "order_num": 20
   },
   {
-    "id": 32640,
+    "id": 32645,
     "workbook_id": 38,
     "question_num": 21,
     "question_type": "single",
@@ -630,7 +630,7 @@
     "order_num": 21
   },
   {
-    "id": 32641,
+    "id": 32646,
     "workbook_id": 38,
     "question_num": 22,
     "question_type": "single",
@@ -660,7 +660,7 @@
     "order_num": 22
   },
   {
-    "id": 32642,
+    "id": 32647,
     "workbook_id": 38,
     "question_num": 23,
     "question_type": "single",
@@ -690,7 +690,7 @@
     "order_num": 23
   },
   {
-    "id": 32643,
+    "id": 32648,
     "workbook_id": 38,
     "question_num": 24,
     "question_type": "single",
@@ -720,7 +720,7 @@
     "order_num": 24
   },
   {
-    "id": 32644,
+    "id": 32649,
     "workbook_id": 38,
     "question_num": 25,
     "question_type": "single",
@@ -750,7 +750,7 @@
     "order_num": 25
   },
   {
-    "id": 32645,
+    "id": 32650,
     "workbook_id": 38,
     "question_num": 26,
     "question_type": "single",
@@ -780,7 +780,7 @@
     "order_num": 26
   },
   {
-    "id": 32646,
+    "id": 32651,
     "workbook_id": 38,
     "question_num": 27,
     "question_type": "multiple",
@@ -810,7 +810,7 @@
     "order_num": 27
   },
   {
-    "id": 32647,
+    "id": 32652,
     "workbook_id": 38,
     "question_num": 28,
     "question_type": "multiple",
@@ -840,7 +840,7 @@
     "order_num": 28
   },
   {
-    "id": 32648,
+    "id": 32653,
     "workbook_id": 38,
     "question_num": 29,
     "question_type": "multiple",
@@ -870,7 +870,7 @@
     "order_num": 29
   },
   {
-    "id": 32649,
+    "id": 32654,
     "workbook_id": 38,
     "question_num": 30,
     "question_type": "multiple",
@@ -900,7 +900,7 @@
     "order_num": 30
   },
   {
-    "id": 32650,
+    "id": 32655,
     "workbook_id": 38,
     "question_num": 31,
     "question_type": "multiple",
@@ -930,7 +930,7 @@
     "order_num": 31
   },
   {
-    "id": 32651,
+    "id": 32656,
     "workbook_id": 38,
     "question_num": 32,
     "question_type": "multiple",
@@ -960,7 +960,7 @@
     "order_num": 32
   },
   {
-    "id": 32652,
+    "id": 32657,
     "workbook_id": 38,
     "question_num": 33,
     "question_type": "multiple",
@@ -990,7 +990,7 @@
     "order_num": 33
   },
   {
-    "id": 32653,
+    "id": 32658,
     "workbook_id": 38,
     "question_num": 34,
     "question_type": "multiple",
@@ -1020,7 +1020,7 @@
     "order_num": 34
   },
   {
-    "id": 32654,
+    "id": 32659,
     "workbook_id": 38,
     "question_num": 35,
     "question_type": "multiple",
@@ -1050,7 +1050,7 @@
     "order_num": 35
   },
   {
-    "id": 32655,
+    "id": 32660,
     "workbook_id": 38,
     "question_num": 36,
     "question_type": "single",
@@ -1080,7 +1080,7 @@
     "order_num": 36
   },
   {
-    "id": 32656,
+    "id": 32661,
     "workbook_id": 38,
     "question_num": 37,
     "question_type": "single",
@@ -1110,7 +1110,7 @@
     "order_num": 37
   },
   {
-    "id": 32657,
+    "id": 32662,
     "workbook_id": 38,
     "question_num": 38,
     "question_type": "single",
@@ -1140,7 +1140,7 @@
     "order_num": 38
   },
   {
-    "id": 32658,
+    "id": 32663,
     "workbook_id": 38,
     "question_num": 39,
     "question_type": "single",
@@ -1170,7 +1170,7 @@
     "order_num": 39
   },
   {
-    "id": 32659,
+    "id": 32664,
     "workbook_id": 38,
     "question_num": 40,
     "question_type": "single",
@@ -1200,7 +1200,7 @@
     "order_num": 40
   },
   {
-    "id": 32660,
+    "id": 32665,
     "workbook_id": 38,
     "question_num": 41,
     "question_type": "single",
@@ -1230,7 +1230,7 @@
     "order_num": 41
   },
   {
-    "id": 32661,
+    "id": 32666,
     "workbook_id": 38,
     "question_num": 42,
     "question_type": "single",
@@ -1260,7 +1260,7 @@
     "order_num": 42
   },
   {
-    "id": 32662,
+    "id": 32667,
     "workbook_id": 38,
     "question_num": 43,
     "question_type": "multiple",
@@ -1290,7 +1290,7 @@
     "order_num": 43
   },
   {
-    "id": 32663,
+    "id": 32668,
     "workbook_id": 38,
     "question_num": 44,
     "question_type": "multiple",
@@ -1320,7 +1320,7 @@
     "order_num": 44
   },
   {
-    "id": 32664,
+    "id": 32669,
     "workbook_id": 38,
     "question_num": 45,
     "question_type": "multiple",
@@ -1350,7 +1350,7 @@
     "order_num": 45
   },
   {
-    "id": 32665,
+    "id": 32670,
     "workbook_id": 38,
     "question_num": 46,
     "question_type": "multiple",
@@ -1380,7 +1380,7 @@
     "order_num": 46
   },
   {
-    "id": 32666,
+    "id": 32671,
     "workbook_id": 38,
     "question_num": 47,
     "question_type": "multiple",
@@ -1410,7 +1410,7 @@
     "order_num": 47
   },
   {
-    "id": 32667,
+    "id": 32672,
     "workbook_id": 38,
     "question_num": 48,
     "question_type": "multiple",
@@ -1440,7 +1440,7 @@
     "order_num": 48
   },
   {
-    "id": 32668,
+    "id": 32673,
     "workbook_id": 38,
     "question_num": 49,
     "question_type": "multiple",
@@ -1470,7 +1470,7 @@
     "order_num": 49
   },
   {
-    "id": 32669,
+    "id": 32674,
     "workbook_id": 38,
     "question_num": 50,
     "question_type": "single",
@@ -1500,7 +1500,7 @@
     "order_num": 50
   },
   {
-    "id": 32670,
+    "id": 32675,
     "workbook_id": 38,
     "question_num": 51,
     "question_type": "single",
@@ -1530,7 +1530,7 @@
     "order_num": 51
   },
   {
-    "id": 32671,
+    "id": 32676,
     "workbook_id": 38,
     "question_num": 52,
     "question_type": "single",
@@ -1560,7 +1560,7 @@
     "order_num": 52
   },
   {
-    "id": 32672,
+    "id": 32677,
     "workbook_id": 38,
     "question_num": 53,
     "question_type": "single",
@@ -1590,7 +1590,7 @@
     "order_num": 53
   },
   {
-    "id": 32673,
+    "id": 32678,
     "workbook_id": 38,
     "question_num": 54,
     "question_type": "single",
@@ -1620,7 +1620,7 @@
     "order_num": 54
   },
   {
-    "id": 32674,
+    "id": 32679,
     "workbook_id": 38,
     "question_num": 55,
     "question_type": "single",
@@ -1650,7 +1650,7 @@
     "order_num": 55
   },
   {
-    "id": 32675,
+    "id": 32680,
     "workbook_id": 38,
     "question_num": 56,
     "question_type": "single",
@@ -1680,7 +1680,7 @@
     "order_num": 56
   },
   {
-    "id": 32676,
+    "id": 32681,
     "workbook_id": 38,
     "question_num": 57,
     "question_type": "single",
@@ -1710,7 +1710,7 @@
     "order_num": 57
   },
   {
-    "id": 32677,
+    "id": 32682,
     "workbook_id": 38,
     "question_num": 58,
     "question_type": "single",
@@ -1740,7 +1740,7 @@
     "order_num": 58
   },
   {
-    "id": 32678,
+    "id": 32683,
     "workbook_id": 38,
     "question_num": 59,
     "question_type": "single",
@@ -1770,7 +1770,7 @@
     "order_num": 59
   },
   {
-    "id": 32679,
+    "id": 32684,
     "workbook_id": 38,
     "question_num": 60,
     "question_type": "single",
@@ -1800,7 +1800,7 @@
     "order_num": 60
   },
   {
-    "id": 32680,
+    "id": 32685,
     "workbook_id": 38,
     "question_num": 61,
     "question_type": "single",
@@ -1830,7 +1830,7 @@
     "order_num": 61
   },
   {
-    "id": 32681,
+    "id": 32686,
     "workbook_id": 38,
     "question_num": 62,
     "question_type": "single",
@@ -1860,7 +1860,7 @@
     "order_num": 62
   },
   {
-    "id": 32682,
+    "id": 32687,
     "workbook_id": 38,
     "question_num": 63,
     "question_type": "single",
@@ -1890,7 +1890,7 @@
     "order_num": 63
   },
   {
-    "id": 32683,
+    "id": 32688,
     "workbook_id": 38,
     "question_num": 64,
     "question_type": "single",
@@ -1920,7 +1920,7 @@
     "order_num": 64
   },
   {
-    "id": 32684,
+    "id": 32689,
     "workbook_id": 38,
     "question_num": 65,
     "question_type": "multiple",
@@ -1950,7 +1950,7 @@
     "order_num": 65
   },
   {
-    "id": 32685,
+    "id": 32690,
     "workbook_id": 38,
     "question_num": 66,
     "question_type": "multiple",
@@ -1980,7 +1980,7 @@
     "order_num": 66
   },
   {
-    "id": 32686,
+    "id": 32691,
     "workbook_id": 38,
     "question_num": 67,
     "question_type": "multiple",
@@ -2010,7 +2010,7 @@
     "order_num": 67
   },
   {
-    "id": 32687,
+    "id": 32692,
     "workbook_id": 38,
     "question_num": 68,
     "question_type": "multiple",
@@ -2040,7 +2040,7 @@
     "order_num": 68
   },
   {
-    "id": 32688,
+    "id": 32693,
     "workbook_id": 38,
     "question_num": 69,
     "question_type": "multiple",
@@ -2070,7 +2070,7 @@
     "order_num": 69
   },
   {
-    "id": 32689,
+    "id": 32694,
     "workbook_id": 38,
     "question_num": 70,
     "question_type": "multiple",
@@ -2100,7 +2100,7 @@
     "order_num": 70
   },
   {
-    "id": 32690,
+    "id": 32695,
     "workbook_id": 38,
     "question_num": 71,
     "question_type": "multiple",
@@ -2130,7 +2130,7 @@
     "order_num": 71
   },
   {
-    "id": 32691,
+    "id": 32696,
     "workbook_id": 38,
     "question_num": 72,
     "question_type": "multiple",
@@ -2160,7 +2160,7 @@
     "order_num": 72
   },
   {
-    "id": 32692,
+    "id": 32697,
     "workbook_id": 38,
     "question_num": 73,
     "question_type": "multiple",
@@ -2190,7 +2190,7 @@
     "order_num": 73
   },
   {
-    "id": 32693,
+    "id": 32698,
     "workbook_id": 38,
     "question_num": 74,
     "question_type": "multiple",
@@ -2220,7 +2220,7 @@
     "order_num": 74
   },
   {
-    "id": 32694,
+    "id": 32699,
     "workbook_id": 38,
     "question_num": 75,
     "question_type": "multiple",
@@ -2250,7 +2250,7 @@
     "order_num": 75
   },
   {
-    "id": 32695,
+    "id": 32700,
     "workbook_id": 38,
     "question_num": 76,
     "question_type": "multiple",
@@ -2280,7 +2280,7 @@
     "order_num": 76
   },
   {
-    "id": 32696,
+    "id": 32701,
     "workbook_id": 38,
     "question_num": 77,
     "question_type": "multiple",
@@ -2310,7 +2310,7 @@
     "order_num": 77
   },
   {
-    "id": 32697,
+    "id": 32702,
     "workbook_id": 38,
     "question_num": 78,
     "question_type": "multiple",
@@ -2340,7 +2340,7 @@
     "order_num": 78
   },
   {
-    "id": 32698,
+    "id": 32703,
     "workbook_id": 38,
     "question_num": 79,
     "question_type": "multiple",
@@ -2370,7 +2370,7 @@
     "order_num": 79
   },
   {
-    "id": 32699,
+    "id": 32704,
     "workbook_id": 38,
     "question_num": 80,
     "question_type": "multiple",
@@ -2400,7 +2400,7 @@
     "order_num": 80
   },
   {
-    "id": 32700,
+    "id": 32705,
     "workbook_id": 38,
     "question_num": 81,
     "question_type": "multiple",
@@ -2430,7 +2430,7 @@
     "order_num": 81
   },
   {
-    "id": 32701,
+    "id": 32706,
     "workbook_id": 38,
     "question_num": 82,
     "question_type": "single",
@@ -2460,7 +2460,7 @@
     "order_num": 82
   },
   {
-    "id": 32702,
+    "id": 32707,
     "workbook_id": 38,
     "question_num": 83,
     "question_type": "single",
@@ -2490,7 +2490,7 @@
     "order_num": 83
   },
   {
-    "id": 32703,
+    "id": 32708,
     "workbook_id": 38,
     "question_num": 84,
     "question_type": "single",
@@ -2520,7 +2520,7 @@
     "order_num": 84
   },
   {
-    "id": 32704,
+    "id": 32709,
     "workbook_id": 38,
     "question_num": 85,
     "question_type": "single",
@@ -2550,7 +2550,7 @@
     "order_num": 85
   },
   {
-    "id": 32705,
+    "id": 32710,
     "workbook_id": 38,
     "question_num": 86,
     "question_type": "single",
@@ -2580,7 +2580,7 @@
     "order_num": 86
   },
   {
-    "id": 32706,
+    "id": 32711,
     "workbook_id": 38,
     "question_num": 87,
     "question_type": "single",
@@ -2610,7 +2610,7 @@
     "order_num": 87
   },
   {
-    "id": 32707,
+    "id": 32712,
     "workbook_id": 38,
     "question_num": 88,
     "question_type": "single",
@@ -2640,7 +2640,7 @@
     "order_num": 88
   },
   {
-    "id": 32708,
+    "id": 32713,
     "workbook_id": 38,
     "question_num": 89,
     "question_type": "single",
@@ -2670,7 +2670,7 @@
     "order_num": 89
   },
   {
-    "id": 32709,
+    "id": 32714,
     "workbook_id": 38,
     "question_num": 90,
     "question_type": "single",
@@ -2700,7 +2700,7 @@
     "order_num": 90
   },
   {
-    "id": 32710,
+    "id": 32715,
     "workbook_id": 38,
     "question_num": 91,
     "question_type": "single",
@@ -2730,7 +2730,7 @@
     "order_num": 91
   },
   {
-    "id": 32711,
+    "id": 32716,
     "workbook_id": 38,
     "question_num": 92,
     "question_type": "single",
@@ -2760,7 +2760,7 @@
     "order_num": 92
   },
   {
-    "id": 32712,
+    "id": 32717,
     "workbook_id": 38,
     "question_num": 93,
     "question_type": "single",
@@ -2790,7 +2790,7 @@
     "order_num": 93
   },
   {
-    "id": 32713,
+    "id": 32718,
     "workbook_id": 38,
     "question_num": 94,
     "question_type": "single",
@@ -2820,7 +2820,7 @@
     "order_num": 94
   },
   {
-    "id": 32714,
+    "id": 32719,
     "workbook_id": 38,
     "question_num": 95,
     "question_type": "single",
@@ -2850,7 +2850,7 @@
     "order_num": 95
   },
   {
-    "id": 32715,
+    "id": 32720,
     "workbook_id": 38,
     "question_num": 96,
     "question_type": "single",
@@ -2880,7 +2880,7 @@
     "order_num": 96
   },
   {
-    "id": 32716,
+    "id": 32721,
     "workbook_id": 38,
     "question_num": 97,
     "question_type": "single",
@@ -2910,7 +2910,7 @@
     "order_num": 97
   },
   {
-    "id": 32717,
+    "id": 32722,
     "workbook_id": 38,
     "question_num": 98,
     "question_type": "single",
@@ -2940,7 +2940,7 @@
     "order_num": 98
   },
   {
-    "id": 32718,
+    "id": 32723,
     "workbook_id": 38,
     "question_num": 99,
     "question_type": "single",
@@ -2970,7 +2970,7 @@
     "order_num": 99
   },
   {
-    "id": 32719,
+    "id": 32724,
     "workbook_id": 38,
     "question_num": 100,
     "question_type": "single",
@@ -3000,7 +3000,7 @@
     "order_num": 100
   },
   {
-    "id": 32720,
+    "id": 32725,
     "workbook_id": 38,
     "question_num": 101,
     "question_type": "single",
@@ -3030,7 +3030,7 @@
     "order_num": 101
   },
   {
-    "id": 32721,
+    "id": 32726,
     "workbook_id": 38,
     "question_num": 102,
     "question_type": "single",
@@ -3060,7 +3060,7 @@
     "order_num": 102
   },
   {
-    "id": 32722,
+    "id": 32727,
     "workbook_id": 38,
     "question_num": 103,
     "question_type": "single",
@@ -3090,7 +3090,7 @@
     "order_num": 103
   },
   {
-    "id": 32723,
+    "id": 32728,
     "workbook_id": 38,
     "question_num": 104,
     "question_type": "single",
@@ -3120,7 +3120,7 @@
     "order_num": 104
   },
   {
-    "id": 32724,
+    "id": 32729,
     "workbook_id": 38,
     "question_num": 105,
     "question_type": "single",
@@ -3150,7 +3150,7 @@
     "order_num": 105
   },
   {
-    "id": 32725,
+    "id": 32730,
     "workbook_id": 38,
     "question_num": 106,
     "question_type": "single",
@@ -3180,7 +3180,7 @@
     "order_num": 106
   },
   {
-    "id": 32726,
+    "id": 32731,
     "workbook_id": 38,
     "question_num": 107,
     "question_type": "single",
@@ -3210,7 +3210,7 @@
     "order_num": 107
   },
   {
-    "id": 32727,
+    "id": 32732,
     "workbook_id": 38,
     "question_num": 108,
     "question_type": "single",
@@ -3240,7 +3240,7 @@
     "order_num": 108
   },
   {
-    "id": 32728,
+    "id": 32733,
     "workbook_id": 38,
     "question_num": 109,
     "question_type": "multiple",
@@ -3270,7 +3270,7 @@
     "order_num": 109
   },
   {
-    "id": 32729,
+    "id": 32734,
     "workbook_id": 38,
     "question_num": 110,
     "question_type": "multiple",
@@ -3300,7 +3300,7 @@
     "order_num": 110
   },
   {
-    "id": 32730,
+    "id": 32735,
     "workbook_id": 38,
     "question_num": 111,
     "question_type": "multiple",
@@ -3330,7 +3330,7 @@
     "order_num": 111
   },
   {
-    "id": 32731,
+    "id": 32736,
     "workbook_id": 38,
     "question_num": 112,
     "question_type": "multiple",
@@ -3360,7 +3360,7 @@
     "order_num": 112
   },
   {
-    "id": 32732,
+    "id": 32737,
     "workbook_id": 38,
     "question_num": 113,
     "question_type": "multiple",
@@ -3390,7 +3390,7 @@
     "order_num": 113
   },
   {
-    "id": 32733,
+    "id": 32738,
     "workbook_id": 38,
     "question_num": 114,
     "question_type": "multiple",
@@ -3420,7 +3420,7 @@
     "order_num": 114
   },
   {
-    "id": 32734,
+    "id": 32739,
     "workbook_id": 38,
     "question_num": 115,
     "question_type": "multiple",
@@ -3450,7 +3450,7 @@
     "order_num": 115
   },
   {
-    "id": 32735,
+    "id": 32740,
     "workbook_id": 38,
     "question_num": 116,
     "question_type": "multiple",
@@ -3463,7 +3463,7 @@
       },
       {
         "key": "B",
-        "value": "它鲜明地反对法外特权、法外开恩，对掌握公权力的人形成制约，从而有利于预防特权思想"
+        "value": "它鲜明地反对法外特权、法外开恩，对掌握公权力的人形成制约，从而有利于预防特权思想和各种潜规则的侵蚀"
       },
       {
         "key": "C",
@@ -3474,9 +3474,549 @@
         "value": "任何组织或者个人都不得有超越宪法和法律的特权"
       }
     ],
-    "options_json": "[{\"key\": \"A\", \"value\": \"它可以使人民在依法治国中的主体地位得到尊重和保障，从而有利于增强人民群众的主人翁意识和责任感\"}, {\"key\": \"B\", \"value\": \"它鲜明地反对法外特权、法外开恩，对掌握公权力的人形成制约，从而有利于预防特权思想\"}, {\"key\": \"C\", \"value\": \"公民在法律面前一律平等是我国宪法确立的一项基本原则\"}, {\"key\": \"D\", \"value\": \"任何组织或者个人都不得有超越宪法和法律的特权\"}]",
+    "options_json": "[{\"key\": \"A\", \"value\": \"它可以使人民在依法治国中的主体地位得到尊重和保障，从而有利于增强人民群众的主人翁意识和责任感\"}, {\"key\": \"B\", \"value\": \"它鲜明地反对法外特权、法外开恩，对掌握公权力的人形成制约，从而有利于预防特权思想和各种潜规则的侵蚀\"}, {\"key\": \"C\", \"value\": \"公民在法律面前一律平等是我国宪法确立的一项基本原则\"}, {\"key\": \"D\", \"value\": \"任何组织或者个人都不得有超越宪法和法律的特权\"}]",
     "answer": "ABCD",
     "explanation": "【解析】坚持法律面前人人平等，对于坚持走中国特色社会主义法治道路具有\n十分重要的意义。第一，它可以充分显示中国特色社会主义制度的优越性，使人民在依法治\n国中的主体地位得到尊重和保障，从而有利于增强人民群众的主人翁意识和责任感。第二，\n它鲜明地反对法外特权、法外开恩，对掌握公权力的人形成制约，从而有利于预防特权思想和\n各种潜规则的侵蚀。第三，它鲜明地反对法律适用上的各种歧视，有利于贯彻执行“以事实为\n依据、以法律为准绳”的司法原则。第四，它要求人人都严格依法办事，既充分享有法律规定\n的各项权利，又切实履行法律规定的各项义务，有利于维护法律权威、健全社会主义法治，确\n保实现全面依法治国的总目标。故A、B、C、D四项全选。",
     "order_num": 116
+  },
+  {
+    "id": 32741,
+    "workbook_id": 38,
+    "question_num": 117,
+    "question_type": "multiple",
+    "category": "第6章",
+    "stem": "中国特色社会主义法治道路，是社会主义法治建设成就和经验的集中体现，是建设社会主义\n法治国家的唯一正确道路。它的核心要义是",
+    "options": [
+      {
+        "key": "A",
+        "value": "科学立法、严格执法、公正司法、全民守法"
+      },
+      {
+        "key": "B",
+        "value": "坚持党的领导"
+      },
+      {
+        "key": "C",
+        "value": "坚持中国特色社会主义制度"
+      },
+      {
+        "key": "D",
+        "value": "贯彻中国特色社会主义法治理论"
+      }
+    ],
+    "options_json": "[{\"key\": \"A\", \"value\": \"科学立法、严格执法、公正司法、全民守法\"}, {\"key\": \"B\", \"value\": \"坚持党的领导\"}, {\"key\": \"C\", \"value\": \"坚持中国特色社会主义制度\"}, {\"key\": \"D\", \"value\": \"贯彻中国特色社会主义法治理论\"}]",
+    "answer": "BCD",
+    "explanation": "【解析】中国特色社会主义法治道路，是社会主义法治建设成就和经验的集中体\n现，是建设社会主义法治国家的唯一正确道路。它包括坚持党的领导，坚持中国特色社会主\n义制度，贯彻中国特色社会主义法治理论三个方面的核心要义。故应选B、C、D三项。",
+    "order_num": 117
+  },
+  {
+    "id": 32742,
+    "workbook_id": 38,
+    "question_num": 118,
+    "question_type": "multiple",
+    "category": "第6章",
+    "stem": "养成公平正义思维，有利于增强实现公平正义的责任感，为促进全社会的公平正义而奋斗。\n法治思维中的公平正义主要包括",
+    "options": [
+      {
+        "key": "A",
+        "value": "权利公平"
+      },
+      {
+        "key": "B",
+        "value": "机会公平"
+      },
+      {
+        "key": "C",
+        "value": "规则公平"
+      },
+      {
+        "key": "D",
+        "value": "救济公平"
+      }
+    ],
+    "options_json": "[{\"key\": \"A\", \"value\": \"权利公平\"}, {\"key\": \"B\", \"value\": \"机会公平\"}, {\"key\": \"C\", \"value\": \"规则公平\"}, {\"key\": \"D\", \"value\": \"救济公平\"}]",
+    "answer": "ABCD",
+    "explanation": "【解析】公平正义是指社会的政治利益、经济利益和其他利益在全体社会成员\n之间合理、公平分配和占有。一般来讲，公平正义主要包括权利公平、机会公平、规则公平和\n救济公平。故A、B、C、D四项全选。\n199",
+    "order_num": 118
+  },
+  {
+    "id": 32743,
+    "workbook_id": 38,
+    "question_num": 119,
+    "question_type": "multiple",
+    "category": "第6章",
+    "stem": "2024年1月，最高人民法院发布关于审理涉彩礼纠纷案件适用法律若干问题的规定，就彩礼\n认定范围、彩礼返还比例等作出规定；2025年2月，最高法发布第二批涉彩礼纠纷典型案例，\n以司法裁判树立价值导向，释放鲜明信号：坚决否定借婚姻索取财物。今年的《最高人民法院\n工作报告》显示，涉婚约财产纠纷增幅回落14个百分点。这体现了",
+    "options": [
+      {
+        "key": "A",
+        "value": "法律是道德的基础"
+      },
+      {
+        "key": "B",
+        "value": "道德保障法律的实施"
+      },
+      {
+        "key": "C",
+        "value": "将道德要求贯彻到法治建设中"
+      },
+      {
+        "key": "D",
+        "value": "用法治手段解决道德领域突出问题"
+      }
+    ],
+    "options_json": "[{\"key\": \"A\", \"value\": \"法律是道德的基础\"}, {\"key\": \"B\", \"value\": \"道德保障法律的实施\"}, {\"key\": \"C\", \"value\": \"将道德要求贯彻到法治建设中\"}, {\"key\": \"D\", \"value\": \"用法治手段解决道德领域突出问题\"}]",
+    "answer": "CD",
+    "explanation": "【解析】最高人民法院通过发布关于涉彩礼纠纷案件的法律规定以及典型案例，\n以司法裁判的方式坚决否定这种行为，这体现了把道德层面反对借婚姻索取财物的要求融人\n法治建设当中，通过法律手段来保障道德要求的实现，故C项符合题意。借婚姻索取财物是\n道德领域存在的突出问题，最高人民法院通过制定相关法律规定、发布典型案例等法治手段，\n使得涉婚约财产纠纷增幅回落，这表明了运用法治手段有效地解决了这一道德领域的问题，\n故D项正确。\n道德为法律提供基础，法律保障道德的实施。故AB两项表述错误。",
+    "order_num": 119
+  },
+  {
+    "id": 32744,
+    "workbook_id": 38,
+    "question_num": 120,
+    "question_type": "multiple",
+    "category": "第6章",
+    "stem": "国家权力是人民所赋予的（权为民所赋），应为人民而行使（权为民所用)，因此权力运行必须\n受到有效制约和监督。权力制约原则可以概括为",
+    "options": [
+      {
+        "key": "A",
+        "value": "职权由法定"
+      },
+      {
+        "key": "B",
+        "value": "有权必有责"
+      },
+      {
+        "key": "C",
+        "value": "用权受监督"
+      },
+      {
+        "key": "D",
+        "value": "违法受追究"
+      }
+    ],
+    "options_json": "[{\"key\": \"A\", \"value\": \"职权由法定\"}, {\"key\": \"B\", \"value\": \"有权必有责\"}, {\"key\": \"C\", \"value\": \"用权受监督\"}, {\"key\": \"D\", \"value\": \"违法受追究\"}]",
+    "answer": "ABCD",
+    "explanation": "【解析】权力制约原则可以概括为职权由法定、有权必有责、用权受监督、违法\n受追究四项要求。职权由法定，是指国家机关的职权必须来自法律明确的授予。国家机关必\n须严格依照法律规定的权限范围行使职权，而不得行使法律未授予的权力。有权必有责，是\n指国家机关在获得权力的同时必须承担相应的职责和责任。当发生了属于其职权范围内的\n事项时，国家机关必须履行相应的管理职责。用权受监督，是指国家权力的运行和行使必须\n接受各种形式的监督。要加强党内监督、民主监督、法律监督、舆论监督，让人民监督权力，让\n权力在阳光下运行。违法受追究，是指国家工作人员违法行使权力必须受到法律的追究和制\n裁。故A、B、C、D四项全选。",
+    "order_num": 120
+  },
+  {
+    "id": 32745,
+    "workbook_id": 38,
+    "question_num": 121,
+    "question_type": "multiple",
+    "category": "第6章",
+    "stem": "建设中国特色社会主义法治体系，必须一手抓法治、一手抓德治，坚持依法治国和以德治国相\n五部分\n结合。只有让法治和德治共同发挥作用，才能使法律和道德相辅相成，法治和德治相得益彰。\n法治与德治的区别是",
+    "options": [
+      {
+        "key": "A",
+        "value": "法治强调对任何人都一律平等；德治对不同人群提出有针对性的道德要求"
+      },
+      {
+        "key": "B",
+        "value": "法律规范具有必须遵守的性质；道德规范没有必须遵守的性质"
+      },
+      {
+        "key": "C",
+        "value": "法治发挥作用要以国家强制力为后盾；德治发挥作用要通过人们的内心信念、传统习俗、社会舆论"
+      },
+      {
+        "key": "D",
+        "value": "法治和德治的实现方式和实施载体不同"
+      }
+    ],
+    "options_json": "[{\"key\": \"A\", \"value\": \"法治强调对任何人都一律平等；德治对不同人群提出有针对性的道德要求\"}, {\"key\": \"B\", \"value\": \"法律规范具有必须遵守的性质；道德规范没有必须遵守的性质\"}, {\"key\": \"C\", \"value\": \"法治发挥作用要以国家强制力为后盾；德治发挥作用要通过人们的内心信念、传统习俗、社会舆论\"}, {\"key\": \"D\", \"value\": \"法治和德治的实现方式和实施载体不同\"}]",
+    "answer": "ACD",
+    "explanation": "【解析】建设中国特色社会主义法治体系必须一手抓法治、一手抓德治，坚持依\n法治国和以德治国相结合。只有让法治和德治共同发挥作用，才能使法律和道德相辅相成，\n法治和德治相得益彰。法治是治国理政的基本方式，依法治国是基本方略，法治具有根本性、\n决定性和统一性，它强调对任何人都一律平等，任何人都必须遵守法律。德治是治国理政的\n重要方式，以德治国就是通过在全社会培育、弘扬社会主义核心价值观和社会主义道德，对不\n同人群提出有针对性的道德要求。法治和德治对社会成员都具有约束作用，法律规范和道德\n规范也都具有必须遵守的性质，所以B项不对。但约束作用的内在要求和表现形式不同，行\n为人违反两种规范以后承担的后果也不相同。法治发挥作用要以国家强制力为后盾，主要依\n靠法律的预测作用、惩罚作用、威镊作用和预防作用对公民和社会组织的行为进行约束，并对\n违反法律的行为追究法律责任；德治发挥作用要通过人们的内心信念、传统习俗、社会舆论等\n对公民和社会组织进行教化，并对违反道德的行为进行遣责。法治和德治的实现方式和实施\n第五\n载体不同。法治主要依靠制定和实施法律规范的形式来推进和实施，国家要保护什么、不保\n护什么，倡导什么、禁止什么，都得有明确的法律依据，实行法有禁止不得为，体现的是规则之\n部\n治。德治主要依靠培育和弘扬道德等途径来推进和实施，道德是内心的法律，以价值、精神和\n分\n理念等形式表现出来，引导人们自觉地在行动上符合道德才可为，违反道德不可为。故应选\nA、C、D三项。",
+    "order_num": 121
+  },
+  {
+    "id": 32746,
+    "workbook_id": 38,
+    "question_num": 122,
+    "question_type": "multiple",
+    "category": "第6章",
+    "stem": "习近平说：“法治和人治问题是人类政治文明史上的一个基本问题，也是各国在实现现代化过\n程中必须面对和解决的一个重大问题。综观世界近现代史，凡是顺利实现现代化的国家，没\n有一个不是较好解决了法治和人治问题的。相反，一些国家虽然也一度实现快速发展，但并\n没有顺利迈进现代化的门槛，而是陷人这样或那样的“陷阱”，出现经济社会发展停滞甚至倒\n退的局面。后一种情况很大程度上与法治不彰有关。”法治思维与人治思维的区别，集中体现\n在法治思维",
+    "options": [
+      {
+        "key": "A",
+        "value": "认为国家的法律是治国理政的基本依据，也是行为的根本指南"
+      },
+      {
+        "key": "B",
+        "value": "以一般性、普遍性的平等对待方式调节社会关系，解决矛盾纠纷"
+      },
+      {
+        "key": "C",
+        "value": "强调集中社会大众的意志来进行决策和判断，是一种“多数人之治”的民主思维"
+      },
+      {
+        "key": "D",
+        "value": "具有较多的适合国情的法律"
+      }
+    ],
+    "options_json": "[{\"key\": \"A\", \"value\": \"认为国家的法律是治国理政的基本依据，也是行为的根本指南\"}, {\"key\": \"B\", \"value\": \"以一般性、普遍性的平等对待方式调节社会关系，解决矛盾纠纷\"}, {\"key\": \"C\", \"value\": \"强调集中社会大众的意志来进行决策和判断，是一种“多数人之治”的民主思维\"}, {\"key\": \"D\", \"value\": \"具有较多的适合国情的法律\"}]",
+    "answer": "ABC",
+    "explanation": "【解析】法治思维与人治思维的区别，集中体现在四个方面：一是在依据上，法治\n思维认为国家的法律是治国理政的基本依据，也是行为的根本指南。处理法律问题要以事实\n为根据、以法律为准绳；而人治思维则主张凭借个人尤其是掌权者、领导人的个人魅力、德性\n和才智来治国平天下。二是在方式上，法治思维以一般性、普遍性的平等对待方式调节社会\n关系，解决矛盾纠纷，坚持法律面前人人平等原则，反对因人而异和亲疏远近，具有稳定性和\n一贯性；而人治漠视规则的普遍适用性，按照个人意志和感情进行治理，治人者以言代法，言\n出法随，朝令夕改，具有极大的任意性和非理性。三是在价值上，法治思维强调集中社会大众\n的意志来进行决策和判断，是一种“多数人之治”的民主思维，而且这种民主是建立在法律的\n基础上的，避免陷人无政府主义或以民主之名搞乱社会。而人治思维是少数人说了算的专断\n思维，虽然有时也强调集思广益，如通过开会讨论、搞群众运动的形式进行治理或作出决定，\n但主要表现为少数个人的集权专断。四是在标准上，法治思维与人治思维的分水岭不在于有\n没有法律或者法律的多寡与好坏，而在于最高的权威究竟是法律还是个人。所以D项并非法\n200",
+    "order_num": 122
+  },
+  {
+    "id": 32747,
+    "workbook_id": 38,
+    "question_num": 123,
+    "question_type": "multiple",
+    "category": "第6章",
+    "stem": "法律权威是就国家和社会管理过程中法律的地位和作用而言的，是指法的不可违抗性。法律\n权威意味着",
+    "options": [
+      {
+        "key": "A",
+        "value": "法律在众多社会规范中居于主导地位"
+      },
+      {
+        "key": "B",
+        "value": "不得以政策、道德和习俗等社会规范代替法律"
+      },
+      {
+        "key": "C",
+        "value": "党和人民共同意志的权威"
+      },
+      {
+        "key": "D",
+        "value": "社会主体的一切行为都要以法律为最高权威"
+      }
+    ],
+    "options_json": "[{\"key\": \"A\", \"value\": \"法律在众多社会规范中居于主导地位\"}, {\"key\": \"B\", \"value\": \"不得以政策、道德和习俗等社会规范代替法律\"}, {\"key\": \"C\", \"value\": \"党和人民共同意志的权威\"}, {\"key\": \"D\", \"value\": \"社会主体的一切行为都要以法律为最高权威\"}]",
+    "answer": "ABCD",
+    "explanation": "【解析】法律权威是就国家和社会管理过程中法律的地位和作用而言的，是指\n法的不可违抗性。法律权威意味着法律在众多社会规范中居于主导地位，不得以政策、道德\n和习俗等社会规范代替法律；社会主体的一切行为都要以法律为最高权威。树立法律权威，\n就是树立党和人民共同意志的权威。捍卫法律尊严，就是捍卫党和人民共同意志的尊严。故\nA、B、C、D四项全选。",
+    "order_num": 123
+  },
+  {
+    "id": 32748,
+    "workbook_id": 38,
+    "question_num": 124,
+    "question_type": "multiple",
+    "category": "第6章",
+    "stem": "法律权利和法律义务的关系，就像一枚硬币的两面，密不可分。二者之间关系的正确表述是",
+    "options": [
+      {
+        "key": "A",
+        "value": "法律权利与法律义务具有二重性"
+      },
+      {
+        "key": "B",
+        "value": "法律权利与法律义务是目的与手段的关系"
+      },
+      {
+        "key": "C",
+        "value": "法律权利与法律义务具有顺序性"
+      },
+      {
+        "key": "D",
+        "value": "法律权利与法律义务是相互依存的关系"
+      }
+    ],
+    "options_json": "[{\"key\": \"A\", \"value\": \"法律权利与法律义务具有二重性\"}, {\"key\": \"B\", \"value\": \"法律权利与法律义务是目的与手段的关系\"}, {\"key\": \"C\", \"value\": \"法律权利与法律义务具有顺序性\"}, {\"key\": \"D\", \"value\": \"法律权利与法律义务是相互依存的关系\"}]",
+    "answer": "ABD",
+    "explanation": "【解析】本题考查的是法律权利与法律义务的关系。法律权利和法律义务是相\n互依存的关系，法律权利的实现必须以相应法律义务的履行为条件，同样，法律义务的设定和\n履行也必须以法律权利的行使为根据，法治社会中不存在没有权利根据的法律义务。其次，\n法律权利与法律义务是目的与手段的关系。离开了法律权利，法律义务就失去了履行的价值\n和动力。同样，离开了法律义务，法律权利也形同虚设。最后，法律权利和法律义务还具有二\n重性的关系，即一个行为可以同时是权利行为和义务行为。故A、B、D三项正确。\n法律权利与义务没有先后次序性。所以C项为干扰项。",
+    "order_num": 124
+  },
+  {
+    "id": 32749,
+    "workbook_id": 38,
+    "question_num": 125,
+    "question_type": "multiple",
+    "category": "第6章",
+    "stem": "把党的领导贯彻到依法治国全过程和各方面，是我国社会主义法治建设的一条基本经验。党\n的领导是",
+    "options": [
+      {
+        "key": "A",
+        "value": "社会主义法治最根本的保证"
+      },
+      {
+        "key": "B",
+        "value": "中国特色社会主义法治之魂"
+      },
+      {
+        "key": "C",
+        "value": "我们的法治同西方资本主义国家的法治最大的区别"
+      },
+      {
+        "key": "D",
+        "value": "维护社会公平正义的最后一道防线"
+      }
+    ],
+    "options_json": "[{\"key\": \"A\", \"value\": \"社会主义法治最根本的保证\"}, {\"key\": \"B\", \"value\": \"中国特色社会主义法治之魂\"}, {\"key\": \"C\", \"value\": \"我们的法治同西方资本主义国家的法治最大的区别\"}, {\"key\": \"D\", \"value\": \"维护社会公平正义的最后一道防线\"}]",
+    "answer": "ABC",
+    "explanation": "【解析】党的领导是社会主义法治最根本的保证。把党的领导贯彻到依法治国\n义国家，党的领导是中国特色社会主义法治之魂，这是我们的法治同西方资本主义国家的法\n治最大的区别。国际国内环境越是复杂，改革开放和社会主义现代化建设任务越是繁重，越\n要运用法治思维和法治手段巩固执政地位、改善执政方式、提高执政能力，保证党和国家长治\n久安。故应选A、B、C三项。\n公正司法是维护社会公平正义的最后一道防线，D项为干扰项。",
+    "order_num": 125
+  },
+  {
+    "id": 32750,
+    "workbook_id": 38,
+    "question_num": 126,
+    "question_type": "multiple",
+    "category": "第6章",
+    "stem": "2020年11月，中央全面依法治国工作会议正式提出习近平法治思想，并将其确立为全面依法\n治国的指导思想和根本遵循。习近平法治思想是经过长期发展而形成的内涵丰富、论述深刻、\n逻辑严密、系统完备的法治理论体系，为建设法治中国指明了前进方向，在中国特色社会主义\n法治建设进程中具有重大政治意义、理论意义、实践意义。习近平法治思想",
+    "options": [
+      {
+        "key": "A",
+        "value": "深刻回答了新时代为什么实行全面依法治国、怎样实行全面依法治国等一系列重大问题第五"
+      },
+      {
+        "key": "B",
+        "value": "是顺应实现中华民族伟大复兴时代要求应运而生的重大理论创新成果部分"
+      },
+      {
+        "key": "C",
+        "value": "是马克思主义法治理论中国化最新成果"
+      },
+      {
+        "key": "D",
+        "value": "是习近平新时代中国特色社会主义思想的重要组成部分"
+      }
+    ],
+    "options_json": "[{\"key\": \"A\", \"value\": \"深刻回答了新时代为什么实行全面依法治国、怎样实行全面依法治国等一系列重大问题第五\"}, {\"key\": \"B\", \"value\": \"是顺应实现中华民族伟大复兴时代要求应运而生的重大理论创新成果部分\"}, {\"key\": \"C\", \"value\": \"是马克思主义法治理论中国化最新成果\"}, {\"key\": \"D\", \"value\": \"是习近平新时代中国特色社会主义思想的重要组成部分\"}]",
+    "answer": "ABCD",
+    "explanation": "【解析】习近平法治思想是经过长期发展而形成的内涵丰富、论述深刻、逻辑严\n密、系统完备的法治理论体系，为建设法治中国指明了前进方向，在中国特色社会主义法治建\n行全面依法治国等一系列重大问题，是顺应实现中华民族伟大复兴时代要求应运而生的重大\n理论创新成果，是马克思主义法治理论中国化最新成果，是习近平新时代中国特色社会主义\n思想的重要组成部分。故A、B、C、D四项全选。\n第五部分",
+    "order_num": 126
+  },
+  {
+    "id": 32751,
+    "workbook_id": 38,
+    "question_num": 127,
+    "question_type": "multiple",
+    "category": "第6章",
+    "stem": "宪法的力量不仅因其地位崇高，更源于其有效的监督。宪法实施以来，我国不断探索并逐步\n建立了具有中国特色的宪法监督制度。在新的历史条件下，推进全面依法治国、加强宪法实\n施，对宪法监督提出了新的更高要求有",
+    "options": [
+      {
+        "key": "A",
+        "value": "健全人大工作机制"
+      },
+      {
+        "key": "B",
+        "value": "健全宪法解释机制"
+      },
+      {
+        "key": "C",
+        "value": "健全备案审查机制"
+      },
+      {
+        "key": "D",
+        "value": "健全合宪性审查机制"
+      }
+    ],
+    "options_json": "[{\"key\": \"A\", \"value\": \"健全人大工作机制\"}, {\"key\": \"B\", \"value\": \"健全宪法解释机制\"}, {\"key\": \"C\", \"value\": \"健全备案审查机制\"}, {\"key\": \"D\", \"value\": \"健全合宪性审查机制\"}]",
+    "answer": "ABCD",
+    "explanation": "【解析】在新的历史条件下，推进全面依法治国、加强宪法实施，对宪法监督提\n出了新的更高要求有：健全人大工作机制；健全宪法解释机制；健全备案审查机制；健全合宪\n性审查机制。故A、B、C、D四项全选。",
+    "order_num": 127
+  },
+  {
+    "id": 32752,
+    "workbook_id": 38,
+    "question_num": 128,
+    "question_type": "multiple",
+    "category": "第6章",
+    "stem": "我国宪法规定，公民享有广泛的权利，同时承担相应的义务，这说明了",
+    "options": [
+      {
+        "key": "A",
+        "value": "公民的权利和义务是平等的，任何人不得享有法内或法外特权"
+      },
+      {
+        "key": "B",
+        "value": "公民的权利和义务是统一的，不允许任何人只享受法律权利，不履行法律义务"
+      },
+      {
+        "key": "C",
+        "value": "任何公民都是享有法律权利和履行法律义务的统一体"
+      },
+      {
+        "key": "D",
+        "value": "自已依法履行义务作为他人依法享受权利的实现条件"
+      }
+    ],
+    "options_json": "[{\"key\": \"A\", \"value\": \"公民的权利和义务是平等的，任何人不得享有法内或法外特权\"}, {\"key\": \"B\", \"value\": \"公民的权利和义务是统一的，不允许任何人只享受法律权利，不履行法律义务\"}, {\"key\": \"C\", \"value\": \"任何公民都是享有法律权利和履行法律义务的统一体\"}, {\"key\": \"D\", \"value\": \"自已依法履行义务作为他人依法享受权利的实现条件\"}]",
+    "answer": "ABCD",
+    "explanation": "【解析】权利和义务问题是人们在生产生活中经常遇到的现实问题，权利和义\n务关系也是社会关系的核心部分。我国宪法规定，公民享有广泛的权利，同时承担相应的义\n务：公民的权利和义务是平等的，任何人不得享有法内或法外特权；公民的权利和义务是统一\n的，不允许任何人只享受法律权利，不履行法律义务；任何公民都是享有法律权利和履行法律\n义务的统一体，并把自已依法履行义务作为他人依法享受权利的实现条件。故A、B、C、D四\n项全选。\n是法律权利的内容、种类和实现程度受社会物质生活条件的制约。不能脱离一个国家或地区\n的经济社会发展阶段和水平空谈权利及其实现。二是法律权利的内容、分配和实现方式因社\n会制度和国家法律的不同而存在差异。同样一种权利，在不同的社会制度下和不同的国家法\n律中表现形式有所不同。如，关于财产权，资本主义法律规定私有财产神圣不可侵犯，而社会\n主义法律首先规定公共财产神圣不可侵犯，同时规定公民合法的私有财产不受侵犯。我们不\n201\n考研政治精雕细刻1000题\n能离开社会制度和国家法律理解法律权利。三是法律权利不仅由法律规定或认可，而且受法\n律维护或保障，具有不可侵犯性。法律权利一旦受到侵害后，权利人有权通过法律手段寻求救\n济，有权要求国家机关惩罚侵权人，有权要求侵权人承担法律责任。由国家强制力保障其实\n现，这是法律权利区别于其他权利的根本所在。四是法律权利必须依法行使，不能不择手段地\n行使法律权利。国家机关行使权力不得任性，公民个人行使法律权利也不得任性。个人违反\n法律规定的条件或超越正当界限而行使权利的，属于滥用权利。滥用权利是一种违法行为，不\n仅不受法律保护，而且要承担法律责任。故A、B、C、D四项全选。",
+    "order_num": 128
+  },
+  {
+    "id": 32753,
+    "workbook_id": 38,
+    "question_num": 129,
+    "question_type": "multiple",
+    "category": "第6章",
+    "stem": "法律权利是各种权利中十分重要的权利，具有的特征有",
+    "options": [
+      {
+        "key": "A",
+        "value": "法律权利的内容、种类和实现程度受社会物质生活条件的制约"
+      },
+      {
+        "key": "B",
+        "value": "法律权利的内容、分配和实现方式因社会制度和国家法律的不同而存在差异"
+      },
+      {
+        "key": "C",
+        "value": "法律权利不仅由法律规定或认可，而且受法律维护或保障，具有不可侵犯性"
+      },
+      {
+        "key": "D",
+        "value": "法律权利必须依法行使，不能不择手段地行使法律权利"
+      }
+    ],
+    "options_json": "[{\"key\": \"A\", \"value\": \"法律权利的内容、种类和实现程度受社会物质生活条件的制约\"}, {\"key\": \"B\", \"value\": \"法律权利的内容、分配和实现方式因社会制度和国家法律的不同而存在差异\"}, {\"key\": \"C\", \"value\": \"法律权利不仅由法律规定或认可，而且受法律维护或保障，具有不可侵犯性\"}, {\"key\": \"D\", \"value\": \"法律权利必须依法行使，不能不择手段地行使法律权利\"}]",
+    "answer": "A",
+    "explanation": "【解析整理中】本题考点详见章节精要。",
+    "order_num": 129
+  },
+  {
+    "id": 32754,
+    "workbook_id": 38,
+    "question_num": 130,
+    "question_type": "multiple",
+    "category": "第6章",
+    "stem": "我国宪法实现了党的主张和人民意志的高度统一，具有显著优势、坚实基础、强大生命力。宪\n法至上地位主要体现在",
+    "options": [
+      {
+        "key": "A",
+        "value": "我国宪法是国家的根本法，是党和人民意志的集中体现"
+      },
+      {
+        "key": "B",
+        "value": "我国宪法是国家各项制度和法律法规的总依据"
+      },
+      {
+        "key": "C",
+        "value": "我国宪法规定了国家的根本制度"
+      },
+      {
+        "key": "D",
+        "value": "我国宪法是我国国家组织形式和活动方式的基本原则"
+      }
+    ],
+    "options_json": "[{\"key\": \"A\", \"value\": \"我国宪法是国家的根本法，是党和人民意志的集中体现\"}, {\"key\": \"B\", \"value\": \"我国宪法是国家各项制度和法律法规的总依据\"}, {\"key\": \"C\", \"value\": \"我国宪法规定了国家的根本制度\"}, {\"key\": \"D\", \"value\": \"我国宪法是我国国家组织形式和活动方式的基本原则\"}]",
+    "answer": "ABC",
+    "explanation": "【解析】我国宪法实现了党的主张和人民意志的高度统一，具有显著优势、坚实\n基础、强大生命力。宪法至上地位主要体现在其特有的作用、效力和内容等方面。首先，我国\n宪法是国家的根本法，是党和人民意志的集中体现；其次，我国宪法是国家各项制度和法律法\n规的总依据；最后，我国宪法规定了国家的根本制度。故应选A、B、C三项。\n民主集中制是我国国家组织形式和活动方式的基本原则。故D项不符合题意。",
+    "order_num": 130
+  },
+  {
+    "id": 32755,
+    "workbook_id": 38,
+    "question_num": 131,
+    "question_type": "multiple",
+    "category": "第6章",
+    "stem": "法治思维是指以法治价值和法治精神为导向，运用法律原则、法律规则、法律方法思考和处理\n问题的思维模式。法治思维",
+    "options": [
+      {
+        "key": "A",
+        "value": "以法治价值和法治精神为指导，蕴含着公正、平等、民主、人权等法治理念"
+      },
+      {
+        "key": "B",
+        "value": "以法律原则和法律规则为依据指导人们的社会行为"
+      },
+      {
+        "key": "C",
+        "value": "以法律手段与法律方法为依托分析问题、处理问题、解决纠纷"
+      },
+      {
+        "key": "D",
+        "value": "是一种符合规律、尊重事实的科学思维"
+      }
+    ],
+    "options_json": "[{\"key\": \"A\", \"value\": \"以法治价值和法治精神为指导，蕴含着公正、平等、民主、人权等法治理念\"}, {\"key\": \"B\", \"value\": \"以法律原则和法律规则为依据指导人们的社会行为\"}, {\"key\": \"C\", \"value\": \"以法律手段与法律方法为依托分析问题、处理问题、解决纠纷\"}, {\"key\": \"D\", \"value\": \"是一种符合规律、尊重事实的科学思维\"}]",
+    "answer": "ABCD",
+    "explanation": "【解析】法治思维是指以法治价值和法治精神为导向，运用法律原则、法律规\n则、法律方法思考和处理问题的思维模式。法治思维包含以下几层含义。第一，法治思维以\n法治价值和法治精神为指导，蕴含着公正、平等、民主、人权等法治理念，是一种正当性思维。\n第二，法治思维以法律原则和法律规则为依据指导人们的社会行为，是一种规范性思维。第\n三，法治思维以法律手段与法律方法为依托分析问题、处理问题、解决纠纷，是一种逻辑思维。\n第四，法治思维是一种符合规律、尊重事实的科学思维。因此，法治思维是一种融法律的价值\n属性和工具理性于一体的特殊的高级法律意识。故A、BC、D四项全选。",
+    "order_num": 131
+  },
+  {
+    "id": 32756,
+    "workbook_id": 38,
+    "question_num": 132,
+    "question_type": "multiple",
+    "category": "第6章",
+    "stem": "公平正义是指社会的政治利益、经济利益和其他利益在全体社会成员之间合理、公平分配和\n占有。其中规则公平包括",
+    "options": [
+      {
+        "key": "A",
+        "value": "法律规则面前人人平等"
+      },
+      {
+        "key": "B",
+        "value": "法律内容面前人人平等"
+      },
+      {
+        "key": "C",
+        "value": "法律保护面前人人平等"
+      },
+      {
+        "key": "D",
+        "value": "任何人不得享有法律之外的特权，任何人也不会被法律排除在保护之外"
+      }
+    ],
+    "options_json": "[{\"key\": \"A\", \"value\": \"法律规则面前人人平等\"}, {\"key\": \"B\", \"value\": \"法律内容面前人人平等\"}, {\"key\": \"C\", \"value\": \"法律保护面前人人平等\"}, {\"key\": \"D\", \"value\": \"任何人不得享有法律之外的特权，任何人也不会被法律排除在保护之外\"}]",
+    "answer": "ABCD",
+    "explanation": "【解析】公平正义是指社会的政治利益、经济利益和其他利益在全体社会成员\n之间合理、公平分配和占有。一般来讲，公平正义主要包括权利公平、机会公平、规则公平和\n救济公平。规则公平是指对所有人适用同一的规则和标准，不得因人而异。包括法律规则面\n前人人平等、法律内容面前人人平等和法律保护面前人人平等，任何人不得享有法律之外的\n特权，任何人也不会被法律排除在保护之外。故A、B、C、D四项全选。\n法律体系适应新时代生态文明建设这一国家重大战略需求，进行的结构性完善和重要发展，\n第\n使法律部门的划分更加科学、全面。生态环境法典的编纂历时数年，经过深人调研、专题论\n五\n证、多次向社会公开征求意见，是严格遵循科学立法、民主立法原则的典范，积极回应了人民\n部\n群众对优美生态环境的迫切期待和建设美丽中国的时代命题。生态环境法典作为该领域的\n分\n基本法律，与“生态环境法”部门的设立，共同构建了更为系统、权威的生态文明法治支柱，为\n在法治轨道上固定、保障和推进绿色发展、建设美丽中国提供了更强有力的基础性法治支撑。\n应选ABD。以宪法为核心的中国特色社会主义法律体系已于2011年宣告形成。当前在新时\n代的立法工作，包括编纂生态环境法典、调整法律部门，是在该体系“已经形成”的基础上，根\n据国家治理新需求进行的不断完善和发展，而非“已经正式形成”的标志。此选项混淆了“体\n系形成”与“体系完善”两个不同阶段。C项为干扰项。",
+    "order_num": 132
+  },
+  {
+    "id": 32757,
+    "workbook_id": 38,
+    "question_num": 133,
+    "question_type": "multiple",
+    "category": "第6章",
+    "stem": "2026年3月12日，十四届全国人大四次会议表决通过生态环境法典，生态环境法典的编纂历\n时数年，经过深人调研、专题论证、多次向社会公开征求意见。伴随生态环境法典的施行，立\n法机关也将增设“生态环境法”这一新的法律部门。在法律体系中适时增设“生态环境法”部\n门后，中国特色社会主义法律体系之下的法律部门调整为8个，分别为宪法相关法、民法商\n第五部分\n法、行政法、经济法、社会法、生态环境法、刑法、诉讼与非诉讼程序法。《中华人民共和国生态\n环境法典》的通过及“生态环境法”被确立为新的独立法律部门，是我国法治建设进程中的一\n件大事。这一立法实践",
+    "options": [
+      {
+        "key": "A",
+        "value": "是适应新时代生态文明建设需要，对中国特色社会主义法律体系进行的完善与发展"
+      },
+      {
+        "key": "B",
+        "value": "体现了科学立法、民主立法的原则，是立法工作积极回应社会关切和时代命题的成果"
+      },
+      {
+        "key": "C",
+        "value": "标志着以宪法为核心的中国特色社会主义法律体系已经正式形成"
+      },
+      {
+        "key": "D",
+        "value": "为在法治轨道上推进美丽中国建设、实现人与自然和谐共生提供了更为系统坚实的法治"
+      }
+    ],
+    "options_json": "[{\"key\": \"A\", \"value\": \"是适应新时代生态文明建设需要，对中国特色社会主义法律体系进行的完善与发展\"}, {\"key\": \"B\", \"value\": \"体现了科学立法、民主立法的原则，是立法工作积极回应社会关切和时代命题的成果\"}, {\"key\": \"C\", \"value\": \"标志着以宪法为核心的中国特色社会主义法律体系已经正式形成\"}, {\"key\": \"D\", \"value\": \"为在法治轨道上推进美丽中国建设、实现人与自然和谐共生提供了更为系统坚实的法治\"}]",
+    "answer": "A",
+    "explanation": "【解析整理中】本题考点详见章节精要。",
+    "order_num": 133
+  },
+  {
+    "id": 32758,
+    "workbook_id": 38,
+    "question_num": 134,
+    "question_type": "multiple",
+    "category": "第6章",
+    "stem": "公民要在尊重法律权威方面加强砥砺，在学习和生活中积极作为，养成敬畏法律的良好品质，\n努力成为尊重法律权威、信仰法律的先锋。尊重法律权威，就要",
+    "options": [
+      {
+        "key": "A",
+        "value": "信仰法律，对法律常怀敬畏之心"
+      },
+      {
+        "key": "B",
+        "value": "遵守法律，用实际行动捍卫法律尊严，保障法律实施"
+      },
+      {
+        "key": "C",
+        "value": "服从法律，拥护法律的规定，接受法律的约束，履行法定的义务，服从依法进行的管理，承担相应的法律责任"
+      },
+      {
+        "key": "D",
+        "value": "维护法律，争当法律权威的守望者、公平正义的守护者、具有良知的护法者"
+      }
+    ],
+    "options_json": "[{\"key\": \"A\", \"value\": \"信仰法律，对法律常怀敬畏之心\"}, {\"key\": \"B\", \"value\": \"遵守法律，用实际行动捍卫法律尊严，保障法律实施\"}, {\"key\": \"C\", \"value\": \"服从法律，拥护法律的规定，接受法律的约束，履行法定的义务，服从依法进行的管理，承担相应的法律责任\"}, {\"key\": \"D\", \"value\": \"维护法律，争当法律权威的守望者、公平正义的守护者、具有良知的护法者\"}]",
+    "answer": "ABCD",
+    "explanation": "【解析】作为一个公民，要在尊重法律权威方面加强砥砺，在学习和生活中积极\n作为，养成敬畏法律的良好品质，努力成为尊重法律权威、信仰法律的先锋。尊重法律权威，\n就要信仰法律，对法律常怀敬畏之心；就要遵守法律，用实际行动捍卫法律尊严，保障法律实\n施；就要服从法律，拥护法律的规定，接受法律的约束，履行法定的义务，服从依法进行的管\n理，承担相应的法律责任；就要维护法律，争当法律权威的守望者、公平正义的守护者、具有良\n知的护法者。故A、B、C、D四项全选。\n202",
+    "order_num": 134
   }
 ]

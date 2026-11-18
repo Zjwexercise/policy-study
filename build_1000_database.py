@@ -66,8 +66,8 @@ MODULES = [
         "id_name": "sixiu",
         "name": "【1000题】第五部分 思想道德与法治 (思修)",
         "desc": "2027版考研政治精雕细刻1000题 · 第五部分 思想道德与法治（人生观、理想信念、法治精神核心题）",
-        "q_range": (179, 202),
-        "exp_range": (183, 202),
+        "q_range": (179, 205),
+        "exp_range": (183, 204),
         "category": "思修"
     }
 ]
@@ -176,6 +176,26 @@ CALIBRATION_MAP = {
     ("毛中特", 3, 18): (
         "ABCD",
         "【解析】本题考查的是社会主义基本制度确立的重大意义。社会主义基本制度的确立，极大地提高了工人阶级和广大劳动人民的积极性、创造性，极大地促进了我国社会生产力的发展，为当代中国一切发展进步奠定了根本政治前提和制度基础。故A、B、C、D四项全选。"
+    ),
+    ("毛中特", 4, 18): (
+        "ABCD",
+        "【解析】本题考查的是确立社会主义基本制度的重大意义。社会主义基本制度的确立是中国历史上最深刻最伟大的社会变革，为当代中国一切发展进步奠定了根本政治前提和制度基础，为中国特色社会主义制度的建立奠定了根本基础，极大地提高了工人阶级和广大劳动人民的积极性、创造性，极大地促进了我国社会生产力的发展。故A、B、C、D四项全选。"
+    ),
+    ("毛中特", 7, 2): (
+        "D",
+        "【解析】本题考查的是“和平统一，一国两制”。我们坚持“九二共识”，体现的是对两岸民意的尊重，维护的是两岸同胞的利益，捍卫的是两岸关系和平发展的成果。我们愿意以最大诚意、尽最大努力争取和平统一的前景，愿在一个中国原则基础上，同台湾各党派、团体和人士就两岸政治问题和推进祖国和平统一进程的有关问题开展对话沟通、民主协商。一切有利于发展两岸关系、促进祖国统一进程的主张和努力，我们都欢迎和支持。“台独”分裂是祖国统一的最大障碍，是民族复兴的严重隐患。故应选D项。"
+    ),
+    ("毛中特", 7, 3): (
+        "ABD",
+        "【解析】本题考查的是建立社会主义市场经济体制。要坚持党的全面领导，发展更高水平的社会主义市场经济，毫不动摇巩固和发展公有制经济，毫不动摇鼓励、支持和引导非公有制经济发展，加快建设一批产品卓越、品牌卓著、创新领先、治理现代的世界一流企业，在全面建设社会主义现代化国家、实现第二个百年奋斗目标进程中实现更大发展、发挥更大作用。故应选A、B、D三项。\n应该继续使市场在资源配置中起决定性作用，更好发挥政府作用，而不是基础性作用。故C项错误。"
+    ),
+    ("马原", 4, 48): (
+        "AD",
+        "【解析】本题考查的是科学技术在社会发展中的作用。科学技术的发展标志着人类改造自然能力的增强，意味着人们能够创造出更多的物质财富，对社会发展有巨大的推动作用。但是，科学技术的作用既受到一定客观条件（如社会制度、利益关系等）的影响，也受到一定主观条件（如人们的观念和认识水平等）的影响。特别是如果对科学技术应用不当，就会带来消极后果。为了防范算法滥用乱象，我国先后出台并完善有关制度，加强相关领域的规范，这表明正确认识和运用科学技术，首要的就是有合理的社会制度保障科学技术的正确运用。故应选A、D两项。B项中“取决于”夸大了主观因素的作用，C项中“只会造福于人类”说法太绝对，故排除。"
+    ),
+    ("马原", 4, 49): (
+        "ABCD",
+        "【解析】本题考查的是社会基本矛盾是社会发展的根本动力。生产力和生产关系的矛盾、经济基础和上层建筑的矛盾是人类社会的基本矛盾。这是因为这两对矛盾存在于一切社会形态之中，贯穿人类社会发展的始终；这两对矛盾规定并制约着其他各种社会矛盾，规定着社会性质和基本结构；这两对矛盾的运动推动着人类社会由低级向高级发展。故A、B、C、D四项全选。"
     ),
     ("毛中特", 8, 1): (
         "D",
@@ -354,6 +374,42 @@ CALIBRATION_OPTIONS_MAP = {
     ("毛中特", 7, 1): {
         "C": "把社会主义制度与市场经济有机结合起来"
     },
+    ("毛中特", 7, 2): {
+        "A": "文化认同",
+        "B": "制度差异",
+        "C": "外国干涉",
+        "D": "“台独”分裂"
+    },
+    ("毛中特", 7, 3): {
+        "A": "毫不动摇巩固和发展公有制经济，毫不动摇鼓励、支持和引导非公有制经济发展",
+        "B": "加快建设一批产品卓越、品牌卓著、创新领先、治理现代的世界一流企业",
+        "C": "继续使市场在资源配置中起基础性作用，更好发挥政府作用",
+        "D": "建设统一开放、竞争有序的市场体系，确保所有企业在法律面前地位平等、在市场面前机会平等"
+    },
+    ("毛中特", 4, 14): {
+        "A": "在社会主义社会中，基本的矛盾仍然是生产关系和生产力之间的矛盾，上层建筑和经济基础之间的矛盾",
+        "B": "社会主义社会的基本矛盾同以往社会的基本矛盾“具有根本不同的性质和情况”",
+        "C": "社会主义社会的基本矛盾是在人民根本利益一致基础上的矛盾",
+        "D": "社会主义社会基本矛盾运动具有“又相适应又相矛盾”的特点"
+    },
+    ("毛中特", 4, 16): {
+        "A": "第一步要建立一个独立的比较完整的工业体系和国民经济体系",
+        "B": "第一步是解决人民的温饱问题",
+        "C": "第二步要全面实现“四个现代化”，使中国的经济发展走在世界的前列",
+        "D": "第二步要人民生活比较富裕，基本实现现代化"
+    },
+    ("马原", 4, 48): {
+        "A": "正确认识和运用科学技术，首要的就是有合理的社会制度保障科学技术的正确运用",
+        "B": "科学技术的作用取决于人们的观念和认识水平",
+        "C": "科学技术的发展标志着人类改造自然能力的增强，只会造福于人类",
+        "D": "科学技术作为先进生产力的重要标志，是推动社会文明进步的重要力量"
+    },
+    ("马原", 4, 49): {
+        "A": "存在于一切社会形态之中",
+        "B": "规定着社会性质和基本结构",
+        "C": "推动着人类社会由低级向高级发展",
+        "D": "总是不断发展的"
+    },
     ("习思想", 2, 7): {
         "A": "打破了“现代化=西方化”的迷思，展现了现代化的另一幅图景"
     },
@@ -447,7 +503,12 @@ CALIBRATION_STEMS_MAP = {
     ("毛中特", 0, 11): "习近平总书记指出：“马克思主义中国化时代化这个重大命题本身就决定了我们决不能抛弃马克思主义这个魂脉，决不能抛弃中华优秀传统文化这个根脉。”坚持把马克思主义基本原理同中华优秀传统文化相结合，必须认识到",
     ("毛中特", 1, 11): "毛泽东指出：“认清中国的国情，乃是认清一切革命问题的基本的依据。”认清中国国情，最根本的是要认清中国近代社会的性质和主要矛盾。这一论断启示我们，进行革命和建设必须",
     ("毛中特", 2, 8): "毛泽东指出：“中国现时社会的性质，既然是殖民地、半殖民地、半封建的性质，它就决定了中国革命必须分为两个步骤。第一步，改变这个殖民地、半殖民地、半封建的社会形态，使之变成一个独立的民主主义的社会。第二步，使革命向前发展，建立一个社会主义的社会。”在新民主主义革命与社会主义革命的关系问题上，“左”倾教条主义者的错误在于",
-    ("毛中特", 4, 16): "毛泽东在读苏联《政治经济学教科书》时提出，社会主义可以分为两个阶段。1964年三届全国人大一次会议上，周恩来在政府工作报告中正式提出“两步走”战略构想，即",
+    ("毛中特", 4, 14): "1957年2月，毛泽东分析了社会主义社会的基本矛盾的性质、特点和解决途径，揭示了社会主义社会发展的一般规律。关于社会主义社会的基本矛盾，毛泽东指出",
+    ("毛中特", 4, 16): "1964年底，周恩来在三届全国人大一次会议上所作的政府工作报告中正式宣布：“把我国建设成为一个具有现代农业、现代工业、现代国防和现代科学技术的社会主义强国。”同时，周恩来提出了建设“四个现代化”的“两步走”战略步骤，具体是从第三个五年计划开始",
+    ("毛中特", 7, 2): "1992年，两岸中国人选择以对话代替对抗、以沟通化解分歧、以协商促进合作，达成了各自以口头方式表述“海峡两岸均坚持一个中国原则”的“九二共识”，其核心要义是“海峡两岸同属一个中国，共同努力谋求国家统一”。这一过程和内容均有明确的文件和文字记录，任何人、任何势力都否定不了、歪曲不了。台湾当局拒不承认“九二共识”，一些国家纵容鼓动“台独”分裂势力滋事挑衅，发展下去只会将台湾推向灾难深渊，给广大台湾同胞带来深重祸害。祖国统一的最大障碍，民族复兴的严重隐患是",
+    ("毛中特", 7, 3): "江泽民说：“我们搞的是社会主义市场经济，‘社会主义’这几个字是不能没有的，这并非多余，并非画蛇添足，而恰恰相反，这是画龙点睛。所谓‘点睛’，就是点明我们市场经济的性质。”现阶段要坚持党的全面领导，发展更高水平的社会主义市场经济的具体举措是",
+    ("马原", 4, 48): "近年来，算法的广泛运用让用户需求和产品、服务得以快速精确匹配，大大降低了信息传播和获取的成本，提升了用户的消费体验。无论是看新闻、刷视频，还是线上购物、外出就餐，互联网平台个性化推荐日益影响着用户的日常生活。同时，也有一些平台滥用算法，造成“信息茧房”“大数据杀熟”“诱导沉迷”等问题。针对算法滥用乱象，我国先后出台并完善有关制度，加强相关领域的规范。监管部门及时推出政策举措，也强化了针对算法乱象的整治。这一材料表明",
+    ("马原", 4, 49): "习近平同志指出：“只有把生产力和生产关系的矛盾运动同经济基础和上层建筑的矛盾运动结合起来观察，把社会基本矛盾作为一个整体来观察，才能全面把握整个社会的基本面貌和发展方向。”这是因为这两对矛盾",
 
     # --- 习思想 ---
     ("习思想", 6, 5): "党的二十届三中全会对深化经济体制改革作出系统部署，强调必须更好统筹发展和安全，深化供给侧结构性改革。推动经济高质量发展，关键在于",
@@ -637,9 +698,11 @@ def parse_module_questions_and_exps(mod):
                 continue
                 
             if "单项选择题" in l or "一、单项选择题" in l:
+                save_current_q()
                 curr_type = "single"
                 continue
             elif "多项选择题" in l or "二、多项选择题" in l:
+                save_current_q()
                 curr_type = "multiple"
                 continue
                 
@@ -669,12 +732,18 @@ def parse_module_questions_and_exps(mod):
             opt_matches = list(re.finditer(r"([A-D])[.、\s]\s*", l))
             if opt_matches:
                 first_opt = opt_matches[0].group(1)
-                # 核心防串题机制：如果当前题已经提取过选项 A，或者当前为 None，说明进入了下一道题！
+                # 核心防串题机制：判定是否应当开启新题
                 needs_new_q = False
-                if curr_q and first_opt == 'A' and 'A' in curr_q["options"]:
+                if not curr_q:
                     needs_new_q = True
-                elif not curr_q and first_opt == 'A':
-                    needs_new_q = True
+                elif curr_q:
+                    has_repeated_key = any(m.group(1) in curr_q["options"] for m in opt_matches)
+                    if has_repeated_key:
+                        needs_new_q = True
+                    elif first_opt == 'A' and (len(curr_q["options"]) >= 2 or 'A' in curr_q["options"]):
+                        needs_new_q = True
+                    elif 'D' in curr_q["options"]:
+                        needs_new_q = True
                     
                 if needs_new_q:
                     save_current_q()
@@ -737,6 +806,8 @@ def main():
     
     conn = sqlite3.connect(DB_PATH)
     c = conn.cursor()
+    c.execute("DELETE FROM questions WHERE workbook_id IN (34, 35, 36, 37, 38, 39)")
+    conn.commit()
     
     all_master_questions = []
     imported_workbooks = []
@@ -755,7 +826,6 @@ def main():
             wb_id = row[0]
             c.execute("UPDATE workbooks SET total_questions = ?, description = ?, updated_at = CURRENT_TIMESTAMP WHERE id = ?",
                       (len(questions), mod["desc"], wb_id))
-            c.execute("DELETE FROM questions WHERE workbook_id = ?", (wb_id,))
         else:
             c.execute("INSERT INTO workbooks (name, filename, file_path, total_questions, description) VALUES (?, ?, ?, ?, ?)",
                       (mod["name"], f"1000_{mod['id_name']}.pdf", "1000题", len(questions), mod["desc"]))
@@ -764,10 +834,13 @@ def main():
         imported_workbooks.append((wb_id, mod["name"], len(questions)))
         
         q_rows = []
+        base_id_map = {34: 31700, 35: 32051, 36: 32161, 37: 32367, 38: 32625, 39: 33001}
+        base_id = base_id_map.get(wb_id, None)
         for idx, q in enumerate(questions, 1):
             q["workbook_id"] = wb_id
+            qid = (base_id + idx - 1) if base_id else None
             q_rows.append((
-                wb_id, idx, q["question_type"], q["category"], q["stem"],
+                qid, wb_id, idx, q["question_type"], q["category"], q["stem"],
                 q["options_json"], q["answer"], q["explanation"], idx
             ))
             all_master_questions.append({
@@ -776,8 +849,8 @@ def main():
             })
             
         c.executemany("""
-            INSERT INTO questions (workbook_id, question_num, question_type, category, stem, options_json, answer, explanation, order_num)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+            INSERT INTO questions (id, workbook_id, question_num, question_type, category, stem, options_json, answer, explanation, order_num)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
         """, q_rows)
         
         c.execute("""
@@ -817,15 +890,16 @@ def main():
         master_id = c.lastrowid
 
     master_rows = []
+    base_m_id = 33000
     for idx, q in enumerate(all_master_questions, 1):
         master_rows.append((
-            master_id, idx, q["question_type"], q["category"], q["stem"],
+            base_m_id + idx, master_id, idx, q["question_type"], q["category"], q["stem"],
             q["options_json"], q["answer"], q["explanation"], idx
         ))
         
     c.executemany("""
-        INSERT INTO questions (workbook_id, question_num, question_type, category, stem, options_json, answer, explanation, order_num)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+        INSERT INTO questions (id, workbook_id, question_num, question_type, category, stem, options_json, answer, explanation, order_num)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     """, master_rows)
     
     c.execute("""
