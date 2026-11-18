@@ -20,7 +20,8 @@ import {
   Swords,
   CheckSquare,
   CheckCircle2,
-  Dices
+  Dices,
+  Copy
 } from 'lucide-vue-next';
 import AnswerSheetModal from './AnswerSheetModal.vue';
 import NoteModal from './NoteModal.vue';
@@ -70,6 +71,58 @@ const toggleSingleAutoSubmit = () => {
   singleAutoSubmit.value = !singleAutoSubmit.value;
   localStorage.setItem('policy_single_auto_submit', String(singleAutoSubmit.value));
   showToast(singleAutoSubmit.value ? '已切换为：单选题点击立即判题' : '已切换为：单选题按Enter确认提交');
+};
+
+// ==========================================
+// 📋 一键复制解析与完整题目逻辑
+// ==========================================
+const copySuccess = ref(false);
+
+const copyTextToClipboard = async (text, toastMessage = '解析已复制到剪贴板') => {
+  if (!text) return;
+  try {
+    if (navigator.clipboard && window.isSecureContext) {
+      await navigator.clipboard.writeText(text);
+    } else {
+      const textArea = document.createElement('textarea');
+      textArea.value = text;
+      textArea.style.position = 'fixed';
+      textArea.style.left = '-999999px';
+      textArea.style.top = '-999999px';
+      document.body.appendChild(textArea);
+      textArea.focus();
+      textArea.select();
+      document.execCommand('copy');
+      textArea.remove();
+    }
+    copySuccess.value = true;
+    showToast(toastMessage);
+    setTimeout(() => {
+      copySuccess.value = false;
+    }, 2000);
+  } catch (err) {
+    console.error('复制失败', err);
+    showToast('已选中文本，请使用 Ctrl+C 复制');
+  }
+};
+
+const copyExplanation = () => {
+  if (!currentQuestion.value) return;
+  const exp = currentQuestion.value.explanation || '暂无解析';
+  copyTextToClipboard(exp, '📋 考点深度解析已复制到剪贴板！');
+};
+
+const copyFullQuestion = () => {
+  if (!currentQuestion.value) return;
+  const q = currentQuestion.value;
+  const opts = (q.options || []).map((o, idx) => {
+    const key = o && typeof o === 'object' ? o.key : String.fromCharCode(65 + idx);
+    const val = o && typeof o === 'object' ? o.value : o;
+    return `${key}. ${val}`;
+  }).join('\n');
+  const typeText = q.question_type === 'multiple' ? '多项选择题' : '单项选择题';
+  const fullText = `【${typeText}】第${q.question_num}题：${q.stem}\n\n${opts}\n\n【官方正确答案】${q.answer}\n\n【考点深度精析】\n${q.explanation || '暂无详细解析'}`;
+  copyTextToClipboard(fullText, '📋 完整试题、选项与解析已一键复制！');
 };
 
 // 当前练习册名称与是否属于1000题
@@ -955,7 +1008,7 @@ onUnmounted(() => {
         </div>
 
         <!-- Question Stem (题干) -->
-        <div class="text-base sm:text-lg font-medium text-slate-900 leading-relaxed tracking-wide">
+        <div class="text-base sm:text-lg font-medium text-slate-900 leading-relaxed tracking-wide select-text cursor-text">
           <span class="font-bold text-rose-600 mr-1.5">{{ currentQuestion.question_num }}.</span>
           <span>{{ currentQuestion.stem }}</span>
         </div>
@@ -966,7 +1019,7 @@ onUnmounted(() => {
             v-for="(opt, oIdx) in currentQuestion.options"
             :key="currentQuestion ? (currentQuestion.id + '_' + (opt && typeof opt === 'object' ? opt.key : oIdx)) : ('opt_' + oIdx)"
             @click="handleOptionClick(opt && typeof opt === 'object' ? opt.key : String.fromCharCode(65 + oIdx))"
-            class="group p-3.5 sm:p-4 rounded-xl border-2 transition-all flex items-start gap-3 cursor-pointer select-none"
+            class="group p-3.5 sm:p-4 rounded-xl border-2 transition-all flex items-start gap-3 cursor-pointer select-text"
             :class="[
               getOptionStatus(opt && typeof opt === 'object' ? opt.key : String.fromCharCode(65 + oIdx)).isResolved
                 ? (
@@ -1181,19 +1234,43 @@ onUnmounted(() => {
 
         <!-- 详细考点解析 -->
         <div class="space-y-2">
-          <div class="flex items-center justify-between">
+          <div class="flex items-center justify-between flex-wrap gap-2">
             <span class="text-xs font-bold text-slate-700 flex items-center gap-1">
               <Sparkles class="w-3.5 h-3.5 text-amber-500" /> 考点精析
             </span>
-            <button
-              @click="showNoteModal = true"
-              class="text-xs text-rose-600 hover:text-rose-700 font-medium flex items-center gap-1 cursor-pointer"
-            >
-              <FileText class="w-3.5 h-3.5" />
-              <span>{{ currentQuestion.has_note ? '编辑笔记' : '添加笔记' }}</span>
-            </button>
+            <div class="flex items-center gap-1.5 sm:gap-2">
+              <!-- 一键复制解析 -->
+              <button
+                @click="copyExplanation"
+                class="px-2.5 py-1 rounded-lg border border-slate-200 hover:border-slate-300 bg-white hover:bg-slate-50 text-xs text-slate-700 hover:text-rose-600 font-medium flex items-center gap-1.5 cursor-pointer transition shadow-2xs"
+                title="一键复制解析文本到剪贴板，方便粘贴到笔记中"
+              >
+                <Check v-if="copySuccess" class="w-3.5 h-3.5 text-emerald-600" />
+                <Copy v-else class="w-3.5 h-3.5" />
+                <span>{{ copySuccess ? '已复制！' : '复制解析' }}</span>
+              </button>
+
+              <!-- 复制整题 -->
+              <button
+                @click="copyFullQuestion"
+                class="px-2.5 py-1 rounded-lg border border-slate-200 hover:border-slate-300 bg-white hover:bg-slate-50 text-xs text-slate-700 hover:text-indigo-600 font-medium flex items-center gap-1.5 cursor-pointer transition shadow-2xs"
+                title="一键复制题干、选项、答案与考点解析（整理错题专用）"
+              >
+                <FileText class="w-3.5 h-3.5" />
+                <span class="hidden sm:inline">复制整题</span>
+              </button>
+
+              <!-- 添加笔记 -->
+              <button
+                @click="showNoteModal = true"
+                class="px-2.5 py-1 rounded-lg border border-rose-200 hover:border-rose-300 bg-rose-50 hover:bg-rose-100 text-xs text-rose-600 hover:text-rose-700 font-medium flex items-center gap-1.5 cursor-pointer transition shadow-2xs"
+              >
+                <FileText class="w-3.5 h-3.5" />
+                <span>{{ currentQuestion.has_note ? '编辑笔记' : '添加笔记' }}</span>
+              </button>
+            </div>
           </div>
-          <div class="p-3.5 bg-slate-50 border border-slate-100 rounded-xl text-xs sm:text-sm text-slate-700 leading-relaxed whitespace-pre-line font-normal">
+          <div class="p-3.5 bg-slate-50 border border-slate-100 rounded-xl text-xs sm:text-sm text-slate-700 leading-relaxed whitespace-pre-line font-normal select-text cursor-text">
             {{ currentQuestion.explanation || '暂无针对本题的详细解析' }}
           </div>
         </div>

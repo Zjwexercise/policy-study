@@ -161,6 +161,14 @@
   color: #ffffff !important;
 }
 
+/* 确保题干、选项文本、解析和笔记均可自由选中文本并复制 */
+.select-text {
+  user-select: text !important;
+  -webkit-user-select: text !important;
+  -moz-user-select: text !important;
+  -ms-user-select: text !important;
+}
+
 /* 答题卡卡片 */
 .dark .bg-slate-50\/60 {
   background-color: rgba(13, 21, 39, 0.6) !important;
