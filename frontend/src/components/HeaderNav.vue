@@ -147,7 +147,7 @@ const handleSelectChange = (val) => {
               </optgroup>
 
               <!-- 历年真题专区 -->
-              <optgroup v-if="zhentiWorkbooks.length > 0" label="── 🏛️ 2019-2024 全国历年真题 ──">
+              <optgroup v-if="zhentiWorkbooks.length > 0" label="── 🏛️ 2019-2025 全国历年真题 ──">
                 <option v-for="wb in zhentiWorkbooks" :key="wb.id" :value="wb.id">
                   {{ wb.name }}
                 </option>

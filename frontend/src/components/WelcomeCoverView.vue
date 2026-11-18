@@ -64,8 +64,11 @@ const ti1000Count = computed(() => {
 });
 
 const zhentiCount = computed(() => {
-  const wb = props.workbooks.find(w => w.id === 33);
-  return wb ? wb.total_questions : 198;
+  const wb33 = props.workbooks.find(w => w.id === 33);
+  const wb40 = props.workbooks.find(w => w.id === 40);
+  const count33 = wb33 ? wb33.total_questions : 198;
+  const count40 = wb40 ? wb40.total_questions : 33;
+  return count33 + count40;
 });
 
 const taojuanCount = computed(() => {
@@ -124,7 +127,7 @@ const handleJumpTab = (tab) => {
 
         <!-- 副标题与名言 -->
         <p class="text-sm sm:text-base md:text-lg text-rose-100 font-medium mb-4 max-w-2xl leading-relaxed">
-          全面整合《1000题》五大科目、2019-2024历年真题及冲刺模拟客观题。每一道细致推敲，助你冲刺政治客观题 40+ 高分！
+          全面整合《1000题》五大科目、2019-2025历年真题及冲刺模拟客观题。每一道细致推敲，助你冲刺政治客观题 40+ 高分！
         </p>
 
         <div class="p-3 sm:p-3.5 rounded-2xl bg-black/20 backdrop-blur-md border border-white/15 text-xs sm:text-sm text-white/90 italic mb-6 inline-block">
@@ -218,10 +221,10 @@ const handleJumpTab = (tab) => {
           </div>
           <div>
             <h3 class="font-bold text-slate-800 group-hover:text-indigo-600 transition text-base mb-1">
-              2019-2024 历年真题
+              2019-2025 历年真题
             </h3>
             <p class="text-xs text-slate-500 leading-relaxed mb-3">
-              连续6年全国统考全真选择题，深度把握真题命题规律与考点命制套路。
+              连续7年全国统考全真选择题，深度把握真题命题规律与考点命制套路。
             </p>
           </div>
           <div class="pt-3 border-t border-slate-100 flex items-center justify-between text-xs font-semibold text-indigo-600">
