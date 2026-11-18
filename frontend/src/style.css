@@ -1,14 +1,23 @@
 @import "tailwindcss";
 
+@custom-variant dark (&:where(.dark, .dark *));
+
 @layer base {
   html, body {
     margin: 0;
     padding: 0;
-    height: 100%;
+    min-height: 100%;
     background-color: #f8fafc;
     color: #1e293b;
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
     -webkit-tap-highlight-color: transparent;
+    transition: background-color 0.25s ease, color 0.25s ease, border-color 0.25s ease;
+  }
+
+  html.dark, body.dark {
+    background-color: #0b1120;
+    color: #e2e8f0;
+    color-scheme: dark;
   }
 
   /* Custom scrollbars */
@@ -26,4 +35,133 @@
   ::-webkit-scrollbar-thumb:hover {
     background: #94a3b8;
   }
+
+  .dark ::-webkit-scrollbar-thumb {
+    background: #28354f;
+  }
+  .dark ::-webkit-scrollbar-thumb:hover {
+    background: #3b4c6e;
+  }
+}
+
+/* =========================================================
+   🌙 全局夜间护眼黑暗模式增强规则 (Deep Eye-Care Dark Mode)
+   ========================================================= */
+.dark .bg-white {
+  background-color: #131c31 !important;
+}
+.dark .bg-slate-50 {
+  background-color: #0d1527 !important;
+}
+.dark .bg-slate-100 {
+  background-color: #1a253e !important;
+}
+.dark .bg-slate-200 {
+  background-color: #243352 !important;
+}
+
+.dark .border-slate-100,
+.dark .border-slate-200,
+.dark .border-slate-300 {
+  border-color: #1f2d47 !important;
+}
+
+.dark .text-slate-900,
+.dark .text-slate-800 {
+  color: #f1f5f9 !important;
+}
+.dark .text-slate-700,
+.dark .text-slate-600 {
+  color: #cbd5e1 !important;
+}
+.dark .text-slate-500 {
+  color: #94a3b8 !important;
+}
+.dark .text-slate-400 {
+  color: #64748b !important;
+}
+
+/* 输入框与选择框 */
+.dark select,
+.dark input,
+.dark textarea {
+  background-color: #131c31 !important;
+  color: #f1f5f9 !important;
+  border-color: #243553 !important;
+}
+.dark select option,
+.dark select optgroup {
+  background-color: #131c31 !important;
+  color: #f1f5f9 !important;
+}
+
+/* 柔和色系反差微调 */
+.dark .bg-rose-50 {
+  background-color: rgba(225, 29, 72, 0.16) !important;
+}
+.dark .text-rose-700 {
+  color: #fb7185 !important;
+}
+.dark .border-rose-200 {
+  border-color: rgba(244, 63, 94, 0.35) !important;
+}
+
+.dark .bg-indigo-50 {
+  background-color: rgba(99, 102, 241, 0.16) !important;
+}
+.dark .text-indigo-700,
+.dark .text-indigo-600 {
+  color: #a5b4fc !important;
+}
+.dark .border-indigo-200 {
+  border-color: rgba(99, 102, 241, 0.35) !important;
+}
+
+.dark .bg-emerald-50 {
+  background-color: rgba(16, 185, 129, 0.16) !important;
+}
+.dark .text-emerald-700,
+.dark .text-emerald-600 {
+  color: #6ee7b7 !important;
+}
+.dark .border-emerald-200 {
+  border-color: rgba(16, 185, 129, 0.35) !important;
+}
+
+.dark .bg-amber-50 {
+  background-color: rgba(245, 158, 11, 0.16) !important;
+}
+.dark .text-amber-800,
+.dark .text-amber-700 {
+  color: #fcd34d !important;
+}
+.dark .border-amber-200 {
+  border-color: rgba(245, 158, 11, 0.35) !important;
+}
+
+.dark .bg-red-50 {
+  background-color: rgba(239, 68, 68, 0.16) !important;
+}
+.dark .text-red-600,
+.dark .text-red-700 {
+  color: #fca5a5 !important;
+}
+.dark .border-red-200 {
+  border-color: rgba(239, 68, 68, 0.35) !important;
+}
+
+/* 悬停微调 */
+.dark .hover\:bg-slate-50:hover {
+  background-color: #1a253e !important;
+}
+.dark .hover\:bg-slate-100:hover {
+  background-color: #202d4a !important;
+}
+.dark .hover\:text-slate-900:hover {
+  color: #ffffff !important;
+}
+
+/* 答题卡卡片 */
+.dark .bg-slate-50\/60 {
+  background-color: rgba(13, 21, 39, 0.6) !important;
 }

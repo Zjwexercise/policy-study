@@ -1,7 +1,8 @@
 <script setup>
-import { ref, onMounted, onUnmounted } from 'vue';
+import { ref, watch, onMounted, onUnmounted } from 'vue';
 import { api } from './api';
 import HeaderNav from './components/HeaderNav.vue';
+import WelcomeCoverView from './components/WelcomeCoverView.vue';
 import PracticeView from './components/PracticeView.vue';
 import WrongBookView from './components/WrongBookView.vue';
 import KilledQuestionsView from './components/KilledQuestionsView.vue';
@@ -14,9 +15,14 @@ import LoginModal from './components/LoginModal.vue';
 import AdminView from './components/AdminView.vue';
 import { auth } from './auth';
 
-const currentTab = ref('practice'); // practice, wrong, killed, notes, workbooks, stats, admin
+// 初始页面：首次打开进入欢迎封面，会话期内刷新保留在当前界面
+const currentTab = ref(sessionStorage.getItem('policy_current_tab') || 'welcome');
+watch(currentTab, (val) => {
+  sessionStorage.setItem('policy_current_tab', val);
+});
+
 const workbooks = ref([]);
-const activeWorkbookId = ref(localStorage.getItem('policy_active_wb_id') || 'all'); // 记忆用户最后打开的练习册，刷新绝不重置丢失
+const activeWorkbookId = ref(localStorage.getItem('policy_active_wb_id') || 'all'); // 记忆用户最后打开的练习册
 const showMobileQr = ref(false);
 const showSyncModal = ref(false);
 const showLoginModal = ref(false);
@@ -56,7 +62,7 @@ const startPractice = (options = {}) => {
 };
 
 // ==========================================
-// 实时学习专注时长追踪逻辑 (防息屏/防挂机)
+// 实时学习专注时长追踪逻辑 (防息屏、防挂机)
 // ==========================================
 let accumulatedSeconds = 0;
 let lastActiveTime = Date.now();
@@ -120,7 +126,7 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <div class="min-h-screen bg-slate-50 flex flex-col selection:bg-rose-500 selection:text-white">
+  <div class="min-h-screen bg-slate-50 dark:bg-slate-950 flex flex-col selection:bg-rose-500 selection:text-white transition-colors duration-200">
     <!-- Header Navigation -->
     <HeaderNav 
       :current-tab="currentTab"
@@ -135,8 +141,20 @@ onUnmounted(() => {
 
     <!-- Main Content Area -->
     <main class="flex-1 w-full">
+      <!-- 欢迎界面（封面） -->
+      <WelcomeCoverView 
+        v-if="currentTab === 'welcome'"
+        :workbooks="workbooks"
+        :active-workbook-id="activeWorkbookId"
+        @start-practice="startPractice"
+        @select-workbook="selectWorkbook"
+        @switch-tab="currentTab = $event"
+        @open-mobile-qr="showMobileQr = true"
+      />
+
+      <!-- 答题练习页面 -->
       <PracticeView 
-        v-if="currentTab === 'practice'"
+        v-else-if="currentTab === 'practice'"
         :workbook-id="activeWorkbookId"
         :workbooks="workbooks"
         :initial-status="practiceInitialStatus"

@@ -13,9 +13,13 @@ import {
   Swords,
   RefreshCw,
   User,
-  Cloud
+  Cloud,
+  Moon,
+  Sun,
+  Compass
 } from 'lucide-vue-next';
 import { auth } from '../auth';
+import { isDark, toggleTheme } from '../theme';
 
 const props = defineProps({
   currentTab: {
@@ -73,12 +77,21 @@ const taojuanWorkbooks = computed(() => {
 });
 
 const tabs = [
+  { id: 'welcome', label: '首页封面', icon: Compass },
   { id: 'practice', label: '刷题练习', icon: BookOpen },
   { id: 'wrong', label: '错题本', icon: AlertCircle },
-  { id: 'killed', label: '斩题本', icon: Swords },
+  { id: 'killed', label: '斩题榜', icon: Swords },
   { id: 'notes', label: '考点笔记', icon: FileText },
   { id: 'workbooks', label: '练习册中心', icon: Library },
   { id: 'stats', label: '学习统计', icon: BarChart3 },
+];
+
+const mobileTabs = [
+  { id: 'welcome', label: '封面', icon: Compass },
+  { id: 'practice', label: '刷题', icon: BookOpen },
+  { id: 'wrong', label: '错题', icon: AlertCircle },
+  { id: 'killed', label: '斩题', icon: Swords },
+  { id: 'stats', label: '统计', icon: BarChart3 },
 ];
 
 const handleSelectChange = (val) => {
@@ -90,14 +103,18 @@ const handleSelectChange = (val) => {
   <header class="bg-white border-b border-slate-200 sticky top-0 z-30 shadow-xs">
     <div class="max-w-7xl mx-auto px-3 sm:px-6">
       <div class="flex items-center justify-between h-14 sm:h-16 gap-2">
-        <!-- Logo & Title -->
-        <div class="flex items-center space-x-2 shrink-0">
-          <div class="w-8 h-8 sm:w-9 sm:h-9 bg-linear-to-tr from-rose-600 to-red-500 rounded-xl flex items-center justify-center text-white shadow-sm font-bold text-base">
+        <!-- Logo & Title (点击返回欢迎封面) -->
+        <div 
+          @click="emit('update:currentTab', 'welcome')"
+          class="flex items-center space-x-2 shrink-0 cursor-pointer group select-none"
+          title="点击返回首页封面"
+        >
+          <div class="w-8 h-8 sm:w-9 sm:h-9 bg-linear-to-tr from-rose-600 to-red-500 rounded-xl flex items-center justify-center text-white shadow-sm font-bold text-base group-hover:scale-105 transition">
             政
           </div>
           <div>
             <div class="flex items-center gap-1.5">
-              <span class="font-bold text-slate-800 text-sm sm:text-base leading-tight">考研政治刷题掌上宝</span>
+              <span class="font-bold text-slate-800 text-sm sm:text-base leading-tight group-hover:text-rose-600 transition">考研政治刷题掌上宝</span>
               <span class="hidden md:inline-block px-1.5 py-0.5 text-[10px] font-semibold bg-red-50 text-red-600 rounded border border-red-200">
                 2027备考
               </span>
@@ -108,7 +125,7 @@ const handleSelectChange = (val) => {
 
         <!-- 练习册切换：支持【综合合并】与【独立单本】 -->
         <div class="flex items-center">
-          <div class="relative flex items-center max-w-[170px] sm:max-w-[270px]">
+          <div class="relative flex items-center max-w-[155px] sm:max-w-[260px]">
             <select 
               :value="activeWorkbookId" 
               @change="handleSelectChange($event.target.value)"
@@ -176,13 +193,29 @@ const handleSelectChange = (val) => {
             ]"
             title="进入超级管理后台与防火墙控制面板"
           >
-            <span class="shrink-0">👑</span>
+            <span class="shrink-0">🛡️</span>
             <span class="whitespace-nowrap">管理后台</span>
           </button>
         </nav>
 
-        <!-- Right Tools: User, Mobile QR & Sync -->
+        <!-- Right Tools: Theme Toggle, User, Mobile QR & Sync -->
         <div class="flex items-center space-x-1 sm:space-x-1.5 shrink-0">
+          <!-- 🌙 夜间黑暗模式 / ☀️ 日间模式切换按钮 -->
+          <button
+            @click="toggleTheme"
+            class="flex items-center space-x-1 px-2 sm:px-2.5 py-1.5 rounded-lg border text-xs sm:text-sm font-semibold transition cursor-pointer shadow-2xs"
+            :class="[
+              isDark
+                ? 'bg-amber-950/40 text-amber-300 border-amber-700/60 hover:bg-amber-900/50'
+                : 'bg-slate-50 hover:bg-slate-100 text-slate-700 border-slate-200'
+            ]"
+            :title="isDark ? '当前为夜间模式，点击切换为日间明亮模式' : '当前为日间模式，点击开启夜间护眼黑暗模式（适合晚上刷题）'"
+          >
+            <Sun v-if="isDark" class="w-3.5 h-3.5 sm:w-4 sm:h-4 text-amber-400 shrink-0" />
+            <Moon v-else class="w-3.5 h-3.5 sm:w-4 sm:h-4 text-slate-600 shrink-0" />
+            <span class="hidden sm:inline">{{ isDark ? '日间' : '夜间' }}</span>
+          </button>
+
           <!-- 用户账户与自动云同步状态 -->
           <button
             v-if="currentUser"
@@ -193,7 +226,7 @@ const handleSelectChange = (val) => {
             <div class="w-4 h-4 sm:w-5 sm:h-5 rounded-full bg-rose-600 text-white text-[10px] font-bold flex items-center justify-center">
               {{ (currentUser.nickname || currentUser.username || '用').slice(0, 1) }}
             </div>
-            <span class="max-w-[70px] sm:max-w-[100px] truncate hidden sm:inline">{{ currentUser.nickname || currentUser.username }}</span>
+            <span class="max-w-[65px] sm:max-w-[100px] truncate hidden sm:inline">{{ currentUser.nickname || currentUser.username }}</span>
             <span class="flex items-center gap-0.5 text-[10px] text-emerald-600 font-bold bg-white/80 px-1 py-0.5 rounded border border-emerald-200">
               <RefreshCw v-if="syncStatus === 'syncing'" class="w-2.5 h-2.5 animate-spin text-amber-600" />
               <Cloud v-else class="w-2.5 h-2.5 text-emerald-600" />
@@ -228,7 +261,7 @@ const handleSelectChange = (val) => {
             title="手机扫码直接在床上或自习室刷题"
           >
             <Smartphone class="w-3.5 h-3.5 sm:w-4 sm:h-4 text-emerald-600" />
-            <span class="hidden sm:inline">手机扫码刷题</span>
+            <span class="hidden sm:inline">手机扫码</span>
           </button>
         </div>
       </div>
@@ -237,7 +270,7 @@ const handleSelectChange = (val) => {
     <!-- Mobile Bottom Navigation Bar -->
     <div class="lg:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-slate-200 z-40 px-1 py-1 flex justify-around items-center shadow-lg">
       <button
-        v-for="tab in tabs"
+        v-for="tab in mobileTabs"
         :key="tab.id"
         @click="emit('update:currentTab', tab.id)"
         class="flex flex-col items-center justify-center py-1 px-1 rounded-lg transition text-slate-500 flex-1 cursor-pointer min-w-0"
@@ -256,7 +289,7 @@ const handleSelectChange = (val) => {
         class="flex flex-col items-center justify-center py-1 px-1 rounded-lg transition flex-1 cursor-pointer min-w-0"
         :class="currentTab === 'admin' ? 'text-amber-600 font-bold' : 'text-amber-700 hover:text-amber-900'"
       >
-        <span class="text-sm leading-none mb-0.5">👑</span>
+        <span class="text-sm leading-none mb-0.5">🛡️</span>
         <span class="text-[10px] sm:text-[11px] truncate tracking-tight font-bold">后台</span>
       </button>
 
@@ -271,7 +304,7 @@ const handleSelectChange = (val) => {
           <span v-if="currentUser" class="absolute -top-0.5 -right-0.5 w-2 h-2 bg-emerald-500 rounded-full border border-white"></span>
         </div>
         <span class="text-[10px] sm:text-[11px] truncate tracking-tight">
-          {{ currentUser ? (currentUser.nickname || currentUser.username) : '我的登录' }}
+          {{ currentUser ? (currentUser.nickname || currentUser.username) : '我的' }}
         </span>
       </button>
     </div>
