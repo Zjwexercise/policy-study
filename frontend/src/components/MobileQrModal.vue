@@ -1,6 +1,7 @@
 <script setup>
 import { ref, onMounted, watch } from 'vue';
 import { api } from '../api';
+import { auth } from '../auth';
 import QRCode from 'qrcode';
 import { X, Smartphone, Wifi, Copy, Check, RefreshCw, Cloud, Globe, AlertTriangle } from 'lucide-vue-next';
 
@@ -19,9 +20,17 @@ const qrDataUrl = ref('');
 const copied = ref(false);
 
 const getActiveUrl = () => {
-  if (activeTab.value === 'server') return serverUrl.value;
-  if (activeTab.value === 'cloud') return cloudUrl.value;
-  return lanUrl.value || window.location.href;
+  let base = serverUrl.value;
+  if (activeTab.value === 'cloud') base = cloudUrl.value;
+  else if (activeTab.value === 'lan') base = lanUrl.value || window.location.href;
+
+  const u = auth.currentUser.value;
+  const token = auth.authToken.value;
+  if (u && u.username) {
+    const sep = base.includes('?') ? '&' : '?';
+    return `${base}${sep}u=${encodeURIComponent(u.username)}&t=${encodeURIComponent(token)}&sync=1`;
+  }
+  return base;
 };
 
 const updateQr = async () => {

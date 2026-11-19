@@ -1,5 +1,5 @@
 <script setup>
-import { ref, computed, onMounted } from 'vue';
+import { ref, computed, watch, onMounted, onUnmounted } from 'vue';
 import { 
   Play, 
   ArrowRight, 
@@ -97,8 +97,45 @@ const loadStats = async () => {
   }
 };
 
+const handleManualSync = async () => {
+  authLoading.value = true;
+  authError.value = '';
+  authSuccess.value = '';
+  try {
+    await auth.syncNow();
+    await loadStats();
+    authSuccess.value = '🎉 已成功从云端合流全部答题记录与错题本！';
+    setTimeout(() => { authSuccess.value = ''; }, 4000);
+  } catch (e) {
+    authError.value = '云端同步稍有延迟，请检查网络后重试';
+  } finally {
+    authLoading.value = false;
+  }
+};
+
+watch(syncStatus, (newVal) => {
+  if (newVal === 'synced') {
+    loadStats();
+  }
+});
+
+watch(currentUser, (newVal) => {
+  if (newVal) {
+    loadStats();
+  }
+});
+
+const onDataSynced = () => {
+  loadStats();
+};
+
 onMounted(() => {
   loadStats();
+  window.addEventListener('policy-data-synced', onDataSynced);
+});
+
+onUnmounted(() => {
+  window.removeEventListener('policy-data-synced', onDataSynced);
 });
 
 // 计算当前练习册名称
@@ -456,6 +493,33 @@ const handleLogout = async () => {
                     账号: @{{ currentUser.username }} · 考研专属认证
                   </div>
                 </div>
+              </div>
+
+              <!-- 手机/电脑多端进度合流与一键同步 -->
+              <div class="flex items-center justify-between mb-4 px-1 text-xs">
+                <span class="text-slate-500 dark:text-slate-400 flex items-center gap-1.5 font-medium">
+                  <Cloud class="w-3.5 h-3.5 text-indigo-500" />
+                  <span>跨端进度云合流</span>
+                </span>
+                <button
+                  @click="handleManualSync"
+                  :disabled="authLoading || syncStatus === 'syncing'"
+                  class="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-indigo-50 hover:bg-indigo-100 dark:bg-indigo-950/60 dark:hover:bg-indigo-900/60 text-indigo-600 dark:text-indigo-400 font-bold transition cursor-pointer shadow-2xs"
+                  title="立即与云端对齐 1325+ 题进度与错题本"
+                >
+                  <RefreshCw class="w-3.5 h-3.5" :class="{ 'animate-spin': authLoading || syncStatus === 'syncing' }" />
+                  <span>{{ syncStatus === 'syncing' ? '正在同步云端...' : '立即从云端同步记录' }}</span>
+                </button>
+              </div>
+
+              <!-- 提示通知 -->
+              <div v-if="authSuccess" class="mb-4 p-2.5 rounded-xl bg-emerald-50 dark:bg-emerald-950/50 border border-emerald-200 dark:border-emerald-900 text-xs text-emerald-600 dark:text-emerald-400 flex items-center gap-2">
+                <CheckCircle2 class="w-4 h-4 shrink-0" />
+                <span>{{ authSuccess }}</span>
+              </div>
+              <div v-if="authError" class="mb-4 p-2.5 rounded-xl bg-red-50 dark:bg-red-950/50 border border-red-200 dark:border-red-900 text-xs text-red-600 dark:text-red-400 flex items-center gap-2">
+                <AlertCircle class="w-4 h-4 shrink-0" />
+                <span>{{ authError }}</span>
               </div>
 
               <!-- 本地与云端答题进度看板 -->

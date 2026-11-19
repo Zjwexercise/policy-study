@@ -517,14 +517,64 @@ export const api = {
   },
 
   async getStats() {
-    if (await detectMode()) return localStore.getStats();
+    let localStats = null;
     try {
-      const res = await fetch(`${API_BASE}/practice/stats`);
-      if (!res.ok) throw new Error();
-      return await res.json();
-    } catch {
-      return localStore.getStats();
+      localStats = await localStore.getStats();
+    } catch (e) {}
+
+    let serverStats = null;
+    if (!await detectMode()) {
+      try {
+        const res = await fetch(`${API_BASE}/practice/stats`);
+        if (res.ok) {
+          serverStats = await res.json();
+        }
+      } catch (e) {}
     }
+
+    const localAns = (localStats && localStats.answered_count) || 0;
+    const serverAns = (serverStats && serverStats.overview && serverStats.overview.total_answered) || 0;
+    const answered = Math.max(localAns, serverAns);
+
+    const localCor = (localStats && localStats.correct_count) || 0;
+    const serverCor = (serverStats && serverStats.overview && serverStats.overview.total_correct) || 0;
+    const correct = Math.max(localCor, serverCor);
+
+    const localWrong = (localStats && localStats.wrong_count) || 0;
+    const serverWrong = (serverStats && serverStats.overview && serverStats.overview.total_wrong) || 0;
+    const wrong = Math.max(localWrong, serverWrong);
+
+    const localKilled = (localStats && localStats.killed_count) || 0;
+    const serverKilled = (serverStats && serverStats.overview && serverStats.overview.total_killed) || 0;
+    const killed = Math.max(localKilled, serverKilled);
+
+    const localMin = (localStats && localStats.study_time_minutes) || 0;
+    const serverSec = (serverStats && serverStats.overview && serverStats.overview.total_study_seconds) || 0;
+    const studyMin = Math.max(localMin, Math.round(serverSec / 60));
+
+    const accuracy = answered > 0 ? Math.round((correct / answered) * 1000) / 10 : 0;
+
+    return {
+      total_questions: 3081,
+      answered_count: answered,
+      correct_count: correct,
+      wrong_count: wrong,
+      killed_count: killed,
+      study_time_minutes: studyMin,
+      accuracy,
+      overview: {
+        total_questions: 3081,
+        total_answered: answered,
+        total_correct: correct,
+        total_wrong: wrong,
+        total_killed: killed,
+        total_study_seconds: studyMin * 60,
+        today_study_seconds: (serverStats && serverStats.overview && serverStats.overview.today_study_seconds) || 0,
+        today_answered: (serverStats && serverStats.overview && serverStats.overview.today_answered) || 0
+      },
+      categories: (serverStats && serverStats.categories) || (localStats && localStats.categories) || [],
+      daily_trends: (serverStats && serverStats.daily_trends) || []
+    };
   },
 
   async getNetworkInfo() {

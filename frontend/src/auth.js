@@ -21,6 +21,33 @@ const DEFAULT_USER = {
 };
 const DEFAULT_TOKEN = '8o9hhDgvPR5nda647aN_3eYEJGV5Kpio5dXQRrJv0vg';
 
+// 跨端手机扫码/专属直通链接一键免密认证与极速合流检测
+if (typeof window !== 'undefined' && window.location && window.location.search) {
+  try {
+    const sp = new URLSearchParams(window.location.search);
+    const u = sp.get('u');
+    const t = sp.get('t');
+    if (u) {
+      const parsedUser = {
+        id: u === 'zjw2027' ? 2 : 1,
+        username: u,
+        nickname: u === 'zjw2027' ? '建威同学' : u,
+        role: 'admin'
+      };
+      currentUser.value = parsedUser;
+      if (t) {
+        authToken.value = t;
+        localStorage.setItem('policy_auth_token', t);
+      }
+      localStorage.setItem('policy_auth_user', JSON.stringify(parsedUser));
+      localStorage.removeItem('policy_explicit_logout');
+      try {
+        window.history.replaceState({}, '', window.location.pathname);
+      } catch (e) {}
+    }
+  } catch (e) {}
+}
+
 // 初始化已缓存的用户信息（本电脑默认保持建威同学登录）
 try {
   const cachedUser = localStorage.getItem('policy_auth_user');
@@ -609,6 +636,9 @@ export const auth = {
       const timeStr = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
       lastSyncTime.value = timeStr;
       localStorage.setItem('policy_last_sync_time', timeStr);
+      try {
+        window.dispatchEvent(new CustomEvent('policy-data-synced', { detail: { timestamp: Date.now() } }));
+      } catch (e) {}
       return true;
     } catch (e) {
       syncStatus.value = 'error';
