@@ -61,19 +61,24 @@ const totalQuestionsAll = computed(() => {
   return props.workbooks.reduce((sum, w) => sum + (w.total_questions || 0), 0);
 });
 
+// 🔥 2027 肖秀荣冲刺8套卷 (肖8)
+const xiao8Workbooks = computed(() => {
+  return props.workbooks.filter(w => w.name && (w.name.includes('肖8') || w.name.includes('肖秀荣')));
+});
+
 // 🎯 2027 考研政治精雕细刻1000题分类
 const ti1000Workbooks = computed(() => {
-  return props.workbooks.filter(w => w.name && (w.name.includes('1000题') || (w.id >= 34 && w.id <= 39)));
+  return props.workbooks.filter(w => w.name && !w.name.includes('肖8') && !w.name.includes('肖秀荣') && (w.name.includes('1000题') || (w.id >= 34 && w.id <= 39)));
 });
 
 // 历年真题分类
 const zhentiWorkbooks = computed(() => {
-  return props.workbooks.filter(w => w.name && !w.name.includes('1000题') && (w.name.includes('真题') || (w.id >= 27 && w.id <= 33)));
+  return props.workbooks.filter(w => w.name && !w.name.includes('肖8') && !w.name.includes('肖秀荣') && !w.name.includes('1000题') && (w.name.includes('真题') || (w.id >= 27 && w.id <= 33)));
 });
 
 // 冲刺10套卷分类
 const taojuanWorkbooks = computed(() => {
-  return props.workbooks.filter(w => !w.name || (!w.name.includes('真题') && !w.name.includes('1000题') && !(w.id >= 27 && w.id <= 39)));
+  return props.workbooks.filter(w => !w.name || (!w.name.includes('肖8') && !w.name.includes('肖秀荣') && !w.name.includes('真题') && !w.name.includes('1000题') && !(w.id >= 27 && w.id <= 39)));
 });
 
 const tabs = [
@@ -139,6 +144,13 @@ const handleSelectChange = (val) => {
                 🎲 跨题库·盲盒随机抽题 ({{ totalQuestionsAll }}题无序)
               </option>
               
+              <!-- 🔥 2027 肖秀荣冲刺8套卷 (肖8) 专区 -->
+              <optgroup v-if="xiao8Workbooks.length > 0" label="── 🔥 2027 肖秀荣冲刺8套卷 (肖8) ──">
+                <option v-for="wb in xiao8Workbooks" :key="wb.id" :value="wb.id">
+                  {{ wb.name }}
+                </option>
+              </optgroup>
+
               <!-- 2027 精雕细刻1000题专区 -->
               <optgroup v-if="ti1000Workbooks.length > 0" label="── 🎯 2027 精雕细刻1000题 ──">
                 <option v-for="wb in ti1000Workbooks" :key="wb.id" :value="wb.id">

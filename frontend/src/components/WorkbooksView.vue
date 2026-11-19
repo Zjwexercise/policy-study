@@ -49,12 +49,14 @@ const editingQuestion = ref(null);
 const activeTab = ref('all');
 
 const filteredWorkbooks = computed(() => {
-  if (activeTab.value === '1000') {
-    return props.workbooks.filter(w => w.name && (w.name.includes('1000题') || (w.id >= 34 && w.id <= 39)));
+  if (activeTab.value === 'xiao8') {
+    return props.workbooks.filter(w => w.name && (w.name.includes('肖8') || w.name.includes('肖秀荣')));
+  } else if (activeTab.value === '1000') {
+    return props.workbooks.filter(w => w.name && !w.name.includes('肖8') && !w.name.includes('肖秀荣') && (w.name.includes('1000题') || (w.id >= 34 && w.id <= 39)));
   } else if (activeTab.value === 'zhenti') {
-    return props.workbooks.filter(w => w.name && !w.name.includes('1000题') && (w.name.includes('真题') || (w.id >= 27 && w.id <= 33)));
+    return props.workbooks.filter(w => w.name && !w.name.includes('肖8') && !w.name.includes('肖秀荣') && !w.name.includes('1000题') && (w.name.includes('真题') || (w.id >= 27 && w.id <= 33)));
   } else if (activeTab.value === 'taojuan') {
-    return props.workbooks.filter(w => !w.name || (!w.name.includes('真题') && !w.name.includes('1000题') && !(w.id >= 27 && w.id <= 39)));
+    return props.workbooks.filter(w => !w.name || (!w.name.includes('肖8') && !w.name.includes('肖秀荣') && !w.name.includes('真题') && !w.name.includes('1000题') && !(w.id >= 27 && w.id <= 39)));
   }
   return props.workbooks;
 });
@@ -312,6 +314,17 @@ const saveQuestionEdit = async (q) => {
         >
           <span>全部习题集</span>
           <span class="px-1.5 py-0.2 text-[10px] rounded-full" :class="activeTab === 'all' ? 'bg-white/20 text-white' : 'bg-slate-100 text-slate-500'">{{ workbooks.length }}</span>
+        </button>
+
+        <button
+          @click="activeTab = 'xiao8'"
+          class="px-3.5 py-1.5 rounded-xl font-bold transition flex items-center gap-1.5 cursor-pointer shrink-0"
+          :class="activeTab === 'xiao8' ? 'bg-red-600 text-white shadow-2xs' : 'bg-white text-slate-600 hover:bg-red-50 hover:text-red-600 border border-slate-200'"
+        >
+          <span>🔥 肖秀荣8套卷</span>
+          <span class="px-1.5 py-0.2 text-[10px] rounded-full" :class="activeTab === 'xiao8' ? 'bg-white/20 text-white' : 'bg-slate-100 text-slate-500'">
+            {{ workbooks.filter(w => w.name && (w.name.includes('肖8') || w.name.includes('肖秀荣'))).length }}
+          </span>
         </button>
 
         <button

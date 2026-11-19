@@ -155,6 +155,16 @@ const totalCount = computed(() => {
   return props.workbooks.reduce((sum, w) => sum + (w.total_questions || 0), 0) || 3081;
 });
 
+const xiao8Count = computed(() => {
+  const wb = props.workbooks.find(w => w.name && (w.name.includes('肖8') || w.name.includes('肖秀荣')) && w.total_questions > 200);
+  return wb ? wb.total_questions : 264;
+});
+
+const xiao8MasterId = computed(() => {
+  const wb = props.workbooks.find(w => w.name && (w.name.includes('肖8') || w.name.includes('肖秀荣')) && w.total_questions > 200);
+  return wb ? wb.id : 49;
+});
+
 const ti1000Count = computed(() => {
   const wb = props.workbooks.find(w => w.id === 39);
   return wb ? wb.total_questions : 996;
@@ -342,26 +352,30 @@ const handleLogout = async () => {
 
           <!-- 副标题 -->
           <p class="text-sm sm:text-base md:text-lg text-slate-600 dark:text-slate-300 font-medium mb-6 leading-relaxed">
-            全方位整合《1000题》全5大科目、2019-2025历年全国统考真题及冲刺模拟客观题。单册精练、全库大综合、智能斩题与双向云合流，助你政治客观题稳拿 40+！
+            全方位整合《肖秀荣8套卷》、《1000题》全5大科目、2019-2025历年全国统考真题及冲刺模拟客观题。单册精练、全库大综合、智能斩题与双向云合流，助你政治客观题稳拿 40+！
           </p>
 
           <!-- 核心指标标签组 -->
-          <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5 sm:gap-3 mb-6">
-            <div class="p-3 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-2xs text-center">
-              <div class="text-lg sm:text-xl font-black text-rose-600 dark:text-rose-400">{{ ti1000Count }}</div>
-              <div class="text-[11px] font-semibold text-slate-500 dark:text-slate-400">1000题全科目精校</div>
+          <div class="grid grid-cols-2 sm:grid-cols-5 gap-2 sm:gap-2.5 mb-6">
+            <div class="p-2.5 sm:p-3 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-2xs text-center">
+              <div class="text-base sm:text-lg font-black text-red-600 dark:text-red-400">{{ xiao8Count }}</div>
+              <div class="text-[10px] sm:text-[11px] font-semibold text-slate-500 dark:text-slate-400">🔥 肖秀荣8套卷</div>
             </div>
-            <div class="p-3 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-2xs text-center">
-              <div class="text-lg sm:text-xl font-black text-indigo-600 dark:text-indigo-400">{{ zhentiCount }}</div>
-              <div class="text-[11px] font-semibold text-slate-500 dark:text-slate-400">2019-2025全国真题</div>
+            <div class="p-2.5 sm:p-3 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-2xs text-center">
+              <div class="text-base sm:text-lg font-black text-rose-600 dark:text-rose-400">{{ ti1000Count }}</div>
+              <div class="text-[10px] sm:text-[11px] font-semibold text-slate-500 dark:text-slate-400">🎯 1000题精校</div>
             </div>
-            <div class="p-3 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-2xs text-center">
-              <div class="text-lg sm:text-xl font-black text-amber-600 dark:text-amber-400">{{ taojuanCount }}</div>
-              <div class="text-[11px] font-semibold text-slate-500 dark:text-slate-400">冲刺 10 套全真卷</div>
+            <div class="p-2.5 sm:p-3 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-2xs text-center">
+              <div class="text-base sm:text-lg font-black text-indigo-600 dark:text-indigo-400">{{ zhentiCount }}</div>
+              <div class="text-[10px] sm:text-[11px] font-semibold text-slate-500 dark:text-slate-400">🏛️ 历年真题</div>
             </div>
-            <div class="p-3 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-2xs text-center">
-              <div class="text-lg sm:text-xl font-black text-emerald-600 dark:text-emerald-400">{{ totalCount }}</div>
-              <div class="text-[11px] font-semibold text-slate-500 dark:text-slate-400">精选题库总收录</div>
+            <div class="p-2.5 sm:p-3 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-2xs text-center">
+              <div class="text-base sm:text-lg font-black text-amber-600 dark:text-amber-400">{{ taojuanCount }}</div>
+              <div class="text-[10px] sm:text-[11px] font-semibold text-slate-500 dark:text-slate-400">📝 冲刺10套卷</div>
+            </div>
+            <div class="p-2.5 sm:p-3 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-2xs text-center col-span-2 sm:col-span-1">
+              <div class="text-base sm:text-lg font-black text-emerald-600 dark:text-emerald-400">{{ totalCount }}</div>
+              <div class="text-[10px] sm:text-[11px] font-semibold text-slate-500 dark:text-slate-400">🌟 全库总题</div>
             </div>
           </div>
 
@@ -370,8 +384,31 @@ const handleLogout = async () => {
             💬 “志之所趋，无远弗届，穷山距海，不能限也。今日在掌上宝写下的每一个选项，都是考场上势如破竹的底气。”
           </div>
 
-          <!-- 三大精选题库快速直达卡片 -->
-          <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+          <!-- 四大精选题库快速直达卡片 -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-3">
+            <!-- 肖秀荣8套卷专区 -->
+            <div 
+              @click="handleStart(xiao8MasterId)"
+              class="group p-4 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 hover:border-red-500 dark:hover:border-red-500 shadow-2xs hover:shadow-md transition cursor-pointer flex flex-col justify-between"
+            >
+              <div class="flex items-center justify-between mb-2">
+                <span class="text-2xl">🔥</span>
+                <span class="text-[10px] font-bold px-1.5 py-0.5 rounded bg-red-50 dark:bg-red-950 text-red-600 dark:text-red-400 border border-red-200 dark:border-red-900">
+                  {{ xiao8Count }}题
+                </span>
+              </div>
+              <h3 class="font-bold text-sm text-slate-800 dark:text-slate-100 group-hover:text-red-600 dark:group-hover:text-red-400 transition mb-1">
+                肖秀荣 8 套卷
+              </h3>
+              <p class="text-[11px] text-slate-500 dark:text-slate-400 mb-2 leading-relaxed">
+                全8套卷选择题完整精编，考前核心提分押题！
+              </p>
+              <div class="text-[11px] font-bold text-red-600 dark:text-red-400 flex items-center justify-between pt-2 border-t border-slate-100 dark:border-slate-800">
+                <span>直达肖8冲刺</span>
+                <ArrowRight class="w-3 h-3 group-hover:translate-x-1 transition" />
+              </div>
+            </div>
+
             <!-- 1000 题专区 -->
             <div 
               @click="handleStart(39)"
