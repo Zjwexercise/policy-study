@@ -605,7 +605,7 @@ onMounted(() => {
         </div>
 
         <!-- Stem -->
-        <div class="mt-3 text-sm sm:text-base font-medium text-slate-900 leading-relaxed">
+        <div class="mt-3 text-sm sm:text-base font-medium text-slate-900 leading-relaxed whitespace-pre-line">
           <span class="font-bold text-rose-600 mr-1">{{ q.question_num }}.</span>
           <span>{{ q.stem }}</span>
         </div>

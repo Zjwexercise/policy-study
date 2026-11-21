@@ -1008,7 +1008,7 @@ onUnmounted(() => {
         </div>
 
         <!-- Question Stem (题干) -->
-        <div class="text-base sm:text-lg font-medium text-slate-900 leading-relaxed tracking-wide select-text cursor-text">
+        <div class="text-base sm:text-lg font-medium text-slate-900 leading-relaxed tracking-wide select-text cursor-text whitespace-pre-line">
           <span class="font-bold text-rose-600 mr-1.5">{{ currentQuestion.question_num }}.</span>
           <span>{{ currentQuestion.stem }}</span>
         </div>
