@@ -38,6 +38,9 @@ const includeMastered = ref(false);
 const activeNoteQuestion = ref(null);
 const showNoteModal = ref(false);
 const toastMsg = ref('');
+const workbooksList = ref([]);
+// 默认查看全库所有试卷的错题，彻底避免“仅显示当前试卷导致历史错题丢失”的误解
+const selectedWorkbookId = ref('all');
 
 // 模式：'quiz' (自测重做模式，选项可点击，隐去答案), 'review' (解析背诵模式，直接显示答案与错选)
 const viewMode = ref('quiz');
@@ -140,7 +143,10 @@ const loadWrongQuestions = async () => {
     const params = {
       include_mastered: includeMastered.value
     };
-    if (props.workbookId && props.workbookId !== 'all') params.workbook_id = props.workbookId;
+    // 优先读取用户当前选中的试卷范围；若为 'all' 则不传 workbook_id，全库错题全量获取
+    if (selectedWorkbookId.value && selectedWorkbookId.value !== 'all') {
+      params.workbook_id = selectedWorkbookId.value;
+    }
     if (selectedCategory.value !== '全部') params.category = selectedCategory.value;
 
     const data = await api.getWrongQuestions(params);
@@ -172,8 +178,7 @@ const loadWrongQuestions = async () => {
   }
 };
 
-watch(() => props.workbookId, loadWrongQuestions);
-watch([selectedCategory, includeMastered], loadWrongQuestions);
+watch([selectedWorkbookId, selectedCategory, includeMastered], loadWrongQuestions);
 
 // 获取某道题的交互状态
 const getRedoState = (qId) => {
@@ -352,7 +357,13 @@ const handleNoteSaved = (e) => {
   }
 };
 
-onMounted(() => {
+onMounted(async () => {
+  try {
+    const wbs = await api.getWorkbooks();
+    workbooksList.value = wbs || [];
+  } catch (e) {
+    console.error('加载练习册列表失败', e);
+  }
   loadWrongQuestions();
 });
 </script>
@@ -378,11 +389,11 @@ onMounted(() => {
           <div>
             <div class="flex items-center gap-2">
               <h2 class="text-base sm:text-lg font-bold text-slate-800">考研政治错题本</h2>
-              <span v-if="wrongQuestions.length > 0" class="px-2 py-0.5 text-xs font-semibold rounded-full bg-rose-100 text-rose-700">
-                {{ wrongQuestions.length }} 题待攻克
+              <span class="px-2.5 py-0.5 text-xs font-semibold rounded-full bg-rose-100 text-rose-700">
+                {{ wrongQuestions.length }} 题待攻克 {{ selectedWorkbookId === 'all' ? '(全库总计)' : '' }}
               </span>
             </div>
-            <p class="text-xs text-slate-500 mt-0.5">智能收录做错题目，重点消灭易错点与命题陷阱</p>
+            <p class="text-xs text-slate-500 mt-0.5">智能收录历史做错题目，错题永久安全保存，绝不清理</p>
           </div>
         </div>
 
@@ -420,6 +431,41 @@ onMounted(() => {
             <Trash2 class="w-4 h-4" />
           </button>
         </div>
+      </div>
+
+      <!-- 试卷范围快捷切换栏 -->
+      <div class="flex items-center gap-2 pt-3 pb-1 border-b border-slate-100 flex-wrap text-xs">
+        <span class="text-slate-500 font-medium shrink-0 flex items-center gap-1">
+          <BookOpen class="w-3.5 h-3.5 text-rose-500" /> 试卷范围：
+        </span>
+        <button
+          @click="selectedWorkbookId = 'all'"
+          class="px-2.5 py-1 rounded-lg font-medium transition cursor-pointer flex items-center gap-1.5"
+          :class="selectedWorkbookId === 'all' ? 'bg-rose-600 text-white font-semibold shadow-xs' : 'bg-slate-100 text-slate-600 hover:bg-slate-200'"
+        >
+          <span>🔥 全部试卷错题 (全库)</span>
+        </button>
+        <button
+          v-if="props.workbookId && props.workbookId !== 'all'"
+          @click="selectedWorkbookId = props.workbookId"
+          class="px-2.5 py-1 rounded-lg font-medium transition cursor-pointer flex items-center gap-1.5"
+          :class="selectedWorkbookId == props.workbookId ? 'bg-rose-600 text-white font-semibold shadow-xs' : 'bg-slate-100 text-slate-600 hover:bg-slate-200'"
+        >
+          <span>当前练习试卷</span>
+        </button>
+        <select
+          v-model="selectedWorkbookId"
+          class="px-2.5 py-1 bg-white border border-slate-200 rounded-lg text-slate-700 text-xs font-medium focus:ring-2 focus:ring-rose-500 focus:outline-none max-w-[200px] sm:max-w-xs truncate cursor-pointer"
+        >
+          <option value="all">全库所有试卷 (全量错题)</option>
+          <option 
+            v-for="wb in workbooksList" 
+            :key="wb.id" 
+            :value="wb.id"
+          >
+            {{ wb.name }}
+          </option>
+        </select>
       </div>
 
       <!-- Mode & Filters -->

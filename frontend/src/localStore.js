@@ -268,6 +268,8 @@ export const localStore = {
     if (params.is_mastered !== undefined && params.is_mastered !== 'all') {
       const targetMaster = String(params.is_mastered) === '1' || params.is_mastered === true ? 1 : 0;
       wrongList = wrongList.filter(q => q.is_mastered === targetMaster);
+    } else if (params.include_mastered === false) {
+      wrongList = wrongList.filter(q => q.is_mastered !== 1);
     }
 
     return wrongList;
