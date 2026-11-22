@@ -18,9 +18,11 @@ import {
   Eye,
   BookOpen,
   ArrowRight,
-  Brain
+  Brain,
+  LayoutGrid
 } from 'lucide-vue-next';
 import NoteModal from './NoteModal.vue';
+import AnswerSheetModal from './AnswerSheetModal.vue';
 
 const props = defineProps({
   workbookId: {
@@ -125,6 +127,56 @@ const displayWrongQuestions = computed(() => {
 // 各题目独立的作答交互状态
 // 格式: { [qId]: { selected: ['A'], isSubmitted: bool, isCorrect: bool, userAns: '' } }
 const redoStates = ref({});
+
+// 答题卡抽屉控制与当前激活题号
+const showAnswerSheet = ref(false);
+const currentActiveIndex = ref(0);
+
+// 答题卡专用题目列表与状态适配
+const sheetQuestions = computed(() => {
+  return displayWrongQuestions.value.map((q, idx) => {
+    const qid = q.question_id || q.id;
+    const redo = redoStates.value[qid];
+    const isSubmitted = redo?.isSubmitted;
+    const isCorrect = isSubmitted ? redo.isCorrect : false;
+
+    return {
+      ...q,
+      sheetIndex: idx,
+      is_submitted: !!isSubmitted,
+      is_redo_correct: isSubmitted && isCorrect,
+      is_redo_wrong: isSubmitted && !isCorrect,
+      tooltip: `#${idx + 1} (第${q.question_num}题) · ${q.workbook_name || ''} · ${q.category || ''}`
+    };
+  });
+});
+
+// 答题卡副标题统计文本
+const sheetSubtitle = computed(() => {
+  const total = sheetQuestions.value.length;
+  const redone = sheetQuestions.value.filter(q => q.is_submitted).length;
+  const correct = sheetQuestions.value.filter(q => q.is_redo_correct).length;
+  const wrong = sheetQuestions.value.filter(q => q.is_redo_wrong).length;
+  if (redone > 0) {
+    return `共 ${total} 道错题 · 已自测重练 ${redone} 题 (${correct} 正确 · ${wrong} 仍错) · 点击快速定位`;
+  }
+  return `共 ${total} 道错题，点击题号快速跳转定位`;
+});
+
+// 点击答题卡题号平滑定位跳转
+const handleJumpToQuestion = (idx) => {
+  currentActiveIndex.value = idx;
+  setTimeout(() => {
+    const targetEl = document.getElementById(`wrong-card-${idx}`);
+    if (targetEl) {
+      targetEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      targetEl.classList.add('ring-2', 'ring-rose-500', 'ring-offset-4', 'transition-all', 'duration-300');
+      setTimeout(() => {
+        targetEl.classList.remove('ring-2', 'ring-rose-500', 'ring-offset-4');
+      }, 2000);
+    }
+  }, 100);
+};
 
 const categories = ['全部', '马原', '毛中特', '习思想', '史纲', '思修', '时政'];
 
@@ -399,6 +451,20 @@ onMounted(async () => {
 
         <!-- 顶部核心操作按钮组 -->
         <div class="flex items-center gap-2 flex-wrap">
+          <!-- 答题卡快速定位 -->
+          <button
+            v-if="displayWrongQuestions.length > 0"
+            @click="showAnswerSheet = true"
+            class="px-3.5 py-2 text-xs font-semibold rounded-xl bg-white hover:bg-slate-50 text-slate-800 border border-slate-200 shadow-2xs hover:shadow transition cursor-pointer flex items-center gap-1.5 active:scale-95"
+            title="查看错题答题卡与快速定位题号"
+          >
+            <LayoutGrid class="w-3.5 h-3.5 text-rose-600" />
+            <span>答题卡</span>
+            <span class="px-1.5 py-0.2 bg-rose-100 text-rose-700 text-[11px] rounded-full font-bold">
+              {{ displayWrongQuestions.length }}
+            </span>
+          </button>
+
           <!-- 专项重练所有错题 -->
           <button
             v-if="wrongQuestions.length > 0"
@@ -574,8 +640,9 @@ onMounted(async () => {
     <div v-else class="space-y-4">
       <div
         v-for="(q, qIdx) in displayWrongQuestions"
-        :key="q.wrong_id"
-        class="bg-white rounded-2xl p-4 sm:p-6 border border-slate-200 shadow-2xs transition hover:border-slate-300"
+        :key="q.wrong_id || (q.question_id || q.id)"
+        :id="`wrong-card-${qIdx}`"
+        class="bg-white rounded-2xl p-4 sm:p-6 border border-slate-200 shadow-2xs transition-all duration-300 hover:border-slate-300 scroll-mt-20"
         :class="{ 'opacity-65 bg-slate-50/70': q.is_mastered }"
       >
         <!-- Card Header -->
@@ -816,6 +883,34 @@ onMounted(async () => {
         </div>
       </div>
     </div>
+
+    <!-- 悬浮快速呼出答题卡按钮 (长页面极速定位) -->
+    <button
+      v-if="displayWrongQuestions.length > 0"
+      @click="showAnswerSheet = true"
+      class="fixed right-4 sm:right-6 bottom-20 lg:bottom-6 z-30 px-3.5 py-2.5 bg-white/95 hover:bg-white text-slate-800 border border-slate-200/90 shadow-lg hover:shadow-xl rounded-full flex items-center gap-2 backdrop-blur-md transition-all active:scale-95 cursor-pointer font-medium text-xs group"
+      title="快速呼出答题卡与题号定位"
+    >
+      <div class="p-1 rounded-full bg-rose-50 text-rose-600 group-hover:bg-rose-100 transition">
+        <LayoutGrid class="w-4 h-4" />
+      </div>
+      <span class="font-bold">答题卡</span>
+      <span class="px-1.5 py-0.5 bg-rose-500 text-white text-[10px] rounded-full font-mono font-bold leading-none">
+        {{ displayWrongQuestions.length }}
+      </span>
+    </button>
+
+    <!-- 答题卡模态框 -->
+    <AnswerSheetModal 
+      :show="showAnswerSheet"
+      :questions="sheetQuestions"
+      :current-index="currentActiveIndex"
+      :is-wrong-book="true"
+      title="错题本答题卡"
+      :subtitle="sheetSubtitle"
+      @close="showAnswerSheet = false"
+      @jump="handleJumpToQuestion"
+    />
 
     <!-- Note Modal -->
     <NoteModal 
