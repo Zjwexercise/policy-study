@@ -283,7 +283,11 @@ export const localStore = {
 
   // 重置错题本自测作答状态（安全防护：绝不删除正式题库中的 policy_ans 作答记录）
   async resetWrongAnswers(workbookId) {
-    const wrongList = await this.getWrongQuestions({ workbook_id: workbookId, is_mastered: 0 });
+    const params = { is_mastered: 0 };
+    if (workbookId && workbookId !== 'all') {
+      params.workbook_id = workbookId;
+    }
+    const wrongList = await this.getWrongQuestions(params);
     for (const q of wrongList) {
       const qid = q.id || q.question_id;
       localStorage.removeItem(`policy_wb_redo_${qid}`);

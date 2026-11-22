@@ -58,6 +58,9 @@ const startPractice = (options = {}) => {
     practiceInitialStatus.value = 'all';
     practiceInitialRedo.value = false;
   }
+  if (options && options.workbookId) {
+    selectWorkbook(options.workbookId);
+  }
   currentTab.value = 'practice';
 };
 
@@ -168,7 +171,6 @@ onUnmounted(() => {
 
       <WrongBookView 
         v-else-if="currentTab === 'wrong'"
-        :workbook-id="activeWorkbookId"
         @start-practice="startPractice"
       />
 
