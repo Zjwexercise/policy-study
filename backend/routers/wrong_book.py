@@ -76,6 +76,7 @@ def list_wrong_questions(
             q_type = "multiple" if len(r["answer"] or "") > 1 else "single"
 
         results.append({
+            "id": r["question_id"],
             "wrong_id": r["wrong_id"],
             "workbook_id": r["workbook_id"],
             "workbook_name": r["workbook_name"],

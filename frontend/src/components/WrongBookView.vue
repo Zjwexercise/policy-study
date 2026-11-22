@@ -189,23 +189,15 @@ const loadWrongQuestions = async () => {
     const data = await api.getWrongQuestions(params);
     wrongQuestions.value = (data || []).map(normalizeQuestion);
 
-    // 智能恢复持久化作答状态：优先读取 localStorage，其次读取数据中已记录的 user_answer
+    // 仅恢复真正由考生在错题本中自测提交过的重做状态（policy_wb_redo_）
+    // 严禁将历史原试卷错题数据直接作为已提交判定，确保错题本默认保持可交互作答状态
     data.forEach(q => {
-      const qid = q.question_id || q.id;
+      const qid = q.id || q.question_id;
       const saved = localStorage.getItem(`policy_wb_redo_${qid}`);
       if (saved) {
         try {
           redoStates.value[qid] = JSON.parse(saved);
-          return;
         } catch (e) {}
-      }
-      if (q.user_answer) {
-        redoStates.value[qid] = {
-          selected: q.user_answer.split(''),
-          isSubmitted: true,
-          isCorrect: q.is_correct === true || q.is_correct === 1,
-          userAns: q.user_answer
-        };
       }
     });
   } catch (err) {
@@ -217,31 +209,31 @@ const loadWrongQuestions = async () => {
 
 watch([selectedCategory, includeMastered], loadWrongQuestions);
 
-// 获取某道题的交互状态
-const getRedoState = (qId) => {
-  if (!redoStates.value[qId]) {
-    redoStates.value[qId] = {
+// 获取某道题的交互状态（安全支持题目对象或 ID）
+const getRedoState = (qOrId) => {
+  const qid = (typeof qOrId === 'object' && qOrId !== null) ? (qOrId.id || qOrId.question_id) : qOrId;
+  if (!qid) return { selected: [], isSubmitted: false, isCorrect: null, userAns: '' };
+  if (!redoStates.value[qid]) {
+    redoStates.value[qid] = {
       selected: [],
       isSubmitted: false,
       isCorrect: null,
       userAns: ''
     };
   }
-  return redoStates.value[qId];
+  return redoStates.value[qid];
 };
 
-// 判断某道题当前是否处于“正在重做/未提交”状态
+// 判断某道题当前是否处于“正在重做/未提交”作答状态
 const isQuestionTesting = (q) => {
-  const state = redoStates.value[q.question_id || q.id];
-  if (state) {
-    return !state.isSubmitted;
-  }
-  return viewMode.value === 'quiz';
+  if (viewMode.value === 'review') return false; // 📖 解析背诵模式：直接展示解析与对错
+  const state = getRedoState(q);
+  return !state.isSubmitted; // 📝 沉浸重做模式：未提交时处于作答交互状态
 };
 
 // 重做单道题（安全隔离：仅重置错题本自测状态，绝不清空原试卷做题记录）
 const startRedoSingleQuestion = (q) => {
-  const qid = q.question_id || q.id;
+  const qid = q.id || q.question_id;
   redoStates.value[qid] = {
     selected: [],
     isSubmitted: false,
@@ -322,11 +314,17 @@ const handleResetAllAnswers = async () => {
     await api.resetWrongAnswers();
     redoStates.value = {};
     for (const q of wrongQuestions.value) {
-      const qid = q.question_id || q.id;
+      const qid = q.id || q.question_id;
       localStorage.removeItem(`policy_wb_redo_${qid}`);
+      redoStates.value[qid] = {
+        selected: [],
+        isSubmitted: false,
+        isCorrect: null,
+        userAns: ''
+      };
     }
     viewMode.value = 'quiz';
-    showToast('✨ 所有错题自测状态已重置，现在可以全新重做！');
+    showToast('✨ 所有错题已重置为待自测状态，现在可以点击选项开始作答！');
   } catch (err) {
     alert('重置失败: ' + err.message);
   }
@@ -344,14 +342,14 @@ const handleStartPracticeRedo = async () => {
 
 // 移出错题本 / 重新收录
 const toggleMaster = async (item) => {
-  const qid = item.question_id || item.id;
+  const qid = item.id || item.question_id;
   const nextStatus = !item.is_mastered;
   try {
     await api.toggleMasterWrong(qid, nextStatus);
     item.is_mastered = nextStatus;
     if (!includeMastered.value && nextStatus) {
       // 从未掌握列表中平滑移除
-      wrongQuestions.value = wrongQuestions.value.filter(q => (q.question_id || q.id) !== qid);
+      wrongQuestions.value = wrongQuestions.value.filter(q => (q.id || q.question_id) !== qid);
     }
     showToast(nextStatus ? '🏆 已成功移出错题集！' : '已重新收录进错题集');
   } catch (err) {
@@ -365,7 +363,7 @@ const handleClearAll = async () => {
   try {
     await api.clearWrongBook();
     for (const q of wrongQuestions.value) {
-      const qid = q.question_id || q.id;
+      const qid = q.id || q.question_id;
       localStorage.removeItem(`policy_wb_redo_${qid}`);
     }
     wrongQuestions.value = [];
@@ -377,7 +375,7 @@ const handleClearAll = async () => {
 
 const openNote = (q) => {
   activeNoteQuestion.value = {
-    id: q.question_id,
+    id: q.id || q.question_id,
     question_num: q.question_num,
     category: q.category,
     stem: q.stem,
@@ -388,7 +386,7 @@ const openNote = (q) => {
 };
 
 const handleNoteSaved = (e) => {
-  const target = wrongQuestions.value.find(q => q.question_id === e.questionId);
+  const target = wrongQuestions.value.find(q => (q.id || q.question_id) === e.questionId);
   if (target) {
     target.note_content = e.content;
   }
@@ -677,7 +675,7 @@ onMounted(() => {
             @click="handleOptionClick(q, opt.key)"
             class="group p-3 rounded-xl border-2 transition-all flex items-start gap-3 cursor-pointer select-none"
             :class="[
-              getRedoState(q.question_id).selected.includes(opt.key)
+              getRedoState(q).selected.includes(opt.key)
                 ? 'border-rose-500 bg-rose-50/50 text-slate-900 shadow-2xs'
                 : 'border-slate-200 hover:border-slate-300 hover:bg-slate-50 text-slate-700'
             ]"
@@ -685,7 +683,7 @@ onMounted(() => {
             <div
               class="w-6 h-6 rounded-lg flex items-center justify-center font-bold text-xs shrink-0 transition"
               :class="[
-                getRedoState(q.question_id).selected.includes(opt.key)
+                getRedoState(q).selected.includes(opt.key)
                   ? 'bg-rose-600 text-white'
                   : 'bg-slate-100 group-hover:bg-slate-200 text-slate-700'
               ]"
@@ -703,7 +701,7 @@ onMounted(() => {
             class="pt-3 flex items-center justify-between gap-3 border-t border-slate-100"
           >
             <div class="text-xs text-slate-500">
-              已选：<span class="font-bold text-rose-600 font-mono">{{ getRedoState(q.question_id).selected.join('') || '未选' }}</span>
+              已选：<span class="font-bold text-rose-600 font-mono">{{ getRedoState(q).selected.join('') || '未选' }}</span>
             </div>
             <button
               @click="submitRedo(q)"
@@ -728,7 +726,7 @@ onMounted(() => {
               q.answer.includes(opt.key)
                 ? 'border-emerald-400 bg-emerald-50/70 text-emerald-950 font-medium'
                 : (
-                    (redoStates[q.question_id]?.userAns || q.last_wrong_answer || '').includes(opt.key)
+                    (getRedoState(q).userAns || q.last_wrong_answer || '').includes(opt.key)
                       ? 'border-rose-400 bg-rose-50/70 text-rose-950'
                       : 'border-slate-100 bg-slate-50/40 text-slate-600'
                   )
@@ -740,7 +738,7 @@ onMounted(() => {
                 q.answer.includes(opt.key) 
                   ? 'bg-emerald-600 text-white' 
                   : (
-                      (redoStates[q.question_id]?.userAns || q.last_wrong_answer || '').includes(opt.key)
+                      (getRedoState(q).userAns || q.last_wrong_answer || '').includes(opt.key)
                         ? 'bg-rose-600 text-white' 
                         : 'bg-slate-200 text-slate-700'
                     )
@@ -751,29 +749,29 @@ onMounted(() => {
             <span class="flex-1">{{ opt.value }}</span>
             <div class="shrink-0">
               <Check v-if="q.answer.includes(opt.key)" class="w-4 h-4 text-emerald-600 font-bold" />
-              <X v-else-if="(redoStates[q.question_id]?.userAns || q.last_wrong_answer || '').includes(opt.key)" class="w-4 h-4 text-rose-600 font-bold" />
+              <X v-else-if="(getRedoState(q).userAns || q.last_wrong_answer || '').includes(opt.key)" class="w-4 h-4 text-rose-600 font-bold" />
             </div>
           </div>
 
           <!-- 作答结果反馈 Banner -->
           <div 
-            v-if="redoStates[q.question_id]?.isSubmitted"
+            v-if="getRedoState(q).isSubmitted"
             class="mt-3 p-3 rounded-xl flex items-center justify-between gap-3"
-            :class="redoStates[q.question_id].isCorrect ? 'bg-emerald-50 border border-emerald-200 text-emerald-900' : 'bg-rose-50 border border-rose-200 text-rose-900'"
+            :class="getRedoState(q).isCorrect ? 'bg-emerald-50 border border-emerald-200 text-emerald-900' : 'bg-rose-50 border border-rose-200 text-rose-900'"
           >
             <div class="flex items-center gap-2 text-xs sm:text-sm">
-              <span class="text-base">{{ redoStates[q.question_id].isCorrect ? '🎉' : '❌' }}</span>
+              <span class="text-base">{{ getRedoState(q).isCorrect ? '🎉' : '❌' }}</span>
               <span class="font-bold">
-                {{ redoStates[q.question_id].isCorrect ? '重做正确！已记录最新作答！' : '回答仍有偏差，最新作答已实时记录！' }}
+                {{ getRedoState(q).isCorrect ? '重做正确！已记录最新作答！' : '回答仍有偏差，最新作答已实时记录！' }}
               </span>
               <span class="text-xs opacity-80">
-                (本次作答: <strong class="font-mono">{{ redoStates[q.question_id].userAns }}</strong>)
+                (本次作答: <strong class="font-mono">{{ getRedoState(q).userAns }}</strong>)
               </span>
             </div>
 
             <div class="flex items-center gap-2 shrink-0">
               <button
-                v-if="redoStates[q.question_id].isCorrect && !q.is_mastered"
+                v-if="getRedoState(q).isCorrect && !q.is_mastered"
                 @click="toggleMaster(q)"
                 class="px-2.5 py-1 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-semibold rounded-lg shadow-2xs transition cursor-pointer flex items-center gap-1 active:scale-95"
                 title="已攻克并移出错题集"
@@ -796,15 +794,15 @@ onMounted(() => {
           <div class="mt-3 p-3.5 bg-slate-50 border border-slate-200 rounded-xl space-y-2">
             <div class="flex items-center justify-between flex-wrap gap-2 text-xs font-semibold">
               <div class="flex items-center gap-4">
-                <span :class="redoStates[q.question_id]?.isSubmitted ? (redoStates[q.question_id]?.isCorrect ? 'text-emerald-700 font-bold' : 'text-rose-600 font-bold') : 'text-rose-600'">
-                  {{ redoStates[q.question_id]?.isSubmitted ? (redoStates[q.question_id]?.isCorrect ? '最新作答：' + redoStates[q.question_id].userAns + ' (正确)' : '最新作答：' + redoStates[q.question_id].userAns + ' (错选)') : ('历史错选：' + (q.last_wrong_answer || '未记录')) }}
+                <span :class="getRedoState(q).isSubmitted ? (getRedoState(q).isCorrect ? 'text-emerald-700 font-bold' : 'text-rose-600 font-bold') : 'text-rose-600'">
+                  {{ getRedoState(q).isSubmitted ? (getRedoState(q).isCorrect ? '最新作答：' + getRedoState(q).userAns + ' (正确)' : '最新作答：' + getRedoState(q).userAns + ' (错选)') : ('历史错选：' + (q.last_wrong_answer || q.user_answer || '未记录')) }}
                 </span>
                 <span class="text-emerald-700 font-bold">
                   正确答案：{{ q.answer }}
                 </span>
               </div>
               <button
-                v-if="!redoStates[q.question_id]?.isSubmitted"
+                v-if="!getRedoState(q).isSubmitted"
                 @click="startRedoSingleQuestion(q)"
                 class="text-xs text-rose-600 hover:text-rose-700 font-medium flex items-center gap-1 cursor-pointer"
               >

@@ -64,8 +64,12 @@ export function normalizeQuestion(q) {
   else if (qType === '多选题' || qType === '多选') qType = 'multiple';
   else if (!qType) qType = (q.answer && q.answer.length > 1) ? 'multiple' : 'single';
 
+  const qid = q.id || q.question_id;
+
   return {
     ...q,
+    id: qid,
+    question_id: qid,
     options: opts,
     question_type: qType
   };
@@ -195,9 +199,10 @@ export const api = {
       const localWrongMaster = localStorage.getItem(`policy_wrong_master_${qid}`);
       const localNote = localStorage.getItem(`policy_note_${qid}`);
 
-      const user_answer = q.user_answer || localAns || null;
-      let is_correct = q.is_correct;
-      if (is_correct === null || is_correct === undefined) {
+      // 当显式开启 redo 时，不读取历史作答，保证全新重练
+      const user_answer = params.redo ? null : (q.user_answer || localAns || null);
+      let is_correct = params.redo ? null : q.is_correct;
+      if (!params.redo && (is_correct === null || is_correct === undefined)) {
         if (localCor === '1') is_correct = true;
         else if (localCor === '0') is_correct = false;
       }
