@@ -179,7 +179,9 @@ const showToast = (msg) => {
 };
 
 const loadWrongQuestions = async () => {
-  loading.value = true;
+  if (wrongQuestions.value.length === 0) {
+    loading.value = true;
+  }
   try {
     const params = {
       include_mastered: includeMastered.value
@@ -392,17 +394,8 @@ const handleNoteSaved = (e) => {
   }
 };
 
-const handleDataSynced = () => {
-  loadWrongQuestions();
-};
-
 onMounted(() => {
   loadWrongQuestions();
-  window.addEventListener('policy-data-synced', handleDataSynced);
-});
-
-onUnmounted(() => {
-  window.removeEventListener('policy-data-synced', handleDataSynced);
 });
 </script>
 

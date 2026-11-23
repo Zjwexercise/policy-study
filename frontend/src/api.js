@@ -517,7 +517,7 @@ export const api = {
         result = await localStore.reportStudyTime(seconds);
       }
     }
-    notifyUserAction();
+    // 关键修正：学习计时后台静默上报，严禁调用 notifyUserAction() 产生周期性重载
     return result;
   },
 
