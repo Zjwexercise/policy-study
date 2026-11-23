@@ -600,7 +600,12 @@ export const auth = {
 
       // 2. 同时双向同步到 KVDB (确保 GitHub Pages / 手机数据无缝互通)
       try {
-        const res = await fetch(`${cloudUrl}?t=${Date.now()}`, { method: 'GET', cache: 'no-cache' });
+        const timeoutSignal = typeof AbortSignal !== 'undefined' && AbortSignal.timeout ? AbortSignal.timeout(3500) : undefined;
+        const res = await fetch(`${cloudUrl}?t=${Date.now()}`, { 
+          method: 'GET', 
+          cache: 'no-cache',
+          signal: timeoutSignal
+        });
         let cloudData = {};
         if (res.ok) {
           cloudData = await res.json();
@@ -621,7 +626,8 @@ export const auth = {
         await fetch(cloudUrl, {
           method: 'PUT',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(cloudData)
+          body: JSON.stringify(cloudData),
+          signal: timeoutSignal
         });
 
         localStore.importData({
@@ -629,7 +635,7 @@ export const auth = {
           stats: mergedStats
         }, 'merge');
       } catch (e) {
-        console.warn('KVDB 同步暂缓:', e);
+        console.warn('KVDB 同步暂缓 (离线或网络延迟):', e);
       }
 
       syncStatus.value = 'synced';

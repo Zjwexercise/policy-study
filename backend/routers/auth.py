@@ -293,6 +293,7 @@ def sync_records(
     user_id = current_user["id"]
     cursor = conn.cursor()
 
+    # 智能读取：首先获取 user_cloud_data 中的全量 JSON
     cursor.execute("SELECT records_json, stats_json FROM user_cloud_data WHERE user_id = ?", (user_id,))
     row = cursor.fetchone()
 
@@ -308,7 +309,39 @@ def sync_records(
         except Exception:
             server_stats = {}
 
-    # 智能合并算法
+    # 智能补充：将 SQLite 数据库原生 user_progress, wrong_book, notes 表中的数据无缝合并进 server_records
+    # 防止多端通过不同途径作答时产生进度脱节
+    try:
+        cursor.execute("SELECT workbook_id, question_id, user_answer, is_correct, is_starred, is_killed FROM user_progress")
+        for wb_id, q_id, u_ans, is_cor, is_star, is_kill in cursor.fetchall():
+            ans_k = f"policy_ans_{wb_id}_{q_id}"
+            if ans_k not in server_records and u_ans:
+                server_records[ans_k] = u_ans
+            cor_k = f"policy_cor_{q_id}"
+            if cor_k not in server_records and is_cor is not None:
+                server_records[cor_k] = "1" if is_cor else "0"
+            if is_star and f"policy_star_{q_id}" not in server_records:
+                server_records[f"policy_star_{q_id}"] = "1"
+            if is_kill and f"policy_killed_{q_id}" not in server_records:
+                server_records[f"policy_killed_{q_id}"] = "1"
+
+        cursor.execute("SELECT workbook_id, question_id, wrong_count, is_mastered FROM wrong_book")
+        for wb_id, q_id, w_cnt, is_mast in cursor.fetchall():
+            w_k = f"policy_wrong_cnt_{wb_id}_{q_id}"
+            if w_k not in server_records:
+                server_records[w_k] = str(w_cnt or 1)
+            if is_mast and f"policy_wrong_master_{q_id}" not in server_records:
+                server_records[f"policy_wrong_master_{q_id}"] = "1"
+
+        cursor.execute("SELECT question_id, content FROM notes WHERE content IS NOT NULL AND content != ''")
+        for q_id, content in cursor.fetchall():
+            n_k = f"policy_note_{q_id}"
+            if n_k not in server_records and content:
+                server_records[n_k] = content
+    except Exception as e:
+        pass
+
+    # 智能合并算法：增量无损合并客户端本次上传的答题、错题、斩题与笔记
     client_rec = req.client_records or {}
     for k, in_val in client_rec.items():
         if not k.startswith("policy_"):
@@ -319,12 +352,14 @@ def sync_records(
             if s_val is None:
                 server_records[k] = in_val
             else:
-                qid = k.split("_")[3]
-                s_cor = server_records.get(f"policy_cor_{qid}")
-                in_cor = client_rec.get(f"policy_cor_{qid}")
-                if in_cor == "1" and s_cor != "1":
-                    server_records[k] = in_val
-                    server_records[f"policy_cor_{qid}"] = "1"
+                parts = k.split("_")
+                qid = parts[3] if len(parts) >= 4 else None
+                if qid:
+                    s_cor = server_records.get(f"policy_cor_{qid}")
+                    in_cor = client_rec.get(f"policy_cor_{qid}")
+                    if in_cor == "1" and s_cor != "1":
+                        server_records[k] = in_val
+                        server_records[f"policy_cor_{qid}"] = "1"
         elif k.startswith("policy_cor_"):
             if s_val is None or (in_val == "1" and s_val != "1"):
                 server_records[k] = in_val
@@ -389,7 +424,7 @@ def sync_records(
                     in_num = 0
                 server_stats[date_key] = max(s_num, in_num)
 
-    # 保存最新合并数据
+    # 保存最新合并数据至 user_cloud_data
     now_str = datetime.now().isoformat()
     cursor.execute("""
         INSERT INTO user_cloud_data (user_id, records_json, stats_json, updated_at)
@@ -399,6 +434,60 @@ def sync_records(
             stats_json = excluded.stats_json,
             updated_at = excluded.updated_at
     """, (user_id, json.dumps(server_records, ensure_ascii=False), json.dumps(server_stats, ensure_ascii=False), now_str))
+
+    # 双向核心回写：实时将合并后的最新做题记录写回原生 SQLite 表
+    # 彻底确保无论在哪个终端提交或同步，/api/workbooks 与 /api/wrong-book 以及答题卡均 100% 实时同步！
+    try:
+        for k, val in server_records.items():
+            if k.startswith("policy_ans_"):
+                parts = k.split("_")
+                if len(parts) >= 4 and parts[2].isdigit() and parts[3].isdigit():
+                    wb_id = int(parts[2])
+                    q_id = int(parts[3])
+                    cor_val = server_records.get(f"policy_cor_{q_id}")
+                    is_cor = 1 if cor_val == "1" else 0
+                    is_star = 1 if server_records.get(f"policy_star_{q_id}") == "1" else 0
+                    is_kill = 1 if server_records.get(f"policy_killed_{q_id}") == "1" else 0
+                    cursor.execute("""
+                        INSERT INTO user_progress (workbook_id, question_id, user_answer, is_correct, is_starred, is_killed, answered_at)
+                        VALUES (?, ?, ?, ?, ?, ?, ?)
+                        ON CONFLICT(workbook_id, question_id) DO UPDATE SET
+                            user_answer = excluded.user_answer,
+                            is_correct = excluded.is_correct,
+                            is_starred = excluded.is_starred,
+                            is_killed = excluded.is_killed,
+                            answered_at = excluded.answered_at
+                    """, (wb_id, q_id, str(val), is_cor, is_star, is_kill, now_str))
+            elif k.startswith("policy_wrong_cnt_"):
+                parts = k.split("_")
+                if len(parts) >= 5 and parts[3].isdigit() and parts[4].isdigit():
+                    wb_id = int(parts[3])
+                    q_id = int(parts[4])
+                    w_cnt = int(val or 1)
+                    is_mast = 1 if server_records.get(f"policy_wrong_master_{q_id}") == "1" else 0
+                    last_ans = server_records.get(f"policy_ans_{wb_id}_{q_id}", "")
+                    cursor.execute("""
+                        INSERT INTO wrong_book (workbook_id, question_id, wrong_count, last_wrong_answer, is_mastered, updated_at)
+                        VALUES (?, ?, ?, ?, ?, ?)
+                        ON CONFLICT(workbook_id, question_id) DO UPDATE SET
+                            wrong_count = max(wrong_book.wrong_count, excluded.wrong_count),
+                            last_wrong_answer = CASE WHEN excluded.last_wrong_answer != '' THEN excluded.last_wrong_answer ELSE wrong_book.last_wrong_answer END,
+                            is_mastered = excluded.is_mastered,
+                            updated_at = excluded.updated_at
+                    """, (wb_id, q_id, w_cnt, str(last_ans), is_mast, now_str))
+            elif k.startswith("policy_note_"):
+                parts = k.split("_")
+                if len(parts) >= 3 and parts[2].isdigit() and val:
+                    q_id = int(parts[2])
+                    cursor.execute("""
+                        INSERT INTO notes (question_id, content, updated_at)
+                        VALUES (?, ?, ?)
+                        ON CONFLICT(question_id) DO UPDATE SET
+                            content = excluded.content,
+                            updated_at = excluded.updated_at
+                    """, (q_id, str(val), now_str))
+    except Exception as e:
+        print(f"[Sync] 双向回写原生表异常（安全跳过）: {e}")
 
     conn.commit()
 

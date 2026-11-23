@@ -1,5 +1,5 @@
 <script setup>
-import { ref, watch, onMounted, computed } from 'vue';
+import { ref, watch, onMounted, onUnmounted, computed } from 'vue';
 import { api, normalizeQuestion } from '../api';
 import confetti from 'canvas-confetti';
 import { 
@@ -392,8 +392,17 @@ const handleNoteSaved = (e) => {
   }
 };
 
+const handleDataSynced = () => {
+  loadWrongQuestions();
+};
+
 onMounted(() => {
   loadWrongQuestions();
+  window.addEventListener('policy-data-synced', handleDataSynced);
+});
+
+onUnmounted(() => {
+  window.removeEventListener('policy-data-synced', handleDataSynced);
 });
 </script>
 

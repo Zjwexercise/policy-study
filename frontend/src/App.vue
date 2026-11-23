@@ -87,8 +87,13 @@ const flushStudyTime = async () => {
   }
 };
 
+const handleDataSynced = () => {
+  loadWorkbooks();
+};
+
 onMounted(() => {
   loadWorkbooks();
+  window.addEventListener('policy-data-synced', handleDataSynced);
   auth.initAuth().then(() => {
     loadWorkbooks();
   });
@@ -124,6 +129,7 @@ onMounted(() => {
 
 onUnmounted(() => {
   if (timerInterval) clearInterval(timerInterval);
+  window.removeEventListener('policy-data-synced', handleDataSynced);
   flushStudyTime();
 });
 </script>

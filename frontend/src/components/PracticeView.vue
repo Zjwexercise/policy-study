@@ -696,13 +696,19 @@ const handleKeyDown = (e) => {
   }
 };
 
+const handleDataSynced = () => {
+  loadQuestions();
+};
+
 onMounted(() => {
   window.addEventListener('keydown', handleKeyDown);
+  window.addEventListener('policy-data-synced', handleDataSynced);
   loadQuestions();
 });
 
 onUnmounted(() => {
   window.removeEventListener('keydown', handleKeyDown);
+  window.removeEventListener('policy-data-synced', handleDataSynced);
 });
 </script>
 
