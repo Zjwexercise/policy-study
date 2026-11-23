@@ -272,8 +272,19 @@ const loadQuestions = async () => {
       data = [...data].sort(() => Math.random() - 0.5);
     }
     questions.value = (data || []).map(normalizeQuestion);
-    // 始终从第 1 题开始（已按用户要求移除题号记忆）
-    currentIndex.value = 0;
+    
+    // 刷新或切回时精准保留用户当前作答题号，绝不再倒退回第 1 题
+    if (redoWrongMode.value) {
+      currentIndex.value = 0;
+    } else {
+      const savedIdxStr = localStorage.getItem('policy_practice_idx_' + targetWbId);
+      const savedIdx = parseInt(savedIdxStr, 10);
+      if (!isNaN(savedIdx) && savedIdx >= 0 && savedIdx < questions.value.length) {
+        currentIndex.value = savedIdx;
+      } else {
+        currentIndex.value = 0;
+      }
+    }
     resetSelection();
   } catch (err) {
     console.error('加载题目失败', err);
@@ -282,9 +293,16 @@ const loadQuestions = async () => {
   }
 };
 
-// 监听题号切换
+// 监听题号切换并持久化记忆当前题号
 watch(currentIndex, (newIdx) => {
   resetSelection(newIdx);
+  if (props.workbookId) {
+    const isRandomWb = props.workbookId === 'random';
+    const targetWbId = isRandomWb ? 'all' : props.workbookId;
+    try {
+      localStorage.setItem('policy_practice_idx_' + targetWbId, String(newIdx));
+    } catch (e) {}
+  }
 });
 
 const resetSelection = (targetIdx = currentIndex.value) => {
@@ -1008,7 +1026,7 @@ onUnmounted(() => {
         </div>
 
         <!-- Question Stem (题干) -->
-        <div class="text-base sm:text-lg font-medium text-slate-900 leading-relaxed tracking-wide select-text cursor-text whitespace-pre-line">
+        <div class="text-base sm:text-lg font-medium text-slate-900 leading-relaxed tracking-wide select-text cursor-text whitespace-pre-line break-words">
           <span class="font-bold text-rose-600 mr-1.5">{{ currentQuestion.question_num }}.</span>
           <span>{{ currentQuestion.stem }}</span>
         </div>

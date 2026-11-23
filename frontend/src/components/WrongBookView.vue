@@ -155,6 +155,9 @@ const sheetSubtitle = computed(() => {
 // 点击答题卡题号平滑定位跳转
 const handleJumpToQuestion = (idx) => {
   currentActiveIndex.value = idx;
+  try {
+    localStorage.setItem('policy_wb_active_idx', String(idx));
+  } catch (e) {}
   setTimeout(() => {
     const targetEl = document.getElementById(`wrong-card-${idx}`);
     if (targetEl) {
@@ -202,6 +205,15 @@ const loadWrongQuestions = async () => {
         } catch (e) {}
       }
     });
+
+    // 页面刷新后平滑恢复至上次正在浏览或自测的错题位置
+    const savedActiveIdx = parseInt(localStorage.getItem('policy_wb_active_idx'), 10);
+    if (!isNaN(savedActiveIdx) && savedActiveIdx > 0 && savedActiveIdx < (data || []).length) {
+      currentActiveIndex.value = savedActiveIdx;
+      setTimeout(() => {
+        handleJumpToQuestion(savedActiveIdx);
+      }, 300);
+    }
   } catch (err) {
     console.error('加载错题失败', err);
   } finally {
@@ -251,6 +263,14 @@ const handleOptionClick = (q, optKey) => {
   const qid = q.question_id || q.id;
   const state = getRedoState(qid);
   if (state.isSubmitted) return; // 已提交作答后不改变
+
+  const curIdx = displayWrongQuestions.value.findIndex(item => (item.id || item.question_id) === qid);
+  if (curIdx >= 0) {
+    currentActiveIndex.value = curIdx;
+    try {
+      localStorage.setItem('policy_wb_active_idx', String(curIdx));
+    } catch (e) {}
+  }
 
   const isMulti = q.question_type === 'multiple';
   if (!isMulti) {
@@ -662,7 +682,7 @@ onMounted(() => {
         </div>
 
         <!-- Stem -->
-        <div class="mt-3 text-sm sm:text-base font-medium text-slate-900 leading-relaxed whitespace-pre-line">
+        <div class="mt-3 text-sm sm:text-base font-medium text-slate-900 leading-relaxed whitespace-pre-line break-words">
           <span class="font-bold text-rose-600 mr-1">{{ q.question_num }}.</span>
           <span>{{ q.stem }}</span>
         </div>

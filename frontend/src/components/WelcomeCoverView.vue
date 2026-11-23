@@ -113,29 +113,14 @@ const handleManualSync = async () => {
   }
 };
 
-watch(syncStatus, (newVal) => {
-  if (newVal === 'synced') {
-    loadStats();
-  }
-});
-
 watch(currentUser, (newVal) => {
   if (newVal) {
     loadStats();
   }
 });
 
-const onDataSynced = () => {
-  loadStats();
-};
-
 onMounted(() => {
   loadStats();
-  window.addEventListener('policy-data-synced', onDataSynced);
-});
-
-onUnmounted(() => {
-  window.removeEventListener('policy-data-synced', onDataSynced);
 });
 
 // 计算当前练习册名称

@@ -15,11 +15,52 @@ import LoginModal from './components/LoginModal.vue';
 import AdminView from './components/AdminView.vue';
 import { auth } from './auth';
 
-// 初始页面：首次打开进入欢迎封面，会话期内刷新保留在当前界面
-const currentTab = ref(sessionStorage.getItem('policy_current_tab') || 'welcome');
+// 有效的标签页列表
+const VALID_TABS = ['welcome', 'practice', 'wrong', 'killed', 'notes', 'workbooks', 'stats', 'admin'];
+
+// 初始页面：多级持久化恢复（URL hash -> localStorage -> sessionStorage -> 默认 welcome）
+// 彻底解决刷新、手机息屏、锁屏或后台切回时自动跳回首页欢迎界面的问题
+const getInitialTab = () => {
+  try {
+    const hash = window.location.hash.replace(/^#\/?/, '').trim();
+    if (hash && VALID_TABS.includes(hash)) {
+      return hash;
+    }
+    const localSaved = localStorage.getItem('policy_current_tab');
+    if (localSaved && VALID_TABS.includes(localSaved)) {
+      return localSaved;
+    }
+    const sessionSaved = sessionStorage.getItem('policy_current_tab');
+    if (sessionSaved && VALID_TABS.includes(sessionSaved)) {
+      return sessionSaved;
+    }
+  } catch (e) {}
+  return 'welcome';
+};
+
+const currentTab = ref(getInitialTab());
+
 watch(currentTab, (val) => {
-  sessionStorage.setItem('policy_current_tab', val);
-});
+  if (val && VALID_TABS.includes(val)) {
+    try {
+      localStorage.setItem('policy_current_tab', val);
+      sessionStorage.setItem('policy_current_tab', val);
+      if (window.location.hash.replace(/^#\/?/, '') !== val) {
+        window.location.hash = val;
+      }
+    } catch (e) {}
+  }
+}, { immediate: true });
+
+// 监听浏览器前进/后退/URL Hash 变更
+const handleHashChange = () => {
+  try {
+    const hash = window.location.hash.replace(/^#\/?/, '').trim();
+    if (hash && VALID_TABS.includes(hash) && currentTab.value !== hash) {
+      currentTab.value = hash;
+    }
+  } catch (e) {}
+};
 
 const workbooks = ref([]);
 const activeWorkbookId = ref(localStorage.getItem('policy_active_wb_id') || 'all'); // 记忆用户最后打开的练习册
@@ -87,13 +128,9 @@ const flushStudyTime = async () => {
   }
 };
 
-const handleDataSynced = () => {
-  loadWorkbooks();
-};
-
 onMounted(() => {
   loadWorkbooks();
-  window.addEventListener('policy-data-synced', handleDataSynced);
+  window.addEventListener('hashchange', handleHashChange);
   auth.initAuth().then(() => {
     loadWorkbooks();
   });
@@ -129,7 +166,7 @@ onMounted(() => {
 
 onUnmounted(() => {
   if (timerInterval) clearInterval(timerInterval);
-  window.removeEventListener('policy-data-synced', handleDataSynced);
+  window.removeEventListener('hashchange', handleHashChange);
   flushStudyTime();
 });
 </script>
