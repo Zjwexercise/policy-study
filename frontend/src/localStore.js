@@ -351,19 +351,47 @@ export const localStore = {
     return { success: true, content };
   },
 
-  // 重置单本进度
+  // 重置单本练习进度（二刷/三刷深度重置）
   async resetWorkbook(id) {
-    const keysToRemove = [];
+    const idStr = String(id);
+    const keysToRemove = new Set();
+
+    // 1. 扫描 localStorage，收集所有属于本练习册的作答与错题键
     for (let i = 0; i < localStorage.length; i++) {
       const key = localStorage.key(i);
-      if (key.startsWith(`policy_ans_${id}_`)) {
-        keysToRemove.push(key);
-        const qid = key.split('_')[3];
-        keysToRemove.push(`policy_cor_${qid}`);
+      if (!key) continue;
+      if (key.startsWith(`policy_ans_${idStr}_`) || key.startsWith(`policy_wrong_cnt_${idStr}_`)) {
+        keysToRemove.add(key);
+        const parts = key.split('_');
+        const qid = parts[3];
+        if (qid) {
+          keysToRemove.add(`policy_cor_${qid}`);
+          keysToRemove.add(`policy_wb_redo_${qid}`);
+          keysToRemove.add(`policy_wrong_master_${qid}`);
+        }
       }
     }
-    keysToRemove.forEach(k => localStorage.removeItem(k));
-    return { success: true, message: '练习进度已重置' };
+
+    // 2. 移除当前练习册的题号记忆，确保重刷时必定从第 1 题开始
+    keysToRemove.add(`policy_practice_idx_${idStr}`);
+
+    // 3. 物理删除所有匹配的缓存键
+    keysToRemove.forEach(k => {
+      try {
+        localStorage.removeItem(k);
+      } catch (e) {}
+    });
+
+    // 4. 清理内存缓存中的该卷题目状态
+    if (cache.questionsByWb && cache.questionsByWb[id]) {
+      cache.questionsByWb[id].forEach(q => {
+        q.user_answer = null;
+        q.is_correct = null;
+        q.wrong_count = 0;
+      });
+    }
+
+    return { success: true, message: '练习进度已重置，已为你开启全新二刷！' };
   },
 
   // 斩杀/撤销斩杀熟题

@@ -106,10 +106,10 @@ const submitUpload = async () => {
 };
 
 const handleReset = async (wb) => {
-  if (!confirm(`确定要重置【${wb.name}】的刷题进度吗？\n所有已作答记录和错题将被清空，方便您开启全新一轮“二刷”！`)) return;
+  if (!confirm(`确定要重置【${wb.name}】的刷题进度吗？\n\n这套试卷的所有已作答记录和错题将被清空，并回到第 1 题，方便您开启全新一轮“二刷”！\n（注：您的考点笔记和收藏夹会安全保留）`)) return;
   try {
     await api.resetWorkbook(wb.id);
-    alert('已成功重置刷题进度！');
+    alert(`🎉【${wb.name}】已成功重置！\n已清空全部已答记录，题号已回到第 1 题，现在可以开启全新二刷！`);
     emit('refresh-workbooks');
   } catch (err) {
     alert('重置失败: ' + err.message);
@@ -423,13 +423,6 @@ const saveQuestionEdit = async (q) => {
                 <FileCheck class="w-4 h-4" />
               </button>
               <button
-                @click="handleReset(wb)"
-                class="p-1.5 text-slate-400 hover:text-amber-600 hover:bg-amber-50 rounded-lg transition cursor-pointer"
-                title="二刷重置练习进度"
-              >
-                <RotateCcw class="w-4 h-4" />
-              </button>
-              <button
                 @click="handleDelete(wb)"
                 class="p-1.5 text-slate-400 hover:text-rose-600 hover:bg-rose-50 rounded-lg transition cursor-pointer"
                 title="删除此练习册"
@@ -438,13 +431,26 @@ const saveQuestionEdit = async (q) => {
               </button>
             </div>
 
-            <button
-              @click="emit('select-workbook', wb.id); emit('start-practice');"
-              class="px-4 py-1.5 bg-rose-600 hover:bg-rose-700 active:bg-rose-800 text-white font-semibold text-xs rounded-xl shadow-2xs transition flex items-center gap-1 cursor-pointer"
-            >
-              <BookOpen class="w-3.5 h-3.5" />
-              <span>开始刷题</span>
-            </button>
+            <div class="flex items-center gap-1.5">
+              <!-- 重做本卷/二刷按钮：若已有作答记录，显眼展示重刷按钮 -->
+              <button
+                v-if="wb.answered_count > 0"
+                @click="handleReset(wb)"
+                class="px-2.5 py-1.5 bg-amber-50 hover:bg-amber-100 active:bg-amber-200 text-amber-700 border border-amber-200 text-xs font-semibold rounded-xl shadow-2xs transition flex items-center gap-1 cursor-pointer"
+                title="清空这套试卷的所有作答记录，从第 1 题开始重新刷一遍"
+              >
+                <RotateCcw class="w-3.5 h-3.5 text-amber-600" />
+                <span>重新刷</span>
+              </button>
+
+              <button
+                @click="emit('select-workbook', wb.id); emit('start-practice');"
+                class="px-3.5 py-1.5 bg-rose-600 hover:bg-rose-700 active:bg-rose-800 text-white font-semibold text-xs rounded-xl shadow-2xs transition flex items-center gap-1 cursor-pointer"
+              >
+                <BookOpen class="w-3.5 h-3.5" />
+                <span>{{ wb.answered_count > 0 ? '继续练习' : '开始刷题' }}</span>
+              </button>
+            </div>
           </div>
         </div>
       </div>

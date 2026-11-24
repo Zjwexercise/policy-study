@@ -147,14 +147,31 @@ export const api = {
   },
 
   async resetWorkbook(id) {
-    if (await detectMode()) return localStore.resetWorkbook(id);
+    // 1. 无论在线或离线，首先彻底清空前端本地 localStorage 对应答卷与题号记忆
+    let localResult = null;
     try {
-      const res = await fetch(`${API_BASE}/workbooks/${id}/reset`, { method: 'POST' });
-      if (!res.ok) throw new Error();
-      return await res.json();
-    } catch {
-      return localStore.resetWorkbook(id);
+      localResult = await localStore.resetWorkbook(id);
+    } catch (e) {
+      console.warn('本地重置记录异常:', e);
     }
+
+    // 2. 在线模式：向后端发送重置请求，物理清空 SQLite 数据库与 user_cloud_data
+    let serverResult = null;
+    if (!await detectMode()) {
+      try {
+        const res = await fetch(`${API_BASE}/workbooks/${id}/reset`, { method: 'POST' });
+        if (res.ok) {
+          serverResult = await res.json();
+        }
+      } catch (e) {
+        console.warn('后端重置请求异常:', e);
+      }
+    }
+
+    // 3. 触发即时云同步调度，确保手机端与电脑端多端同时清除
+    notifyUserAction();
+
+    return serverResult || localResult || { success: true, message: '练习进度已重置' };
   },
 
   async deleteWorkbook(id) {

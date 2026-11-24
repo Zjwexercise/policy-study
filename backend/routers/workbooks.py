@@ -151,8 +151,28 @@ def reset_workbook_progress(workbook_id: int, conn: sqlite3.Connection = Depends
     if not cursor.fetchone():
         raise HTTPException(status_code=404, detail="练习册不存在")
 
+    # 1. 物理清空 SQLite 数据库原生 user_progress 与 wrong_book 中的做题数据
     cursor.execute("DELETE FROM user_progress WHERE workbook_id = ?", (workbook_id,))
     cursor.execute("DELETE FROM wrong_book WHERE workbook_id = ?", (workbook_id,))
+
+    # 2. 深度清理所有用户的 user_cloud_data 中的云端答题记录与错题记录，彻底防止多端同步回流复活
+    try:
+        cursor.execute("SELECT user_id, records_json FROM user_cloud_data")
+        for u_id, rec_str in cursor.fetchall():
+            if not rec_str:
+                continue
+            rec = json.loads(rec_str)
+            keys_to_del = [k for k in rec if k.startswith(f"policy_ans_{workbook_id}_") or k.startswith(f"policy_wrong_cnt_{workbook_id}_")]
+            if keys_to_del:
+                for k in keys_to_del:
+                    rec.pop(k, None)
+                cursor.execute(
+                    "UPDATE user_cloud_data SET records_json = ?, updated_at = CURRENT_TIMESTAMP WHERE user_id = ?",
+                    (json.dumps(rec, ensure_ascii=False), u_id)
+                )
+    except Exception as e:
+        print(f"清理云端备份记录异常: {e}")
+
     conn.commit()
 
     return {"success": True, "message": "练习进度已重置，可以开始全新一轮刷题！"}

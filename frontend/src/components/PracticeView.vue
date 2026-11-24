@@ -602,6 +602,30 @@ const handleResetWrongPractice = () => {
   showToast('✨ 错题挑战演练已开启，请开始全新作答！');
 };
 
+// 重置当前试卷进度（二刷/全新重做本卷）
+const handleResetCurrentWorkbook = async () => {
+  if (!props.workbookId || props.workbookId === 'all' || props.workbookId === 'random') return;
+  const name = currentWorkbookName.value;
+  if (!confirm(`确定要重置【${name}】的全部做题记录吗？\n\n这套试卷的所有已选答案、对错状态与错题将被清空，并回到第 1 题，方便你开启全新一轮二刷！\n（注：考点笔记和收藏夹仍会安全保留）`)) {
+    return;
+  }
+  try {
+    loading.value = true;
+    await api.resetWorkbook(props.workbookId);
+    drillStates.value = {};
+    currentIndex.value = 0;
+    try {
+      localStorage.setItem('policy_practice_idx_' + props.workbookId, '0');
+    } catch (e) {}
+    await loadQuestions();
+    showToast(`🎉【${name}】已成功重置！已回到第 1 题，开启全新二刷！`);
+  } catch (err) {
+    alert('重置失败: ' + err.message);
+  } finally {
+    loading.value = false;
+  }
+};
+
 // 收藏切换
 const toggleStar = async () => {
   if (!currentQuestion.value) return;
@@ -742,6 +766,17 @@ onUnmounted(() => {
         </div>
 
         <div class="flex items-center gap-2">
+          <!-- 重做本卷/二刷重置按钮 -->
+          <button
+            v-if="props.workbookId && props.workbookId !== 'all' && props.workbookId !== 'random'"
+            @click="handleResetCurrentWorkbook"
+            class="px-2.5 py-1 text-xs font-semibold rounded-lg bg-amber-50 hover:bg-amber-100 active:bg-amber-200 text-amber-700 border border-amber-200 transition flex items-center gap-1 cursor-pointer shadow-2xs"
+            title="清空当前试卷全部做题记录与错题，从第 1 题开始全新二刷"
+          >
+            <RotateCcw class="w-3.5 h-3.5 text-amber-600" />
+            <span>重新刷本卷</span>
+          </button>
+
           <!-- 快捷一键切换至1000题 -->
           <button
             v-if="!is1000Workbook"
@@ -1328,8 +1363,10 @@ onUnmounted(() => {
       :show="showAnswerSheet"
       :questions="questions"
       :current-index="currentIndex"
+      :can-reset="Boolean(props.workbookId && props.workbookId !== 'all' && props.workbookId !== 'random')"
       @close="showAnswerSheet = false"
       @jump="currentIndex = $event"
+      @reset-workbook="handleResetCurrentWorkbook"
     />
 
     <NoteModal 

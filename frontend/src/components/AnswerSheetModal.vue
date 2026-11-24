@@ -1,5 +1,5 @@
 <script setup>
-import { X, Check, AlertCircle, Star, FileText, Swords, CheckCircle2 } from 'lucide-vue-next';
+import { X, Check, AlertCircle, Star, FileText, Swords, CheckCircle2, RotateCcw } from 'lucide-vue-next';
 
 const props = defineProps({
   show: Boolean,
@@ -22,10 +22,14 @@ const props = defineProps({
   isWrongBook: {
     type: Boolean,
     default: false
+  },
+  canReset: {
+    type: Boolean,
+    default: false
   }
 });
 
-const emit = defineEmits(['close', 'jump']);
+const emit = defineEmits(['close', 'jump', 'reset-workbook']);
 </script>
 
 <template>
@@ -79,6 +83,15 @@ const emit = defineEmits(['close', 'jump']);
             <FileText class="w-3.5 h-3.5 text-blue-500" />
             <span>有笔记</span>
           </div>
+          <button
+            v-if="canReset"
+            @click="emit('reset-workbook'); emit('close');"
+            class="ml-auto px-2.5 py-1 text-xs font-semibold text-amber-700 bg-amber-50 hover:bg-amber-100 active:bg-amber-200 border border-amber-200 rounded-lg flex items-center gap-1 cursor-pointer transition shadow-2xs"
+            title="清空当前试卷所有作答记录，从第 1 题开始全新二刷"
+          >
+            <RotateCcw class="w-3.5 h-3.5 text-amber-600" />
+            <span>二刷重置本卷</span>
+          </button>
         </template>
         <template v-else>
           <div class="flex items-center gap-1.5">
