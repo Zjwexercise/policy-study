@@ -21,10 +21,13 @@ import {
   CheckSquare,
   CheckCircle2,
   Dices,
-  Copy
+  Copy,
+  Languages
 } from 'lucide-vue-next';
 import AnswerSheetModal from './AnswerSheetModal.vue';
 import NoteModal from './NoteModal.vue';
+import { currentLang, isThai, t } from '../i18n';
+import { translateQuestion } from '../translateService';
 
 const props = defineProps({
   workbookId: {
@@ -71,6 +74,58 @@ const toggleSingleAutoSubmit = () => {
   singleAutoSubmit.value = !singleAutoSubmit.value;
   localStorage.setItem('policy_single_auto_submit', String(singleAutoSubmit.value));
   showToast(singleAutoSubmit.value ? '已切换为：单选题点击立即判题' : '已切换为：单选题按Enter确认提交');
+};
+
+// ==========================================
+// 🌐 智能泰语自动翻译系统 (Thai Bilingual Translation)
+// ==========================================
+const showTranslation = ref(localStorage.getItem('policy_show_trans') === 'true' || currentLang.value === 'th');
+const autoTranslate = ref(localStorage.getItem('policy_auto_trans') !== 'false');
+const isTranslating = ref(false);
+const translationsCache = ref({}); // { [qid]: { stem, options, explanation } }
+
+const currentTranslation = computed(() => {
+  if (!currentQuestion.value) return null;
+  return translationsCache.value[currentQuestion.value.id] || null;
+});
+
+const loadQuestionTranslation = async (q = currentQuestion.value, force = false) => {
+  if (!q) return;
+  if (!force && translationsCache.value[q.id]) return;
+
+  isTranslating.value = true;
+  try {
+    const data = await translateQuestion(q, 'th');
+    if (data) {
+      translationsCache.value[q.id] = data;
+    }
+  } catch (err) {
+    console.warn('获取题目泰语翻译失败:', err);
+  } finally {
+    isTranslating.value = false;
+  }
+};
+
+const toggleTranslation = async () => {
+  showTranslation.value = !showTranslation.value;
+  try {
+    localStorage.setItem('policy_show_trans', String(showTranslation.value));
+  } catch (e) {}
+  if (showTranslation.value && currentQuestion.value) {
+    await loadQuestionTranslation(currentQuestion.value);
+  }
+};
+
+const toggleAutoTranslate = () => {
+  autoTranslate.value = !autoTranslate.value;
+  try {
+    localStorage.setItem('policy_auto_trans', String(autoTranslate.value));
+  } catch (e) {}
+  showToast(autoTranslate.value ? '已开启：切换题目自动翻译为泰语' : '已关闭：切换题目自动翻译');
+  if (autoTranslate.value && !showTranslation.value) {
+    showTranslation.value = true;
+    loadQuestionTranslation();
+  }
 };
 
 // ==========================================
@@ -322,6 +377,21 @@ watch(() => props.workbookId, () => {
 
 watch([selectedCategory, selectedType, selectedStatus, isRandomOrder, hideKilled], () => {
   loadQuestions();
+});
+
+// 监听题目切换自动触发泰语翻译
+watch(() => currentQuestion.value?.id, (newQid) => {
+  if (newQid && (showTranslation.value || autoTranslate.value || currentLang.value === 'th')) {
+    loadQuestionTranslation();
+  }
+}, { immediate: true });
+
+// 监听语言切换至泰语时自动启动翻译
+watch(currentLang, (newLang) => {
+  if (newLang === 'th') {
+    showTranslation.value = true;
+    loadQuestionTranslation(currentQuestion.value, true);
+  }
 });
 
 // 当前题目的独立自测计算属性
@@ -1057,6 +1127,22 @@ onUnmounted(() => {
             >
               <FileText class="w-4 h-4" />
             </button>
+
+            <!-- 🌐 泰语自动翻译 / 译文开关 -->
+            <button
+              @click="toggleTranslation"
+              class="px-2 sm:px-2.5 py-1.5 rounded-lg border text-xs font-semibold transition cursor-pointer flex items-center gap-1 shadow-2xs"
+              :class="[
+                showTranslation
+                  ? 'bg-indigo-50 border-indigo-300 text-indigo-700 dark:bg-indigo-950/40 dark:border-indigo-800 dark:text-indigo-300'
+                  : 'border-slate-200 text-slate-500 hover:text-indigo-600 hover:bg-indigo-50 hover:border-indigo-200'
+              ]"
+              :title="showTranslation ? '点击隐藏泰语对照' : '点击开启泰语翻译对照 (แปลไทย)'"
+            >
+              <Languages class="w-3.5 h-3.5" :class="{ 'animate-spin': isTranslating }" />
+              <span class="hidden sm:inline">{{ isTranslating ? t('translating_btn') : (showTranslation ? t('hide_trans_btn') : t('translate_btn')) }}</span>
+              <span class="sm:hidden">{{ isTranslating ? '...' : (showTranslation ? 'ซ่อน' : 'แปล') }}</span>
+            </button>
           </div>
         </div>
 
@@ -1064,6 +1150,17 @@ onUnmounted(() => {
         <div class="text-base sm:text-lg font-medium text-slate-900 leading-relaxed tracking-wide select-text cursor-text whitespace-pre-line break-words">
           <span class="font-bold text-rose-600 mr-1.5">{{ currentQuestion.question_num }}.</span>
           <span>{{ currentQuestion.stem }}</span>
+        </div>
+
+        <!-- 🇹🇭 泰语题干对照翻译 -->
+        <div 
+          v-if="showTranslation && currentTranslation?.stem" 
+          class="mt-3 p-3 sm:p-3.5 rounded-xl bg-indigo-50/80 dark:bg-indigo-950/40 border border-indigo-100 dark:border-indigo-900/50 text-indigo-950 dark:text-indigo-200 text-xs sm:text-sm leading-relaxed animate-in fade-in"
+        >
+          <div class="text-[11px] font-bold text-indigo-600 dark:text-indigo-400 mb-1 flex items-center gap-1">
+            <span>🇹🇭 {{ t('thai_stem_title') }}</span>
+          </div>
+          <p class="select-text whitespace-pre-line">{{ currentTranslation.stem }}</p>
         </div>
 
         <!-- Options List -->
@@ -1113,7 +1210,14 @@ onUnmounted(() => {
 
             <!-- Option Text -->
             <div class="text-sm sm:text-base leading-relaxed pt-0.5 flex-1">
-              {{ opt && typeof opt === 'object' ? opt.value : opt }}
+              <div>{{ opt && typeof opt === 'object' ? opt.value : opt }}</div>
+              <!-- 🇹🇭 选项泰语对照 -->
+              <div 
+                v-if="showTranslation && currentTranslation?.options?.[opt && typeof opt === 'object' ? opt.key : String.fromCharCode(65 + oIdx)]"
+                class="mt-1 text-xs text-indigo-700 dark:text-indigo-300 font-normal leading-relaxed select-text"
+              >
+                🇹🇭 {{ currentTranslation.options[opt && typeof opt === 'object' ? opt.key : String.fromCharCode(65 + oIdx)] }}
+              </div>
             </div>
 
             <!-- Feedback Icon -->
@@ -1323,8 +1427,18 @@ onUnmounted(() => {
               </button>
             </div>
           </div>
-          <div class="p-3.5 bg-slate-50 border border-slate-100 rounded-xl text-xs sm:text-sm text-slate-700 leading-relaxed whitespace-pre-line font-normal select-text cursor-text">
-            {{ currentQuestion.explanation || '暂无针对本题的详细解析' }}
+          <div class="p-3.5 bg-slate-50 dark:bg-slate-900/60 border border-slate-100 dark:border-slate-800 rounded-xl text-xs sm:text-sm text-slate-700 dark:text-slate-200 leading-relaxed whitespace-pre-line font-normal select-text cursor-text">
+            <div>{{ currentQuestion.explanation || '暂无针对本题的详细解析' }}</div>
+            <!-- 🇹🇭 解析泰语对照 -->
+            <div 
+              v-if="showTranslation && currentTranslation?.explanation"
+              class="mt-3 pt-3 border-t border-slate-200/80 dark:border-slate-700/80 text-indigo-900 dark:text-indigo-200"
+            >
+              <div class="font-bold text-indigo-600 dark:text-indigo-400 mb-1 flex items-center gap-1">
+                <span>🇹🇭 {{ t('thai_exp_title') }}</span>
+              </div>
+              <div class="whitespace-pre-line">{{ currentTranslation.explanation }}</div>
+            </div>
           </div>
         </div>
 

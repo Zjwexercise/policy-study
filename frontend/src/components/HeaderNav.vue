@@ -20,6 +20,11 @@ import {
 } from 'lucide-vue-next';
 import { auth } from '../auth';
 import { isDark, toggleTheme } from '../theme';
+import { currentLang, setLanguage, t } from '../i18n';
+
+const toggleLanguage = () => {
+  setLanguage(currentLang.value === 'th' ? 'zh' : 'th');
+};
 
 const props = defineProps({
   currentTab: {
@@ -81,23 +86,23 @@ const taojuanWorkbooks = computed(() => {
   return props.workbooks.filter(w => !w.name || (!w.name.includes('肖8') && !w.name.includes('肖秀荣') && !w.name.includes('真题') && !w.name.includes('1000题') && !(w.id >= 27 && w.id <= 39)));
 });
 
-const tabs = [
-  { id: 'welcome', label: '首页门户', icon: Compass },
-  { id: 'practice', label: '刷题练习', icon: BookOpen },
-  { id: 'wrong', label: '错题本', icon: AlertCircle },
-  { id: 'killed', label: '斩题榜', icon: Swords },
-  { id: 'notes', label: '考点笔记', icon: FileText },
-  { id: 'workbooks', label: '练习册中心', icon: Library },
-  { id: 'stats', label: '学习统计', icon: BarChart3 },
-];
+const tabs = computed(() => [
+  { id: 'welcome', label: t('nav_welcome'), icon: Compass },
+  { id: 'practice', label: t('nav_practice'), icon: BookOpen },
+  { id: 'wrong', label: t('nav_wrong'), icon: AlertCircle },
+  { id: 'killed', label: t('nav_killed'), icon: Swords },
+  { id: 'notes', label: t('nav_notes'), icon: FileText },
+  { id: 'workbooks', label: t('nav_workbooks'), icon: Library },
+  { id: 'stats', label: t('nav_stats'), icon: BarChart3 },
+]);
 
-const mobileTabs = [
-  { id: 'welcome', label: '首页', icon: Compass },
-  { id: 'practice', label: '刷题', icon: BookOpen },
-  { id: 'wrong', label: '错题', icon: AlertCircle },
-  { id: 'killed', label: '斩题', icon: Swords },
-  { id: 'stats', label: '统计', icon: BarChart3 },
-];
+const mobileTabs = computed(() => [
+  { id: 'welcome', label: t('nav_welcome'), icon: Compass },
+  { id: 'practice', label: t('nav_practice'), icon: BookOpen },
+  { id: 'wrong', label: t('nav_wrong'), icon: AlertCircle },
+  { id: 'killed', label: t('nav_killed'), icon: Swords },
+  { id: 'stats', label: t('nav_stats'), icon: BarChart3 },
+]);
 
 const handleSelectChange = (val) => {
   emit('select-workbook', val === 'all' || val === 'random' ? val : Number(val));
@@ -212,6 +217,21 @@ const handleSelectChange = (val) => {
 
         <!-- Right Tools: Theme Toggle, User, Mobile QR & Sync -->
         <div class="flex items-center space-x-1 sm:space-x-1.5 shrink-0">
+          <!-- 🌐 语言切换：中文 / 泰语 -->
+          <button
+            @click="toggleLanguage"
+            class="flex items-center space-x-1 px-2 sm:px-2.5 py-1.5 rounded-lg border text-xs sm:text-sm font-semibold transition cursor-pointer shadow-2xs"
+            :class="[
+              currentLang === 'th'
+                ? 'bg-indigo-50 text-indigo-700 border-indigo-200 hover:bg-indigo-100'
+                : 'bg-slate-50 hover:bg-slate-100 text-slate-700 border-slate-200'
+            ]"
+            :title="currentLang === 'th' ? 'สลับเป็นภาษาจีน (点击切换为中文)' : 'สลับเป็นภาษาไทย (点击切换为泰语)'"
+          >
+            <span class="text-xs sm:text-sm">🌐</span>
+            <span class="font-bold text-xs">{{ currentLang === 'th' ? 'ไทย' : '中' }}</span>
+          </button>
+
           <!-- 🌙 夜间黑暗模式 / ☀️ 日间模式切换按钮 -->
           <button
             @click="toggleTheme"

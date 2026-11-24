@@ -16,6 +16,7 @@ from routers.notes import router as notes_router
 from routers.system import router as system_router
 from routers.auth import router as auth_router
 from routers.admin import router as admin_router
+from routers.translate import router as translate_router
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -50,6 +51,7 @@ app.include_router(notes_router)
 app.include_router(system_router)
 app.include_router(auth_router)
 app.include_router(admin_router)
+app.include_router(translate_router)
 
 # 挂载上传文件目录
 if os.path.exists(UPLOAD_DIR):

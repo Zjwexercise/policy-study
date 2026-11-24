@@ -18,10 +18,13 @@ import {
   Eye,
   ArrowRight,
   Brain,
-  LayoutGrid
+  LayoutGrid,
+  Languages
 } from 'lucide-vue-next';
 import NoteModal from './NoteModal.vue';
 import AnswerSheetModal from './AnswerSheetModal.vue';
+import { currentLang, t } from '../i18n';
+import { translateQuestion } from '../translateService';
 
 const emit = defineEmits(['start-practice']);
 
@@ -47,6 +50,44 @@ const setSortMode = (mode) => {
     mode === 'wrong_count' ? '🔥 已按做错次数排序：高频易错题优先' : '🕒 已按最新做错时间排序'
   );
 };
+
+// ==========================================
+// 🌐 错题本泰语对照翻译系统
+// ==========================================
+const showTranslation = ref(localStorage.getItem('policy_show_trans') === 'true' || currentLang.value === 'th');
+const wrongTransCache = ref({});
+const translatingIds = ref(new Set());
+
+const getQuestionTrans = (q) => {
+  if (!q) return null;
+  const qid = q.id || q.question_id;
+  return wrongTransCache.value[qid] || null;
+};
+
+const toggleQuestionTrans = async (q) => {
+  if (!q) return;
+  const qid = q.id || q.question_id;
+  showTranslation.value = true;
+  if (!wrongTransCache.value[qid]) {
+    translatingIds.value.add(qid);
+    try {
+      const data = await translateQuestion(q, 'th');
+      if (data) {
+        wrongTransCache.value[qid] = data;
+      }
+    } catch (e) {
+      console.warn('错题翻译失败:', e);
+    } finally {
+      translatingIds.value.delete(qid);
+    }
+  }
+};
+
+watch(currentLang, (newLang) => {
+  if (newLang === 'th') {
+    showTranslation.value = true;
+  }
+});
 
 // 艾宾浩斯记忆遗忘曲线算法
 const getEbbinghausInfo = (q) => {
@@ -663,6 +704,22 @@ onMounted(() => {
               <span class="hidden sm:inline">{{ q.note_content ? '笔记' : '加笔记' }}</span>
             </button>
 
+            <!-- 🌐 泰语翻译按钮 -->
+            <button
+              @click="toggleQuestionTrans(q)"
+              class="px-2 py-1 text-xs font-medium rounded-lg border transition cursor-pointer flex items-center gap-1 shadow-2xs"
+              :class="[
+                getQuestionTrans(q)
+                  ? 'bg-indigo-50 border-indigo-300 text-indigo-700 font-semibold'
+                  : 'border-slate-200 text-slate-500 hover:text-indigo-600 hover:bg-indigo-50'
+              ]"
+              title="点击获取泰语翻译对照 (แปลไทย)"
+            >
+              <Languages class="w-3.5 h-3.5" :class="{ 'animate-spin': translatingIds.has(q.id || q.question_id) }" />
+              <span class="hidden sm:inline">{{ translatingIds.has(q.id || q.question_id) ? '翻译中...' : '泰语翻译' }}</span>
+              <span class="sm:hidden">{{ translatingIds.has(q.id || q.question_id) ? '...' : 'แปล' }}</span>
+            </button>
+
             <!-- 移出错题集 / 重新收录按钮 -->
             <button
               @click="toggleMaster(q)"
@@ -685,6 +742,17 @@ onMounted(() => {
         <div class="mt-3 text-sm sm:text-base font-medium text-slate-900 leading-relaxed whitespace-pre-line break-words">
           <span class="font-bold text-rose-600 mr-1">{{ q.question_num }}.</span>
           <span>{{ q.stem }}</span>
+        </div>
+
+        <!-- 🇹🇭 题干泰语对照 -->
+        <div 
+          v-if="showTranslation && getQuestionTrans(q)?.stem"
+          class="mt-2.5 p-3 rounded-xl bg-indigo-50/80 dark:bg-indigo-950/40 border border-indigo-100 text-indigo-950 dark:text-indigo-200 text-xs sm:text-sm leading-relaxed select-text animate-in fade-in"
+        >
+          <div class="text-[11px] font-bold text-indigo-600 mb-1 flex items-center gap-1">
+            <span>🇹🇭 คำแปลภาษาไทย (โจทย์ข้อสอบ):</span>
+          </div>
+          <p class="whitespace-pre-line">{{ getQuestionTrans(q).stem }}</p>
         </div>
 
         <!-- ============================================== -->
@@ -713,7 +781,13 @@ onMounted(() => {
               {{ opt.key }}
             </div>
             <div class="text-xs sm:text-sm leading-relaxed pt-0.5 flex-1">
-              {{ opt.value }}
+              <div>{{ opt.value }}</div>
+              <div 
+                v-if="showTranslation && getQuestionTrans(q)?.options?.[opt.key]"
+                class="mt-1 text-xs text-indigo-700 font-normal leading-relaxed select-text"
+              >
+                🇹🇭 {{ getQuestionTrans(q).options[opt.key] }}
+              </div>
             </div>
           </div>
 
@@ -768,7 +842,15 @@ onMounted(() => {
             >
               {{ opt.key }}
             </span>
-            <span class="flex-1">{{ opt.value }}</span>
+            <div class="flex-1">
+              <div>{{ opt.value }}</div>
+              <div 
+                v-if="showTranslation && getQuestionTrans(q)?.options?.[opt.key]"
+                class="mt-1 text-xs text-indigo-700 font-normal leading-relaxed select-text"
+              >
+                🇹🇭 {{ getQuestionTrans(q).options[opt.key] }}
+              </div>
+            </div>
             <div class="shrink-0">
               <Check v-if="q.answer.includes(opt.key)" class="w-4 h-4 text-emerald-600 font-bold" />
               <X v-else-if="(getRedoState(q).userAns || q.last_wrong_answer || '').includes(opt.key)" class="w-4 h-4 text-rose-600 font-bold" />
@@ -834,6 +916,13 @@ onMounted(() => {
             </div>
             <div class="text-xs text-slate-600 leading-relaxed border-t border-slate-200/60 pt-2">
               <strong class="text-slate-800">【试题考点解析】</strong>{{ q.explanation }}
+              <div 
+                v-if="showTranslation && getQuestionTrans(q)?.explanation"
+                class="mt-2.5 pt-2 border-t border-slate-200/60 text-indigo-900 leading-relaxed select-text"
+              >
+                <div class="font-bold text-indigo-600 mb-0.5">🇹🇭 คำแปลคำอธิบายเฉลย:</div>
+                <div class="whitespace-pre-line">{{ getQuestionTrans(q).explanation }}</div>
+              </div>
             </div>
           </div>
         </div>
