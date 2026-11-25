@@ -1,5 +1,5 @@
 <script setup>
-import { computed } from 'vue';
+import { ref, computed } from 'vue';
 import {
   BookOpen,
   AlertCircle,
@@ -68,6 +68,143 @@ const activeTabIndex = computed(() => {
 
 const hasActiveTab = computed(() => {
   return bottomTabs.value.some(tab => isTabActive(tab.id));
+});
+
+// ==========================================
+//  iOS 26 Liquid Glass 手指/鼠标拖动跟随交互
+// ==========================================
+const dockTrackRef = ref(null);
+const isPointerDown = ref(false);
+const isDragging = ref(false);
+const dragOffsetPx = ref(0);
+const dragPreviewIndex = ref(-1);
+
+let pointerStartX = 0;
+let activePointerId = null;
+let cachedRect = null;
+let suppressNextClick = false;
+
+const getSlotMetrics = (clientX) => {
+  const rect = cachedRect || dockTrackRef.value?.getBoundingClientRect();
+  if (!rect || rect.width <= 0) return null;
+  const count = bottomTabs.value.length || 4;
+  const slotWidth = rect.width / count;
+  const relX = clientX - rect.left;
+  const clampedRelX = Math.min(rect.width - 0.5, Math.max(0, relX));
+  const targetIdx = Math.min(count - 1, Math.max(0, Math.floor(clampedRelX / slotWidth)));
+
+  const rawLeft = relX - slotWidth / 2;
+  const maxLeft = rect.width - slotWidth;
+  let boundedLeft = rawLeft;
+  // 边缘橡皮筋弹性阻尼
+  if (rawLeft < 0) {
+    boundedLeft = rawLeft * 0.22;
+  } else if (rawLeft > maxLeft) {
+    boundedLeft = maxLeft + (rawLeft - maxLeft) * 0.22;
+  }
+  return { targetIdx, boundedLeft };
+};
+
+const onDockPointerDown = (e) => {
+  if (e.pointerType === 'mouse' && e.button !== 0) return;
+  if (!dockTrackRef.value) return;
+
+  cachedRect = dockTrackRef.value.getBoundingClientRect();
+  activePointerId = e.pointerId;
+  pointerStartX = e.clientX;
+  isPointerDown.value = true;
+  isDragging.value = false;
+
+  const metrics = getSlotMetrics(e.clientX);
+  if (metrics) {
+    dragPreviewIndex.value = metrics.targetIdx;
+    dragOffsetPx.value = metrics.boundedLeft;
+  }
+
+  try {
+    dockTrackRef.value.setPointerCapture(e.pointerId);
+  } catch (err) {}
+};
+
+const onDockPointerMove = (e) => {
+  if (!isPointerDown.value || e.pointerId !== activePointerId) return;
+  const dx = Math.abs(e.clientX - pointerStartX);
+  if (!isDragging.value && dx >= 4) {
+    isDragging.value = true;
+  }
+  if (!isDragging.value) return;
+
+  const metrics = getSlotMetrics(e.clientX);
+  if (!metrics) return;
+
+  dragOffsetPx.value = metrics.boundedLeft;
+  if (metrics.targetIdx !== dragPreviewIndex.value) {
+    dragPreviewIndex.value = metrics.targetIdx;
+    if (typeof navigator !== 'undefined' && typeof navigator.vibrate === 'function') {
+      try {
+        navigator.vibrate(8);
+      } catch (err) {}
+    }
+  }
+};
+
+const finishDockPointer = (e, shouldCommit = true) => {
+  if (!isPointerDown.value || e.pointerId !== activePointerId) return;
+
+  if (shouldCommit) {
+    const metrics = getSlotMetrics(e.clientX);
+    const finalIdx = isDragging.value
+      ? (dragPreviewIndex.value >= 0 ? dragPreviewIndex.value : (metrics?.targetIdx ?? 0))
+      : (metrics?.targetIdx ?? dragPreviewIndex.value);
+
+    const targetTab = bottomTabs.value[finalIdx];
+    if (targetTab) {
+      emit('update:currentTab', targetTab.id);
+    }
+    suppressNextClick = true;
+    setTimeout(() => {
+      suppressNextClick = false;
+    }, 80);
+  }
+
+  try {
+    if (dockTrackRef.value?.hasPointerCapture?.(e.pointerId)) {
+      dockTrackRef.value.releasePointerCapture(e.pointerId);
+    }
+  } catch (err) {}
+
+  isPointerDown.value = false;
+  isDragging.value = false;
+  dragPreviewIndex.value = -1;
+  activePointerId = null;
+  cachedRect = null;
+};
+
+const handleTabClick = (tabId) => {
+  if (suppressNextClick) return;
+  emit('update:currentTab', tabId);
+};
+
+const visualActiveIndex = computed(() => {
+  if (isDragging.value && dragPreviewIndex.value >= 0) {
+    return dragPreviewIndex.value;
+  }
+  return activeTabIndex.value;
+});
+
+const lensStyle = computed(() => {
+  const count = bottomTabs.value.length || 4;
+  const widthPct = `${100 / count}%`;
+  if (isDragging.value) {
+    return {
+      width: widthPct,
+      transform: `translate3d(${dragOffsetPx.value.toFixed(1)}px, 0, 0) scale(1.06, 1.07)`
+    };
+  }
+  return {
+    width: widthPct,
+    transform: `translate3d(${activeTabIndex.value * 100}%, 0, 0) scale(1, 1)`
+  };
 });
 </script>
 
@@ -150,37 +287,44 @@ const hasActiveTab = computed(() => {
     </div>
   </header>
 
-  <!--  仿 iPhone Liquid Glass 底部悬浮液态玻璃胶囊导航（4 核心入口） -->
+  <!--  仿 iPhone Liquid Glass 底部悬浮液态玻璃胶囊导航（支持按住拖动跟随切换） -->
   <nav
     aria-label="主导航栏"
     class="apple-liquid-dock bottom-3 sm:bottom-5 left-1/2 -translate-x-1/2 w-[calc(100%-24px)] max-w-[400px] sm:max-w-[460px] z-40 p-1.5"
   >
-    <div class="relative flex items-center w-full h-[52px] sm:h-[56px]">
-      <!-- 流体滑动高亮液滴胶囊 -->
+    <div
+      ref="dockTrackRef"
+      @pointerdown="onDockPointerDown"
+      @pointermove="onDockPointerMove"
+      @pointerup="finishDockPointer($event, true)"
+      @pointercancel="finishDockPointer($event, false)"
+      class="apple-liquid-dock-track relative flex items-center w-full h-[52px] sm:h-[56px]"
+    >
+      <!-- 流体滑动 & 拖动跟随液滴胶囊 -->
       <div
-        v-if="hasActiveTab"
+        v-if="hasActiveTab || isDragging"
         class="apple-liquid-lens"
-        :style="{
-          width: `${100 / bottomTabs.length}%`,
-          transform: `translateX(${activeTabIndex * 100}%)`
-        }"
+        :class="{ 'is-dragging': isDragging }"
+        :style="lensStyle"
       />
 
       <button
-        v-for="tab in bottomTabs"
+        v-for="(tab, idx) in bottomTabs"
         :key="tab.id"
-        @click="emit('update:currentTab', tab.id)"
-        class="relative z-10 flex-1 h-full flex flex-col items-center justify-center gap-0.5 px-1 rounded-full transition-all duration-200 cursor-pointer min-w-0 select-none active:scale-90"
+        @click="handleTabClick(tab.id)"
+        class="relative z-10 flex-1 h-full flex flex-col items-center justify-center gap-0.5 px-1 rounded-full transition-all duration-150 cursor-pointer min-w-0 select-none"
         :class="[
-          isTabActive(tab.id)
+          (hasActiveTab || isDragging) && visualActiveIndex === idx
             ? 'text-rose-600 dark:text-rose-400 font-bold'
-            : 'text-slate-600/90 hover:text-slate-900 dark:text-slate-300/80 dark:hover:text-white font-medium'
+            : 'text-slate-600/90 hover:text-slate-900 dark:text-slate-300/80 dark:hover:text-white font-medium',
+          isDragging && visualActiveIndex === idx ? 'scale-105' : '',
+          !isDragging ? 'active:scale-90' : ''
         ]"
       >
         <component
           :is="tab.icon"
-          class="w-[18px] h-[18px] sm:w-[20px] sm:h-[20px] shrink-0 transition-transform duration-200"
-          :class="isTabActive(tab.id) ? 'scale-105 stroke-[2.25]' : 'stroke-[1.75]'"
+          class="w-[18px] h-[18px] sm:w-[20px] sm:h-[20px] shrink-0 transition-transform duration-150"
+          :class="(hasActiveTab || isDragging) && visualActiveIndex === idx ? 'scale-105 stroke-[2.25]' : 'stroke-[1.75]'"
         />
         <span class="text-[10px] sm:text-[11px] leading-tight whitespace-nowrap truncate max-w-full tracking-tight">
           {{ tab.label }}

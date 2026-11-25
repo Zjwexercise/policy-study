@@ -292,12 +292,19 @@
 }
 
 /* 流体滑动激活液滴胶囊（iOS 26 Liquid Glass Lens） */
+.apple-liquid-dock-track {
+  touch-action: none;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
 .apple-liquid-lens {
   position: absolute;
   top: 0;
   bottom: 0;
   left: 0;
   border-radius: 9999px;
+  transform-origin: center center;
   background: linear-gradient(
     180deg,
     rgba(255, 255, 255, 0.94) 0%,
@@ -309,8 +316,32 @@
     0 2px 6px -1px rgba(15, 23, 42, 0.07),
     inset 0 1px 1px 0 rgba(255, 255, 255, 1),
     inset 0 -1px 1px 0 rgba(225, 29, 72, 0.06);
-  transition: transform 0.36s cubic-bezier(0.32, 0.72, 0, 1);
+  transition:
+    transform 0.38s cubic-bezier(0.32, 0.72, 0, 1),
+    box-shadow 0.22s ease,
+    background 0.22s ease,
+    border-color 0.22s ease;
   pointer-events: none;
+  will-change: transform;
+}
+
+/* 拖动跟手状态：取消位移延迟，液滴微微放大泛起折射光晕 */
+.apple-liquid-lens.is-dragging {
+  transition:
+    box-shadow 0.14s ease,
+    background 0.14s ease,
+    border-color 0.14s ease;
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.88) 0%,
+    rgba(255, 228, 230, 0.62) 100%
+  );
+  border-color: rgba(255, 255, 255, 0.95);
+  box-shadow:
+    0 10px 26px -4px rgba(225, 29, 72, 0.24),
+    0 4px 12px -2px rgba(15, 23, 42, 0.12),
+    inset 0 1.5px 2px 0 rgba(255, 255, 255, 1),
+    inset 0 -1.5px 2px 0 rgba(225, 29, 72, 0.12);
 }
 
 .dark .apple-liquid-lens {
@@ -324,6 +355,20 @@
     0 4px 14px -2px rgba(0, 0, 0, 0.35),
     inset 0 1px 1px 0 rgba(255, 255, 255, 0.35),
     inset 0 -1px 1px 0 rgba(244, 63, 94, 0.18);
+}
+
+.dark .apple-liquid-lens.is-dragging {
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.26) 0%,
+    rgba(244, 63, 94, 0.26) 100%
+  );
+  border-color: rgba(255, 255, 255, 0.42);
+  box-shadow:
+    0 10px 26px -4px rgba(0, 0, 0, 0.55),
+    0 0 16px rgba(244, 63, 94, 0.22),
+    inset 0 1.5px 1.5px 0 rgba(255, 255, 255, 0.5),
+    inset 0 -1px 1.5px 0 rgba(244, 63, 94, 0.25);
 }
 
 /* 顶栏玻璃胶囊小按钮 */
