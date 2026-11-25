@@ -9,9 +9,11 @@ import {
   Copy, 
   Check, 
   BookOpen, 
-  Sparkles 
+  Sparkles,
+  ArrowLeft
 } from 'lucide-vue-next';
 import NoteModal from './NoteModal.vue';
+import { t } from '../i18n';
 
 const props = defineProps({
   workbookId: {
@@ -19,6 +21,8 @@ const props = defineProps({
     default: null
   }
 });
+
+const emit = defineEmits(['switch-tab']);
 
 const notes = ref([]);
 const loading = ref(false);
@@ -91,11 +95,18 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="max-w-4xl mx-auto px-3 sm:px-6 py-4 pb-24 lg:pb-12">
+  <div class="max-w-4xl mx-auto px-3 sm:px-6 py-4 pb-24 sm:pb-28">
     <!-- Header -->
     <div class="bg-white rounded-2xl p-4 sm:p-5 border border-slate-200 shadow-2xs mb-4">
       <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-slate-100">
         <div class="flex items-center gap-2.5">
+          <button
+            @click="emit('switch-tab', 'stats')"
+            class="p-2 rounded-xl border border-slate-200 bg-slate-50 hover:bg-slate-100 text-slate-600 transition cursor-pointer shrink-0"
+            :title="t('back_to_stats')"
+          >
+            <ArrowLeft class="w-4 h-4" />
+          </button>
           <div class="p-2.5 bg-amber-50 text-amber-600 rounded-xl">
             <FileText class="w-5 h-5" />
           </div>

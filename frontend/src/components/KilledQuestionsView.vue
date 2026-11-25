@@ -11,9 +11,11 @@ import {
   Search,
   CheckCircle2,
   Trash2,
-  BookOpen
+  BookOpen,
+  ArrowLeft
 } from 'lucide-vue-next';
 import NoteModal from './NoteModal.vue';
+import { t } from '../i18n';
 
 const props = defineProps({
   workbookId: {
@@ -22,7 +24,7 @@ const props = defineProps({
   }
 });
 
-const emit = defineEmits(['start-practice']);
+const emit = defineEmits(['start-practice', 'switch-tab']);
 
 const killedQuestions = ref([]);
 const loading = ref(false);
@@ -108,11 +110,18 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="max-w-4xl mx-auto px-3 sm:px-6 py-4 pb-24 lg:pb-12">
+  <div class="max-w-4xl mx-auto px-3 sm:px-6 py-4 pb-24 sm:pb-28">
     <!-- Header Banner -->
     <div class="bg-white rounded-2xl p-4 sm:p-5 border border-slate-200 shadow-2xs mb-4">
       <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div class="flex items-start sm:items-center gap-3">
+          <button
+            @click="emit('switch-tab', 'stats')"
+            class="p-2 rounded-xl border border-slate-200 bg-slate-50 hover:bg-slate-100 text-slate-600 transition cursor-pointer shrink-0"
+            :title="t('back_to_stats')"
+          >
+            <ArrowLeft class="w-4 h-4" />
+          </button>
           <div class="p-2.5 sm:p-3 bg-linear-to-tr from-slate-900 to-slate-700 text-rose-400 rounded-xl shadow-xs shrink-0">
             <Swords class="w-6 h-6 sm:w-7 sm:h-7" />
           </div>

@@ -159,7 +159,7 @@ const saveQuestionEdit = async (q) => {
 </script>
 
 <template>
-  <div class="max-w-5xl mx-auto px-3 sm:px-6 py-4 pb-24 lg:pb-12">
+  <div class="max-w-5xl mx-auto px-3 sm:px-6 py-4 pb-24 sm:pb-28">
     <!-- Section 1: Upload New PDF -->
     <div class="bg-white rounded-2xl p-4 sm:p-6 border border-slate-200 shadow-2xs mb-6">
       <div class="flex items-center gap-2.5 pb-3 border-b border-slate-100">

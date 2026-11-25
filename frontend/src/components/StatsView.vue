@@ -13,11 +13,13 @@ import {
   Swords,
   RefreshCw,
   Clock,
-  Timer
+  Timer,
+  Smartphone,
+  ChevronRight
 } from 'lucide-vue-next';
 import DailyTrendsChart from './DailyTrendsChart.vue';
 
-const emit = defineEmits(['open-sync']);
+const emit = defineEmits(['open-sync', 'open-mobile-qr', 'switch-tab']);
 
 const stats = ref(null);
 const loading = ref(true);
@@ -51,7 +53,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="max-w-4xl mx-auto px-3 sm:px-6 py-4 pb-24 lg:pb-12">
+  <div class="max-w-4xl mx-auto px-3 sm:px-6 py-4 pb-24 sm:pb-28">
     <!-- Header -->
     <div class="bg-white rounded-2xl p-4 sm:p-5 border border-slate-200 shadow-2xs mb-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
       <div class="flex items-center gap-2.5">
@@ -63,13 +65,23 @@ onMounted(() => {
           <p class="text-xs text-slate-500">实时追踪考研政治刷题进度与各学科掌握程度</p>
         </div>
       </div>
-      <button
-        @click="emit('open-sync')"
-        class="self-start sm:self-center px-3 py-1.5 bg-indigo-50 hover:bg-indigo-100 text-indigo-700 border border-indigo-200 rounded-xl text-xs font-semibold flex items-center gap-1.5 transition cursor-pointer shadow-2xs"
-      >
-        <RefreshCw class="w-3.5 h-3.5" />
-        <span>跨端同步与备份</span>
-      </button>
+      <div class="flex items-center gap-2 self-start sm:self-center flex-wrap">
+        <button
+          @click="emit('open-mobile-qr')"
+          class="px-3 py-1.5 bg-emerald-50 hover:bg-emerald-100 text-emerald-700 border border-emerald-200 rounded-xl text-xs font-semibold flex items-center gap-1.5 transition cursor-pointer shadow-2xs"
+          title="手机扫码直接在床上或自习室刷题"
+        >
+          <Smartphone class="w-3.5 h-3.5" />
+          <span>手机扫码</span>
+        </button>
+        <button
+          @click="emit('open-sync')"
+          class="px-3 py-1.5 bg-indigo-50 hover:bg-indigo-100 text-indigo-700 border border-indigo-200 rounded-xl text-xs font-semibold flex items-center gap-1.5 transition cursor-pointer shadow-2xs"
+        >
+          <RefreshCw class="w-3.5 h-3.5" />
+          <span>跨端同步与备份</span>
+        </button>
+      </div>
     </div>
 
     <div v-if="loading" class="bg-white rounded-2xl p-12 text-center border border-slate-200 shadow-2xs">
@@ -141,37 +153,61 @@ onMounted(() => {
       <!-- Secondary Metric Row -->
       <div class="grid grid-cols-3 gap-3 sm:gap-4">
         <!-- Card 5: Wrong Questions -->
-        <div class="bg-white p-3.5 sm:p-4 rounded-2xl border border-slate-200 shadow-2xs">
+        <button
+          @click="emit('switch-tab', 'wrong')"
+          class="text-left bg-white p-3.5 sm:p-4 rounded-2xl border border-slate-200 hover:border-rose-300 shadow-2xs hover:shadow-xs transition cursor-pointer group"
+          title="点击前往错题本复习攻克"
+        >
           <div class="flex items-center justify-between text-slate-400 mb-1">
-            <span class="text-xs font-medium">待攻克错题</span>
+            <span class="text-xs font-medium group-hover:text-rose-600 transition">待攻克错题</span>
             <AlertCircle class="w-4 h-4 text-rose-500" />
           </div>
           <div class="text-lg sm:text-xl font-bold text-rose-600 font-mono">
             {{ stats.overview.total_wrong || 0 }} <span class="text-xs font-normal text-slate-400 font-sans">题</span>
           </div>
-        </div>
+          <div class="text-[11px] text-rose-500/90 font-medium mt-1 flex items-center gap-0.5 group-hover:translate-x-0.5 transition">
+            <span>去错题本</span>
+            <ChevronRight class="w-3 h-3" />
+          </div>
+        </button>
 
-        <!-- Card 6: Killed Questions -->
-        <div class="bg-white p-3.5 sm:p-4 rounded-2xl border border-slate-200 shadow-2xs">
+        <!-- Card 6: Killed Questions (可点击直达熟题斩杀本) -->
+        <button
+          @click="emit('switch-tab', 'killed')"
+          class="text-left bg-white p-3.5 sm:p-4 rounded-2xl border border-slate-200 hover:border-rose-300 shadow-2xs hover:shadow-xs transition cursor-pointer group"
+          title="点击进入熟题斩杀本，管理或复活已斩熟题"
+        >
           <div class="flex items-center justify-between text-slate-400 mb-1">
-            <span class="text-xs font-medium">已斩熟题</span>
+            <span class="text-xs font-medium group-hover:text-rose-700 transition">已斩熟题</span>
             <Swords class="w-4 h-4 text-rose-700" />
           </div>
           <div class="text-lg sm:text-xl font-bold text-rose-700 font-mono">
             {{ stats.overview.total_killed || 0 }} <span class="text-xs font-normal text-slate-400 font-sans">题</span>
           </div>
-        </div>
+          <div class="text-[11px] text-rose-600/80 font-medium mt-1 flex items-center gap-0.5 group-hover:translate-x-0.5 transition">
+            <span>管理 / 复活</span>
+            <ChevronRight class="w-3 h-3" />
+          </div>
+        </button>
 
-        <!-- Card 7: Notes -->
-        <div class="bg-white p-3.5 sm:p-4 rounded-2xl border border-slate-200 shadow-2xs">
+        <!-- Card 7: Notes (可点击直达考点笔记本) -->
+        <button
+          @click="emit('switch-tab', 'notes')"
+          class="text-left bg-white p-3.5 sm:p-4 rounded-2xl border border-slate-200 hover:border-amber-300 shadow-2xs hover:shadow-xs transition cursor-pointer group"
+          title="点击进入考点笔记本，查看和导出全部笔记"
+        >
           <div class="flex items-center justify-between text-slate-400 mb-1">
-            <span class="text-xs font-medium">专属考点笔记</span>
+            <span class="text-xs font-medium group-hover:text-amber-700 transition">专属考点笔记</span>
             <FileText class="w-4 h-4 text-amber-500" />
           </div>
           <div class="text-lg sm:text-xl font-bold text-amber-600 font-mono">
             {{ stats.overview.total_notes || 0 }} <span class="text-xs font-normal text-slate-400 font-sans">篇</span>
           </div>
-        </div>
+          <div class="text-[11px] text-amber-600/90 font-medium mt-1 flex items-center gap-0.5 group-hover:translate-x-0.5 transition">
+            <span>查看全部笔记</span>
+            <ChevronRight class="w-3 h-3" />
+          </div>
+        </button>
       </div>
 
       <!-- 每日刷题量与学习时长趋势折线图 -->

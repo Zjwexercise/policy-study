@@ -187,7 +187,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="max-w-7xl mx-auto px-3 sm:px-6 py-4 sm:py-6 pb-20 space-y-6">
+  <div class="max-w-7xl mx-auto px-3 sm:px-6 py-4 sm:py-6 pb-24 sm:pb-28 space-y-6">
     <!-- Toast 通知 -->
     <div 
       v-if="toastMsg" 

@@ -221,11 +221,13 @@ onUnmounted(() => {
         v-else-if="currentTab === 'killed'"
         :workbook-id="activeWorkbookId"
         @start-practice="currentTab = 'practice'"
+        @switch-tab="currentTab = $event"
       />
 
       <NotesView 
         v-else-if="currentTab === 'notes'"
         :workbook-id="activeWorkbookId"
+        @switch-tab="currentTab = $event"
       />
 
       <WorkbooksView 
@@ -240,6 +242,8 @@ onUnmounted(() => {
       <StatsView 
         v-else-if="currentTab === 'stats'"
         @open-sync="showSyncModal = true"
+        @open-mobile-qr="showMobileQr = true"
+        @switch-tab="currentTab = $event"
       />
 
       <AdminView 

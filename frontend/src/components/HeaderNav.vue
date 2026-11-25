@@ -1,22 +1,15 @@
 <script setup>
 import { computed } from 'vue';
-import { 
-  BookOpen, 
-  AlertCircle, 
-  FileText, 
-  Library, 
-  BarChart3, 
-  Smartphone, 
-  ChevronDown,
-  Layers,
-  Sparkles,
-  Swords,
+import {
+  BookOpen,
+  AlertCircle,
+  Library,
+  BarChart3,
   RefreshCw,
   User,
   Cloud,
   Moon,
-  Sun,
-  Compass
+  Sun
 } from 'lucide-vue-next';
 import { auth } from '../auth';
 import { isDark, toggleTheme } from '../theme';
@@ -42,8 +35,8 @@ const props = defineProps({
 });
 
 const emit = defineEmits([
-  'update:currentTab', 
-  'select-workbook', 
+  'update:currentTab',
+  'select-workbook',
   'open-mobile-qr',
   'open-sync',
   'open-login'
@@ -52,175 +45,49 @@ const emit = defineEmits([
 const currentUser = computed(() => auth.currentUser.value);
 const syncStatus = computed(() => auth.syncStatus.value);
 
-const isAdmin = computed(() => {
-  const u = currentUser.value;
-  if (!u) return false;
-  return u.role === 'admin' || 
-         u.username === 'zjw_student' || 
-         u.username === 'zjw2027' || 
-         u.username === 'admin' || 
-         (u.nickname && u.nickname.includes('建威'));
-});
-
-const totalQuestionsAll = computed(() => {
-  return props.workbooks.reduce((sum, w) => sum + (w.total_questions || 0), 0);
-});
-
-// 🔥 2027 肖秀荣冲刺8套卷 (肖8)
-const xiao8Workbooks = computed(() => {
-  return props.workbooks.filter(w => w.name && (w.name.includes('肖8') || w.name.includes('肖秀荣')));
-});
-
-// 🎯 2027 考研政治精雕细刻1000题分类
-const ti1000Workbooks = computed(() => {
-  return props.workbooks.filter(w => w.name && !w.name.includes('肖8') && !w.name.includes('肖秀荣') && (w.name.includes('1000题') || (w.id >= 34 && w.id <= 39)));
-});
-
-// 历年真题分类
-const zhentiWorkbooks = computed(() => {
-  return props.workbooks.filter(w => w.name && !w.name.includes('肖8') && !w.name.includes('肖秀荣') && !w.name.includes('1000题') && (w.name.includes('真题') || (w.id >= 27 && w.id <= 33)));
-});
-
-// 冲刺10套卷分类
-const taojuanWorkbooks = computed(() => {
-  return props.workbooks.filter(w => !w.name || (!w.name.includes('肖8') && !w.name.includes('肖秀荣') && !w.name.includes('真题') && !w.name.includes('1000题') && !(w.id >= 27 && w.id <= 39)));
-});
-
-const tabs = computed(() => [
-  { id: 'welcome', label: t('nav_welcome'), icon: Compass },
-  { id: 'practice', label: t('nav_practice'), icon: BookOpen },
-  { id: 'wrong', label: t('nav_wrong'), icon: AlertCircle },
-  { id: 'killed', label: t('nav_killed'), icon: Swords },
-  { id: 'notes', label: t('nav_notes'), icon: FileText },
-  { id: 'workbooks', label: t('nav_workbooks'), icon: Library },
-  { id: 'stats', label: t('nav_stats'), icon: BarChart3 },
+// 仿 App 底部导航：全端严格保留 4 个核心入口
+const bottomTabs = computed(() => [
+  { id: 'practice', label: t('nav_practice_short'), icon: BookOpen },
+  { id: 'wrong', label: t('nav_wrong_short'), icon: AlertCircle },
+  { id: 'workbooks', label: t('nav_workbooks_short'), icon: Library },
+  { id: 'stats', label: t('nav_stats_short'), icon: BarChart3 }
 ]);
 
-const mobileTabs = computed(() => [
-  { id: 'welcome', label: t('nav_welcome'), icon: Compass },
-  { id: 'practice', label: t('nav_practice'), icon: BookOpen },
-  { id: 'wrong', label: t('nav_wrong'), icon: AlertCircle },
-  { id: 'killed', label: t('nav_killed'), icon: Swords },
-  { id: 'stats', label: t('nav_stats'), icon: BarChart3 },
-]);
-
-const handleSelectChange = (val) => {
-  emit('select-workbook', val === 'all' || val === 'random' ? val : Number(val));
+const isTabActive = (tabId) => {
+  if (props.currentTab === tabId) return true;
+  // 斩题本 / 笔记本作为统计中心下的二级页面，保持底部「统计」高亮，点击即可返回
+  if (tabId === 'stats' && (props.currentTab === 'killed' || props.currentTab === 'notes')) {
+    return true;
+  }
+  return false;
 };
 </script>
 
 <template>
-  <header class="bg-white border-b border-slate-200 sticky top-0 z-30 shadow-xs">
-    <div class="max-w-7xl mx-auto px-3 sm:px-6">
-      <div class="flex items-center justify-between h-14 sm:h-16 gap-2">
-        <!-- Logo & Title (点击返回欢迎封面) -->
-        <div 
+  <!-- 极简顶部状态栏：仅保留品牌Logo（点击回首页）+ 语言/主题/账号 -->
+  <header class="bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border-b border-slate-200 sticky top-0 z-30 shadow-2xs">
+    <div class="max-w-5xl mx-auto px-3 sm:px-6">
+      <div class="flex items-center justify-between h-12 sm:h-14 gap-3">
+        <!-- Logo & 品牌名称（点击返回欢迎封面） -->
+        <div
           @click="emit('update:currentTab', 'welcome')"
-          class="flex items-center space-x-2 shrink-0 cursor-pointer group select-none"
-          title="点击返回首页封面"
+          class="flex items-center gap-2 shrink-0 cursor-pointer group select-none"
+          title="点击返回欢迎首页"
         >
-          <div class="w-8 h-8 sm:w-9 sm:h-9 bg-linear-to-tr from-rose-600 to-red-500 rounded-xl flex items-center justify-center text-white shadow-sm font-bold text-base group-hover:scale-105 transition">
+          <div class="w-8 h-8 bg-linear-to-tr from-rose-600 to-red-500 rounded-xl flex items-center justify-center text-white shadow-xs font-bold text-sm group-hover:scale-105 transition">
             政
           </div>
-          <div>
-            <div class="flex items-center gap-1.5">
-              <span class="font-bold text-slate-800 text-sm sm:text-base leading-tight group-hover:text-rose-600 transition">考研政治刷题掌上宝</span>
-              <span class="hidden md:inline-block px-1.5 py-0.5 text-[10px] font-semibold bg-red-50 text-red-600 rounded border border-red-200">
-                2027备考
-              </span>
-            </div>
-            <p class="hidden sm:block text-[11px] text-slate-500 leading-tight">单册独立刷 · 全库综合练</p>
-          </div>
+          <span class="font-bold text-slate-800 text-sm sm:text-base leading-tight group-hover:text-rose-600 transition">
+            {{ t('brand_name') }}
+          </span>
         </div>
 
-        <!-- 练习册切换：支持【综合合并】与【独立单本】 -->
-        <div class="flex items-center">
-          <div class="relative flex items-center max-w-[155px] sm:max-w-[260px]">
-            <select 
-              :value="activeWorkbookId" 
-              @change="handleSelectChange($event.target.value)"
-              class="w-full appearance-none bg-slate-50 hover:bg-slate-100 text-slate-800 text-xs sm:text-sm font-medium py-1.5 pl-2.5 pr-7 rounded-lg border border-slate-200 focus:outline-hidden focus:ring-2 focus:ring-rose-500/20 truncate cursor-pointer transition shadow-2xs"
-            >
-              <!-- 综合模式选项 -->
-              <option value="all" class="font-bold text-rose-600">
-                🌟 全部题库大综合 ({{ totalQuestionsAll }}题)
-              </option>
-              <option value="random" class="font-bold text-indigo-600">
-                🎲 跨题库·盲盒随机抽题 ({{ totalQuestionsAll }}题无序)
-              </option>
-              
-              <!-- 🔥 2027 肖秀荣冲刺8套卷 (肖8) 专区 -->
-              <optgroup v-if="xiao8Workbooks.length > 0" label="── 🔥 2027 肖秀荣冲刺8套卷 (肖8) ──">
-                <option v-for="wb in xiao8Workbooks" :key="wb.id" :value="wb.id">
-                  {{ wb.name }}
-                </option>
-              </optgroup>
-
-              <!-- 2027 精雕细刻1000题专区 -->
-              <optgroup v-if="ti1000Workbooks.length > 0" label="── 🎯 2027 精雕细刻1000题 ──">
-                <option v-for="wb in ti1000Workbooks" :key="wb.id" :value="wb.id">
-                  {{ wb.name }}
-                </option>
-              </optgroup>
-
-              <!-- 历年真题专区 -->
-              <optgroup v-if="zhentiWorkbooks.length > 0" label="── 🏛️ 2019-2025 全国历年真题 ──">
-                <option v-for="wb in zhentiWorkbooks" :key="wb.id" :value="wb.id">
-                  {{ wb.name }}
-                </option>
-              </optgroup>
-
-              <!-- 冲刺10套卷专区 -->
-              <optgroup v-if="taojuanWorkbooks.length > 0" label="── 📚 考研政治冲刺10套卷 ──">
-                <option v-for="wb in taojuanWorkbooks" :key="wb.id" :value="wb.id">
-                  {{ wb.name }}
-                </option>
-              </optgroup>
-            </select>
-            <ChevronDown class="w-3.5 h-3.5 text-slate-400 absolute right-2 pointer-events-none" />
-          </div>
-        </div>
-
-        <!-- Desktop Navigation Tabs -->
-        <nav class="hidden lg:flex items-center space-x-0.5 xl:space-x-1 shrink-0">
-          <button
-            v-for="tab in tabs"
-            :key="tab.id"
-            @click="emit('update:currentTab', tab.id)"
-            class="flex items-center space-x-1 xl:space-x-1.5 px-2 xl:px-3 py-1.5 rounded-lg text-xs xl:text-sm font-medium transition cursor-pointer whitespace-nowrap shrink-0"
-            :class="[
-              currentTab === tab.id
-                ? 'bg-rose-50 text-rose-700 font-semibold'
-                : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
-            ]"
-          >
-            <component :is="tab.icon" class="w-3.5 h-3.5 xl:w-4 xl:h-4 shrink-0" />
-            <span class="whitespace-nowrap">{{ tab.label }}</span>
-          </button>
-
-          <!-- 超级管理员专用后台入口 -->
-          <button
-            v-if="isAdmin"
-            @click="emit('update:currentTab', 'admin')"
-            class="flex items-center space-x-1 px-2.5 py-1.5 rounded-lg text-xs xl:text-sm font-bold transition cursor-pointer shadow-2xs ml-1 whitespace-nowrap shrink-0"
-            :class="[
-              currentTab === 'admin'
-                ? 'bg-amber-500 text-white shadow-amber-200'
-                : 'bg-amber-50 text-amber-800 hover:bg-amber-100 border border-amber-200'
-            ]"
-            title="进入超级管理后台与防火墙控制面板"
-          >
-            <span class="shrink-0">🛡️</span>
-            <span class="whitespace-nowrap">管理后台</span>
-          </button>
-        </nav>
-
-        <!-- Right Tools: Theme Toggle, User, Mobile QR & Sync -->
-        <div class="flex items-center space-x-1 sm:space-x-1.5 shrink-0">
+        <!-- 右侧极简工具区（仅 3 项） -->
+        <div class="flex items-center gap-1.5 sm:gap-2 shrink-0">
           <!-- 🌐 语言切换：中文 / 泰语 -->
           <button
             @click="toggleLanguage"
-            class="flex items-center space-x-1 px-2 sm:px-2.5 py-1.5 rounded-lg border text-xs sm:text-sm font-semibold transition cursor-pointer shadow-2xs"
+            class="flex items-center gap-1 px-2 sm:px-2.5 py-1.5 rounded-lg border text-xs font-semibold transition cursor-pointer shadow-2xs"
             :class="[
               currentLang === 'th'
                 ? 'bg-indigo-50 text-indigo-700 border-indigo-200 hover:bg-indigo-100'
@@ -228,117 +95,75 @@ const handleSelectChange = (val) => {
             ]"
             :title="currentLang === 'th' ? 'สลับเป็นภาษาจีน (点击切换为中文)' : 'สลับเป็นภาษาไทย (点击切换为泰语)'"
           >
-            <span class="text-xs sm:text-sm">🌐</span>
-            <span class="font-bold text-xs">{{ currentLang === 'th' ? 'ไทย' : '中' }}</span>
+            <span class="text-xs leading-none">🌐</span>
+            <span class="font-bold">{{ currentLang === 'th' ? 'ไทย' : '中' }}</span>
           </button>
 
-          <!-- 🌙 夜间黑暗模式 / ☀️ 日间模式切换按钮 -->
+          <!-- 🌙 夜间/日间纯图标切换 -->
           <button
             @click="toggleTheme"
-            class="flex items-center space-x-1 px-2 sm:px-2.5 py-1.5 rounded-lg border text-xs sm:text-sm font-semibold transition cursor-pointer shadow-2xs"
+            class="p-1.5 sm:p-2 rounded-lg border transition cursor-pointer shadow-2xs"
             :class="[
               isDark
                 ? 'bg-amber-950/40 text-amber-300 border-amber-700/60 hover:bg-amber-900/50'
                 : 'bg-slate-50 hover:bg-slate-100 text-slate-700 border-slate-200'
             ]"
-            :title="isDark ? '当前为夜间模式，点击切换为日间明亮模式' : '当前为日间模式，点击开启夜间护眼黑暗模式（适合晚上刷题）'"
+            :title="isDark ? '切换为日间模式' : '开启夜间护眼模式'"
           >
-            <Sun v-if="isDark" class="w-3.5 h-3.5 sm:w-4 sm:h-4 text-amber-400 shrink-0" />
-            <Moon v-else class="w-3.5 h-3.5 sm:w-4 sm:h-4 text-slate-600 shrink-0" />
-            <span class="hidden sm:inline">{{ isDark ? '日间' : '夜间' }}</span>
+            <Sun v-if="isDark" class="w-4 h-4 text-amber-400" />
+            <Moon v-else class="w-4 h-4 text-slate-600" />
           </button>
 
-          <!-- 用户账户与自动云同步状态 -->
+          <!-- 👤 用户账号与云同步入口（管理后台也在弹窗内） -->
           <button
             v-if="currentUser"
             @click="emit('open-login')"
-            class="flex items-center space-x-1.5 px-2 sm:px-2.5 py-1.5 bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 text-xs sm:text-sm font-semibold rounded-lg transition cursor-pointer shadow-2xs"
-            :title="`当前账号：${currentUser.nickname || currentUser.username} (点击管理账号与云同步)`"
+            class="flex items-center gap-1.5 px-2 sm:px-2.5 py-1.5 bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 text-xs font-semibold rounded-lg transition cursor-pointer shadow-2xs"
+            :title="`当前账号：${currentUser.nickname || currentUser.username} (点击管理账号、云同步与后台)`"
           >
-            <div class="w-4 h-4 sm:w-5 sm:h-5 rounded-full bg-rose-600 text-white text-[10px] font-bold flex items-center justify-center">
+            <div class="w-4 h-4 sm:w-5 sm:h-5 rounded-full bg-rose-600 text-white text-[10px] font-bold flex items-center justify-center shrink-0">
               {{ (currentUser.nickname || currentUser.username || '用').slice(0, 1) }}
             </div>
-            <span class="max-w-[65px] sm:max-w-[100px] truncate hidden sm:inline">{{ currentUser.nickname || currentUser.username }}</span>
-            <span class="flex items-center gap-0.5 text-[10px] text-emerald-600 font-bold bg-white/80 px-1 py-0.5 rounded border border-emerald-200">
+            <span class="max-w-[72px] sm:max-w-[100px] truncate hidden sm:inline">{{ currentUser.nickname || currentUser.username }}</span>
+            <span class="flex items-center gap-0.5 text-[10px] text-emerald-600 font-bold bg-white/80 dark:bg-slate-800/80 px-1 py-0.5 rounded border border-emerald-200">
               <RefreshCw v-if="syncStatus === 'syncing'" class="w-2.5 h-2.5 animate-spin text-amber-600" />
               <Cloud v-else class="w-2.5 h-2.5 text-emerald-600" />
-              <span class="hidden md:inline">{{ syncStatus === 'syncing' ? '同步中' : '已同步' }}</span>
+              <span class="hidden md:inline">{{ syncStatus === 'syncing' ? t('nav_syncing') : t('nav_synced') }}</span>
             </span>
           </button>
 
-          <!-- 未登录：登录/注册入口 -->
           <button
             v-else
             @click="emit('open-login')"
-            class="flex items-center space-x-1 px-2 sm:px-2.5 py-1.5 bg-linear-to-r from-rose-500 to-red-500 hover:from-rose-600 hover:to-red-600 text-white text-xs sm:text-sm font-semibold rounded-lg transition cursor-pointer shadow-xs"
-            title="登录账号开启自动双向云同步，跨端刷题免手动复制"
+            class="flex items-center gap-1 px-2.5 py-1.5 bg-linear-to-r from-rose-500 to-red-500 hover:from-rose-600 hover:to-red-600 text-white text-xs font-semibold rounded-lg transition cursor-pointer shadow-xs"
+            title="登录账号开启云同步"
           >
-            <User class="w-3.5 h-3.5 sm:w-4 sm:h-4" />
-            <span>登录</span>
-            <span class="hidden sm:inline">/注册</span>
-          </button>
-
-          <button
-            @click="emit('open-sync')"
-            class="hidden md:flex items-center space-x-1 px-2 sm:px-2.5 py-1.5 bg-indigo-50 hover:bg-indigo-100 text-indigo-700 border border-indigo-200 text-xs sm:text-sm font-semibold rounded-lg transition cursor-pointer shadow-2xs"
-            title="跨端同步电脑与手机的做题记录"
-          >
-            <RefreshCw class="w-3.5 h-3.5 sm:w-4 sm:h-4 text-indigo-600" />
-            <span class="hidden sm:inline">口令同步</span>
-          </button>
-
-          <button
-            @click="emit('open-mobile-qr')"
-            class="hidden md:flex items-center space-x-1 px-2 sm:px-2.5 py-1.5 bg-emerald-50 hover:bg-emerald-100 text-emerald-700 border border-emerald-200 text-xs sm:text-sm font-medium rounded-lg transition cursor-pointer"
-            title="手机扫码直接在床上或自习室刷题"
-          >
-            <Smartphone class="w-3.5 h-3.5 sm:w-4 sm:h-4 text-emerald-600" />
-            <span class="hidden sm:inline">手机扫码</span>
+            <User class="w-3.5 h-3.5" />
+            <span>{{ t('nav_login') }}</span>
           </button>
         </div>
       </div>
     </div>
-
-    <!-- Mobile Bottom Navigation Bar -->
-    <div class="lg:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-slate-200 z-40 px-1 py-1 flex justify-around items-center shadow-lg">
-      <button
-        v-for="tab in mobileTabs"
-        :key="tab.id"
-        @click="emit('update:currentTab', tab.id)"
-        class="flex flex-col items-center justify-center py-1 px-1 rounded-lg transition text-slate-500 flex-1 cursor-pointer min-w-0"
-        :class="[
-          currentTab === tab.id ? 'text-rose-600 font-semibold' : 'hover:text-slate-800'
-        ]"
-      >
-        <component :is="tab.icon" class="w-4 h-4 sm:w-5 sm:h-5 mb-0.5" />
-        <span class="text-[10px] sm:text-[11px] truncate tracking-tight">{{ tab.label }}</span>
-      </button>
-
-      <!-- 手机底栏特别增加：管理后台（仅管理员可见） -->
-      <button
-        v-if="isAdmin"
-        @click="emit('update:currentTab', 'admin')"
-        class="flex flex-col items-center justify-center py-1 px-1 rounded-lg transition flex-1 cursor-pointer min-w-0"
-        :class="currentTab === 'admin' ? 'text-amber-600 font-bold' : 'text-amber-700 hover:text-amber-900'"
-      >
-        <span class="text-sm leading-none mb-0.5">🛡️</span>
-        <span class="text-[10px] sm:text-[11px] truncate tracking-tight font-bold">后台</span>
-      </button>
-
-      <!-- 手机底栏特别增加：我的 / 账号登录 -->
-      <button
-        @click="emit('open-login')"
-        class="flex flex-col items-center justify-center py-1 px-1 rounded-lg transition flex-1 cursor-pointer min-w-0"
-        :class="currentUser ? 'text-rose-600 font-semibold' : 'text-slate-500 hover:text-slate-800'"
-      >
-        <div class="relative">
-          <User class="w-4 h-4 sm:w-5 sm:h-5 mb-0.5" />
-          <span v-if="currentUser" class="absolute -top-0.5 -right-0.5 w-2 h-2 bg-emerald-500 rounded-full border border-white"></span>
-        </div>
-        <span class="text-[10px] sm:text-[11px] truncate tracking-tight">
-          {{ currentUser ? (currentUser.nickname || currentUser.username) : '我的' }}
-        </span>
-      </button>
-    </div>
   </header>
+
+  <!-- 仿 App 底部 4 按钮导航栏（电脑端居中悬浮圆角胶囊 Dock · 手机端贴底全宽） -->
+  <nav
+    aria-label="主导航栏"
+    class="fixed bottom-0 left-0 right-0 sm:bottom-4 sm:left-1/2 sm:-translate-x-1/2 sm:right-auto sm:w-[480px] md:w-[520px] sm:max-w-[calc(100vw-2rem)] bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border-t sm:border border-slate-200 dark:border-slate-700/80 sm:rounded-2xl z-40 px-2 sm:px-2.5 py-1.5 flex items-center justify-around gap-1 shadow-[0_-4px_20px_-4px_rgba(15,23,42,0.08)] sm:shadow-xl sm:shadow-slate-900/12 dark:sm:shadow-black/50"
+  >
+    <button
+      v-for="tab in bottomTabs"
+      :key="tab.id"
+      @click="emit('update:currentTab', tab.id)"
+      class="flex-1 flex flex-col sm:flex-row items-center justify-center gap-0.5 sm:gap-1.5 py-1.5 sm:py-2 px-1.5 sm:px-3 rounded-xl transition cursor-pointer min-w-0 select-none"
+      :class="[
+        isTabActive(tab.id)
+          ? 'bg-rose-50 text-rose-700 font-bold shadow-2xs'
+          : 'text-slate-500 hover:text-slate-800 hover:bg-slate-50 font-medium'
+      ]"
+    >
+      <component :is="tab.icon" class="w-4 h-4 sm:w-4 sm:h-4 shrink-0" />
+      <span class="text-[11px] sm:text-xs whitespace-nowrap truncate">{{ tab.label }}</span>
+    </button>
+  </nav>
 </template>

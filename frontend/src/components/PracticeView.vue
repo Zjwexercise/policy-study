@@ -194,6 +194,30 @@ const is1000Workbook = computed(() => {
   return name.includes('1000题') || (typeof props.workbookId === 'number' && props.workbookId >= 34 && props.workbookId <= 39);
 });
 
+const totalQuestionsAll = computed(() => {
+  return props.workbooks.reduce((sum, w) => sum + (w.total_questions || 0), 0);
+});
+
+const xiao8Workbooks = computed(() => {
+  return props.workbooks.filter(w => w.name && (w.name.includes('肖8') || w.name.includes('肖秀荣')));
+});
+
+const ti1000Workbooks = computed(() => {
+  return props.workbooks.filter(w => w.name && !w.name.includes('肖8') && !w.name.includes('肖秀荣') && (w.name.includes('1000题') || (w.id >= 34 && w.id <= 39)));
+});
+
+const zhentiWorkbooks = computed(() => {
+  return props.workbooks.filter(w => w.name && !w.name.includes('肖8') && !w.name.includes('肖秀荣') && !w.name.includes('1000题') && (w.name.includes('真题') || (w.id >= 27 && w.id <= 33)));
+});
+
+const taojuanWorkbooks = computed(() => {
+  return props.workbooks.filter(w => !w.name || (!w.name.includes('肖8') && !w.name.includes('肖秀荣') && !w.name.includes('真题') && !w.name.includes('1000题') && !(w.id >= 27 && w.id <= 39)));
+});
+
+const handleWorkbookSelectChange = (val) => {
+  emit('switch-workbook', val === 'all' || val === 'random' ? val : Number(val));
+};
+
 // ========================================================
 // 独立挑战自测状态隔离 (Drill Session)
 // 用于：跨题库抽题自测、错题专攻演练与单题随时重新自测
@@ -819,23 +843,54 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <div class="max-w-4xl mx-auto px-3 sm:px-6 py-4 pb-24 lg:pb-12">
+  <div class="max-w-4xl mx-auto px-3 sm:px-6 py-4 pb-24 sm:pb-28">
     <!-- Filter and Toolbar Area -->
     <div class="bg-white rounded-2xl p-3 sm:p-4 border border-slate-200 shadow-2xs mb-4">
-      <!-- 当前练习册与快捷切换 1000 题 -->
+      <!-- 当前练习册下拉切换与快捷切换 1000 题 -->
       <div class="flex items-center justify-between pb-2.5 mb-2.5 border-b border-slate-100 flex-wrap gap-2">
-        <div class="flex items-center gap-1.5 min-w-0">
+        <div class="flex items-center gap-1.5 min-w-[220px] flex-1">
           <BookOpen class="w-4 h-4 text-rose-600 shrink-0" />
-          <span class="text-xs font-semibold text-slate-500">正在练习：</span>
-          <span class="text-xs sm:text-sm font-bold text-slate-900 truncate">
-            {{ currentWorkbookName }}
-          </span>
-          <span class="px-1.5 py-0.2 text-[10px] rounded-md font-bold bg-slate-100 text-slate-600 shrink-0">
+          <span class="text-xs font-semibold text-slate-500 shrink-0 hidden sm:inline">正在练习：</span>
+          <div class="relative flex items-center min-w-0 flex-1 sm:flex-initial sm:w-[270px]">
+            <select
+              :value="String(props.workbookId)"
+              @change="handleWorkbookSelectChange($event.target.value)"
+              class="w-full min-w-0 bg-slate-50 hover:bg-slate-100 text-slate-900 text-xs sm:text-sm font-bold py-1 px-2.5 rounded-lg border border-slate-200 focus:outline-hidden focus:ring-2 focus:ring-rose-500/20 truncate cursor-pointer transition shadow-2xs"
+            >
+              <option value="all" class="font-bold text-rose-600">
+                🌟 全部题库大综合 ({{ totalQuestionsAll }}题)
+              </option>
+              <option value="random" class="font-bold text-indigo-600">
+                🎲 跨题库·盲盒随机抽题 ({{ totalQuestionsAll }}题无序)
+              </option>
+              <optgroup v-if="xiao8Workbooks.length > 0" label="── 🔥 2027 肖秀荣冲刺8套卷 (肖8) ──">
+                <option v-for="wb in xiao8Workbooks" :key="wb.id" :value="String(wb.id)">
+                  {{ wb.name }}
+                </option>
+              </optgroup>
+              <optgroup v-if="ti1000Workbooks.length > 0" label="── 🎯 2027 精雕细刻1000题 ──">
+                <option v-for="wb in ti1000Workbooks" :key="wb.id" :value="String(wb.id)">
+                  {{ wb.name }}
+                </option>
+              </optgroup>
+              <optgroup v-if="zhentiWorkbooks.length > 0" label="── 🏛️ 2019-2025 全国历年真题 ──">
+                <option v-for="wb in zhentiWorkbooks" :key="wb.id" :value="String(wb.id)">
+                  {{ wb.name }}
+                </option>
+              </optgroup>
+              <optgroup v-if="taojuanWorkbooks.length > 0" label="── 📚 考研政治冲刺10套卷 ──">
+                <option v-for="wb in taojuanWorkbooks" :key="wb.id" :value="String(wb.id)">
+                  {{ wb.name }}
+                </option>
+              </optgroup>
+            </select>
+          </div>
+          <span class="px-1.5 py-0.5 text-[10px] rounded-md font-bold bg-slate-100 text-slate-600 shrink-0">
             共 {{ questions.length }} 题
           </span>
         </div>
 
-        <div class="flex items-center gap-2">
+        <div class="flex items-center gap-2 shrink-0">
           <!-- 重做本卷/二刷重置按钮 -->
           <button
             v-if="props.workbookId && props.workbookId !== 'all' && props.workbookId !== 'random'"
@@ -854,7 +909,8 @@ onUnmounted(() => {
             class="px-2.5 py-1 text-xs font-bold rounded-lg bg-rose-50 hover:bg-rose-100 active:bg-rose-200 text-rose-700 border border-rose-200 transition flex items-center gap-1 cursor-pointer shadow-2xs"
             title="一键切换至2027精雕细刻1000题全科目精选合集"
           >
-            <span>🎯 一键刷1000题</span>
+            <span class="hidden sm:inline">🎯 一键刷1000题</span>
+            <span class="sm:hidden">🎯 1000题</span>
           </button>
           <button
             v-else
